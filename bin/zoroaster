@@ -3,12 +3,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const EOL = require('os').EOL;
 const TestSuite = require('../src/test_suite');
 const lib = require('../src/lib');
-
-function resolveTestPath(test) {
-    return path.join(process.cwd(), test);
-}
 
 function buildDirectory(dir) {
     const content = fs.readdirSync(dir);
@@ -17,7 +14,7 @@ function buildDirectory(dir) {
         const nodePath = path.join(dir, node);
         const stat = fs.lstatSync(nodePath);
         if (stat.isFile()) {
-            res[node] = resolveTestPath(nodePath);
+            res[node] = path.resolve(nodePath);
         } else if (stat.isDirectory()) {
             res[node] = buildDirectory(nodePath);
         }
@@ -26,7 +23,7 @@ function buildDirectory(dir) {
 }
 
 function parseArgv(argv) {
-    const argvPath = resolveTestPath(argv);
+    const argvPath = path.resolve(argv);
     try {
         const res = fs.lstatSync(argvPath);
         if (res.isFile()) {
@@ -37,6 +34,8 @@ function parseArgv(argv) {
         }
     } catch (err) {
         // file or directory does not exist
+        // eslint-disable-next-line
+        console.error(err);
         return undefined;
     }
     return undefined;
@@ -86,10 +85,9 @@ function test(testSuites, watch, currentlyWatching) {
     }
     return lib.runInSequence(testSuites)
         .then((testSuites) => {
+            const results = testSuites.map(ts => ts.dump()).join(EOL);
             // eslint-disable-next-line no-console
-            console.log(new Date().toUTCString());
-            // eslint-disable-next-line no-console
-            testSuites.forEach((ts) => console.log(ts.dump()));
+            console.log(new Date().toUTCString(), EOL, results);
             const hasErrors = !testSuites.reduce((prev, ts) =>
                 prev && !ts.hasErrors()
             , true);
