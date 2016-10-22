@@ -1,3 +1,5 @@
+'use strict';
+
 const EOL = require('os').EOL;
 const cleanStack = require('clean-stack');
 const lib = require('./lib');

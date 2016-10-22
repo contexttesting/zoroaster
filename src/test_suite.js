@@ -1,3 +1,5 @@
+'use strict';
+
 const lib = require('./lib');
 const Test = require('./test');
 
