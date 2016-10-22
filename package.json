@@ -1,0 +1,27 @@
+{
+  "name": "zoroaster",
+  "version": "0.1.0",
+  "description": "A minimal JavaScript testing framework for Node.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./bin/zoroaster test/spec",
+    "watch": "./bin/zoroaster test/spec --watch"
+  },
+  "bin": "./bin/zoroaster",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sobesednik/zoroaster.git"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "Anton <anton@sobesednik.media>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sobesednik/zoroaster/issues"
+  },
+  "homepage": "https://github.com/Sobesednik/zoroaster#readme",
+  "dependencies": {
+    "clean-stack": "1.0.0"
+  }
+}
