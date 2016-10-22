@@ -4,8 +4,8 @@
   "description": "A minimal JavaScript testing framework for Node.js.",
   "main": "index.js",
   "scripts": {
-    "test": "./bin/zoroaster test/spec",
-    "watch": "./bin/zoroaster test/spec --watch"
+    "test": "node run_tests",
+    "watch": "node run_tests --watch"
   },
   "bin": "./bin/zoroaster",
   "repository": {
