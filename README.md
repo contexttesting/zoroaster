@@ -1,4 +1,7 @@
 # Zoroaster
+[![npm version](https://badge.fury.io/js/zoroaster.svg)](https://badge.fury.io/js/node-exiftool)
+[![Build Status](https://travis-ci.org/Sobesednik/zoroaster.svg?branch=master)](https://travis-ci.org/Sobesednik/zoroaster)
+
 A minimal JavaScript testing framework for Node.js.
 
 [![](https://files.sobesednik.media/movflamecolumn.gif)](https://zoroaster.co.uk)
