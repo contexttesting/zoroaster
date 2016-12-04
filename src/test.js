@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-const EOL = require('os').EOL;
-const cleanStack = require('clean-stack');
-const lib = require('./lib');
+const EOL = require('os').EOL
+const cleanStack = require('clean-stack')
+const lib = require('./lib')
 
 /**
  * Create a new test object.
@@ -10,44 +10,44 @@ const lib = require('./lib');
  */
 class Test {
     constructor (name, fn) {
-        this.name = name;
-        this.fn = fn;
-        this.started = null;
-        this.finished = null;
-        this.error = null;
-        this.result = null;
+        this.name = name
+        this.fn = fn
+        this.started = null
+        this.finished = null
+        this.error = null
+        this.result = null
     }
 
     run() {
-        return runTest(this);
+        return runTest(this)
     }
     dump() {
-        return dumpResult(this);
+        return dumpResult(this)
     }
     hasErrors() {
-        return this.error !== null;
+        return this.error !== null
     }
 }
 
 function filterStack(test) {
     if (!test.error) {
-        throw new Error('cannot filter stack when a test does not have an error');
+        throw new Error('cannot filter stack when a test does not have an error')
     }
-    const stack_split = test.error.stack.split(EOL);
-    const test_name_regex = new RegExp(`at ${test.name}`);
+    const stack_split = test.error.stack.split(EOL)
+    const test_name_regex = new RegExp(`at ${test.name}`)
     const res_index = stack_split.findIndex((element) => {
-        return test_name_regex.test(element);
-    }) + 1;
-    const stack_joined = stack_split.slice(0, res_index).join(EOL);
-    return stack_joined ? stack_joined : cleanStack(test.error.stack);
+        return test_name_regex.test(element)
+    }) + 1
+    const stack_joined = stack_split.slice(0, res_index).join(EOL)
+    return stack_joined ? stack_joined : cleanStack(test.error.stack)
 }
 
 function dumpResult(test) {
     if (test.error === null) {
-        return '\x1b[32m \u2713 \x1b[0m ' + test.name;
+        return '\x1b[32m \u2713 \x1b[0m ' + test.name
     } else {
         return '\x1b[31m \u2717 \x1b[0m ' + test.name + '\n'
-            + lib.indent(filterStack(test), ' | ');
+            + lib.indent(filterStack(test), ' | ')
     }
 }
 
@@ -58,7 +58,7 @@ function dumpResult(test) {
  */
 function createTestPromise(fn) {
     return Promise.resolve()
-        .then(() => fn());
+        .then(() => fn())
 }
 
 /**
@@ -67,15 +67,15 @@ function createTestPromise(fn) {
  * @return {Promise} A promise resolved with the run test.
  */
 function runTest(test) {
-    test.started = new Date();
+    test.started = new Date()
 
     return createTestPromise(test.fn)
         .then(
-            (res) => { test.result = res; },
-            (err) => { test.error = err; }
+            (res) => { test.result = res },
+            (err) => { test.error = err }
         )
-        .then(() => { test.finished = new Date(); })
-        .then(() => test);
+        .then(() => { test.finished = new Date() })
+        .then(() => test)
 }
 
-module.exports = Test;
+module.exports = Test

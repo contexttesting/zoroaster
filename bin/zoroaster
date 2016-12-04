@@ -1,44 +1,44 @@
 #!/usr/bin/env node
-'use strict';
+'use strict'
 
-const fs = require('fs');
-const path = require('path');
-const EOL = require('os').EOL;
-const TestSuite = require('../src/test_suite');
-const lib = require('../src/lib');
+const fs = require('fs')
+const path = require('path')
+const EOL = require('os').EOL
+const TestSuite = require('../src/test_suite')
+const lib = require('../src/lib')
 
 function buildDirectory(dir) {
-    const content = fs.readdirSync(dir);
-    const res = {};
+    const content = fs.readdirSync(dir)
+    const res = {}
     content.forEach((node) => {
-        const nodePath = path.join(dir, node);
-        const stat = fs.lstatSync(nodePath);
+        const nodePath = path.join(dir, node)
+        const stat = fs.lstatSync(nodePath)
         if (stat.isFile()) {
-            res[node] = path.resolve(nodePath);
+            res[node] = path.resolve(nodePath)
         } else if (stat.isDirectory()) {
-            res[node] = buildDirectory(nodePath);
+            res[node] = buildDirectory(nodePath)
         }
-    });
-    return res;
+    })
+    return res
 }
 
 function parseArgv(argv) {
-    const argvPath = path.resolve(argv);
+    const argvPath = path.resolve(argv)
     try {
-        const res = fs.lstatSync(argvPath);
+        const res = fs.lstatSync(argvPath)
         if (res.isFile()) {
-            return new TestSuite(argv, argvPath);
+            return new TestSuite(argv, argvPath)
         } else if (res.isDirectory()) {
-            const dir = buildDirectory(argv);
-            return new TestSuite(argv, dir);
+            const dir = buildDirectory(argv)
+            return new TestSuite(argv, dir)
         }
     } catch (err) {
         // file or directory does not exist
         // eslint-disable-next-line
-        console.error(err);
-        return undefined;
+        console.error(err)
+        return undefined
     }
-    return undefined;
+    return undefined
 }
 
 function resolveTestSuites(argv) {
@@ -46,61 +46,61 @@ function resolveTestSuites(argv) {
         .slice(2)
         // ignore flags
         .filter((argv) => {
-            return !/^--/.test(argv);
+            return !/^--/.test(argv)
         })
         // create test suites and remove paths that cannot be resolved
         .map(parseArgv)
-        .filter(testSuite => testSuite !== undefined);
+        .filter(testSuite => testSuite !== undefined)
 }
 
 function watchFiles(files, callback) {
     files.forEach((file) => {
-        // console.log(`Watching ${file} for changes...`);
-        fs.watchFile(file, callback);
-    });
+        // console.log(`Watching ${file} for changes...`)
+        fs.watchFile(file, callback)
+    })
 }
 function unwatchFiles(files) {
     files.forEach((file) => {
-        // console.log(`Unwatching ${file}`);
-        fs.unwatchFile(file);
-    });
+        // console.log(`Unwatching ${file}`)
+        fs.unwatchFile(file)
+    })
 }
 /**
  * Remove modules cached by require.
  */
 function clearRequireCache() {
     Object.keys(require.cache).forEach((key) => {
-        delete require.cache[key];
-    });
+        delete require.cache[key]
+    })
 }
 
 function test(testSuites, watch, currentlyWatching) {
-    clearRequireCache();
-    testSuites.forEach(ts => ts.require());
+    clearRequireCache()
+    testSuites.forEach(ts => ts.require())
     if (watch) {
-        const cw = Array.isArray(currentlyWatching) ? currentlyWatching : [];
-        unwatchFiles(cw);
-        const newCurrentlyWatching = Object.keys(require.cache);
-        watchFiles(newCurrentlyWatching, () => test(testSuites, watch, newCurrentlyWatching));
+        const cw = Array.isArray(currentlyWatching) ? currentlyWatching : []
+        unwatchFiles(cw)
+        const newCurrentlyWatching = Object.keys(require.cache)
+        watchFiles(newCurrentlyWatching, () => test(testSuites, watch, newCurrentlyWatching))
     }
     return lib.runInSequence(testSuites)
         .then((testSuites) => {
-            const results = testSuites.map(ts => ts.dump()).join(EOL);
+            const results = testSuites.map(ts => ts.dump()).join(EOL)
             // eslint-disable-next-line no-console
-            console.log(new Date().toUTCString(), EOL, results);
+            console.log(new Date().toUTCString(), EOL, results)
             const hasErrors = !testSuites.reduce((prev, ts) =>
                 prev && !ts.hasErrors()
-            , true);
+            , true)
             if (hasErrors && !watch) {
-                process.exit(1);
+                process.exit(1)
             } else {
                 // eslint-disable-next-line no-console
-                console.log(); // add new line for readability
+                console.log() // add new line for readability
             }
-        });
+        })
 }
 
-const watch = !!process.argv.find(arg => arg === '--watch');
+const watch = !!process.argv.find(arg => arg === '--watch')
 
-const testSuites = resolveTestSuites(process.argv);
-test(testSuites, watch);
+const testSuites = resolveTestSuites(process.argv)
+test(testSuites, watch)
