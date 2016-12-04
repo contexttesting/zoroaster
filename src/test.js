@@ -61,6 +61,14 @@ function createTestPromise(fn) {
         .then(() => fn())
 }
 
+function createTimeoutPromise(timeout) {
+    return new Promise((_, reject) => {
+        setTimeout(() =>
+            reject(new Error('Test has timed out')
+        ), timeout)
+    })
+}
+
 /**
  * Returns a promise to run a test.
  * @param {Test} test - a test to run
@@ -69,7 +77,15 @@ function createTestPromise(fn) {
 function runTest(test) {
     test.started = new Date()
 
-    return createTestPromise(test.fn)
+    const testPromise = createTestPromise(test.fn)
+    const timeoutPromise = createTimeoutPromise(2000)
+
+    const runPromise = Promise.race([
+        testPromise,
+        timeoutPromise,
+    ])
+
+    return runPromise
         .then(
             (res) => { test.result = res },
             (err) => { test.error = err }
