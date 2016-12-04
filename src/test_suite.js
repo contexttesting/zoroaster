@@ -3,6 +3,8 @@
 const lib = require('./lib')
 const Test = require('./test')
 
+const timeout = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
+
 class TestSuite {
     constructor (name, testsOrPath, parent) {
         if (typeof name !== 'string') {
@@ -68,17 +70,31 @@ class TestSuite {
 }
 
 /**
+ * Sort tests and test suites so that tests run before
+ * test suites.
+ */
+function sortTests(a, b) {
+    if (a instanceof Test && b instanceof TestSuite) {
+        return -1
+    } else if (a instanceof TestSuite && b instanceof Test) {
+        return 1
+    }
+    return 0
+}
+
+/**
  * Map object with test names as keys and test functions as values
  * to an array of tests.
  * @param {object} object
  * @return {array<Test>} An array with tests.
  */
 function createTests(object, parent) {
-    return Object.keys(object)
+    return Object
+        .keys(object)
         .map((key) => {
             switch (typeof object[key]) {
             case 'function':
-                return new Test(key, object[key])
+                return new Test(key, object[key], timeout)
             case 'object':
                 return new TestSuite(key, object[key], parent)
             case 'string':
@@ -86,14 +102,7 @@ function createTests(object, parent) {
             }
         })
         .filter(test => test !== undefined)
-        .sort((a, b) => {
-            if (a instanceof Test && b instanceof TestSuite) {
-                return -1
-            } else if (a instanceof TestSuite && b instanceof Test) {
-                return 1
-            }
-            return 0
-        })
+        .sort(sortTests)
 }
 
 function requireModule(modulePath) {

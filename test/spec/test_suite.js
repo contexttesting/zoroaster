@@ -142,6 +142,12 @@ const TestSuite_test_suite = {
                 assert(testSuite.hasErrors)
             })
     },
+    'should create a test with a default timeout': () => {
+        const testSuite = new TestSuite(testSuiteName, {
+            test: () => {},
+        })
+        assert(testSuite._tests[0].timeout === 2000)
+    },
 }
 
 module.exports = TestSuite_test_suite
