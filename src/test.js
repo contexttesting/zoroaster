@@ -9,7 +9,8 @@ const lib = require('./lib')
  * @return {Test} A test object with properties.
  */
 class Test {
-    constructor (name, fn) {
+    constructor (name, fn, timeout) {
+        this.timeout = timeout || 2000
         this.name = name
         this.fn = fn
         this.started = null
@@ -57,16 +58,22 @@ function dumpResult(test) {
  * @return {Promise} A promise to execute function.
  */
 function createTestPromise(fn) {
-    return Promise.resolve()
-        .then(() => fn())
+    return Promise
+        .resolve()
+        .then(fn)
 }
 
-function createTimeoutPromise(timeout) {
-    return new Promise((_, reject) => {
-        setTimeout(() =>
-            reject(new Error('Test has timed out')
-        ), timeout)
+function createTimeoutPromise(delay) {
+    let timeout
+    const promise = new Promise((_, reject) => {
+        timeout = setTimeout(() => {
+            const message = `Test has timed out after ${delay}ms`
+            const err = new Error(message)
+            err.stack = `Error: ${message}` // don't expose internals
+            reject(err)
+        }, delay)
     })
+    return { promise, timeout }
 }
 
 /**
@@ -78,12 +85,17 @@ function runTest(test) {
     test.started = new Date()
 
     const testPromise = createTestPromise(test.fn)
-    const timeoutPromise = createTimeoutPromise(2000)
+    const timeoutPromise = createTimeoutPromise(test.timeout)
 
     const runPromise = Promise.race([
         testPromise,
-        timeoutPromise,
+        timeoutPromise.promise,
     ])
+        .then((res) => {
+            // if promise has been resolved without timing out, clear created timeout
+            clearTimeout(timeoutPromise.timeout)
+            return res
+        })
 
     return runPromise
         .then(

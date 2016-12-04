@@ -176,15 +176,24 @@ examples/test/methods/side.js
 To watch files for changes, use `--watch` flag, e.g.,
 `zoroaster examples/test/Zoroaster_test --watch`.
 
+## Timeout
+The default timeout is `2000ms`. At the moment, only global timeout
+can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
+`ZOROASTER_TIMEOUT=5000 zoroaster test`
+
+## Timeout
+
 ## TODO
 1. JS API
-2. Timeouts
+2. Timeouts - specific for each test, blocked by `context` feature (10)
 3. Write tests which spawn child_process to test `bin/zoroaster` executable
 4. Add more reasons why to use _Zoroaster_ to readme
 5. Parallel execution with `--parallel` flag
 6. Only and Exclude
 7. Zoroaster for browsers and Karma
 8. Event listeners
+9. Progress stream
+10. Context object as an optional argument to test functions
 
 ## Copyright
 Copyright 2016 [Sobesednik Media](https://sobesednik.media)
