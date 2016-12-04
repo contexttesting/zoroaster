@@ -1,44 +1,44 @@
-'use strict';
+'use strict'
 const sayings = [
     'One repays a teacher badly if one always remains nothing but a pupil',
     'Turn yourself not away from three best things: Good Thought, Good Word, and Good Deed.',
     'A reflective, contented mind is the best possession.',
-];
+]
 
 class Zoroaster {
     constructor(name) {
-        this.name = typeof name === 'string' ? name : 'Zarathustra';
-        this.balance = 0;
+        this.name = typeof name === 'string' ? name : 'Zarathustra'
+        this.balance = 0
     }
     side(option) {
         switch(option) {
         case Zoroaster.AHURA_MAZDA:
-            this.balance++;
-            break;
+            this.balance++
+            break
         case Zoroaster.ANGRA_MAINYU:
-            this.balance--;
-            break;
+            this.balance--
+            break
         default:
-            throw new Error('Unknown side');
+            throw new Error('Unknown side')
         }
-        return true;
+        return true
     }
     say() {
-        const random = Math.floor(Math.random() * 3);
-        return sayings[random];
+        const random = Math.floor(Math.random() * 3)
+        return sayings[random]
     }
     createWorld() {
-        this.balance = 100;
+        this.balance = 100
     }
     destroyWorld() {
-        this.balance = 0;
+        this.balance = 0
     }
     checkParadise() {
-        return this.balance === 1000;
+        return this.balance === 1000
     }
 }
 
-Zoroaster.AHURA_MAZDA = 1;
-Zoroaster.ANGRA_MAINYU = 2;
+Zoroaster.AHURA_MAZDA = 1
+Zoroaster.ANGRA_MAINYU = 2
 
-module.exports = Zoroaster;
+module.exports = Zoroaster
