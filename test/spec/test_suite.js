@@ -52,7 +52,11 @@ const TestSuite_test_suite = {
         }
     },
     'should run a test suite': () => {
-        const testSuite = new TestSuite(testSuiteName, test_suite)
+        const testSuite = new TestSuite(testSuiteName, {
+            test: () => {},
+            test2: () => Promise.reject(),
+            test3: () => Promise.resolve(),
+        })
         return testSuite.run()
             .then(() => {
                 testSuite.tests.forEach((test) => {
