@@ -1,23 +1,18 @@
-/* eslint no-console: 0 */
+/**
+ * This file is needed to run tests on Windows from package.json.
+ */
+
 const cp = require('child_process')
 const path = require('path')
 
 const zoroaster = path.join(__dirname, 'bin', 'zoroaster')
 const spec = path.join(__dirname, 'test', 'spec')
 
-// watch
+const args = [spec]
+
 if (process.argv.find(argv => argv === '--watch')) {
-    cp.execFile('node', [zoroaster, spec, '--watch']).stdout.on('data', (d) =>  {
-        console.log(d.toString().trim())
-    })
-} else {
-    cp.execFile('node', [zoroaster, spec], (error, stdout, stderr) => {
-        console.log(stdout.trim())
-        console.log()
-        if (error) {
-            console.log(stderr)
-            console.error(error)
-            process.exit(1)
-        }
-    })
+    args.push('--watch')
 }
+
+const fork = cp.fork(zoroaster, args)
+fork.on('exit', process.exit)
