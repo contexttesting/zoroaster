@@ -47,7 +47,7 @@ function dumpResult(test) {
     if (test.error === null) {
         return '\x1b[32m \u2713 \x1b[0m ' + test.name
     } else {
-        return '\x1b[31m \u2717 \x1b[0m ' + test.name + '\n'
+        return '\x1b[31m \u2717 \x1b[0m ' + test.name + EOL
             + lib.indent(filterStack(test), ' | ')
     }
 }

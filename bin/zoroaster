@@ -36,9 +36,7 @@ function parseArgv(argv) {
         // file or directory does not exist
         // eslint-disable-next-line
         console.error(err)
-        return undefined
     }
-    return undefined
 }
 
 function resolveTestSuites(argv) {
@@ -65,6 +63,7 @@ function unwatchFiles(files) {
         fs.unwatchFile(file)
     })
 }
+
 /**
  * Remove modules cached by require.
  */
@@ -74,9 +73,15 @@ function clearRequireCache() {
     })
 }
 
+function requireTestSuite(ts) {
+    return ts.require()
+}
+
 function test(testSuites, watch, currentlyWatching) {
     clearRequireCache()
-    testSuites.forEach(ts => ts.require())
+    testSuites
+        .forEach(requireTestSuite)
+
     if (watch) {
         const cw = Array.isArray(currentlyWatching) ? currentlyWatching : []
         unwatchFiles(cw)

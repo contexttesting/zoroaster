@@ -2,6 +2,7 @@
 
 const lib = require('./lib')
 const Test = require('./test')
+const EOL = require('os').EOL
 
 const timeout = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
 
@@ -37,18 +38,15 @@ class TestSuite {
     get tests() {
         return this._tests
     }
+
+    // todo: require for test
     require() {
-        // console.log('require', this._path)
-        // console.log('path', this._path)
         if (this._path) {
             this._rawTests = requireModule(this._path)
             this._tests = createTests(this.rawTests, this)
         }
-        // console.log('tests', this.tests)
         this.tests.forEach((test) => {
-            // console.log(123, test)
             if (test instanceof TestSuite) {
-                // console.log('tests instanceof TestSuite')
                 test.require()
             }
         })
@@ -57,15 +55,16 @@ class TestSuite {
         return lib.runInSequence(this.tests)
     }
     dump() {
-        const str = this.name + '\n' + this.tests.map((test) => {
-            return test.dump()
-        }).join('\n')
+        const str = this.name + EOL + this.tests
+            .map(test => test.dump())
+            .join('\n')
         return this.parent ? lib.indent(str, '    ') : str
     }
     hasErrors() {
-        return this.tests.find((test) => {
-            return test.hasErrors()
-        })
+        return this.tests
+            .find(test =>
+                test.hasErrors()
+            )
     }
 }
 
