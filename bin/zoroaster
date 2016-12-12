@@ -6,6 +6,7 @@ const path = require('path')
 const EOL = require('os').EOL
 const TestSuite = require('../src/test_suite')
 const lib = require('../src/lib')
+const stream = require('../src/stream')
 
 function buildDirectory(dir) {
     const content = fs.readdirSync(dir)
@@ -36,9 +37,7 @@ function parseArgv(argv) {
         // file or directory does not exist
         // eslint-disable-next-line
         console.error(err)
-        return undefined
     }
-    return undefined
 }
 
 function resolveTestSuites(argv) {
@@ -65,6 +64,7 @@ function unwatchFiles(files) {
         fs.unwatchFile(file)
     })
 }
+
 /**
  * Remove modules cached by require.
  */
@@ -74,28 +74,64 @@ function clearRequireCache() {
     })
 }
 
+function requireTestSuite(ts) {
+    return ts.require()
+}
+
 function test(testSuites, watch, currentlyWatching) {
     clearRequireCache()
-    testSuites.forEach(ts => ts.require())
+    testSuites
+        .forEach(requireTestSuite)
+
     if (watch) {
         const cw = Array.isArray(currentlyWatching) ? currentlyWatching : []
         unwatchFiles(cw)
         const newCurrentlyWatching = Object.keys(require.cache)
         watchFiles(newCurrentlyWatching, () => test(testSuites, watch, newCurrentlyWatching))
     }
-    return lib.runInSequence(testSuites)
-        .then((testSuites) => {
-            const results = testSuites.map(ts => ts.dump()).join(EOL)
-            // eslint-disable-next-line no-console
-            console.log(new Date().toUTCString(), EOL, results)
-            const hasErrors = !testSuites.reduce((prev, ts) =>
-                prev && !ts.hasErrors()
-            , true)
-            if (hasErrors && !watch) {
-                process.exit(1)
-            } else {
-                // eslint-disable-next-line no-console
-                console.log() // add new line for readability
+
+    const testSuiteStackTS = stream.createTestSuiteStackStream()
+
+    const errorTS = stream.createErrorTransformStream()
+    const progressTS = stream.createProgressTransformStream()
+    testSuiteStackTS.pipe(progressTS).pipe(process.stdout)
+    testSuiteStackTS.pipe(errorTS)
+
+    const count = {
+        total: 0,
+        error: 0,
+    }
+
+    const notify = (data) => {
+        if (typeof data !== 'object') return
+        testSuiteStackTS.write(data)
+        if (data.type === 'test-end') {
+            count.total++
+            if (data.error) {
+                count.error++
+            }
+        }
+    }
+    return lib
+        .runInSequence(testSuites, notify)
+        .then(() => {
+            testSuiteStackTS.end()
+
+            process.stdout.write(EOL)
+            errorTS.pipe(process.stdout)
+
+            errorTS.on('end', () => {
+                process.stdout.write(`Executed ${count.total} tests`)
+                if (count.error) {
+                    process.stdout.write(
+                        `: ${count.error} error${count.error > 1 ? 's' : ''}`
+                    )
+                }
+                process.stdout.write(`.${EOL}${EOL}`)
+            })
+
+            if (count.error) {
+                process.on('exit', () => process.exit(1))
             }
         })
 }

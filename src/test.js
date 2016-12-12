@@ -19,8 +19,29 @@ class Test {
         this.result = null
     }
 
-    run() {
+    /**
+     * Run the test.
+     * @param {function} notify - notify function
+     */
+    run(notify) {
+        if (typeof notify === 'function') {
+            notify({
+                type:'test-start',
+                name: this.name
+            })
+        }
         return runTest(this)
+            .then((res) => {
+                if (typeof notify === 'function') {
+                    notify({
+                        type:'test-end',
+                        name: this.name,
+                        result: this.dump(),
+                        error: this.error,
+                    })
+                }
+                return res
+            })
     }
     dump() {
         return dumpResult(this)
@@ -47,7 +68,7 @@ function dumpResult(test) {
     if (test.error === null) {
         return '\x1b[32m \u2713 \x1b[0m ' + test.name
     } else {
-        return '\x1b[31m \u2717 \x1b[0m ' + test.name + '\n'
+        return '\x1b[31m \u2717 \x1b[0m ' + test.name + EOL
             + lib.indent(filterStack(test), ' | ')
     }
 }
@@ -63,15 +84,18 @@ function createTestPromise(fn) {
         .then(fn)
 }
 
-function createTimeoutPromise(delay) {
+function createTimeoutPromise(test) {
+    const delay = test.timeout
     let timeout
     const promise = new Promise((_, reject) => {
         timeout = setTimeout(() => {
+            // console.log('this is a tiemout for', test.name)
             const message = `Test has timed out after ${delay}ms`
             const err = new Error(message)
             err.stack = `Error: ${message}` // don't expose internals
             reject(err)
         }, delay)
+        // console.log('timeout set for',  test.name, timeout)
     })
     return { promise, timeout }
 }
@@ -85,13 +109,20 @@ function runTest(test) {
     test.started = new Date()
 
     const testPromise = createTestPromise(test.fn)
-    const timeoutPromise = createTimeoutPromise(test.timeout)
+    const timeoutPromise = createTimeoutPromise(test)
 
     const runPromise = Promise.race([
         testPromise,
         timeoutPromise.promise,
     ])
+        // ensure clear timeout is called
+        .catch((err) => {
+            clearTimeout(timeoutPromise.timeout)
+            throw err
+        })
         .then((res) => {
+            // console.log('timeout clear for', test.name, timeoutPromise.timeout)
+            // console.log('promise resolved, clear timeout', test.name)
             // if promise has been resolved without timing out, clear created timeout
             clearTimeout(timeoutPromise.timeout)
             return res
