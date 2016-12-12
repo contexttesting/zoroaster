@@ -51,8 +51,18 @@ class TestSuite {
             }
         })
     }
-    run() {
-        return lib.runInSequence(this.tests)
+
+    /**
+     * Run test suite.
+     */
+    run(notify) {
+        if (typeof notify === 'function') notify({type:'test-suite-start', name: this.name })
+        return lib
+            .runInSequence(this.tests, notify)
+            .then((res) => {
+                if (typeof notify === 'function') notify({type:'test-suite-end', name: this.name })
+                return res
+            })
     }
     dump() {
         const str = this.name + EOL + this.tests

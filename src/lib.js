@@ -1,7 +1,11 @@
-function runInSequence(tests) {
-    return tests.reduce((acc, t) =>
-        acc.then(() => t.run())
-    , Promise.resolve())
+/**
+ * Run all tests in sequence, one by one.
+ */
+function runInSequence(tests, notify) {
+    return tests
+        .reduce((acc, t) =>
+            acc.then(() => t.run(notify))
+        , Promise.resolve())
         .then(() => tests)
 }
 

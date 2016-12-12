@@ -19,8 +19,29 @@ class Test {
         this.result = null
     }
 
-    run() {
+    /**
+     * Run the test.
+     * @param {function} notify - notify function
+     */
+    run(notify) {
+        if (typeof notify === 'function') {
+            notify({
+                type:'test-start',
+                name: this.name
+            })
+        }
         return runTest(this)
+            .then((res) => {
+                if (typeof notify === 'function') {
+                    notify({
+                        type:'test-end',
+                        name: this.name,
+                        result: this.dump(),
+                        error: this.error,
+                    })
+                }
+                return res
+            })
     }
     dump() {
         return dumpResult(this)
