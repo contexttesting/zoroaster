@@ -9,7 +9,14 @@ function indent(str, padding) {
     return str.replace(/^(?!\s*$)/mg, padding)
 }
 
+function getPadding(level) {
+    return Array
+        .from({ length: level * 2 })
+        .join(' ')
+}
+
 module.exports = {
     runInSequence,
     indent,
+    getPadding,
 }
