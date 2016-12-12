@@ -80,15 +80,22 @@ class TestSuite {
 
 /**
  * Sort tests and test suites so that tests run before
- * test suites.
+ * test suites. We delibarately don't use V8's unstable
+ * Array.sort().
+ * @param {Array} tests - test cases and test suites to sort
+ * @returns {Array} Sorted array with tests before test suites.
  */
-function sortTests(a, b) {
-    if (a instanceof Test && b instanceof TestSuite) {
-        return -1
-    } else if (a instanceof TestSuite && b instanceof Test) {
-        return 1
-    }
-    return 0
+function sort(tests) {
+    const testSuites = []
+    const testCases = []
+    tests.forEach((test) => {
+        if (test instanceof Test) {
+            testCases.push(test)
+        } else {
+            testSuites.push(test)
+        }
+    })
+    return Array.prototype.concat([], testCases, testSuites)
 }
 
 /**
@@ -98,7 +105,7 @@ function sortTests(a, b) {
  * @return {array<Test>} An array with tests.
  */
 function createTests(object, parent) {
-    return Object
+    const tests = Object
         .keys(object)
         .map((key) => {
             switch (typeof object[key]) {
@@ -111,7 +118,7 @@ function createTests(object, parent) {
             }
         })
         .filter(test => test !== undefined)
-        .sort(sortTests)
+    return sort(tests)
 }
 
 function requireModule(modulePath) {
