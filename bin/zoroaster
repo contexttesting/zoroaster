@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict'
 
 const fs = require('fs')
 const path = require('path')
@@ -97,6 +96,11 @@ function test(testSuites, watch, currentlyWatching) {
     testSuiteStackTS.pipe(progressTS).pipe(process.stdout)
     testSuiteStackTS.pipe(errorTS)
 
+    const errorsDrain = [];
+    errorTS.on('data', (data) => {
+        errorsDrain.push(data)
+    })
+
     const count = {
         total: 0,
         error: 0,
@@ -114,21 +118,25 @@ function test(testSuites, watch, currentlyWatching) {
     }
     return lib
         .runInSequence(testSuites, notify)
-        .then(() => {
-            testSuiteStackTS.end()
-
-            process.stdout.write(EOL)
-            errorTS.pipe(process.stdout)
-
-            errorTS.on('end', () => {
-                process.stdout.write(`Executed ${count.total} tests`)
-                if (count.error) {
-                    process.stdout.write(
-                        `: ${count.error} error${count.error > 1 ? 's' : ''}`
-                    )
-                }
-                process.stdout.write(`.${EOL}${EOL}`)
+        .then(() =>
+            new Promise((resolve) => {
+                testSuiteStackTS.end()
+                errorTS.on('end', () => {
+                    resolve()
+                })
             })
+        )
+        .then(() => {
+            process.stdout.write(EOL)
+            process.stdout.write(errorsDrain.join(''))
+
+            process.stdout.write(`Executed ${count.total} tests`)
+            if (count.error) {
+                process.stdout.write(
+                    `: ${count.error} error${count.error > 1 ? 's' : ''}`
+                )
+            }
+            process.stdout.write(`.${EOL}${EOL}`)
 
             if (count.error) {
                 process.on('exit', () => process.exit(1))
