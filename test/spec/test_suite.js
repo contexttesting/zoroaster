@@ -41,14 +41,14 @@ const TestSuite_test_suite = {
         },
     },
     'should throw an error when test suite could not be required': () => {
-        const tsPath = 'noope-path'
+        const tsPath = 'noop-path'
         const testSuite = new TestSuite(testSuiteName, tsPath)
         assert(testSuite.path === tsPath)
         try {
             testSuite.require()
             throw new Error('Cannot find module error should have been thrown')
         } catch (err) {
-            assert(err.message === 'Cannot find module \'noope-path\'')
+            assert(err.message === 'Cannot find module \'noop-path\'')
         }
     },
     'should run a test suite': () => {

@@ -96,7 +96,7 @@ function test(testSuites, watch, currentlyWatching) {
     testSuiteStackTS.pipe(progressTS).pipe(process.stdout)
     testSuiteStackTS.pipe(errorTS)
 
-    const errorsDrain = [];
+    const errorsDrain = []
     errorTS.on('data', (data) => {
         errorsDrain.push(data)
     })

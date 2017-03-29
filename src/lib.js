@@ -19,8 +19,25 @@ function getPadding(level) {
         .join(' ')
 }
 
+function checkContext(context) {
+    if (context !== undefined && (typeof context).toLowerCase() !== 'object') {
+        throw new Error('Context must be an object.')
+    }
+    if (context === null) {
+        throw new Error('Context cannot be null.')
+    }
+}
+
+function checkTestSuiteName(name) {
+    if (typeof name !== 'string') {
+        throw new Error('Test suite name must be given.')
+    }
+}
+
 module.exports = {
     runInSequence,
     indent,
     getPadding,
+    checkContext,
+    checkTestSuiteName,
 }

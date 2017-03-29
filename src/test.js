@@ -9,7 +9,7 @@ const lib = require('./lib')
  * @return {Test} A test object with properties.
  */
 class Test {
-    constructor (name, fn, timeout) {
+    constructor (name, fn, timeout, context) {
         this.timeout = timeout || 2000
         this.name = name
         this.fn = fn
@@ -17,6 +17,11 @@ class Test {
         this.finished = null
         this.error = null
         this.result = null
+
+        lib.checkContext(context)
+        if (context) {
+            this._context = Object.freeze(context)
+        }
     }
 
     /**
@@ -49,6 +54,9 @@ class Test {
     hasErrors() {
         return this.error !== null
     }
+    get context() {
+        return this._context
+    }
 }
 
 function filterStack(test) {
@@ -76,12 +84,13 @@ function dumpResult(test) {
 /**
  * Create a promise for a test function.
  * @param {function} fn - function to execute
+ * @param {object} ctx - first argument to pass to the function
  * @return {Promise} A promise to execute function.
  */
-function createTestPromise(fn) {
+function createTestPromise(fn, ctx) {
     return Promise
         .resolve()
-        .then(fn)
+        .then(() => fn(ctx))
 }
 
 function createTimeoutPromise(test) {
@@ -89,13 +98,11 @@ function createTimeoutPromise(test) {
     let timeout
     const promise = new Promise((_, reject) => {
         timeout = setTimeout(() => {
-            // console.log('this is a tiemout for', test.name)
             const message = `Test has timed out after ${delay}ms`
             const err = new Error(message)
             err.stack = `Error: ${message}` // don't expose internals
             reject(err)
         }, delay)
-        // console.log('timeout set for',  test.name, timeout)
     })
     return { promise, timeout }
 }
@@ -108,7 +115,7 @@ function createTimeoutPromise(test) {
 function runTest(test) {
     test.started = new Date()
 
-    const testPromise = createTestPromise(test.fn)
+    const testPromise = createTestPromise(test.fn, test.context)
     const timeoutPromise = createTimeoutPromise(test)
 
     const runPromise = Promise.race([

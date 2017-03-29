@@ -6,13 +6,23 @@ const EOL = require('os').EOL
 
 const timeout = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
 
+function hasParent(testSuite) {
+    return testSuite.parent instanceof TestSuite
+}
+
 class TestSuite {
-    constructor (name, testsOrPath, parent) {
-        if (typeof name !== 'string') {
-            throw new Error('Test suite name must be given.')
-        }
+    constructor (name, testsOrPath, parent, context) {
+        lib.checkTestSuiteName(name)
+        lib.checkContext(context)
+
         this._name = name
         this._parent = parent
+
+        if (context) {
+            this._context = Object.freeze(context)
+        } else if (hasParent(this)) {
+            this._context = parent.context
+        }
 
         if (typeof testsOrPath === 'string') {
             this._path = testsOrPath
@@ -38,6 +48,9 @@ class TestSuite {
     get tests() {
         return this._tests
     }
+    get context() {
+        return this._context
+    }
 
     // todo: require for test
     require() {
@@ -56,7 +69,12 @@ class TestSuite {
      * Run test suite.
      */
     run(notify) {
-        if (typeof notify === 'function') notify({type:'test-suite-start', name: this.name })
+        if (typeof notify === 'function') {
+            notify({
+                type:'test-suite-start',
+                name: this.name,
+            })
+        }
         return lib
             .runInSequence(this.tests, notify)
             .then((res) => {
@@ -101,7 +119,8 @@ function sort(tests) {
 /**
  * Map object with test names as keys and test functions as values
  * to an array of tests.
- * @param {object} object
+ * @param {object} object - a raw tests map as found in test files
+ * @param {TestSuite} parent - parent test suite
  * @return {array<Test>} An array with tests.
  */
 function createTests(object, parent) {
@@ -110,7 +129,7 @@ function createTests(object, parent) {
         .map((key) => {
             switch (typeof object[key]) {
             case 'function':
-                return new Test(key, object[key], timeout)
+                return new Test(key, object[key], timeout, parent.context)
             case 'object':
                 return new TestSuite(key, object[key], parent)
             case 'string':
