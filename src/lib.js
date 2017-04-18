@@ -1,3 +1,7 @@
+const cleanStack = require('clean-stack')
+
+const EOL = require('os').EOL
+
 /**
  * Run all tests in sequence, one by one.
  */
@@ -34,10 +38,29 @@ function checkTestSuiteName(name) {
     }
 }
 
+/**
+ * Get clean stack for a test, without Node internals
+ * @param {Test} test - test
+ */
+function filterStack(test) {
+    if (!test.error) {
+        throw new Error('cannot filter stack when a test does not have an error')
+    }
+    const splitStack = test.error.stack.split('\n') // break stack by \n and not EOL intentionally because Node uses \n
+    // node 4 will print: at test_suite.test2
+    // node 6 will print: at test2
+    const regex = new RegExp(`at (.+\.)?${test.name}`)
+    const resIndex = splitStack.findIndex(element => regex.test(element)) + 1
+    const joinedStack = splitStack.slice(0, resIndex).join('\n')
+    const stack = joinedStack ? joinedStack : cleanStack(test.error.stack) // use clean stack for async errors
+    return stack.replace(/\n/g, EOL)
+}
+
 module.exports = {
     runInSequence,
     indent,
     getPadding,
     checkContext,
     checkTestSuiteName,
+    filterStack,
 }

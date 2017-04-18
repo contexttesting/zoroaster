@@ -13,7 +13,6 @@ const test_suite = {
             reject(new Error('Error from Promise constructor'))
         , 100)
     }),
-    test7: () => new Promise((resolve) => {}),
 }
 
 module.exports = test_suite

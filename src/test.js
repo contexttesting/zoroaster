@@ -1,7 +1,6 @@
 'use strict'
 
 const EOL = require('os').EOL
-const cleanStack = require('clean-stack')
 const lib = require('./lib')
 
 /**
@@ -39,6 +38,7 @@ class Test {
             .then((res) => {
                 if (typeof notify === 'function') {
                     notify({
+                        test: this,
                         type:'test-end',
                         name: this.name,
                         result: this.dump(),
@@ -59,25 +59,12 @@ class Test {
     }
 }
 
-function filterStack(test) {
-    if (!test.error) {
-        throw new Error('cannot filter stack when a test does not have an error')
-    }
-    const stack_split = test.error.stack.split(EOL)
-    const test_name_regex = new RegExp(`at ${test.name}`)
-    const res_index = stack_split.findIndex((element) => {
-        return test_name_regex.test(element)
-    }) + 1
-    const stack_joined = stack_split.slice(0, res_index).join(EOL)
-    return stack_joined ? stack_joined : cleanStack(test.error.stack)
-}
-
 function dumpResult(test) {
     if (test.error === null) {
         return '\x1b[32m \u2713 \x1b[0m ' + test.name
     } else {
         return '\x1b[31m \u2717 \x1b[0m ' + test.name + EOL
-            + lib.indent(filterStack(test), ' | ')
+            + lib.indent(lib.filterStack(test), ' | ')
     }
 }
 

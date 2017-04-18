@@ -24,5 +24,10 @@
   "dependencies": {
     "catchment": "1.0.0",
     "clean-stack": "1.0.0"
+  },
+  "devDependencies": {
+    "colors": "1.1.2",
+    "diff": "3.2.0",
+    "spawncommand": "1.1.0"
   }
 }
