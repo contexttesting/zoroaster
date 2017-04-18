@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Sobesednik/zoroaster#readme",
   "dependencies": {
+    "catchment": "1.0.0",
     "clean-stack": "1.0.0"
   }
 }
