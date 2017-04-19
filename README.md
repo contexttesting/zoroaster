@@ -181,8 +181,6 @@ The default timeout is `2000ms`. At the moment, only global timeout
 can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 `ZOROASTER_TIMEOUT=5000 zoroaster test`
 
-## Timeout
-
 ## TODO
 1. JS API
 2. Timeouts - specific for each test, blocked by `context` feature (10)
@@ -194,6 +192,7 @@ can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 8. Event listeners
 9. Progress stream
 10. Context object as an optional argument to test functions
+11. Catch global errors
 
 ## Copyright
-Copyright 2016 [Sobesednik Media](https://sobesednik.media)
+Copyright 2017 [Sobesednik Media](https://sobesednik.media)

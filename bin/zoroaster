@@ -2,6 +2,8 @@
 
 const fs = require('fs')
 const path = require('path')
+const Catchment = require('catchment')
+
 const EOL = require('os').EOL
 const TestSuite = require('../src/test_suite')
 const lib = require('../src/lib')
@@ -96,10 +98,8 @@ function test(testSuites, watch, currentlyWatching) {
     testSuiteStackTS.pipe(progressTS).pipe(process.stdout)
     testSuiteStackTS.pipe(errorTS)
 
-    const errorsDrain = []
-    errorTS.on('data', (data) => {
-        errorsDrain.push(data)
-    })
+    const catchment = new Catchment()
+    errorTS.pipe(catchment)
 
     const count = {
         total: 0,
@@ -118,17 +118,11 @@ function test(testSuites, watch, currentlyWatching) {
     }
     return lib
         .runInSequence(testSuites, notify)
-        .then(() =>
-            new Promise((resolve) => {
-                testSuiteStackTS.end()
-                errorTS.on('end', () => {
-                    resolve()
-                })
-            })
-        )
-        .then(() => {
+        .then(() => testSuiteStackTS.end())
+        .then(() => catchment.promise)
+        .then((errorsCatchment) => {
             process.stdout.write(EOL)
-            process.stdout.write(errorsDrain.join(''))
+            process.stdout.write(errorsCatchment)
 
             process.stdout.write(`Executed ${count.total} tests`)
             if (count.error) {

@@ -82,7 +82,7 @@ function createErrorTransformStream() {
         ts.push(` > ${data.name}`)
         ts.push('\x1b[0m')
         ts.push(EOL)
-        ts.push(lib.indent(data.error.stack, '  '))
+        ts.push(lib.indent(lib.filterStack(data.test), '  '))
         ts.push(EOL)
         ts.push(EOL)
         callback()
