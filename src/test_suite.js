@@ -27,8 +27,7 @@ class TestSuite {
         if (typeof testsOrPath === 'string') {
             this._path = testsOrPath
         } else if (typeof testsOrPath === 'object') {
-            this._rawTests = testsOrPath
-            this._tests = createTests(this.rawTests, this)
+            this._assignTests(testsOrPath)
         } else {
             throw new Error('You must provide either a path to a module, or tests in an object.')
         }
@@ -52,11 +51,23 @@ class TestSuite {
         return this._context
     }
 
-    // todo: require for test
+    _assignTests(tests) {
+        if ('context' in tests) {
+            lib.checkContext(tests.context)
+            this._context = Object.assign({}, this._context || {}, tests.context)
+        }
+        this._rawTests = tests
+        this._tests = createTests(tests, this)
+    }
+
+    /**
+     * Recursively require files for a test suite.
+     * @todo require for a single test
+     */
     require() {
         if (this._path) {
-            this._rawTests = requireModule(this._path)
-            this._tests = createTests(this.rawTests, this)
+            const tests = requireModule(this._path)
+            this._assignTests(tests)
         }
         this.tests.forEach((test) => {
             if (test instanceof TestSuite) {
@@ -78,7 +89,9 @@ class TestSuite {
         return lib
             .runInSequence(this.tests, notify)
             .then((res) => {
-                if (typeof notify === 'function') notify({type:'test-suite-end', name: this.name })
+                if (typeof notify === 'function') {
+                    notify({ type:'test-suite-end', name: this.name })
+                }
                 return res
             })
     }
@@ -116,16 +129,21 @@ function sort(tests) {
     return Array.prototype.concat([], testCases, testSuites)
 }
 
+function filterContextKey(key) {
+    return key !== 'context'
+}
+
 /**
  * Map object with test names as keys and test functions as values
  * to an array of tests.
  * @param {object} object - a raw tests map as found in test files
  * @param {TestSuite} parent - parent test suite
- * @return {array<Test>} An array with tests.
+ * @return {Array<Test>} An array with tests.
  */
 function createTests(object, parent) {
     const tests = Object
         .keys(object)
+        .filter(filterContextKey)
         .map((key) => {
             switch (typeof object[key]) {
             case 'function':
