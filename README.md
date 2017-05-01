@@ -1,4 +1,5 @@
 # Zoroaster
+
 [![npm version](https://badge.fury.io/js/zoroaster.svg)](https://badge.fury.io/js/zoroaster)
 [![Build Status](https://travis-ci.org/Sobesednik/zoroaster.svg?branch=master)](https://travis-ci.org/Sobesednik/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
@@ -21,7 +22,9 @@ write pure functions in your test file, and call them from tests.
 - Have more control by passing paths to your test files as properties (see example below).
 
 ## Input
+
 To specify files to test, create a module which exports an object:
+
 ```js
 // examples/test/Zoroaster_test.js
 
@@ -30,7 +33,6 @@ const path = require('path')
 const Zoroaster = require('../src/Zoroaster')
 
 const Zoroaster_test_suite = {
-
     // standard test function
     'should have static variables': () => {
         assert(Zoroaster.AHURA_MAZDA)
@@ -59,8 +61,7 @@ const Zoroaster_test_suite = {
         },
     },
 
-    methods: {
-
+    methods:
         // pass a test suite as a path to the file
         side: path.join(__dirname, 'methods', 'side'),
         say: path.join(__dirname, 'methods', 'say'),
@@ -118,65 +119,110 @@ const Zoroaster_test_suite = {
 module.exports = Zoroaster_test_suite
 ```
 
-To run the test file, execute `zoroaster examples/test/Zoroaster_test`. Each test case will be
+To run a test file, execute `zoroaster examples/test/Zoroaster_test.js`. Each test case will be
 transformed into a promise, and altogether they will be run in a sequence.
 
 ```bash
-Sat, 22 Oct 2016 00:51:42 GMT
-examples/test/Zoroaster_test.js
- ✓  should have static variables
- ✓  should decrease and increase balance asynchronously
-    constructor
-     ✓  should create a new Zoroaster instance with default name
-     ✓  should create a new Zoroaster instance with a name
-     ✓  should have balance of 0 when initialised
-    methods
-     ✓  createWorld
-     ✓  destroyWorld
-        side
-         ✓  should increase balance when doing good deed
-         ✓  should decrease balance when doing bad deed
-         ✓  should throw an error when choosing an unknown side
-        say
-         ✓  should say a sentence
-        checkParadise
-         ✓  should return true when balance of 1000 met
-         ✓  should return false when balance is less than 1000
+ examples/test/Zoroaster_test.js
+  ✓  should have static variables
+  ✓  should decrease and increase balance asynchronously
+   constructor
+    ✓  should create a new Zoroaster instance with default name
+    ✓  should create a new Zoroaster instance with a name
+    ✓  should have balance of 0 when initialised
+   methods
+    ✓  createWorld
+    ✓  destroyWorld
+     side
+      ✓  should increase balance when doing good deed
+      ✓  should decrease balance when doing bad deed
+      ✓  should throw an error when choosing an unknown side
+     say
+      ✓  should say a sentence
+     checkParadise
+      ✓  should return true when balance of 1000 met
+      ✓  should return false when balance is less than 1000
+
+Executed 13 tests.
 ```
 
-## Recursive Resolve
+## Context
+
+Version 0.4 introduces context. Add `context` property to a test suite, and access it from a test
+function's first argument:
+
+```js
+const testSuite = {
+    context: {
+        name: 'Zarathustra',
+        getCountry: () => 'Iran',
+    },
+    countryOfOrigin: (ctx) => {
+        const zoroaster = new Zoroaster()
+        assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
+    },
+    innerMeta: {
+        // inner context extends outer one
+        context: {
+            born: -628,
+        },
+        dateOfBirth: (ctx) => {
+            const zoroaster = new Zoroaster()
+            assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
+            assert.equal(zoroaster.dateOfBirth, ctx.born)
+        },
+    },
+}
+```
+
+Test suite context cannot be updated from within tests. In future, this will allow to set timeouts
+as well as `before`, `beforeEach`, `after` and `afterEach` hooks.
+
+## CLI
+
+This section describes how to use `zoroaster` from command-line interface.
+
+### Recursive Resolve
 Pass a folder as an argument to test it recursively. All test paths will be resolved.
-`zoroaster examples/test/methods`
+
+`zoroaster examples/test/methods.js`
+
 ```bash
-Sat, 22 Oct 2016 00:34:17 GMT
-examples/test/methods
-    say.js
-     ✓  should say a sentence
-    side.js
-     ✓  should increase balance when doing good deed
-     ✓  should decrease balance when doing bad deed
-     ✓  should throw an error when choosing an unknown side
+ examples/test/methods
+   say.js
+    ✓  should say a sentence
+   side.js
+    ✓  should increase balance when doing good deed
+    ✓  should decrease balance when doing bad deed
+    ✓  should throw an error when choosing an unknown side
+
+Executed 4 tests.
 ```
 
-## Multiple files
-Of course, you can test multiple files at once.
+### Multiple files
+You can test multiple files at once.
+
 `zoroaster examples/test/methods/say.js examples/test/methods/side.js`
 
 ```bash
-Sat, 22 Oct 2016 01:19:53 GMT
-examples/test/methods/say.js
- ✓  should say a sentence
-examples/test/methods/side.js
- ✓  should increase balance when doing good deed
- ✓  should decrease balance when doing bad deed
- ✓  should throw an error when choosing an unknown side
+ examples/test/methods/say.js
+  ✓  should say a sentence
+ examples/test/methods/side.js
+  ✓  should increase balance when doing good deed
+  ✓  should decrease balance when doing bad deed
+  ✓  should throw an error when choosing an unknown side
+
+Executed 4 tests.
 ```
 
-## Watch
-To watch files for changes, use `--watch` flag, e.g.,
-`zoroaster examples/test/Zoroaster_test --watch`.
+### Watch
 
-## Timeout
+To watch files for changes, use `--watch` flag, e.g.,
+
+`zoroaster examples/test/Zoroaster_test.js --watch`.
+
+### Timeout
+
 The default timeout is `2000ms`. At the moment, only global timeout
 can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 `ZOROASTER_TIMEOUT=5000 zoroaster test`
@@ -190,9 +236,10 @@ can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 6. Only and Exclude
 7. Zoroaster for browsers and Karma
 8. Event listeners
-9. Progress stream
-10. Context object as an optional argument to test functions
-11. Catch global errors
+9. ~~Progress stream~~
+10. ~~Context object as an optional argument to test functions~~
+11. Pass path to a context file in CLI
+12. Catch global errors
 
 ## Copyright
 Copyright 2017 [Sobesednik Media](https://sobesednik.media)

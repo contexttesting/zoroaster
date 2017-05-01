@@ -10,10 +10,27 @@ const testFn = () => {}
 function createContext() {
     return {
         name: 'Zarathustra',
-        getCountry: () => 'Iran',
+        country: 'Iran',
         born: -628,
         died: -551,
     }
+}
+function getExistingContext() {
+    return {
+        phenomena: ['act', 'speech', 'thought'],
+        Činvat: 'Bridge of the Requiter',
+        humans: () => 'Responsibility for fate',
+    }
+}
+
+function assertNoErrosInTestSuite(testSuite) {
+    testSuite.tests.forEach((test) => {
+        if (test instanceof Test) {
+            assert.equal(test.error, null)
+        } else if (test instanceof TestSuite) {
+            assertNoErrosInTestSuite(test)
+        }
+    })
 }
 
 const TestSuiteContext = {
@@ -108,12 +125,8 @@ const TestSuiteContextFromTests = {
         assert.equal(testSuite.tests[0].fn, test)
     },
     'should extend current context': () => {
+        const existingContext = getExistingContext()
         const context = createContext()
-        const existingContext = {
-            phenomena: ['act', 'speech', 'thought'],
-            Činvat: 'Bridge of the Requiter',
-            humans: () => 'Responsibility for fate',
-        }
         const testSuite = new TestSuite(testSuiteName, {
             context,
             test: () => {},
@@ -123,17 +136,36 @@ const TestSuiteContextFromTests = {
     },
     'should pass supplied context to tests': () => {
         const context = createContext()
+        const existingContext = getExistingContext()
+        const totalContext = Object.assign({}, existingContext, context)
         const testSuite = new TestSuite(testSuiteName, {
             context,
             test: (ctx) => {
                 assert.deepEqual(ctx, context)
             },
+            innerTestSuite: {
+                context: existingContext,
+                test: (ctx) => {
+                    assert.deepEqual(ctx, totalContext)
+                }
+            }
         })
         return testSuite.run()
             .then(() => {
-                testSuite.tests.forEach((test) => {
-                    assert.equal(test.error, null)
-                })
+                assertNoErrosInTestSuite(testSuite)
+            })
+    },
+    'should not be able to update context from tests': () => {
+        const context = createContext()
+        const testSuite = new TestSuite(testSuiteName, {
+            context,
+            test: (ctx) => {
+                ctx.born = 0
+            },
+        })
+        return testSuite.run()
+            .then(() => {
+                assert.deepEqual(context, createContext())
             })
     },
 }

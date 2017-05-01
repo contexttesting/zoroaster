@@ -36,6 +36,12 @@ class Zoroaster {
     checkParadise() {
         return this.balance === 1000
     }
+    get countryOfOrigin() {
+        return 'Iran'
+    }
+    get dateOfBirth() {
+        return -628
+    }
 }
 
 Zoroaster.AHURA_MAZDA = 1
