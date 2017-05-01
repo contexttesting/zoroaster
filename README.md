@@ -6,9 +6,9 @@
 
 A minimal JavaScript testing framework for Node.js.
 
-[![](https://files.sobesednik.media/movflamecolumn.gif)](https://zoroaster.co.uk)
-[![](https://files.sobesednik.media/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
-[![](https://files.sobesednik.media/movflamecolumn.gif)](https://sobesednik.media)
+[![](https://sobes.s3.eu-west-2.amazonaws.com/movflamecolumn.gif)](https://zoroaster.co.uk)
+[![](https://sobes.s3.eu-west-2.amazonaws.com/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
+[![](https://sobes.s3.eu-west-2.amazonaws.com/movflamecolumn.gif)](https://sobesednik.media)
 
 Tired of using `Mocha` and `Chai` as paradigms for JS testing? Want something new and simpler?
 Try Zoroaster today!
