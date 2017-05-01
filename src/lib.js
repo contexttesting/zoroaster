@@ -4,6 +4,8 @@ const EOL = require('os').EOL
 
 /**
  * Run all tests in sequence, one by one.
+ * @param {Array<Test>} tests An array with tests
+ * @param {function} [notify] A notify function to be passed to run method
  */
 function runInSequence(tests, notify) {
     return tests

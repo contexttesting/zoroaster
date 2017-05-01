@@ -1,8 +1,11 @@
 const errorMessage = 'When you are in doubt abstain.'
 
-const test_suite = {
+const testSuite = {
+    context: {
+        errorMessage,
+    },
     test1: () => {},
-    test2: () => { throw new Error(errorMessage)},
+    test2: (ctx) => { throw new Error(ctx.errorMessage) },
     test3: () => Promise.resolve(),
     test4: () => 'test result',
     test5: () => new Promise(resolve => {
@@ -15,4 +18,4 @@ const test_suite = {
     }),
 }
 
-module.exports = test_suite
+module.exports = testSuite

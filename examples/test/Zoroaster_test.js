@@ -3,7 +3,6 @@ const path = require('path')
 const Zoroaster = require('../src/Zoroaster')
 
 const Zoroaster_test_suite = {
-
     // standard test function
     'should have static variables': () => {
         assert(Zoroaster.AHURA_MAZDA)
@@ -33,7 +32,6 @@ const Zoroaster_test_suite = {
     },
 
     methods: {
-
         // pass a test suite as a path to the file
         side: path.join(__dirname, 'methods', 'side'),
         say: path.join(__dirname, 'methods', 'say'),
@@ -85,6 +83,27 @@ const Zoroaster_test_suite = {
             .then(() => {
                 assert(zoroaster.balance === 0)
             })
+    },
+    meta: {
+        context: {
+            name: 'Zarathustra',
+            getCountry: () => 'Iran',
+        },
+        countryOfOrigin: (ctx) => {
+            const zoroaster = new Zoroaster()
+            assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
+        },
+        innerMeta: {
+            // inner context extends outer one
+            context: {
+                born: -628,
+            },
+            dateOfBirth: (ctx) => {
+                const zoroaster = new Zoroaster()
+                assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
+                assert.equal(zoroaster.dateOfBirth, ctx.born)
+            },
+        },
     },
 }
 
