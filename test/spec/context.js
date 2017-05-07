@@ -2,6 +2,7 @@ const assert = require('assert')
 const path = require('path')
 const TestSuite = require('../../src/test_suite')
 const Test = require('../../src/test')
+const assertNoErrosInTestSuite = require('../lib').assertNoErrosInTestSuite;
 
 const testSuiteName = 'Zoroaster Context Test Suite'
 const testName = 'Zoroaster Context Test'
@@ -23,16 +24,6 @@ function getExistingContext() {
     }
 }
 
-function assertNoErrosInTestSuite(testSuite) {
-    testSuite.tests.forEach((test) => {
-        if (test instanceof Test) {
-            assert.equal(test.error, null)
-        } else if (test instanceof TestSuite) {
-            assertNoErrosInTestSuite(test)
-        }
-    })
-}
-
 const TestSuiteContext = {
     'should throw an error when context passed is not an object': () => {
         assert.throws(
@@ -46,12 +37,13 @@ const TestSuiteContext = {
             /Context cannot be null./
         )
     },
-    'should create a test suite with a context': () => {
+    'should create a test suite with a cloned context': () => {
         const context = createContext()
         const testSuite = new TestSuite(testSuiteName, {}, null, context)
-        assert.equal(testSuite.context, context)
+        assert.notStrictEqual(testSuite.context, context)
+        assert.deepEqual(testSuite.context, context)
     },
-    'should freeze passed context': () => {
+    'should freeze context after creation': () => {
         const context = createContext()
         const testSuite = new TestSuite(testSuiteName, {}, null, context)
         assert(Object.isFrozen(testSuite.context))
@@ -65,8 +57,9 @@ const TestSuiteContext = {
         }, null, context)
         return testSuite.run()
             .then(() => {
-                testSuite.tests.forEach((test) => {
-                    assert.equal(test.context, context)
+                testSuite.tests.forEach((childTestSuite) => {
+                    assert(childTestSuite instanceof TestSuite)
+                    assert.equal(childTestSuite.context, testSuite.context)
                 })
             })
     },
@@ -78,7 +71,7 @@ const TestSuiteContext = {
         return testSuite.run()
             .then(() => {
                 testSuite.tests.forEach((test) => {
-                    assert.equal(test.context, context)
+                    assert.equal(test.context, testSuite.context)
                 })
             })
     },
@@ -103,11 +96,12 @@ const TestSuiteContextFromTests = {
             context,
             test: () => {},
         })
-        assert.notEqual(testSuite.context, context)
+        assert.notStrictEqual(testSuite.context, context)
         assert.deepEqual(testSuite.context, context)
     },
     'should freeze supplied context': () => {
         const context = createContext()
+        assert(!Object.isFrozen(context))
         const testSuite = new TestSuite(testSuiteName, {
             context,
             test: () => {},
@@ -186,13 +180,7 @@ const TestContext = {
     'should create a test with a context': () => {
         const context = createContext()
         const test = new Test(testName, testFn, null, context)
-        assert.equal(test.context, context)
-    },
-    'should freeze passed context': () => {
-        const context = createContext()
-        const test = new Test(testName, testFn, null, context)
-        assert.equal(test.context, context)
-        assert(Object.isFrozen(test.context))
+        assert.strictEqual(test.context, context)
     },
     'should pass context as first argument to function': () => {
         const context = createContext()
@@ -207,8 +195,94 @@ const TestContext = {
     },
 }
 
+const TestEvaluateContextFunction = {
+    'not-function': {
+        'should keep the context as is': () => {
+            const context = createContext()
+            const test = new Test(testName, testFn, null, context)
+            assert.strictEqual(test.context, context)
+            return test._evaluateContext()
+                .then(() => {
+                    assert.strictEqual(test.context, context)
+                })
+        },
+        'should resolve with context object': () => {
+            const context = createContext()
+            const test = new Test(testName, testFn, null, context)
+            assert.strictEqual(test.context, context)
+            return test._evaluateContext()
+                .then((res) => {
+                    assert.strictEqual(test.context, res)
+                    assert.strictEqual(res, context)
+                })
+        },
+    },
+    'function-async': {
+        'should update context after resolving context function': () => {
+            const contextFn = function Context() {
+                return new Promise(resolve => setTimeout(resolve, 50))
+                    .then(() =>
+                        Object.assign(this, createContext())
+                    )
+            }
+            const test = new Test(testName, testFn, null, contextFn)
+            assert.strictEqual(test.context, contextFn)
+            return test._evaluateContext()
+                .then(() => {
+                    assert.notStrictEqual(test.context, contextFn)
+                    assert.deepEqual(test.context, createContext())
+                })
+        },
+        'should resolve with context object': () => {
+            const contextFn = function Context() {
+                return new Promise(resolve => setTimeout(resolve, 50))
+                    .then(() =>
+                        Object.assign(this, createContext())
+                    )
+            }
+            const test = new Test(testName, testFn, null, contextFn)
+            assert.strictEqual(test.context, contextFn)
+            return test._evaluateContext()
+                .then((res) => {
+                    assert.strictEqual(test.context, res)
+                    assert.notStrictEqual(res, contextFn)
+                    assert.deepEqual(res, createContext())
+                })
+        },
+    },
+    'func-sync': {
+        'should update context after evaluting context function': () => {
+            const contextFn = function Context() {
+                Object.assign(this, createContext())
+            }
+            const test = new Test(testName, testFn, null, contextFn)
+            assert.strictEqual(test.context, contextFn)
+            return test._evaluateContext()
+                .then(() => {
+                    assert.notStrictEqual(test.context, contextFn)
+                    assert.deepEqual(test.context, createContext())
+                })
+        },
+        'should resolve with context object': () => {
+            const contextFn = function Context() {
+                Object.assign(this, createContext())
+            }
+            const test = new Test(testName, testFn, null, contextFn)
+            assert.strictEqual(test.context, contextFn)
+            return test._evaluateContext()
+                .then((res) => {
+                    assert.strictEqual(test.context, res)
+                    assert.notStrictEqual(res, contextFn)
+                    assert.deepEqual(res, createContext())
+                })
+        },
+    }
+
+}
+
 module.exports = {
     'test suite context': TestSuiteContext,
     'test context': TestContext,
     'test suite context from tests': TestSuiteContextFromTests,
+    'test _evaluateContext function': TestEvaluateContextFunction,
 }

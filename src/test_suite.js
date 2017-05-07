@@ -4,23 +4,22 @@ const lib = require('./lib')
 const Test = require('./test')
 const EOL = require('os').EOL
 
-const timeout = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
+const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
 
 function hasParent(testSuite) {
     return testSuite.parent instanceof TestSuite
 }
 
 class TestSuite {
-    constructor (name, testsOrPath, parent, context) {
+    constructor (name, testsOrPath, parent, context, timeout) {
         lib.checkTestSuiteName(name)
         lib.checkContext(context)
 
         this._name = name
         this._parent = parent
+        this._timeout = timeout || (hasParent(this) ? this.parent.timeout : undefined)
 
-        if (context) {
-            this._context = Object.freeze(context)
-        } else if (hasParent(this)) {
+        if (!this._assignContext(context) && hasParent(this)) {
             this._context = parent.context
         }
 
@@ -50,11 +49,24 @@ class TestSuite {
     get context() {
         return this._context
     }
+    get timeout() {
+        return this._timeout
+    }
+    _assignContext(context) {
+        if ((typeof context).toLowerCase() === 'function') {
+            this._context = context
+            return true
+        } else if ((typeof context).toLowerCase() === 'object') {
+            const extenedContext = Object.assign({}, this._context || {}, context)  // + deep assign
+            this._context = Object.freeze(extenedContext)
+            return true
+        }
+    }
 
     _assignTests(tests) {
         if ('context' in tests) {
             lib.checkContext(tests.context)
-            this._context = Object.assign({}, this._context || {}, tests.context)
+            this._assignContext(tests.context)
         }
         this._rawTests = tests
         this._tests = createTests(tests, this)
@@ -147,7 +159,7 @@ function createTests(object, parent) {
         .map((key) => {
             switch (typeof object[key]) {
             case 'function':
-                return new Test(key, object[key], timeout, parent.context)
+                return new Test(key, object[key], parent.timeout || TIMEOUT, parent.context)
             case 'object':
                 return new TestSuite(key, object[key], parent)
             case 'string':
