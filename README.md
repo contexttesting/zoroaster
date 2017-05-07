@@ -241,5 +241,13 @@ can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 11. Pass path to a context file in CLI
 12. Catch global errors
 
+### context-related todo
+
+ - write readme about context function
+ - add examples of context function
+ - add `context.destroy` interface -- a function which will be called after test execution
+ - write tests for new TestSuite(..., timeout), release `context.timeout` feature
+ - maintain changelog
+
 ## Copyright
 Copyright 2017 [Sobesednik Media](https://sobesednik.media)

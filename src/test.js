@@ -5,7 +5,11 @@ const lib = require('./lib')
 
 /**
  * Create a new test object.
- * @return {Test} A test object with properties.
+ * @param {string} name Name of a test
+ * @param {function} fn Function as specified in specs
+ * @param {Number} timeout Timeout in ms after which to throw timeout Error
+ * @param {object|function} context Context object or function
+ * @return {Test} A test object with inialised properties.
  */
 class Test {
     constructor (name, fn, timeout, context) {
@@ -19,7 +23,7 @@ class Test {
 
         lib.checkContext(context)
         if (context) {
-            this._context = Object.freeze(context)
+            this._context = context
         }
     }
 
@@ -54,8 +58,39 @@ class Test {
     hasErrors() {
         return this.error !== null
     }
+    /**
+     * Return test's context (if context is a function, it will be overriden by the
+     * end of the test run with evaluated context function).
+     * @returns {object|function} context in current state
+     */
     get context() {
         return this._context
+    }
+
+    /**
+     * If context is a function, it will be replaced by the result of evaluating this function
+     * @returns {Promise} A promise which will be resolved when context could be retrieved (because
+     * context passed as a function can return a promise, to allow async evaluation of context).
+     */
+    _evaluateContext() {
+        const context = this.context
+        const type = (typeof context).toLowerCase()
+
+        if (type !== 'function') {
+            return Promise.resolve(context)
+        }
+        const cntxt = {}
+        const res = context.call(cntxt)
+
+        if (res instanceof Promise) {
+            return res
+                .then(() => {
+                    this._context = cntxt
+                    return cntxt
+                })
+        }
+        this._context = cntxt
+        return Promise.resolve(cntxt)
     }
 }
 
@@ -102,7 +137,9 @@ function createTimeoutPromise(test) {
 function runTest(test) {
     test.started = new Date()
 
-    const testPromise = createTestPromise(test.fn, test.context)
+    const testPromise =
+        test._evaluateContext()
+            .then(context => createTestPromise(test.fn, context))
     const timeoutPromise = createTimeoutPromise(test)
 
     const runPromise = Promise.race([

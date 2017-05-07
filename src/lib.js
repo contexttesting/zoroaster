@@ -26,10 +26,12 @@ function getPadding(level) {
 }
 
 function checkContext(context) {
-    if (context !== undefined && (typeof context).toLowerCase() !== 'object') {
+    const type = (typeof context).toLowerCase()
+    if (type === 'function') {
+        return // functions are accepted from 0.4.1
+    } else if (context !== undefined &&  type !== 'object') {
         throw new Error('Context must be an object.')
-    }
-    if (context === null) {
+    } else if (context === null) {
         throw new Error('Context cannot be null.')
     }
 }
