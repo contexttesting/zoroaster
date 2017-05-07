@@ -1,3 +1,7 @@
+## 0.4.1 (7 May 2017)
+
+ - [feature] context can be a function, which returns a promise
+
 ## 0.4.0 (1 May 2017)
 
 - [feature] Read context as a property of a test suite.
