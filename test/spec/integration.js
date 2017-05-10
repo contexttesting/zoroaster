@@ -1,7 +1,6 @@
 'use strict'
 
 require('colors')
-const cp = require('child_process')
 const spawnCommand = require('spawncommand')
 const path = require('path')
 const assert = require('assert')
@@ -160,24 +159,25 @@ const integrationTestSuite = {
                 }
             })
             .catch((err) => {
-                console.log('Received:')
-                console.log(err.message)
-                console.log('Expected:')
-                console.log(expected)
+                // console.log('Received:')
+                // console.log(err.message)
+                // console.log('Expected:')
+                // console.log(expected)
                 const diff = jsdiff.diffChars(expected, err.message)
                 diff.forEach((part) => {
-                    if (part.added) console.log('+', { v: part.value })
-                    if (part.removed) console.log('-', { v: part.value })
-                    console.log(part.value)
+                    void part
+                    // if (part.added) console.log('+', { v: part.value })
+                    // if (part.removed) console.log('-', { v: part.value })
+                    // console.log(part.value)
                     // const color =
                     //     part.added ? '+' :
                     //     part.removed ? '-' : ''
                     // process.stderr.write(`[${color}${part.value}${color}]`)
                 })
-                console.log()
+                // console.log()
                 throw new Error('Result did not match expected')
             })
-    }
+    },
 }
 
 module.exports = integrationTestSuite

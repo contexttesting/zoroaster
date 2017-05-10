@@ -1,6 +1,5 @@
 const TestSuite = require('../src/test_suite')
 const Test = require('../src/test')
-const assert = require('assert')
 
 /**
  * Assert that the test suite does not contain tests with errors by traversing

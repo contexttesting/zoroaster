@@ -31,6 +31,10 @@ module.exports = {
         "quote-props": [
             "error",
             "as-needed"
+        ],
+        "padded-blocks": [
+            "error",
+            "never"
         ]
     }
 };

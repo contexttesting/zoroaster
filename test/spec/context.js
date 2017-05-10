@@ -1,8 +1,7 @@
 const assert = require('assert')
-const path = require('path')
 const TestSuite = require('../../src/test_suite')
 const Test = require('../../src/test')
-const assertNoErrosInTestSuite = require('../lib').assertNoErrosInTestSuite;
+const assertNoErrosInTestSuite = require('../lib').assertNoErrosInTestSuite
 
 const testSuiteName = 'Zoroaster Context Test Suite'
 const testName = 'Zoroaster Context Test'
@@ -141,8 +140,8 @@ const TestSuiteContextFromTests = {
                 context: existingContext,
                 test: (ctx) => {
                     assert.deepEqual(ctx, totalContext)
-                }
-            }
+                },
+            },
         })
         return testSuite.run()
             .then(() => {
@@ -189,7 +188,7 @@ const TestContext = {
         }
         const test = new Test(testName, testFnWithContext, null, context)
         return test.run()
-            .then((res) => {
+            .then(() => {
                 assert.equal(test.error, null)
             })
     },
@@ -276,8 +275,7 @@ const TestEvaluateContextFunction = {
                     assert.deepEqual(res, createContext())
                 })
         },
-    }
-
+    },
 }
 
 module.exports = {

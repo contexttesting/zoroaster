@@ -35,7 +35,7 @@ class Test {
         if (typeof notify === 'function') {
             notify({
                 type:'test-start',
-                name: this.name
+                name: this.name,
             })
         }
         return runTest(this)
@@ -129,6 +129,21 @@ function createTimeoutPromise(test) {
     return { promise, timeout }
 }
 
+function destroyContext(test, res, err) {
+    if (test.context && typeof test.context._destroy === 'function') {
+        return Promise.resolve()
+            .then(() => {
+                return test.context._destroy()
+            })
+            .then(() => {
+                if (err) throw err
+                return res
+            })
+    }
+    if (err) throw err
+    return res
+}
+
 /**
  * Returns a promise to run a test.
  * @param {Test} test - a test to run
@@ -137,9 +152,13 @@ function createTimeoutPromise(test) {
 function runTest(test) {
     test.started = new Date()
 
+    const destroyContextAfterRes = destroyContext.bind(null, test)
+    const destroyContextAfterErr = destroyContext.bind(null, test, null)
+
     const testPromise =
         test._evaluateContext()
             .then(context => createTestPromise(test.fn, context))
+            .then(destroyContextAfterRes, destroyContextAfterErr)
     const timeoutPromise = createTimeoutPromise(test)
 
     const runPromise = Promise.race([
@@ -152,8 +171,6 @@ function runTest(test) {
             throw err
         })
         .then((res) => {
-            // console.log('timeout clear for', test.name, timeoutPromise.timeout)
-            // console.log('promise resolved, clear timeout', test.name)
             // if promise has been resolved without timing out, clear created timeout
             clearTimeout(timeoutPromise.timeout)
             return res

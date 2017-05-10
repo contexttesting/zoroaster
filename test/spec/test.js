@@ -6,7 +6,7 @@ const fn = () => {}
 const errorMessage = 'When you are in doubt abstain.'
 
 const Test_test_suite = {
-    'instance': {
+    instance: {
         'should set the name': () => {
             const test = new Test(name, fn)
             assert(test.name === name)
@@ -22,7 +22,7 @@ const Test_test_suite = {
             assert(test.error === null)
             assert(test.result === null)
         },
-        'timeout': {
+        timeout: {
             'should have a default timeout': () => {
                 const test = new Test(name, fn)
                 assert(test.timeout === 2000)
@@ -31,14 +31,14 @@ const Test_test_suite = {
                 const timeout = 1000
                 const test = new Test(name, fn, timeout)
                 assert(test.timeout === timeout)
-            }
+            },
         },
         'should have the run method': () => {
             const test = new Test(name, fn)
             assert(typeof test.run === 'function')
         },
     },
-    'runTest': {
+    runTest: {
         'should timeout test after specified timeout': () => {
             const timeout = 100
             const fn = () => {
@@ -91,7 +91,7 @@ const Test_test_suite = {
             })
         },
     },
-    'hasErrors': {
+    hasErrors: {
         'should report as having an error': () => {
             const test = new Test(name, () => {
                 throw new Error(errorMessage)
