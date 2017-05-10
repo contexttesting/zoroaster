@@ -1,6 +1,7 @@
-## 0.4.2 (10 May 2017)
+## 0.4.2, 0.4.3 (10 May 2017)
 
 - [feature] context accepts `_destroy` method
+- [bugfix] catch runtime errors while evaluating context
 
 ## 0.4.1 (7 May 2017)
 
