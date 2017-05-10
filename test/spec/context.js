@@ -240,7 +240,6 @@ const TestEvaluateContextFunction = {
                     )
             }
             const test = new Test(testName, testFn, null, contextFn)
-            assert.strictEqual(test.context, contextFn)
             return test._evaluateContext()
                 .then((res) => {
                     assert.strictEqual(test.context, res)
@@ -275,6 +274,19 @@ const TestEvaluateContextFunction = {
                     assert.deepEqual(res, createContext())
                 })
         },
+    },
+    'func - should return rejected promise if error was thrown': () => {
+        const error = new Error('test-init-context-error')
+        const contextFn = function Context() {
+            throw error
+        }
+        const test = new Test(testName, testFn, null, contextFn)
+        return test._evaluateContext()
+            .then(() => {
+                throw new Error('_evaluateContext should have been rejected')
+            }, (err) => {
+                assert.strictEqual(err, error)
+            })
     },
 }
 

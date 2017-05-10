@@ -80,17 +80,21 @@ class Test {
             return Promise.resolve(context)
         }
         const cntxt = {}
-        const res = context.call(cntxt)
+        try {
+            const res = context.call(cntxt)
 
-        if (res instanceof Promise) {
-            return res
-                .then(() => {
-                    this._context = cntxt
-                    return cntxt
-                })
+            if (res instanceof Promise) {
+                return res
+                    .then(() => {
+                        this._context = cntxt
+                        return cntxt
+                    })
+            }
+            this._context = cntxt
+            return Promise.resolve(cntxt)
+        } catch (err) {
+            return Promise.reject(err)
         }
-        this._context = cntxt
-        return Promise.resolve(cntxt)
     }
 }
 
