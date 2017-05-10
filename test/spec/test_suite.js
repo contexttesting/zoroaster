@@ -95,7 +95,7 @@ const TestSuite_test_suite = {
                 test_suite_level_A2B2: {
                     testA2B2: () => {},
                 },
-            }
+            },
         })
         assert(testSuite.tests[0].name === 'test_suite_level_A1')
         assert(testSuite.tests[0].tests[0].name === 'test_suite_level_A1B1')
