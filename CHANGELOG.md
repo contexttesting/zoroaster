@@ -1,3 +1,7 @@
+## 0.4.2 (10 May 2017)
+
+- [feature] context accepts `_destroy` method
+
 ## 0.4.1 (7 May 2017)
 
  - [feature] context can be a function, which returns a promise
