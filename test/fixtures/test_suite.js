@@ -16,6 +16,8 @@ const testSuite = {
             reject(new Error('Error from Promise constructor'))
         , 100)
     }),
+    test7: () => Promise.reject('error-without-stack'),
+
 }
 
 module.exports = testSuite

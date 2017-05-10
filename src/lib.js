@@ -50,6 +50,9 @@ function filterStack(test) {
     if (!test.error) {
         throw new Error('cannot filter stack when a test does not have an error')
     }
+    if (!test.error.stack) {
+        return String(test.error)
+    }
     const splitStack = test.error.stack.split('\n') // break stack by \n and not EOL intentionally because Node uses \n
     // node 4 will print: at test_suite.test2
     // node 6 will print: at test2
