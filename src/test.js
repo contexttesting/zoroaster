@@ -2,6 +2,7 @@
 
 const EOL = require('os').EOL
 const lib = require('./lib')
+const promto = require('promto')
 
 /**
  * Create a new test object.
@@ -119,33 +120,12 @@ function createTestPromise(fn, ctx) {
         .then(() => fn(ctx))
 }
 
-function createTimeoutPromise(test) {
-    const delay = test.timeout
-    let timeout
-    const promise = new Promise((_, reject) => {
-        timeout = setTimeout(() => {
-            const message = `Test has timed out after ${delay}ms`
-            const err = new Error(message)
-            err.stack = `Error: ${message}` // don't expose internals
-            reject(err)
-        }, delay)
-    })
-    return { promise, timeout }
-}
-
-function destroyContext(test, res, err) {
+function plainDestroyContext(test) {
     if (test.context && typeof test.context._destroy === 'function') {
         return Promise.resolve()
-            .then(() => {
-                return test.context._destroy()
-            })
-            .then(() => {
-                if (err) throw err
-                return res
-            })
+            .then(() => test.context._destroy())
     }
-    if (err) throw err
-    return res
+    return Promise.resolve()
 }
 
 /**
@@ -156,37 +136,18 @@ function destroyContext(test, res, err) {
 function runTest(test) {
     test.started = new Date()
 
-    const destroyContextAfterRes = destroyContext.bind(null, test)
-    const destroyContextAfterErr = destroyContext.bind(null, test, null)
-
-    const testPromise =
-        test._evaluateContext()
-            .then(context => createTestPromise(test.fn, context))
-            .then(destroyContextAfterRes, destroyContextAfterErr)
-    const timeoutPromise = createTimeoutPromise(test)
-
-    const runPromise = Promise.race([
-        testPromise,
-        timeoutPromise.promise,
-    ])
-        // ensure clear timeout is called
-        .catch((err) => {
-            clearTimeout(timeoutPromise.timeout)
-            throw err
+    return promto(test._evaluateContext(), test.timeout, 'Evaluate')
+        .then((context) => {
+            const testPromise = createTestPromise(test.fn, context)
+            return promto(testPromise, test.timeout, 'Test')
         })
-        .then((res) => {
-            // if promise has been resolved without timing out, clear created timeout
-            clearTimeout(timeoutPromise.timeout)
-            return res
+        .then((res) => { test.result = res }, (err) => { test.error = err })
+        .then(() => promto(plainDestroyContext(test), test.timeout, 'Destroy'))
+        .then((res) => { test.destroyResult = res }, (err) => { test.error = err })
+        .then(() => {
+            test.finished = new Date()
+            return test
         })
-
-    return runPromise
-        .then(
-            (res) => { test.result = res },
-            (err) => { test.error = err }
-        )
-        .then(() => { test.finished = new Date() })
-        .then(() => test)
 }
 
 module.exports = Test
