@@ -60,6 +60,10 @@ function filterStack(test) {
     return stack.replace(/\n/g, EOL)
 }
 
+function isString(s) {
+    return typeof(s).toLowerCase() === 'string'
+}
+
 module.exports = {
     runInSequence,
     indent,
@@ -67,4 +71,5 @@ module.exports = {
     checkContext,
     checkTestSuiteName,
     filterStack,
+    isString,
 }

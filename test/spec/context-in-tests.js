@@ -159,18 +159,16 @@ module.exports = {
     },
     'should timeout before context finishes resolving': () => {
         const makeContext = function Context() {
-            return new Promise((resolve) => {
-                setTimeout(resolve, 2000)
-            })
+            return new Promise(r => setTimeout(r, 200))
         }
         const testSuite = new TestSuite(TEST_SUITE_NAME, {
             'should timeout': () => {},
-        }, null, makeContext, 1500)
+        }, null, makeContext, 150)
         return testSuite.run()
             .then(() => {
                 assert.throws(
                     () => lib.assertNoErrosInTestSuite(testSuite),
-                    /Error in test "test-suite > should timeout": Test has timed out after 1500ms/
+                    /Error in test "test-suite > should timeout": Evaluate has timed out after 150ms/
                 )
             })
     },
