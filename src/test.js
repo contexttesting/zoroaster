@@ -142,7 +142,11 @@ function runTest(test) {
             return promto(testPromise, test.timeout, 'Test')
         })
         .then((res) => { test.result = res }, (err) => { test.error = err })
-        .then(() => promto(plainDestroyContext(test), test.timeout, 'Destroy'))
+        .then(() => {
+            const destroyPromise = plainDestroyContext(test)
+            const destroyPromiseWithTimeout = promto(destroyPromise, test.timeout, 'Destroy')
+            return destroyPromiseWithTimeout
+        })
         .then((res) => { test.destroyResult = res }, (err) => { test.error = err })
         .then(() => {
             test.finished = new Date()
