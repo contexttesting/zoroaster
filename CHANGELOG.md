@@ -1,8 +1,18 @@
+<a name="0.4.6"></a>
+## [0.4.6](https://github.com/Sobesednik/zoroaster/compare/v0.4.5...v0.4.6) (28 May 2017)
+
+- [bugfix] run main function on Windows ([eafc0da](https://github.com/Sobesednik/zoroaster/commit/eafc0da))
+
+<a name="0.4.5"></a>
+## [0.4.5](https://github.com/Sobesednik/zoroaster/compare/v0.4.4...v0.4.5) (25 May 2017)
+
+- [feature] export main function, which spawns `zoroaster` binary ([0b81c9b](https://github.com/Sobesednik/zoroaster/commit/0b81c9b))
+
 <a name="0.4.4"></a>
-## [0.4.4](https://github.com/Sobesednik/zoroaster/compare/v0.4.3...v0.4.4) (14 May 2017) 
+## [0.4.4](https://github.com/Sobesednik/zoroaster/compare/v0.4.3...v0.4.4) (14 May 2017)
 
 - [bugfix] destroy context after test timeout, specific timeout errors for `_evaluateContext`,
-`test.run` and `context._destroy()` [7dec23f](https://github.com/Sobesednik/zoroaster/commit/7dec23f)
+`test.run` and `context._destroy()` ([7dec23f](https://github.com/Sobesednik/zoroaster/commit/7dec23f))
 - [code] use [promto](https://github.com/Sobesednik/promto) to create promises with timeout
 
 ## 0.4.2, 0.4.3 (10 May 2017)
