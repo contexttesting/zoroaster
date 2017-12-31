@@ -22,6 +22,9 @@ if (process.version.startsWith('v6')) {
 if (process.version.startsWith('v7')) {
     nodeVersion = 7
 }
+if (process.version.startsWith('v8')) {
+    nodeVersion = 8
+}
 
 const expected7 = ` [fixtures_path]
    test_suite.js
@@ -109,7 +112,7 @@ const expectedWin = ` [fixtures_path]
    \u001b[32m ✓ \u001b[0m test5
    \u001b[31m ✗ \u001b[0m test6
     | Error: Error from Promise constructor
-    |     at Timeout.setTimeout ([fixture_path]:16:20)
+    |     at Timeout.setTimeout [as _onTimeout] ([fixture_path]:16:20)
 
 \u001b[31m[fixtures_path] > test_suite.js > test2\u001b[0m
   Error: When you are in doubt abstain.
@@ -117,7 +120,7 @@ const expectedWin = ` [fixtures_path]
 
 \u001b[31m[fixtures_path] > test_suite.js > test6\u001b[0m
   Error: Error from Promise constructor
-      at Timeout.setTimeout ([fixture_path]:16:20)
+      at Timeout.setTimeout [as _onTimeout] ([fixture_path]:16:20)
 
 Executed 6 tests: 2 errors.
 
@@ -126,6 +129,8 @@ Executed 6 tests: 2 errors.
 let exp
 if (/^win/.test(process.platform)) {
     exp = expectedWin
+} else if (nodeVersion === 8) {
+    exp = expected7
 } else if (nodeVersion === 7) {
     exp = expected7
 } else if (nodeVersion === 6) {

@@ -148,8 +148,8 @@ Executed 13 tests.
 
 ## Context
 
-Version 0.4 introduces context. Add `context` property to a test suite, and access it from a test
-function's first argument:
+Add `context` property to a test suite, and access it from a test function's
+first argument:
 
 ```js
 const testSuite = {
@@ -226,6 +226,16 @@ To watch files for changes, use `--watch` flag, e.g.,
 The default timeout is `2000ms`. At the moment, only global timeout
 can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 `ZOROASTER_TIMEOUT=5000 zoroaster test`
+
+## Assertion Library
+
+`zoroaster/assert` exports a module which has the following properties for
+assertions in tests:
+
+- `equal` which is `require('assert').equal` for equality assertions on primitives such as strings.
+- `deepEqual` which is `require('assert-diff').deepEqual` for assertions of complex objects, with red/green difference highlighting.
+- `throws` which is `require('assert-throws')` for assertions on synchronous/asynchronous function calls.
+- `assert` and `assertDiff` which are aliases to the above packages.
 
 ## TODO
 1. JS API
