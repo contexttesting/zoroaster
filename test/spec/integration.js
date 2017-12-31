@@ -22,6 +22,9 @@ if (process.version.startsWith('v6')) {
 if (process.version.startsWith('v7')) {
     nodeVersion = 7
 }
+if (process.version.startsWith('v8')) {
+    nodeVersion = 8
+}
 
 const expected7 = ` [fixtures_path]
    test_suite.js
@@ -126,6 +129,8 @@ Executed 6 tests: 2 errors.
 let exp
 if (/^win/.test(process.platform)) {
     exp = expectedWin
+} else if (nodeVersion === 8) {
+    exp = expected7
 } else if (nodeVersion === 7) {
     exp = expected7
 } else if (nodeVersion === 6) {
