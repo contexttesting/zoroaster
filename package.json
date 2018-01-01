@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Sobesednik/zoroaster#readme",
   "dependencies": {
     "assert-diff": "1.2.4",
-    "assert-throws": "1.0.0",
+    "assert-throws": "1.1.0",
     "catchment": "1.0.0",
     "clean-stack": "1.0.0",
     "promto": "1.0.1",

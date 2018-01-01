@@ -39,16 +39,29 @@ const assertTestSuite = {
     'should assert on async error'() {
         return throws({
             fn() {
-                throw new Error('test-error')
+                const err = new Error('test-error')
+                return Promise.reject(err)
             },
             message: 'test-error',
         })
     },
-    'should assert on async error and fail'() {
+    'should assert on sync error and fail'() {
         return throws({
             fn() { },
         }).catch((error) => {
             assert.equal(error.message, 'Function should have thrown')
+        })
+    },
+    'should assert on async error by code and fail'() {
+        return throws({
+            fn() {
+                const err = new Error('test-error')
+                err.code = 'TER'
+                return Promise.reject(err)
+            },
+            code: 'TERRA',
+        }).catch((error) => {
+            assert.equal(error.message, 'TER != TERRA')
         })
     },
 }
