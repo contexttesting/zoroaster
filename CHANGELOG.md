@@ -1,3 +1,10 @@
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/Sobesednik/zoroaster/compare/v0.5.0...v0.5.1) (1 January 2018)
+
+- [dependency] update `assert-throws`
+
+- [feature] `zoroaster/assert` module with common assertion methods
+
 <a name="0.5.0"></a>
 ## [0.5.0](https://github.com/Sobesednik/zoroaster/compare/v0.4.6...v0.5.0) (31 December 2017)
 
