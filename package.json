@@ -1,6 +1,6 @@
 {
   "name": "zoroaster",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A minimal JavaScript testing framework for Node.js.",
   "main": "index.js",
   "scripts": {
