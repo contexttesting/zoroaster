@@ -2,6 +2,7 @@ const assert = require('assert')
 const assertSrc = require('../../../assert')
 const throws = assertSrc.throws
 const equal = assert.equal
+const strictEqual = assert.strictEqual
 
 const throwsTestSuite = {
     'should assert on async error'() {
@@ -58,6 +59,17 @@ const throwsTestSuite = {
                 return Promise.reject(new Error('test-error'))
             },
             message: /test-error/,
+        })
+    },
+    'should return the thrown error'() {
+        const error = new Error('test-error')
+        return throws({
+            fn() {
+                return Promise.reject(error)
+            },
+            message: /test-error/,
+        }).then((res) => {
+            strictEqual(res, error)
         })
     },
     'should throw when asserting on error message with regular expression'() {
