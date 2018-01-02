@@ -25,13 +25,12 @@
     "assert-diff": "1.2.4",
     "assert-throws": "1.3.0",
     "catchment": "1.0.0",
-    "clean-stack": "1.0.0",
+    "clean-stack": "1.3.0",
     "promto": "1.0.1",
     "spawncommand": "1.1.0"
   },
   "devDependencies": {
     "colors": "1.1.2",
-    "diff": "3.2.0",
-    "spawncommand": "1.1.0"
+    "diff": "3.4.0"
   }
 }
