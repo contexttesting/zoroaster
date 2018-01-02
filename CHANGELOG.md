@@ -1,3 +1,8 @@
+<a name="0.5.3"></a>
+## [0.5.3](https://github.com/Sobesednik/zoroaster/compare/v0.5.2...v0.5.3) (2 January 2018)
+
+- [dependency] update `assert-throws` to `1.3.0` (return error).
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/Sobesednik/zoroaster/compare/v0.5.1...v0.5.2) (1 January 2018)
 
