@@ -255,8 +255,11 @@ assertions in tests:
 
  - write readme about context function
  - add examples of context function
- - add `context.destroy` interface -- a function which will be called after test execution
  - write tests for new TestSuite(..., timeout), release `context.timeout` feature
+ - accept context as a class
+ - only pass context to test functions which accept it
+ - find a way to use `JSDOC` with tests
 
-## Copyright
-Copyright 2017 [Sobesednik Media](https://sobesednik.media)
+---
+
+Copyright 2018 [Sobesednik Media](https://sobesednik.media)
