@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node run_tests",
-    "watch": "node run_tests --watch"
+    "watch": "node run_tests --watch",
+    "website": "splendid website/pages.js --watch"
   },
   "bin": "./bin/zoroaster",
   "repository": {
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "colors": "1.1.2",
-    "diff": "3.4.0"
+    "diff": "3.4.0",
+    "splendid": "1.2.0"
   }
 }
