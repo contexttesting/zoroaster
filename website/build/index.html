@@ -1,45 +1,143 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Hello world!</title>
+        <title>Hello world from zoroaster!</title>
         <link href="styles/app.css" rel="stylesheet">
-        <link href="styles/default.css" rel="stylesheet">
+        <link href="styles/docco.css" rel="stylesheet">
         <link href="img/favicon.ico" rel="shortcut icon">
-        <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Fira+Sans+Condensed:400,400i" rel="stylesheet">
     </head>
     <body>
         <div class="table">
         <div class="left-column">
             <div class="logo">
-    <img src="img/logo.jpg" alt="splendid logo"></img>
+    <img src="img/zoroaster.jpg" alt="prophet zoroaster" style="margin-bottom: 1em;"></img>
 </div>
 
 <div class="badges">
-    <a href="https://github.com/Sobesednik/splendid" class="SimpleBadge">
-        GitHub
+    <a href="https://badge.fury.io/js/zoroaster">
+        <img src="https://badge.fury.io/js/zoroaster.svg" alt="npm version" height="18"></img>
     </a>
-    <a href="https://npmjs.com/packages/splendid" class="Badge">
-        <span class="name">NPM</span><span class="version">1.0.0</span>
+    <a href="https://travis-ci.org/Sobesednik/zoroaster">
+        <img src="https://travis-ci.org/Sobesednik/zoroaster.svg?branch=master" alt="travis ci"></img>
+    </a>
+    <a href="https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master">
+        <img src="https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true" alt="appveyor ci"></img>
+    </a>
+    <a href="https://github.com/Sobesednik/zoroaster" class="GitHub">
+        GitHub
     </a>
 </div>
 
 <h3>Pages</h3>
+<div class="Pages">
 <ul><li><a href="index.html">Main Page</a></li>
-<li><a href="markdown.html">Markdown</a></li>
-<li><a href="highlightjs.html">HighlightJS</a></li></ul>
+<li><a href="file-structure.html">File structure</a></li>
+<li><a href="comparison-of-javascript-testing-frameworks.html">Comparison of JavaScript Testing Frameworks</a></li></ul></div>
+
+<h3>Contexts</h3>
+<p class="list">
+    <a href="https://www.npmjs.com/package/exiftool-context">Exiftool Context</a>
+</p>
+
 <h3>npm links</h3>
-<ul><li><a href="https://www.npmjs.com/package/splendid">splendid</a></li>
-<li><a href="https://www.npmjs.com/package/mnp">mnp</a></li></ul>
+<p class="list">
+    <a href="https://www.npmjs.com/package/zoroaster">zoroaster</a>
+    <a href="https://www.npmjs.com/package/tape">tape</a>
+    <a href="https://www.npmjs.com/package/mocha">mocha</a>
+    <a href="https://www.npmjs.com/package/jasmine">jasmine</a>
+    <a href="https://www.npmjs.com/package/jest">jest</a>
+</p>
+
+<div class="logo">
+    <img src="img/faravahar.jpg" alt="faravahar symbol" style="margin-bottom: 1em;"></img>
+</div>
+
         </div>
         <div class="right-column">
-<h1>Main Page</h1>
-This is the main page.
+<h1>Zoroaster is a Testing Framework for Node.js</h1>
+<span class="tm2">zoroaster</span> is a cool testing framework for Node.js. Unlike <span class="em">mocha</span> and <span class="em">jasmine</span>, it does not
+export global functions like <span class="em">describe</span>, <span class="em">it</span>, <span class="em">before</span>, <span class="em">beforeAll</span>, <span class="em">breforeEach</span>, but has a
+notion of a <span class="bold">Text Context</span> &#8212; an on object with a state, initiliased and destroyed for each test.
 
+Each <span class="tm2">zoroaster</span> test suite must be exported with <span class="tm">module.exports</span> in its file, and then
+<span class="tm">zoroaster test</span> command can be used to start testing.
+
+<h2>Why and how to Use Zoroaster?</h2>
+You should use <span class="tm2">zoroaster</span> if you are tired of old-age paradigms and dictated standards, want to do
+something different, and be in control of your development process.
+
+To install it do, <span class="tm">npm i zoroaster</span> in your project directory, and specify the following npm script:
+
+<pre><code class="json hljs">"scripts": {
+  "test": "zoroaster test",
+  "test-watch": "zoroaster test --watch"
+}</code></pre>
+
+When working with <span class="tm2">zoroaster</span>, you write your tests as properties of a <span class="bold">test suite</span> object, where
+you can nest test suites. Let's look at an example, where we want to test <span class="tm">myModule</span>:
+
+<pre><code class="js hljs"><span class="hljs-comment">// src/index.js</span>
+
+<span class="hljs-keyword">const</span> myModule = <span class="hljs-function">(<span class="hljs-params">arg</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (arg === <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Cannot pass null'</span>)
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'the-right-thing'</span>
+}
+
+<span class="hljs-built_in">module</span>.exports = myModule</code></pre>
+
+The function returns a string, and throws if argument is <span class="tm">null</span>. Create a new test file in the
+<span class="em">test</span> directory.
+
+<pre><code class="js hljs"><span class="hljs-comment">// test/index.js</span>
+
+<span class="hljs-keyword">const</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">'assert'</span>)
+<span class="hljs-keyword">const</span> myModule = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/'</span>)
+
+<span class="hljs-keyword">const</span> myModuleTestSuite = {
+    <span class="hljs-string">'should do the right thing'</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> expected = <span class="hljs-string">'the-right-thing'</span>
+        <span class="hljs-keyword">const</span> res = myModule()
+        assert.equal(res, expected)
+    },
+    <span class="hljs-string">'should throw an error with incorrect output'</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        assert.throws(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+            myModule(<span class="hljs-literal">null</span>)
+        }, /Cannot pass <span class="hljs-literal">null</span>/)
+    },
+}
+
+<span class="hljs-built_in">module</span>.exports = myModuleTestSuite</code></pre>
+
+In our test, we export a test suite with 2 tests. As opposed to <span class="em">mocha</span>, we  don't call <span class="tm">it</span> to
+declare tests, but pass functions as a values in the test suite map.
+
+To execute tests, we use <span class="em">CLI</span> command:
+
+<pre><code class="bash hljs">$ zoroaster examples</code></pre>
+
+This should produce the following output:
+
+<pre><code class="fs hljs"> examples/index.js
+  ✓  should <span class="hljs-keyword">do</span> the right thing
+  ✓  should throw an error <span class="hljs-keyword">with</span> incorrect output
+
+Executed <span class="hljs-number">2</span> tests.</code></pre>
+
+
+<h2>Examples</h2>
+Here are some examples of using <span class="tm2">zoroaster</span> for testing Node modules:
+
+<ul><li><a href="https://github.com/Sobesednik/node-exiftool/blob/master/test/spec/exiftool.js">node-exiftool</a></li>
+<li><a href="https://github.com/Sobesednik/wrote/blob/master/test/spec/write.js">wrote</a></li>
+<li><a href="https://github.com/Sobesednik/mnp/blob/master/test/spec/write-to-config.js">mnp</a></li></ul>
         </div>
         </div>
         <footer>
-            &copy; <a href="https://splendid.sh">Splendid</a>, 2018
+            &copy; <a href="https://sobes.io" style="color: #C80815">zoroaster ltd</a>, 2018
         </footer>
-        <script src="js/main.js"></script>
     </body>
 </html>

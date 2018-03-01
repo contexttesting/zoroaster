@@ -26,14 +26,14 @@ module.exports = {
             file: 'index.md',
         },
         {
-            title: 'Markdown',
-            url: 'markdown.html',
-            file: 'markdown.md',
+            title: 'File structure',
+            url: 'file-structure.html',
+            file: 'file-structure.md',
         },
         {
-            title: 'HighlightJS',
-            url: 'highlightjs.html',
-            file: 'highlightjs.md',
+            title: 'Comparison of JavaScript Testing Frameworks',
+            url: 'comparison-of-javascript-testing-frameworks.html',
+            file: 'comparison.md',
         },
     ],
     postProcess: [

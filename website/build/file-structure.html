@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Hello world from zoroaster!</title>
+        <link href="styles/app.css" rel="stylesheet">
+        <link href="styles/docco.css" rel="stylesheet">
+        <link href="img/favicon.ico" rel="shortcut icon">
+
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Fira+Sans+Condensed:400,400i" rel="stylesheet">
+    </head>
+    <body>
+        <div class="table">
+        <div class="left-column">
+            <div class="logo">
+    <img src="img/zoroaster.jpg" alt="prophet zoroaster" style="margin-bottom: 1em;"></img>
+</div>
+
+<div class="badges">
+    <a href="https://badge.fury.io/js/zoroaster">
+        <img src="https://badge.fury.io/js/zoroaster.svg" alt="npm version" height="18"></img>
+    </a>
+    <a href="https://travis-ci.org/Sobesednik/zoroaster">
+        <img src="https://travis-ci.org/Sobesednik/zoroaster.svg?branch=master" alt="travis ci"></img>
+    </a>
+    <a href="https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master">
+        <img src="https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true" alt="appveyor ci"></img>
+    </a>
+    <a href="https://github.com/Sobesednik/zoroaster" class="GitHub">
+        GitHub
+    </a>
+</div>
+
+<h3>Pages</h3>
+<div class="Pages">
+<ul><li><a href="index.html">Main Page</a></li>
+<li><a href="file-structure.html">File structure</a></li>
+<li><a href="comparison-of-javascript-testing-frameworks.html">Comparison of JavaScript Testing Frameworks</a></li></ul></div>
+
+<h3>Contexts</h3>
+<p class="list">
+    <a href="https://www.npmjs.com/package/exiftool-context">Exiftool Context</a>
+</p>
+
+<h3>npm links</h3>
+<p class="list">
+    <a href="https://www.npmjs.com/package/zoroaster">zoroaster</a>
+    <a href="https://www.npmjs.com/package/tape">tape</a>
+    <a href="https://www.npmjs.com/package/mocha">mocha</a>
+    <a href="https://www.npmjs.com/package/jasmine">jasmine</a>
+    <a href="https://www.npmjs.com/package/jest">jest</a>
+</p>
+
+<div class="logo">
+    <img src="img/faravahar.jpg" alt="faravahar symbol" style="margin-bottom: 1em;"></img>
+</div>
+
+        </div>
+        <div class="right-column">
+<h1>Test File Organisation for Zoroaster</h1>
+Organising your test files has never been simpler. Create a <span class="tm">test</span> directory in your project root,
+in it place <span class="tm">context</span>, <span class="tm">spec</span>, <span class="tm">fixtures</span> and <span class="tm">temp</span> directories (optionally, if you work with
+<span class="em">io</span>). For example, your project file structure might look like this:
+
+<pre><code class="fs hljs">- CHANGELOG.md
+- LICENSE
+- package.json
+- README.md
+- src
+- src/index.js
+- test
+- test/context
+- test/context/ScreenCapture.js
+- test/fixtures
+- test/fixtures/screenshot.png
+- test/spec
+- test/spec/index.js
+- test/spec/record-video.js</code></pre>
+
+All testing functions which can be required by both test files should be exported in <span class="em">ScreenCapture</span>
+context. This makes test independent of the scope of <span class="tm">js</span> files, making it easy to create new
+test suites in new files.
+
+        </div>
+        </div>
+        <footer>
+            &copy; <a href="https://sobes.io" style="color: #C80815">zoroaster ltd</a>, 2018
+        </footer>
+    </body>
+</html>
