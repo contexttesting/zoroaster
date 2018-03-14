@@ -7,9 +7,9 @@ const stripAnsi = require('strip-ansi')
 const { EOL } = require('os')
 const { parseVersion } = require('noddy')
 
-const testSuiteDir = resolve(__dirname, '../fixtures')
-const zoroasterBin = resolve(__dirname, '../../bin/zoroaster')
+const testSuiteDir = join(__dirname, '../fixtures')
 const fixturePath = join(testSuiteDir, 'test_suite.js')
+const zoroasterBin = resolve(__dirname, '../../bin/zoroaster')
 
 const { major: nodeVersion } = parseVersion()
 
@@ -127,7 +127,7 @@ if (/^win/.test(process.platform)) {
 }
 const expected = exp
   .replace(/\[fixtures_path\]/g, testSuiteDir)
-  .replace(/\[fixture_path\]/g, fixturePath)
+  .replace(/\[fixture_path\]/g, fixturePath.replace(/\\/g, '/'))
   .replace(/\n/g, EOL)
 
 const integrationTestSuite = {

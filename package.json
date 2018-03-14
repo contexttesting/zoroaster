@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node run_tests",
-    "watch": "node run_tests --watch",
-    "website": "splendid website/pages.js --watch"
+    "watch": "node run_tests --watch"
   },
   "bin": "bin/zoroaster",
   "repository": {
