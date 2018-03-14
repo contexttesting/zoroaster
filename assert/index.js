@@ -6,8 +6,8 @@ const equal = assert.equal
 const deepEqual = assertDiff.deepEqual
 
 module.exports = {
-    equal,
-    deepEqual,
-    throws,
-    assert,
+  equal,
+  deepEqual,
+  throws,
+  assert,
 }
