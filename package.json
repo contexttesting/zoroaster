@@ -2,10 +2,11 @@
   "name": "zoroaster",
   "version": "0.5.3",
   "description": "A minimal JavaScript testing framework for Node.js.",
-  "main": "index.js",
+  "main": "src",
   "scripts": {
     "test": "node run_tests",
-    "watch": "node run_tests --watch"
+    "watch": "node run_tests --watch",
+    "build": "bestie bin,src,test,assert"
   },
   "bin": "bin/zoroaster",
   "repository": {
@@ -30,6 +31,7 @@
     "spawncommand": "1.1.0"
   },
   "devDependencies": {
+    "bestie": "^1.0.0",
     "colors": "1.2.1",
     "diff": "3.5.0",
     "noddy": "^1.1.1",

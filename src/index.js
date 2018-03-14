@@ -1,7 +1,7 @@
-const path = require('path')
+const { resolve } = require('path')
 const spawnCommand = require('spawncommand')
 
-const BIN_PATH = path.join(__dirname, 'bin/zoroaster')
+const BIN_PATH = resolve(__dirname, '../bin/zoroaster.js')
 
 function getSpawnOptions(bin, _args) {
   'use strict'

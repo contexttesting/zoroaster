@@ -1,0 +1,27 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "exclude": [
+          "transform-regenerator",
+          "transform-async-to-generator"
+        ],
+        "modules": false,
+        "debug": true,
+        "targets": {
+          "node": 4
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    [
+      "module:fast-async",
+      {
+        "spec": true
+      }
+    ]
+  ]
+}

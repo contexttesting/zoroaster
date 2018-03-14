@@ -1,19 +1,31 @@
-require('colors')
-const spawnCommand = require('spawncommand')
-const { resolve, join } = require('path')
-const assert = require('assert')
-const jsdiff = require('diff')
-const stripAnsi = require('strip-ansi')
-const { EOL } = require('os')
-const { parseVersion } = require('noddy')
+require('colors');
 
-const testSuiteDir = join(__dirname, '../fixtures')
-const fixturePath = join(testSuiteDir, 'test_suite.js')
-const zoroasterBin = resolve(__dirname, '../../bin/zoroaster.js')
+var spawnCommand = require('spawncommand');
 
-const { major: nodeVersion } = parseVersion()
+var _require = require('path'),
+    resolve = _require.resolve,
+    join = _require.join;
 
-const expected7 = ` [fixtures_path]
+var assert = require('assert');
+
+var jsdiff = require('diff');
+
+var stripAnsi = require('strip-ansi');
+
+var _require2 = require('os'),
+    EOL = _require2.EOL;
+
+var _require3 = require('noddy'),
+    parseVersion = _require3.parseVersion;
+
+var testSuiteDir = join(__dirname, '../fixtures');
+var fixturePath = join(testSuiteDir, 'test_suite.js');
+var zoroasterBin = resolve(__dirname, '../../bin/zoroaster.js');
+
+var _parseVersion = parseVersion(),
+    nodeVersion = _parseVersion.major;
+
+var expected7 = ` [fixtures_path]
    test_suite.js
    \u001b[32m ✓ \u001b[0m test1
    \u001b[31m ✗ \u001b[0m test2
@@ -36,9 +48,8 @@ const expected7 = ` [fixtures_path]
 
 Executed 6 tests: 2 errors.
 
-`
-
-const expected6 = ` [fixtures_path]
+`;
+var expected6 = ` [fixtures_path]
    test_suite.js
    \u001b[32m ✓ \u001b[0m test1
    \u001b[31m ✗ \u001b[0m test2
@@ -61,9 +72,8 @@ const expected6 = ` [fixtures_path]
 
 Executed 6 tests: 2 errors.
 
-`
-
-const expected4 = ` [fixtures_path]
+`;
+var expected4 = ` [fixtures_path]
    test_suite.js
    \u001b[32m ✓ \u001b[0m test1
    \u001b[31m ✗ \u001b[0m test2
@@ -86,9 +96,8 @@ const expected4 = ` [fixtures_path]
 
 Executed 6 tests: 2 errors.
 
-`
-
-const expectedWin = ` [fixtures_path]
+`;
+var expectedWin = ` [fixtures_path]
    test_suite.js
    \u001b[32m ✓ \u001b[0m test1
    \u001b[31m ✗ \u001b[0m test2
@@ -111,52 +120,60 @@ const expectedWin = ` [fixtures_path]
 
 Executed 6 tests: 2 errors.
 
-`
+`;
+var exp;
 
-let exp
 if (/^win/.test(process.platform)) {
-  exp = expectedWin
+  exp = expectedWin;
 } else if (nodeVersion === 8) {
-  exp = expected7
+  exp = expected7;
 } else if (nodeVersion === 7) {
-  exp = expected7
+  exp = expected7;
 } else if (nodeVersion === 6) {
-  exp = expected6
+  exp = expected6;
 } else if (nodeVersion === 4) {
-  exp = expected4
-}
-const expected = exp
-  .replace(/\[fixtures_path\]/g, testSuiteDir)
-  .replace(/\[fixture_path\]/g, fixturePath)
-  .replace(/\[fixture_path_async\]/g, fixturePath.replace(/\\/g, '/'))
-  .replace(/\n/g, EOL)
-
-const integrationTestSuite = {
-  async 'should produce correct output'() {
-    let program
-    let args
-    if (!/^win/.test(process.platform)) { // linux
-      program = zoroasterBin
-      args = [testSuiteDir]
-    } else { // windows
-      program = process.env.comspec
-      args = ['/c', 'node', zoroasterBin, testSuiteDir]
-    }
-    const { promise } = spawnCommand(program, args)
-    const { stdout } = await promise
-    try {
-      assert(stdout === expected)
-    } catch (err) {
-      const diff = jsdiff.diffChars(stripAnsi(expected), stripAnsi(stdout))
-      diff.forEach((part) => {
-        var color = part.added ? 'green' :
-          part.removed ? 'red' : 'grey'
-        process.stderr.write(part.value[color])
-      })
-
-      throw new Error('Result did not match expected')
-    }
-  },
+  exp = expected4;
 }
 
-module.exports = integrationTestSuite
+var expected = exp.replace(/\[fixtures_path\]/g, testSuiteDir).replace(/\[fixture_path\]/g, fixturePath).replace(/\[fixture_path_async\]/g, fixturePath.replace(/\\/g, '/')).replace(/\n/g, EOL);
+var integrationTestSuite = {
+  'should produce correct output'() {
+    return new Promise(function ($return, $error) {
+      var program, args, _spawnCommand, promise, _ref, stdout, diff;
+
+      if (!/^win/.test(process.platform)) {
+        // linux
+        program = zoroasterBin;
+        args = [testSuiteDir];
+      } else {
+        // windows
+        program = process.env.comspec;
+        args = ['/c', 'node', zoroasterBin, testSuiteDir];
+      }
+
+      _spawnCommand = spawnCommand(program, args), promise = _spawnCommand.promise;
+      return Promise.resolve(promise).then(function ($await_2) {
+        try {
+          _ref = $await_2, stdout = _ref.stdout;
+
+          try {
+            assert(stdout === expected);
+          } catch (err) {
+            diff = jsdiff.diffChars(stripAnsi(expected), stripAnsi(stdout));
+            diff.forEach(function (part) {
+              var color = part.added ? 'green' : part.removed ? 'red' : 'grey';
+              process.stderr.write(part.value[color]);
+            });
+            throw new Error('Result did not match expected');
+          }
+
+          return $return();
+        } catch ($boundEx) {
+          return $error($boundEx);
+        }
+      }.bind(this), $error);
+    }.bind(this));
+  }
+
+};
+module.exports = integrationTestSuite;
