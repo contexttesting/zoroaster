@@ -99,7 +99,7 @@ const expectedWin = ` [fixtures_path]
    \u001b[32m ✓ \u001b[0m test5
    \u001b[31m ✗ \u001b[0m test6
     | Error: Error from Promise constructor
-    |     at Timeout.setTimeout [as _onTimeout] ([fixture_path]:17:16)
+    |     at Timeout.setTimeout [as _onTimeout] ([fixture_path_async]:17:16)
 
 \u001b[31m[fixtures_path] > test_suite.js > test2\u001b[0m
   Error: When you are in doubt abstain.
@@ -107,7 +107,7 @@ const expectedWin = ` [fixtures_path]
 
 \u001b[31m[fixtures_path] > test_suite.js > test6\u001b[0m
   Error: Error from Promise constructor
-      at Timeout.setTimeout [as _onTimeout] ([fixture_path]:17:16)
+      at Timeout.setTimeout [as _onTimeout] ([fixture_path_async]:17:16)
 
 Executed 6 tests: 2 errors.
 
@@ -127,7 +127,8 @@ if (/^win/.test(process.platform)) {
 }
 const expected = exp
   .replace(/\[fixtures_path\]/g, testSuiteDir)
-  .replace(/\[fixture_path\]/g, fixturePath.replace(/\\/g, '/'))
+  .replace(/\[fixture_path\]/g, fixturePath)
+  .replace(/\[fixture_path_async\]/g, fixturePath.replace(/\\/g, '/'))
   .replace(/\n/g, EOL)
 
 const integrationTestSuite = {
