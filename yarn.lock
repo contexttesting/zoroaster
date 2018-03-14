@@ -572,7 +572,7 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bestie@^1.0.0:
+bestie@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/bestie/-/bestie-1.0.0.tgz#1d501ca3590a88133689cc5950b477c1e566e227"
   dependencies:

@@ -5,10 +5,14 @@
   "main": "src",
   "scripts": {
     "test": "node run_tests",
+    "test-es5": "node run_tests --force",
     "watch": "node run_tests --watch",
     "build": "bestie bin,src,test,assert"
   },
-  "bin": "bin/zoroaster",
+  "bin": {
+    "zoroaster": "bin/zoroaster",
+    "zoroasterEs5": "es5/bin/zoroaster"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sobesednik/zoroaster.git"
@@ -31,7 +35,7 @@
     "spawncommand": "1.1.0"
   },
   "devDependencies": {
-    "bestie": "^1.0.0",
+    "bestie": "1.0.0",
     "colors": "1.2.1",
     "diff": "3.5.0",
     "noddy": "^1.1.1",
