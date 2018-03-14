@@ -22,19 +22,19 @@ const lib = require('./lib')
  * @todo: check for data to be an object to control this error
  */
 function createTestSuiteStackStream() {
-    const testSuiteStack = []
-    const ts = new Transform({ objectMode: true })
-    ts._transform = (data, encoding, callback) => {
-        if (data.type === 'test-suite-start') {
-            testSuiteStack.push(data.name)
-        } else if (data.type === 'test-suite-end') {
-            testSuiteStack.pop()
-        }
-        const stack = testSuiteStack.slice()
-        ts.push(Object.assign(data, { stack }))
-        callback()
+  const testSuiteStack = []
+  const ts = new Transform({ objectMode: true })
+  ts._transform = (data, encoding, callback) => {
+    if (data.type === 'test-suite-start') {
+      testSuiteStack.push(data.name)
+    } else if (data.type === 'test-suite-end') {
+      testSuiteStack.pop()
     }
-    return ts
+    const stack = testSuiteStack.slice()
+    ts.push(Object.assign(data, { stack }))
+    callback()
+  }
+  return ts
 }
 
 /**
@@ -49,19 +49,19 @@ function createTestSuiteStackStream() {
  * @returns {Transform}
  */
 function createProgressTransformStream() {
-    const ts = new Transform({ objectMode: true })
-    ts._transform = (data, encoding, callback) => {
-        if (data.type === 'test-suite-start') {
-            ts.push(lib.indent(data.name, lib.getPadding(data.stack.length)))
-            ts.push(EOL)
-        } else if (data.type === 'test-end') {
-            const res = data.result
-            ts.push(lib.indent(res, lib.getPadding(data.stack.length)))
-            ts.push(EOL)
-        }
-        callback()
+  const ts = new Transform({ objectMode: true })
+  ts._transform = (data, encoding, callback) => {
+    if (data.type === 'test-suite-start') {
+      ts.push(lib.indent(data.name, lib.getPadding(data.stack.length)))
+      ts.push(EOL)
+    } else if (data.type === 'test-end') {
+      const res = data.result
+      ts.push(lib.indent(res, lib.getPadding(data.stack.length)))
+      ts.push(EOL)
     }
-    return ts
+    callback()
+  }
+  return ts
 }
 
 /**
@@ -72,22 +72,22 @@ function createProgressTransformStream() {
  * data[name]
  */
 function createErrorTransformStream() {
-    const ts = new Transform({ objectMode: true })
-    ts._transform = (data, encoding, callback) => {
-        if (!data.error) {
-            return callback()
-        }
-        ts.push('\x1b[31m')
-        ts.push(data.stack.join(' > '))
-        ts.push(` > ${data.name}`)
-        ts.push('\x1b[0m')
-        ts.push(EOL)
-        ts.push(lib.indent(lib.filterStack(data.test), '  '))
-        ts.push(EOL)
-        ts.push(EOL)
-        callback()
+  const ts = new Transform({ objectMode: true })
+  ts._transform = (data, encoding, callback) => {
+    if (!data.error) {
+      return callback()
     }
-    return ts
+    ts.push('\x1b[31m')
+    ts.push(data.stack.join(' > '))
+    ts.push(` > ${data.name}`)
+    ts.push('\x1b[0m')
+    ts.push(EOL)
+    ts.push(lib.indent(lib.filterStack(data.test), '  '))
+    ts.push(EOL)
+    ts.push(EOL)
+    callback()
+  }
+  return ts
 }
 
 /* This needs to be a `drain`* */
@@ -106,7 +106,7 @@ function createErrorTransformStream() {
  */
 
 module.exports = {
-    createTestSuiteStackStream,
-    createProgressTransformStream,
-    createErrorTransformStream,
+  createTestSuiteStackStream,
+  createProgressTransformStream,
+  createErrorTransformStream,
 }

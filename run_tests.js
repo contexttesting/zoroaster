@@ -11,7 +11,7 @@ const spec = path.join(__dirname, 'test', 'spec')
 const args = [spec]
 
 if (process.argv.find(argv => argv === '--watch')) {
-    args.push('--watch')
+  args.push('--watch')
 }
 
 const fork = cp.fork(zoroaster, args)

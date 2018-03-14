@@ -14,16 +14,16 @@ const zoroasterBin = path.join(__dirname, '../../bin/zoroaster')
 
 let nodeVersion
 if (process.version.startsWith('v4')) {
-    nodeVersion = 4
+  nodeVersion = 4
 }
 if (process.version.startsWith('v6')) {
-    nodeVersion = 6
+  nodeVersion = 6
 }
 if (process.version.startsWith('v7')) {
-    nodeVersion = 7
+  nodeVersion = 7
 }
 if (process.version.startsWith('v8')) {
-    nodeVersion = 8
+  nodeVersion = 8
 }
 
 const expected7 = ` [fixtures_path]
@@ -128,61 +128,61 @@ Executed 6 tests: 2 errors.
 
 let exp
 if (/^win/.test(process.platform)) {
-    exp = expectedWin
+  exp = expectedWin
 } else if (nodeVersion === 8) {
-    exp = expected7
+  exp = expected7
 } else if (nodeVersion === 7) {
-    exp = expected7
+  exp = expected7
 } else if (nodeVersion === 6) {
-    exp = expected6
+  exp = expected6
 } else if (nodeVersion === 4) {
-    exp = expected4
+  exp = expected4
 }
 const expected = exp
-    .replace(/\[fixtures_path\]/g, testSuiteDir)
-    .replace(/\[fixture_path\]/g, fixturePath)
-    .replace(/\n/g, EOL)
+  .replace(/\[fixtures_path\]/g, testSuiteDir)
+  .replace(/\[fixture_path\]/g, fixturePath)
+  .replace(/\n/g, EOL)
 
 const integrationTestSuite = {
-    'should produce correct output': () => {
-        let program
-        let args
-        if (!/^win/.test(process.platform)) { // linux
-            program = zoroasterBin
-            args = [testSuiteDir]
-        } else { // windows
-            program = process.env.comspec
-            args = ['/c', 'node', zoroasterBin, testSuiteDir]
+  'should produce correct output': () => {
+    let program
+    let args
+    if (!/^win/.test(process.platform)) { // linux
+      program = zoroasterBin
+      args = [testSuiteDir]
+    } else { // windows
+      program = process.env.comspec
+      args = ['/c', 'node', zoroasterBin, testSuiteDir]
+    }
+    const zoroaster = spawnCommand(program, args)
+    return zoroaster.promise
+      .then(res => {
+        try {
+          assert(res.stdout === expected)
+        } catch (err) {
+          throw new Error(res.stdout)
         }
-        const zoroaster = spawnCommand(program, args)
-        return zoroaster.promise
-            .then(res => {
-                try {
-                    assert(res.stdout === expected)
-                } catch (err) {
-                    throw new Error(res.stdout)
-                }
-            })
-            .catch((err) => {
-                // console.log('Received:')
-                // console.log(err.message)
-                // console.log('Expected:')
-                // console.log(expected)
-                const diff = jsdiff.diffChars(expected, err.message)
-                diff.forEach((part) => {
-                    void part
-                    // if (part.added) console.log('+', { v: part.value })
-                    // if (part.removed) console.log('-', { v: part.value })
-                    // console.log(part.value)
-                    // const color =
-                    //     part.added ? '+' :
-                    //     part.removed ? '-' : ''
-                    // process.stderr.write(`[${color}${part.value}${color}]`)
-                })
-                // console.log()
-                throw new Error('Result did not match expected')
-            })
-    },
+      })
+      .catch((err) => {
+        // console.log('Received:')
+        // console.log(err.message)
+        // console.log('Expected:')
+        // console.log(expected)
+        const diff = jsdiff.diffChars(expected, err.message)
+        diff.forEach((part) => {
+          void part
+          // if (part.added) console.log('+', { v: part.value })
+          // if (part.removed) console.log('-', { v: part.value })
+          // console.log(part.value)
+          // const color =
+          //     part.added ? '+' :
+          //     part.removed ? '-' : ''
+          // process.stderr.write(`[${color}${part.value}${color}]`)
+        })
+        // console.log()
+        throw new Error('Result did not match expected')
+      })
+  },
 }
 
 module.exports = integrationTestSuite
