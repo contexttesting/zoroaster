@@ -36,3 +36,4 @@ if (process.argv.find(argv => argv === '--watch')) {
 }
 
 fork(node, args)
+  .on('exit', process.exit)
