@@ -8,7 +8,7 @@
     "watch": "node run_tests --watch",
     "website": "splendid website/pages.js --watch"
   },
-  "bin": "./bin/zoroaster",
+  "bin": "bin/zoroaster",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sobesednik/zoroaster.git"
@@ -16,23 +16,23 @@
   "keywords": [
     "test"
   ],
-  "author": "Anton <anton@sobesednik.media>",
+  "author": "Anton <anton@sobes.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Sobesednik/zoroaster/issues"
   },
   "homepage": "https://github.com/Sobesednik/zoroaster#readme",
   "dependencies": {
-    "assert-diff": "1.2.4",
+    "assert-diff": "1.2.5",
     "assert-throws": "1.3.0",
-    "catchment": "1.0.0",
+    "catchment": "2.0.1",
     "clean-stack": "1.3.0",
     "promto": "1.0.1",
     "spawncommand": "1.1.0"
   },
   "devDependencies": {
-    "colors": "1.1.2",
-    "diff": "3.4.0",
+    "colors": "1.2.1",
+    "diff": "3.5.0",
     "splendid": "1.2.0"
   }
 }

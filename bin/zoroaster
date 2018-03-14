@@ -3,8 +3,8 @@
 const fs = require('fs')
 const path = require('path')
 const Catchment = require('catchment')
+const { EOL } = require('os')
 
-const EOL = require('os').EOL
 const TestSuite = require('../src/test_suite')
 const lib = require('../src/lib')
 const stream = require('../src/stream')
@@ -98,8 +98,7 @@ function test(testSuites, watch, currentlyWatching) {
     testSuiteStackTS.pipe(progressTS).pipe(process.stdout)
     testSuiteStackTS.pipe(errorTS)
 
-    const catchment = new Catchment()
-    errorTS.pipe(catchment)
+    const catchment = new Catchment({ rs: errorTS })
 
     const count = {
         total: 0,
