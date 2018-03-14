@@ -1,8 +1,6 @@
-'use strict'
-
-const EOL = require('os').EOL
-const lib = require('./lib')
+const { EOL } = require('os')
 const promto = require('promto')
+const lib = require('./lib')
 
 /**
  * Create a new test object.
@@ -13,7 +11,7 @@ const promto = require('promto')
  * @return {Test} A test object with inialised properties.
  */
 class Test {
-  constructor (name, fn, timeout, context) {
+  constructor(name, fn, timeout, context) {
     this.timeout = timeout || 2000
     this.name = name
     this.fn = fn
@@ -29,29 +27,27 @@ class Test {
   }
 
   /**
-     * Run the test.
-     * @param {function} notify - notify function
-     */
-  run(notify) {
+   * Run the test.
+   * @param {function} notify - notify function
+   */
+  async run(notify) {
     if (typeof notify === 'function') {
       notify({
-        type:'test-start',
+        type: 'test-start',
         name: this.name,
       })
     }
-    return runTest(this)
-      .then((res) => {
-        if (typeof notify === 'function') {
-          notify({
-            test: this,
-            type:'test-end',
-            name: this.name,
-            result: this.dump(),
-            error: this.error,
-          })
-        }
-        return res
+    const res = await runTest(this)
+    if (typeof notify === 'function') {
+      notify({
+        test: this,
+        type: 'test-end',
+        name: this.name,
+        result: this.dump(),
+        error: this.error,
       })
+    }
+    return res
   }
   dump() {
     return dumpResult(this)
@@ -60,51 +56,38 @@ class Test {
     return this.error !== null
   }
   /**
-     * Return test's context (if context is a function, it will be overriden by the
-     * end of the test run with evaluated context function).
-     * @returns {object|function} context in current state
-     */
+   * Return test's context (if context is a function, it will be overriden by the
+   * end of the test run with evaluated context function).
+   * @returns {object|function} context in current state
+   */
   get context() {
     return this._context
   }
 
   /**
-     * If context is a function, it will be replaced by the result of evaluating this function
-     * @returns {Promise} A promise which will be resolved when context could be retrieved (because
-     * context passed as a function can return a promise, to allow async evaluation of context).
-     */
-  _evaluateContext() {
-    const context = this.context
-    const type = (typeof context).toLowerCase()
-
-    if (type !== 'function') {
-      return Promise.resolve(context)
+   * Evaluate context function. The context function
+   */
+  async _evaluateContext() {
+    const { context } = this
+    if ((typeof context).toLowerCase() !== 'function') {
+      return
     }
-    const cntxt = {}
-    try {
-      const res = context.call(cntxt)
 
-      if (res instanceof Promise) {
-        return res
-          .then(() => {
-            this._context = cntxt
-            return cntxt
-          })
-      }
-      this._context = cntxt
-      return Promise.resolve(cntxt)
-    } catch (err) {
-      return Promise.reject(err)
-    }
+    const c = {}
+    await context.call(c)
+    this._context = c
   }
 }
 
+const TICK = '\x1b[32m \u2713 \x1b[0m'
+const CROSS = '\x1b[31m \u2717 \x1b[0m'
+
 function dumpResult(test) {
   if (test.error === null) {
-    return '\x1b[32m \u2713 \x1b[0m ' + test.name
+    return `${TICK} ${test.name}`
   } else {
-    return '\x1b[31m \u2717 \x1b[0m ' + test.name + EOL
-            + lib.indent(lib.filterStack(test), ' | ')
+    return `${CROSS} ${test.name}` + EOL
+      + lib.indent(lib.filterStack(test), ' | ')
   }
 }
 
@@ -114,44 +97,45 @@ function dumpResult(test) {
  * @param {object} ctx - first argument to pass to the function
  * @return {Promise} A promise to execute function.
  */
-function createTestPromise(fn, ctx) {
-  return Promise
-    .resolve()
-    .then(() => fn(ctx))
+async function createTestPromise(fn, ctx) {
+  const res = await fn(ctx)
+  return res
 }
 
-function plainDestroyContext(test) {
+async function plainDestroyContext(test) {
   if (test.context && typeof test.context._destroy === 'function') {
-    return Promise.resolve()
-      .then(() => test.context._destroy())
+    const res = await test.context._destroy()
+    return res
   }
-  return Promise.resolve()
 }
 
 /**
- * Returns a promise to run a test.
- * @param {Test} test - a test to run
- * @return {Promise} A promise resolved with the run test.
+ * Asynchronously runs the test
+ * @param {Test} test A test to run.
+ * @return {Promise.<Test>} A promise resolved with the run test.
  */
-function runTest(test) {
+async function runTest(test) {
   test.started = new Date()
 
-  return promto(test._evaluateContext(), test.timeout, 'Evaluate')
-    .then((context) => {
-      const testPromise = createTestPromise(test.fn, context)
-      return promto(testPromise, test.timeout, 'Test')
-    })
-    .then((res) => { test.result = res }, (err) => { test.error = err })
-    .then(() => {
-      const destroyPromise = plainDestroyContext(test)
-      const destroyPromiseWithTimeout = promto(destroyPromise, test.timeout, 'Destroy')
-      return destroyPromiseWithTimeout
-    })
-    .then((res) => { test.destroyResult = res }, (err) => { test.error = err })
-    .then(() => {
-      test.finished = new Date()
-      return test
-    })
+  try {
+    const evaluateContext = test._evaluateContext()
+    await promto(evaluateContext, test.timeout, 'Evaluate')
+
+    const run = createTestPromise(test.fn, test.context)
+    test.result = await promto(run, test.timeout, 'Test')
+  } catch (err) {
+    test.error = err
+  }
+
+  try {
+    const destroyContext = plainDestroyContext(test)
+    test.destroyResult = await promto(destroyContext, test.timeout, 'Destroy')
+  } catch (err) {
+    test.error = err
+  }
+
+  test.finished = new Date()
+  return test
 }
 
 module.exports = Test

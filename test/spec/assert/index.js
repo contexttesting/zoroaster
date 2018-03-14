@@ -6,7 +6,7 @@ const deepEqual = assertSrc.deepEqual
 const testAssert = assertSrc.assert
 
 const assertTestSuite = {
-  'should throw if not equal'() {
+  'throws if not equal'() {
     try {
       equal('a', 'b')
       throw new Error('should have thrown')
@@ -16,7 +16,7 @@ const assertTestSuite = {
       assert.equal(error.expected, 'b')
     }
   },
-  'should throw if not deep equal'() {
+  'throws if not deep equal'() {
     try {
       deepEqual({ test: 'string' }, { test: 'string-2' })
       throw new Error('should have thrown')
@@ -26,7 +26,7 @@ const assertTestSuite = {
       assert(/- {2}test: "string-2"/.test(message))
     }
   },
-  'should throw if not true'() {
+  'throws if not true'() {
     try {
       testAssert(false)
       throw new Error('should have thrown')

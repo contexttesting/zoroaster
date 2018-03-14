@@ -1,40 +1,36 @@
 const assert = require('assert')
 const zoroaster = require('../../index')
-const path = require('path')
+const { resolve } = require('path')
 
-const TEST_SUITE_PATH = path.join(__dirname, '../fixtures/test_suite.js')
+const TEST_SUITE_PATH = resolve(__dirname, '../fixtures/test_suite.js')
 
 const indexTestSuite = {
-  'should export a function': () => {
+  'exports a function'() {
     assert.equal(typeof zoroaster, 'function')
   },
-  'should return a child process': () => {
+  async 'returns a child process'() {
     const proc = zoroaster()
     assert(proc instanceof require('child_process').ChildProcess)
-    return proc.promise
+    await proc.promise
   },
-  'should return a promise': () => {
+  async 'returns a promise'() {
     const proc = zoroaster()
     assert(proc.promise instanceof Promise)
-    return proc.promise
+    await proc.promise
   },
-  'should report on 0 tests executed when empty args': () => {
+  async 'reports on 0 tests executed when empty args'() {
     const proc = zoroaster()
     assert(proc.promise instanceof Promise)
-    return proc.promise
-      .then((res) => {
-        assert.equal('Executed 0 tests.', res.stdout.trim())
-      })
+    const res = await proc.promise
+    assert.equal('Executed 0 tests.', res.stdout.trim())
   },
-  'should report on test suite executed': () => {
+  async 'should report on test suite executed'() {
     const proc = zoroaster([TEST_SUITE_PATH])
     assert(proc.promise instanceof Promise)
-    return proc.promise
-      .then((res) => {
-        assert.equal(res.stderr, '')
-        assert.equal(res.code, 1) // test fixtures not passing
-        assert(res.stdout.length > 100)
-      })
+    const res = await proc.promise
+    assert.equal(res.stderr, '')
+    assert.equal(res.code, 1) // test fixtures not passing
+    assert(res.stdout.length > 100)
   },
 }
 

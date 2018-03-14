@@ -1,18 +1,17 @@
 const cleanStack = require('clean-stack')
-
-const EOL = require('os').EOL
+const { EOL } = require('os')
 
 /**
  * Run all tests in sequence, one by one.
- * @param {Array<Test>} tests An array with tests
+ * @param {Test[]} tests An array with tests
  * @param {function} [notify] A notify function to be passed to run method
  */
-function runInSequence(tests, notify) {
+async function runInSequence(tests, notify) {
+  await tests.reduce(async (acc, t) => {
+    await acc
+    await t.run(notify)
+  }, Promise.resolve())
   return tests
-    .reduce((acc, t) =>
-      acc.then(() => t.run(notify))
-      , Promise.resolve())
-    .then(() => tests)
 }
 
 function indent(str, padding) {
@@ -46,22 +45,18 @@ function checkTestSuiteName(name) {
  * Get clean stack for a test, without Node internals
  * @param {Test} test - test
  */
-function filterStack(test) {
-  if (!test.error) {
+function filterStack({ error, name }) {
+  if (!error) {
     throw new Error('cannot filter stack when a test does not have an error')
   }
-  const splitStack = test.error.stack.split('\n') // break stack by \n and not EOL intentionally because Node uses \n
+  const splitStack = error.stack.split('\n') // break stack by \n and not EOL intentionally because Node uses \n
   // node 4 will print: at test_suite.test2
   // node 6 will print: at test2
-  const regex = new RegExp(`at (.+\.)?${test.name}`)
+  const regex = new RegExp(`at (.+\.)?${name}`)
   const resIndex = splitStack.findIndex(element => regex.test(element)) + 1
   const joinedStack = splitStack.slice(0, resIndex).join('\n')
-  const stack = joinedStack ? joinedStack : cleanStack(test.error.stack) // use clean stack for async errors
+  const stack = joinedStack ? joinedStack : cleanStack(error.stack) // use clean stack for async errors
   return stack.replace(/\n/g, EOL)
-}
-
-function isString(s) {
-  return typeof(s).toLowerCase() === 'string'
 }
 
 module.exports = {
@@ -71,5 +66,4 @@ module.exports = {
   checkContext,
   checkTestSuiteName,
   filterStack,
-  isString,
 }

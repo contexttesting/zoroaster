@@ -4,18 +4,20 @@ const testSuite = {
   context: {
     errorMessage,
   },
-  test1: () => {},
-  test2: (ctx) => { throw new Error(ctx.errorMessage) },
-  test3: () => Promise.resolve(),
+  test1() {},
+  test2(ctx) { throw new Error(ctx.errorMessage) },
+  async test3() {},
   test4: () => 'test result',
-  test5: () => new Promise(resolve => {
-    setTimeout(resolve, 100)
-  }),
-  test6: () => new Promise((_, reject) => {
-    setTimeout(() =>
-      reject(new Error('Error from Promise constructor'))
-      , 100)
-  }),
+  async test5() {
+    await new Promise(r => setTimeout(r, 100))
+  },
+  async test6() {
+    await new Promise((_, reject) => {
+      setTimeout(() =>
+        reject(new Error('Error from Promise constructor'))
+        , 100)
+    })
+  },
 }
 
 module.exports = testSuite

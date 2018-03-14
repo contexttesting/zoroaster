@@ -5,7 +5,7 @@ const equal = assert.equal
 const strictEqual = assert.strictEqual
 
 const throwsTestSuite = {
-  'should assert on async error'() {
+  'asserts on async error'() {
     return throws({
       fn() {
         const err = new Error('test-error')
@@ -14,14 +14,14 @@ const throwsTestSuite = {
       message: 'test-error',
     })
   },
-  'should assert on sync error and fail'() {
+  'asserts on sync error and fail'() {
     return throws({
       fn() { },
     }).catch((error) => {
       equal(error.message, 'Function should have thrown')
     })
   },
-  'should assert on async error by code and fail'() {
+  'asserts on async error by code and fail'() {
     return throws({
       fn() {
         const err = new Error('test-error')
@@ -33,7 +33,7 @@ const throwsTestSuite = {
       equal(error.message, 'TER != TERRA')
     })
   },
-  'should throw when asserting on error strict equality'() {
+  'throws when asserting on error strict equality'() {
     const error = new Error('test-error')
     return throws({
       fn() {
@@ -44,7 +44,7 @@ const throwsTestSuite = {
       equal(error.message, 'Error: test-error is not strict equal to Error: test-error-assert.')
     })
   },
-  'should assert on error strict equality'() {
+  'asserts on error strict equality'() {
     const error = new Error('test-error')
     return throws({
       fn() {
@@ -53,7 +53,7 @@ const throwsTestSuite = {
       error,
     })
   },
-  'should assert on error message with regular expression'() {
+  'asserts on error message with regular expression'() {
     return throws({
       fn() {
         return Promise.reject(new Error('test-error'))
@@ -61,7 +61,7 @@ const throwsTestSuite = {
       message: /test-error/,
     })
   },
-  'should return the thrown error'() {
+  'returns the thrown error'() {
     const error = new Error('test-error')
     return throws({
       fn() {
@@ -72,7 +72,7 @@ const throwsTestSuite = {
       strictEqual(res, error)
     })
   },
-  'should throw when asserting on error message with regular expression'() {
+  'throws when asserting on error message with regular expression'() {
     return throws({
       fn() {
         return Promise.reject(new Error('test-error'))

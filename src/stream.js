@@ -1,6 +1,6 @@
 const Transform = require('stream').Transform
 const EOL = require('os').EOL
-const lib = require('./lib')
+const { getPadding, indent, filterStack } = require('./lib')
 
 /**
  * The whole file needs testing when you are especially (depressed)
@@ -23,17 +23,19 @@ const lib = require('./lib')
  */
 function createTestSuiteStackStream() {
   const testSuiteStack = []
-  const ts = new Transform({ objectMode: true })
-  ts._transform = (data, encoding, callback) => {
-    if (data.type === 'test-suite-start') {
-      testSuiteStack.push(data.name)
-    } else if (data.type === 'test-suite-end') {
-      testSuiteStack.pop()
-    }
-    const stack = testSuiteStack.slice()
-    ts.push(Object.assign(data, { stack }))
-    callback()
-  }
+  const ts = new Transform({
+    objectMode: true,
+    transform({ type, name, ...props }, encoding, callback) {
+      if (type === 'test-suite-start') {
+        testSuiteStack.push(name)
+      } else if (type === 'test-suite-end') {
+        testSuiteStack.pop()
+      }
+      const stack = testSuiteStack.slice()
+      ts.push({ type, name, stack, ...props })
+      callback()
+    },
+  })
   return ts
 }
 
@@ -49,18 +51,19 @@ function createTestSuiteStackStream() {
  * @returns {Transform}
  */
 function createProgressTransformStream() {
-  const ts = new Transform({ objectMode: true })
-  ts._transform = (data, encoding, callback) => {
-    if (data.type === 'test-suite-start') {
-      ts.push(lib.indent(data.name, lib.getPadding(data.stack.length)))
-      ts.push(EOL)
-    } else if (data.type === 'test-end') {
-      const res = data.result
-      ts.push(lib.indent(res, lib.getPadding(data.stack.length)))
-      ts.push(EOL)
-    }
-    callback()
-  }
+  const ts = new Transform({
+    objectMode: true,
+    transform({ type, name, stack, result }, encoding, callback) {
+      if (type === 'test-suite-start') {
+        this.push(indent(name, getPadding(stack.length)))
+        this.push(EOL)
+      } else if (type === 'test-end') {
+        this.push(indent(result, getPadding(stack.length)))
+        this.push(EOL)
+      }
+      callback()
+    },
+  })
   return ts
 }
 
@@ -72,21 +75,23 @@ function createProgressTransformStream() {
  * data[name]
  */
 function createErrorTransformStream() {
-  const ts = new Transform({ objectMode: true })
-  ts._transform = (data, encoding, callback) => {
-    if (!data.error) {
-      return callback()
-    }
-    ts.push('\x1b[31m')
-    ts.push(data.stack.join(' > '))
-    ts.push(` > ${data.name}`)
-    ts.push('\x1b[0m')
-    ts.push(EOL)
-    ts.push(lib.indent(lib.filterStack(data.test), '  '))
-    ts.push(EOL)
-    ts.push(EOL)
-    callback()
-  }
+  const ts = new Transform({
+    objectMode: true,
+    transform({ error, stack, name, test }, encoding, callback) {
+      if (!error) {
+        return callback()
+      }
+      this.push('\x1b[31m')
+      this.push(stack.join(' > '))
+      this.push(` > ${name}`)
+      this.push('\x1b[0m')
+      this.push(EOL)
+      this.push(indent(filterStack(test), '  '))
+      this.push(EOL)
+      this.push(EOL)
+      callback()
+    },
+  })
   return ts
 }
 

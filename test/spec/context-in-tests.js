@@ -1,12 +1,10 @@
-'use strict'
-
 const assert = require('assert')
 const TestSuite = require('../../src/test_suite')
 const lib = require('../lib')
 const TEST_SUITE_NAME = 'test-suite'
 
 module.exports = {
-  'context as a function will be executed for each test': () => {
+  async 'executes context as a function in each test'() {
     const testData = 'some-test-data'
     const newTestData = 'some-new-test-data'
     const propName = 'testData'
@@ -15,7 +13,7 @@ module.exports = {
     let firstContext
     let secondContext
 
-    const makeContext = function Context() {
+    function Context() {
       let _testData = testData
       getterCalled = false
       setterCalled = false
@@ -32,7 +30,7 @@ module.exports = {
     }
 
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      testA: (ctx) => {
+      testA(ctx) {
         assert(!getterCalled)
         assert(!setterCalled)
         assert.equal(ctx.testData, testData)
@@ -42,23 +40,21 @@ module.exports = {
         assert.equal(ctx.testData, newTestData)
         firstContext = ctx
       },
-      testB: (ctx) => { // context is called each time for every test
+      testB(ctx) { // context is called each time for every test
         assert(!getterCalled)
         assert(!setterCalled)
         assert.equal(ctx.testData, testData)
         assert(getterCalled)
         secondContext = ctx
       },
-    }, null, makeContext)
-    return testSuite.run()
-      .then(() => {
-        lib.assertNoErrosInTestSuite(testSuite)
-        assert.notStrictEqual(firstContext, secondContext)
-        assert.equal(firstContext[propName], newTestData)
-        assert.equal(secondContext[propName], testData)
-      })
+    }, null, Context)
+    await testSuite.run()
+    lib.assertNoErrosInTestSuite(testSuite)
+    assert.notStrictEqual(firstContext, secondContext)
+    assert.equal(firstContext[propName], newTestData)
+    assert.equal(secondContext[propName], testData)
   },
-  'context as a function will be executed for each test (as prop)': () => {
+  async 'executes context as a function in each test (as prop)'() {
     const testData = 'some-test-data'
     const newTestData = 'some-new-test-data'
     const propName = 'testData'
@@ -67,7 +63,7 @@ module.exports = {
     let firstContext
     let secondContext
 
-    const makeContext = function Context() {
+    function Context() {
       let _testData = testData
       getterCalled = false
       setterCalled = false
@@ -84,8 +80,8 @@ module.exports = {
     }
 
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context: makeContext,
-      testA: (ctx) => {
+      context: Context,
+      testA(ctx) {
         assert(!getterCalled)
         assert(!setterCalled)
         assert.equal(ctx.testData, testData)
@@ -95,7 +91,7 @@ module.exports = {
         assert.equal(ctx.testData, newTestData)
         firstContext = ctx
       },
-      testB: (ctx) => { // context is called each time for every test
+      testB(ctx) { // context is called each time for every test
         assert(!getterCalled)
         assert(!setterCalled)
         assert.equal(ctx.testData, testData)
@@ -103,15 +99,13 @@ module.exports = {
         secondContext = ctx
       },
     })
-    return testSuite.run()
-      .then(() => {
-        lib.assertNoErrosInTestSuite(testSuite)
-        assert.notStrictEqual(firstContext, secondContext)
-        assert.equal(firstContext[propName], newTestData)
-        assert.equal(secondContext[propName], testData)
-      })
+    await testSuite.run()
+    lib.assertNoErrosInTestSuite(testSuite)
+    assert.notStrictEqual(firstContext, secondContext)
+    assert.equal(firstContext[propName], newTestData)
+    assert.equal(secondContext[propName], testData)
   },
-  'should wait until promise returned by context is resolved': () => {
+  async 'waits until promise returned by context is resolved'() {
     const testData = 'some-test-data'
     const testDataAfterPromise = 'test-data-after-promise'
     const newTestData = 'some-new-test-data'
@@ -119,7 +113,7 @@ module.exports = {
     let secondContext
     const propName = 'testData'
 
-    const makeContext = function Context() {
+    async function Context() {
       let _testData = testData
       Object.defineProperty(this, propName, {
         get: () => {
@@ -129,7 +123,7 @@ module.exports = {
           _testData = value
         },
       })
-      return new Promise(r => {
+      await new Promise(r => {
         setTimeout(() => {
           _testData = testDataAfterPromise
           r()
@@ -138,38 +132,34 @@ module.exports = {
     }
 
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context: makeContext,
-      testA: (ctx) => {
+      context: Context,
+      testA(ctx) {
         assert.equal(ctx.testData, testDataAfterPromise)
         ctx.testData = newTestData
         firstContext = ctx
       },
-      testB: (ctx) => {
+      testB(ctx) {
         assert.equal(ctx.testData, testDataAfterPromise)
         secondContext = ctx
       },
     })
-    return testSuite.run()
-      .then(() => {
-        lib.assertNoErrosInTestSuite(testSuite)
-        assert.notStrictEqual(firstContext, secondContext)
-        assert.equal(firstContext[propName], newTestData)
-        assert.equal(secondContext[propName], testDataAfterPromise)
-      })
+    await testSuite.run()
+    lib.assertNoErrosInTestSuite(testSuite)
+    assert.notStrictEqual(firstContext, secondContext)
+    assert.equal(firstContext[propName], newTestData)
+    assert.equal(secondContext[propName], testDataAfterPromise)
   },
-  'should timeout before context finishes resolving': () => {
-    const makeContext = function Context() {
-      return new Promise(r => setTimeout(r, 200))
+  async 'times out before context finishes resolving'() {
+    async function Context() {
+      await new Promise(r => setTimeout(r, 200))
     }
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      'should timeout': () => {},
-    }, null, makeContext, 150)
-    return testSuite.run()
-      .then(() => {
-        assert.throws(
-          () => lib.assertNoErrosInTestSuite(testSuite),
-          /Error in test "test-suite > should timeout": Evaluate has timed out after 150ms/
-        )
-      })
+      'should timeout'() { },
+    }, null, Context, 150)
+    await testSuite.run()
+    assert.throws(
+      () => lib.assertNoErrosInTestSuite(testSuite),
+      /Error in test "test-suite > should timeout": Evaluate has timed out after 150ms/
+    )
   },
 }

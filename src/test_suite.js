@@ -1,8 +1,6 @@
-'use strict'
-
+const { EOL } = require('os')
 const lib = require('./lib')
 const Test = require('./test')
-const EOL = require('os').EOL
 
 const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
 
@@ -52,6 +50,7 @@ class TestSuite {
   get timeout() {
     return this._timeout
   }
+
   _assignContext(context) {
     if ((typeof context).toLowerCase() === 'function') {
       this._context = context
@@ -73,9 +72,9 @@ class TestSuite {
   }
 
   /**
-     * Recursively require files for a test suite.
-     * @todo require for a single test
-     */
+   * Recursively require files for a test suite.
+   * @todo require for a single test
+   */
   require() {
     if (this._path) {
       const tests = requireModule(this._path)
@@ -89,23 +88,20 @@ class TestSuite {
   }
 
   /**
-     * Run test suite.
-     */
-  run(notify) {
+   * Run test suite.
+   */
+  async run(notify) {
     if (typeof notify === 'function') {
       notify({
         type:'test-suite-start',
         name: this.name,
       })
     }
-    return lib
-      .runInSequence(this.tests, notify)
-      .then((res) => {
-        if (typeof notify === 'function') {
-          notify({ type:'test-suite-end', name: this.name })
-        }
-        return res
-      })
+    const res = await lib.runInSequence(this.tests, notify)
+    if (typeof notify === 'function') {
+      notify({ type:'test-suite-end', name: this.name })
+    }
+    return res
   }
   dump() {
     const str = this.name + EOL + this.tests
