@@ -24,32 +24,3 @@ Executed 6 tests: 2 errors.
 `
 
 module.exports = expected8
-
-
-/**
-
-/Users/zavr/packages/zoroaster/test/fixtures
-   test_suite.js
-    ✓  test1
-    ✗  test2
-    | Error: When you are in doubt abstain.
-    |     at test2 (/Users/zavr/packages/zoroaster/test/fixtures/test_suite.js:8:22)
-    ✓  test3
-    ✓  test4
-    ✓  test5
-    ✗  test6
-    | Error: Error from Promise constructor
-    |     at Timeout.setTimeout [as _onTimeout] (/Users/zavr/packages/zoroaster/test/fixtures/test_suite.js:17:16)
-
-/Users/zavr/packages/zoroaster/test/fixtures > test_suite.js > test2
-  Error: When you are in doubt abstain.
-      at test2 (/Users/zavr/packages/zoroaster/test/fixtures/test_suite.js:8:22)
-
-/Users/zavr/packages/zoroaster/test/fixtures > test_suite.js > test6
-  Error: Error from Promise constructor
-      at Timeout.setTimeout [as _onTimeout] (/Users/zavr/packages/zoroaster/test/fixtures/test_suite.js:17:16)
-
-Executed 6 tests: 2 errors.
-
-
- */
