@@ -1,3 +1,8 @@
+<a name="1.0.0"></a>
+## [1.0.0](https://github.com/Sobesednik/zoroaster/compare/v0.5.3...v1.0.0) (15 March 2018)
+
+- update to using ES7 syntax and provide `zoroaster-es5` support.
+
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/Sobesednik/zoroaster/compare/v0.5.2...v0.5.3) (2 January 2018)
 
