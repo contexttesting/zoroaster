@@ -93,8 +93,9 @@ describe('day') {
   it('should be light at day', () => {
     connections.open()
     connections.sendTime(12)
-    /* connections.close() <-- although connections are not closed in the test,
-                               they are closed by the tear-down */
+    // connections.close()
+    // ^ although connections are not closed in the test,
+    // they are closed by the tear-down
   })
 }
 ```
@@ -114,8 +115,8 @@ afterEach(() => {
 
 because
 
-* The variable `connections` are not not available in the individual test suites;
-* Both functions will be run for higher-level test suites (such as `earth`) as well, which is not desirable.
+* the variable `connections` are not not available in the individual test suites;
+* both functions will be run for higher-level test suites (such as `earth`) as well, which is not desirable.
 
 ### Context as Alternative Solution
 
@@ -178,10 +179,11 @@ const nightTestSuite = {
 }
 ```
 
-A cool thing is that you can destructure the context argument to test functions.
+A cool thing is that you can destructure the context argument and declare only
+the bits of the context that you're interested in.
 
 ```js
-// test/spec/day
+// test/spec/light/day
 import { context } from '../context'
 
 const dayTestSuite = {
@@ -199,28 +201,29 @@ Consequently, all of this means that test contexts can be tested separately,
 which is perfect for when it is required to ensure quality of tests.
 
 In this section, we tried to give a brief overview of why `zoroaster` with its
-`Contexts` should become your new daily routine -- mainly that you're not tied
-to the limitation which `beforeEach` and `afterEach` have in _other_ testing
-frameworks, such as inability to organise test cases as files in directories.
+`Contexts` should become your new daily routine. The advantage is that you're
+more flexible in organising the `test` directory which is harder with
+`beforeEach` and `afterEach` in _other_ testing frameworks.
 
 ## Example
 
-See how you write tests with `Zoroaster` in this section.
+See how to write tests with `Zoroaster` in this section.
 
 First, create a module which exports a TEST SUITE as an object in the
 `test/spec` directory. Second, add TESTS as functions -- properties of the test
 suite. Implement the tests with basic assertion methods required from
 `zoroaster/assert`, or use any other assertion library.
 
-There are NO global functions. You need to know 2 things: tests are properties
-of test suites, and function names can have spaces.
+There are NO global functions. You need to know 2 things: tests are methods
+of test suites, and they can be written in shorthand notation
+(`var o = { foo(){} };`).
 
 ```js
-const { assert, equal } = require('zoroaster/assert')
-const Zoroaster = require('../src/Zoroaster')
+import { assert, equal } from 'zoroaster/assert'
+import Zoroaster from '../src/Zoroaster'
 
 const Zoroaster_test_suite = {
-  'should have static variables'() { // awesome
+  'should have static variables'() { // awesome shorthand method notation
     assert(Zoroaster.AHURA_MAZDA)
     assert(Zoroaster.ANGRA_MAINYU)
   },
@@ -258,8 +261,8 @@ Async functions are perfect to test with [`zoroaster testing framework`][2].
 
 ```js
 {
-  // ...
-  async 'should return true when balance of 1000 met'() { // wow what syntax
+  // wow what syntax
+  async 'should return true when balance of 1000 met'() {
     const zoroaster = new Zoroaster()
     zoroaster.createWorld()
     await Promise.all(
@@ -267,7 +270,7 @@ Async functions are perfect to test with [`zoroaster testing framework`][2].
         await zoroaster.side(Zoroaster.AHURA_MAZDA)
       })
     )
-    assert(zoroaster.balance === 1000)
+    equal(zoroaster.balance, 1000)
     assert(zoroaster.checkParadise())
   },
   // ...
@@ -394,8 +397,8 @@ can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 
 ### package.json
 
-To be able to run `yarn test`, and `npm test`, specify the test script in
-package.json as follows:
+To be able to run `yarn test`, or `npm test`, specify the test script in the
+`package.json` as follows:
 
 ```json
 {
@@ -414,27 +417,28 @@ object, it will be frozen and passed to the test cases as `ctx` argument.
 It can also be extended by inner test suites.
 
 ```js
-import { equal } from 'zoroaster/assert'
-
-const objectContext = {
-  context: {
-    name: 'Zarathustra',
-  },
-  'should set correct name'({ name }) {
-    const zoroaster = new Zoroaster()
-    equal(zoroaster.name, name)
-  },
-  innerMeta: {
-    // inner context extends outer one
+{
+  'object-context': {
     context: {
-      born: -628,
+      name: 'Zarathustra',
     },
-    'should return correct date of birth'({ name, born }) {
+    'should set correct name'({ name }) {
       const zoroaster = new Zoroaster()
       equal(zoroaster.name, name)
-      equal(zoroaster.dateOfBirth, born)
+    },
+    innerMeta: {
+      // inner context extends outer one
+      context: {
+        born: -628,
+      },
+      'should return correct date of birth'({ name, born }) {
+        const zoroaster = new Zoroaster()
+        equal(zoroaster.name, name)
+        equal(zoroaster.dateOfBirth, born)
+      },
     },
   },
+  // ...
 }
 ```
 
@@ -443,24 +447,25 @@ and its `this` used as a context for tests. The timeout for evaluation is equal
 to the test timeout.
 
 ```js
-import { equal } from 'zoroaster/assert'
-
-const asyncContext = {
-  async context() {
-    // an async set-up
-    await new Promise(r => setTimeout(r, 50))
-    this.getCountry = async () => 'Iran'
-
-    this._destroy = async () => {
-      // some async tear-down
+{
+  'async-context': {
+    async context() {
+      // an async set-up
       await new Promise(r => setTimeout(r, 50))
-    }
+      this.getCountry = async () => 'Iran'
+
+      this._destroy = async () => {
+        // some async tear-down
+        await new Promise(r => setTimeout(r, 50))
+      }
+    },
+    async 'should return correct country of origin'({ getCountry }) {
+      const zoroaster = new Zoroaster()
+      const expected = await getCountry()
+      equal(zoroaster.countryOfOrigin, expected)
+    },
   },
-  async 'should return correct country of origin'({ getCountry }) {
-    const zoroaster = new Zoroaster()
-    const expected = await getCountry()
-    equal(zoroaster.countryOfOrigin, expected)
-  },
+  // ...
 }
 ```
 
