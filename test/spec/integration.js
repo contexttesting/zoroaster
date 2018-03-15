@@ -8,6 +8,7 @@ const { EOL } = require('os')
 const { parseVersion } = require('noddy')
 const expectedWin = require('../snapshot/win')
 const expectedWin4 = require('../snapshot/win-4')
+const expectedWin6 = require('../snapshot/win-6')
 const expected8 = require('../snapshot/node-8') // source
 const expected6 = require('../snapshot/node-6') // es5
 const expected4 = require('../snapshot/node-4') // es5
@@ -26,6 +27,8 @@ const WIN = /^win/.test(process.platform)
 let exp
 if (WIN && nodeVersion == 4) {
   exp = expectedWin4 // es5
+} else if (WIN && nodeVersion == 6) {
+  exp = expectedWin6 // es5
 } else if (/^win/.test(process.platform)) {
   exp = expectedWin
 } else if (nodeVersion == 8 && isEs5) {
@@ -67,7 +70,9 @@ const integrationTestSuite = {
       diff.forEach((part) => {
         var color = part.added ? 'green' :
           part.removed ? 'red' : 'grey'
-        process.stderr.write(part.value[color])
+
+        const p = part.added || part.removed ? part.value.replace(/ /g, '_') : part.value
+        process.stderr.write(p[color])
       })
 
       throw new Error('Result did not match expected')

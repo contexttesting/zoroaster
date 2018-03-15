@@ -24,6 +24,8 @@ var expectedWin = require('../snapshot/win');
 
 var expectedWin4 = require('../snapshot/win-4');
 
+var expectedWin6 = require('../snapshot/win-6');
+
 var expected8 = require('../snapshot/node-8'); // source
 
 
@@ -48,6 +50,8 @@ var exp;
 
 if (WIN && nodeVersion == 4) {
   exp = expectedWin4; // es5
+} else if (WIN && nodeVersion == 6) {
+  exp = expectedWin6; // es5
 } else if (/^win/.test(process.platform)) {
   exp = expectedWin;
 } else if (nodeVersion == 8 && isEs5) {
@@ -91,7 +95,8 @@ var integrationTestSuite = {
             diff = jsdiff.diffChars(stripAnsi(actual), stripAnsi(expected));
             diff.forEach(function (part) {
               var color = part.added ? 'green' : part.removed ? 'red' : 'grey';
-              process.stderr.write(part.value[color]);
+              var p = part.added || part.removed ? part.value.replace(/ /g, '_') : part.value;
+              process.stderr.write(p[color]);
             });
             throw new Error('Result did not match expected');
           }
