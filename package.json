@@ -12,8 +12,8 @@
     "example": "zoroaster examples/test/Zoroaster_test.js"
   },
   "bin": {
-    "zoroaster": "bin/zoroaster",
-    "zoroaster-es5": "es5/bin/zoroaster"
+    "zoroaster": "bin/zoroaster.js",
+    "zoroaster-es5": "es5/bin/zoroaster.js"
   },
   "repository": {
     "type": "git",
