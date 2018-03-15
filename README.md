@@ -78,7 +78,7 @@ describe('night') {
 }
 ```
 
-Both test suites have to repreat the same code for tests' set-up and tear-down.
+Both test suites have to repeat the same code for tests' set-up and tear-down.
 
 ```js
 // day.js
@@ -103,7 +103,7 @@ It's impossible to reuse `beforeEach` and `afterEach` by simply creating a new
 file in their parent directory, such as
 
 ```js
-// test/light/setup.js
+// test/light/set-up.js
 beforeEach(async () => {
   connections = await makeConnections()
 })
@@ -121,7 +121,7 @@ because
 
 Think of a test context which can be asynchronously initialised, and
 asynchronously destroyed. The `context` can be reused across multiple test
-suites at ease. This method combines your olde `beforeEach` and `afterEach` into
+suites at ease. This method combines ye olde `beforeEach` and `afterEach` into
 a controlled state for each individual test suite. Just have a look at some of
 the examples below.
 
@@ -178,7 +178,7 @@ const nightTestSuite = {
 }
 ```
 
-A cool thing is that you can destructure the context argumet to test functions.
+A cool thing is that you can destructure the context argument to test functions.
 
 ```js
 // test/spec/day
