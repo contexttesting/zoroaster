@@ -79,26 +79,44 @@ const Zoroaster_test_suite = {
     await zoroaster.side(Zoroaster.AHURA_MAZDA)
     equal(zoroaster.balance, 0)
   },
-  meta: {
+  'object context': {
     context: {
       name: 'Zarathustra',
-      getCountry: async () => 'Iran',
     },
-    async 'should return correct country of origin'({ getCountry }) {
+    'should set correct name'({ name }) {
       const zoroaster = new Zoroaster()
-      const expected = await getCountry()
-      assert.equal(zoroaster.countryOfOrigin, expected)
+      equal(zoroaster.name, name)
     },
     innerMeta: {
       // inner context extends outer one
       context: {
         born: -628,
       },
-      'should return correct date of birth'(ctx) {
+      'should access parent context'({ name }) {
         const zoroaster = new Zoroaster()
-        assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
-        assert.equal(zoroaster.dateOfBirth, ctx.born)
+        equal(zoroaster.name, name)
       },
+      'should return correct date of birth'({ born }) {
+        const zoroaster = new Zoroaster()
+        equal(zoroaster.dateOfBirth, born)
+      },
+    },
+  },
+  'async context': {
+    async context() {
+      // an async set-up
+      await new Promise(r => setTimeout(r, 50))
+      this.getCountry = async () => 'Iran'
+
+      this._destroy = async () => {
+        // some async tear-down
+        await new Promise(r => setTimeout(r, 50))
+      }
+    },
+    async 'should return correct country of origin'({ getCountry }) {
+      const zoroaster = new Zoroaster()
+      const expected = await getCountry()
+      equal(zoroaster.countryOfOrigin, expected)
     },
   },
 }

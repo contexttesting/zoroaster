@@ -9,7 +9,7 @@
     "watch": "node run_tests --watch",
     "build": "bestie bin,src,test,assert",
     "build-run": "babel run_tests-es7.js --out-file run_tests.js",
-    "example": "zoroaster examples/test"
+    "example": "zoroaster examples/test/Zoroaster_test.js"
   },
   "bin": {
     "zoroaster": "bin/zoroaster",

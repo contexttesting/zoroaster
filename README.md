@@ -276,52 +276,52 @@ Async functions are perfect to test with [`zoroaster testing framework`][2].
 
 Have a go at writing interactive tests yourself at [`Zoroaster Playground`][3].
 
-### Running example
+### Running Example
 
 To run the example test file, execute
-`zoroaster examples/test/Zoroaster_test.js`, or `yarn example`. Each test case
-will be transformed into a promise, and altogether they will be run in a
-sequence.
+
+```sh
+zoroaster examples/test/Zoroaster_test.js
+# or
+yarn example
+```
+
+This will init the constructor test suite, which also requires methods as
+paths, therefore we're not testing just the whole directory.
 
 ```fs
-UNKNOWN:zoroaster zavr$ yarn example
+UNKNOWN:zoroaster user$ yarn example
 yarn run v1.5.1
-$ zoroaster examples/test
- examples/test
-   Zoroaster_test.js
-    ✓  should have static variables
-    ✓  should decrease and increase balance asynchronously
-     standard_constructor
-      ✓  should create a new Zoroaster instance with default name
-      ✓  should create a new Zoroaster instance with a name
-      ✓  should have balance of 0 when initialised
-     methods
-      ✓  should create a world
-      ✓  should destroy a world
-       side
-        ✓  should increase balance when doing good deed
-        ✓  should decrease balance when doing bad deed
-        ✓  should throw an error when choosing an unknown side
-       say
-        ✓  should say a sentence
-       checkParadise
-        ✓  should return true when balance of 1000 met
-        ✓  should return false when balance is less than 1000
-     meta
-      ✓  should return correct country of origin
-       innerMeta
-        ✓  should return correct date of birth
+$ zoroaster examples/test/Zoroaster_test.js
+ examples/test/Zoroaster_test.js
+  ✓  should have static variables
+  ✓  should decrease and increase balance asynchronously
+   standard_constructor
+    ✓  should create a new Zoroaster instance with default name
+    ✓  should create a new Zoroaster instance with a name
+    ✓  should have balance of 0 when initialised
    methods
-     say.js
-      ✓  should say a sentence
-     side.js
+    ✓  should create a world
+    ✓  should destroy a world
+     side
       ✓  should increase balance when doing good deed
       ✓  should decrease balance when doing bad deed
       ✓  should throw an error when choosing an unknown side
+     say
+      ✓  should say a sentence
+     checkParadise
+      ✓  should return true when balance of 1000 met
+      ✓  should return false when balance is less than 1000
+   object context
+    ✓  should set correct name
+     innerMeta
+      ✓  should access parent context
+      ✓  should return correct date of birth
+   async context
+    ✓  should return correct country of origin
 
-Executed 19 tests.
-
-✨  Done in 0.63s.
+Executed 17 tests.
+✨  Done in 0.48s.
 ```
 
 ## CLI
@@ -329,6 +329,12 @@ Executed 19 tests.
 This section describes how to use `zoroaster` from command-line interface.
 The `zoroaster` bin is written for Node 8.6, and for older versions transpiled
 `zoroaster-es5` can be used.
+
+```sh
+zoroaster test/spec
+#or
+zoroaster-es5 test/spec
+```
 
 ### Recursive Resolve
 
@@ -338,8 +344,6 @@ nested test suites.
 
 ```sh
 zoroaster examples/test/methods
-#or
-zoroaster-es5 examples/test/methods
 ```
 
 ```fs
@@ -387,6 +391,21 @@ The default timeout is `2000ms`. At the moment, only global timeout
 can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 `ZOROASTER_TIMEOUT=5000 zoroaster test`
 
+
+### package.json
+
+To be able to run `yarn test`, and `npm test`, specify the test script in
+package.json as follows:
+
+```json
+{
+  "name": "test-package",
+  "scripts": {
+    "test": "zoroaster test/spec"
+  }
+}
+```
+
 ## Context
 
 Add `context` property to a test suite, and access it from a test function's
@@ -397,7 +416,7 @@ It can also be extended by inner test suites.
 ```js
 import { equal } from 'zoroaster/assert'
 
-const testSuite = {
+const objectContext = {
   context: {
     name: 'Zarathustra',
   },
@@ -426,20 +445,18 @@ to the test timeout.
 ```js
 import { equal } from 'zoroaster/assert'
 
-async function Context() {
-  this.getCountry: async () => 'Iran'
-
-  // an async set-up
-  await new Promise(r => setTimeout(r, 50))
-
-  this._destroy = async () => {
-    // some async tear-down
+const asyncContext = {
+  async context() {
+    // an async set-up
     await new Promise(r => setTimeout(r, 50))
-  }
-}
-const testSuite = {
-  context: Context,
-  'should return correct country of origin'({ getCountry }) {
+    this.getCountry = async () => 'Iran'
+
+    this._destroy = async () => {
+      // some async tear-down
+      await new Promise(r => setTimeout(r, 50))
+    }
+  },
+  async 'should return correct country of origin'({ getCountry }) {
     const zoroaster = new Zoroaster()
     const expected = await getCountry()
     equal(zoroaster.countryOfOrigin, expected)
@@ -484,6 +501,29 @@ import { throws } from 'zoroaster/assert'
 ```
 
 See [`assert-throws` API documentation][4] to learn more about assertions.
+
+## launch.json
+
+The following snippet can be used when debugging tests.
+
+```json
+{
+  "type": "node",
+  "request": "launch",
+  "name": "Launch Program",
+  "program": "${workspaceFolder}/bin/zoroaster",
+  "args": [
+    "test/spec/integration.js"
+  ],
+  "env": {
+    "ZOROASTER_TIMEOUT": "9999999"
+  },
+  "console": "integratedTerminal",
+  "skipFiles": [
+    "<node_internals>/**/*.js"
+  ]
+}
+```
 
 ## Passing Paths to Test Suites
 
