@@ -1,6 +1,10 @@
 # Test against this version of Node.js
 environment:
-  nodejs_version: "lts"
+  matrix:
+    # node.js
+    - nodejs_version: "4"
+    - nodejs_version: "6"
+    - nodejs_version: "8"
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -16,7 +20,6 @@ test_script:
   - yarn --version
   # run tests
   - yarn test
-  - yarn test-es5
 
 cache:
   - "%LOCALAPPDATA%\\Yarn"

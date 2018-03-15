@@ -2,7 +2,7 @@ var assert = require('assert');
 
 var assertDiff = require('assert-diff');
 
-var throws = require('assert-throws/es5/src');
+var throws = require('assert-throws/es5');
 
 var equal = assert.equal;
 var deepEqual = assertDiff.deepEqual;

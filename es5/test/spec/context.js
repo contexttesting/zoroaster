@@ -2,13 +2,14 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 var assert = require('assert');
 
-var throws = require('assert-throws');
+var throws = require("assert-throws/es5");
 
 var TestSuite = require('../../src/test_suite');
 
 var Test = require('../../src/test');
 
-var assertNoErrosInTestSuite = require('../lib').assertNoErrosInTestSuite;
+var _require = require('../lib'),
+    assertNoErrosInTestSuite = _require.assertNoErrosInTestSuite;
 
 var testSuiteName = 'Zoroaster Context Test Suite';
 var testName = 'Zoroaster Context Test';

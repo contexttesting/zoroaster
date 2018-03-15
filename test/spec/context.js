@@ -2,7 +2,7 @@ const assert = require('assert')
 const throws = require('assert-throws')
 const TestSuite = require('../../src/test_suite')
 const Test = require('../../src/test')
-const assertNoErrosInTestSuite = require('../lib').assertNoErrosInTestSuite
+const { assertNoErrosInTestSuite } = require('../lib')
 
 const testSuiteName = 'Zoroaster Context Test Suite'
 const testName = 'Zoroaster Context Test'

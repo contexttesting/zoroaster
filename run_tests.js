@@ -13,12 +13,15 @@ const { bin } = require('./package.json')
 const { zoroaster, zoroasterEs5 } = bin
 
 const force = process.argv.some(a => a === '--force')
+const useEs5 = nodeLt('v8.6.0') || force
+
 if (force) {
   console.log(`Using the force to summon the dead with ${zoroasterEs5}...`) // eslint-disable-line no-console
+} else if (useEs5) {
+  console.log(`Going down with ${zoroasterEs5}...`) // eslint-disable-line no-console
 } else {
-  console.log(`Thus spoke Zarathustra ${zoroaster}`)
+  console.log(`Thus spoke Zarathustra ${zoroaster}`) // eslint-disable-line no-console
 }
-const useEs5 = nodeLt('v8.6.0') || force
 
 const ZOROASTER = resolve(__dirname, zoroaster)
 const ZOROASTER_ES5 = resolve(__dirname, zoroasterEs5)
