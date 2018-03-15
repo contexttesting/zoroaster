@@ -327,13 +327,20 @@ Executed 19 tests.
 ## CLI
 
 This section describes how to use `zoroaster` from command-line interface.
+The `zoroaster` bin is written for Node 8.6, and for older versions transpiled
+`zoroaster-es5` can be used.
 
 ### Recursive Resolve
 
-Pass a folder as an argument to test it recursively. All files inside of it
-will be run as tests (and directories initialised as nested test-suites).
+If a folder is passed as an argument, it will be tested recursively: all modules
+inside of it will be run required tests, and all directories initialised as
+nested test suites.
 
-`zoroaster examples/test/methods`
+```sh
+zoroaster examples/test/methods
+#or
+zoroaster-es5 examples/test/methods
+```
 
 ```fs
  examples/test/methods
@@ -349,9 +356,11 @@ Executed 4 tests.
 
 ### Multiple files
 
-You can test multiple files at once.
+If multiple destinations are passed, they are all tested.
 
-`zoroaster examples/test/methods/say.js examples/test/methods/side.js`
+```sh
+zoroaster examples/test/methods/say.js examples/test/methods/side.js
+```
 
 ```fs
  examples/test/methods/say.js
@@ -368,7 +377,9 @@ Executed 4 tests.
 
 To watch files for changes, use `--watch` flag, e.g.,
 
-`zoroaster examples/test/Zoroaster_test.js --watch`.
+```sh
+zoroaster examples/test/Zoroaster_test.js --watch
+```
 
 ### Timeout
 
@@ -379,30 +390,59 @@ can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 ## Context
 
 Add `context` property to a test suite, and access it from a test function's
-first argument. It can be specified as an object, or as a function. If it is
-a function, then it will be asynchronously evaluated, and its `this` used
-as a context.
+first argument. It can be specified as an object, or as a function. If it is an
+object, it will be frozen and passed to the test cases as `ctx` argument.
+It can also be extended by inner test suites.
 
 ```js
+import { equal } from 'zoroaster/assert'
+
 const testSuite = {
   context: {
     name: 'Zarathustra',
-    getCountry: () => 'Iran',
   },
-  'should return correct country of origin'(ctx) {
+  'should set correct name'({ name }) {
     const zoroaster = new Zoroaster()
-    assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
+    equal(zoroaster.name, name)
   },
   innerMeta: {
     // inner context extends outer one
     context: {
       born: -628,
     },
-    'should return correct date of birth'(ctx) {
+    'should return correct date of birth'({ name, born }) {
       const zoroaster = new Zoroaster()
-      assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
-      assert.equal(zoroaster.dateOfBirth, ctx.born)
+      equal(zoroaster.name, name)
+      equal(zoroaster.dateOfBirth, born)
     },
+  },
+}
+```
+
+If `context` property is a function, then it will be asynchronously evaluated,
+and its `this` used as a context for tests. The timeout for evaluation is equal
+to the test timeout.
+
+```js
+import { equal } from 'zoroaster/assert'
+
+async function Context() {
+  this.getCountry: async () => 'Iran'
+
+  // an async set-up
+  await new Promise(r => setTimeout(r, 50))
+
+  this._destroy = async () => {
+    // some async tear-down
+    await new Promise(r => setTimeout(r, 50))
+  }
+}
+const testSuite = {
+  context: Context,
+  'should return correct country of origin'({ getCountry }) {
+    const zoroaster = new Zoroaster()
+    const expected = await getCountry()
+    equal(zoroaster.countryOfOrigin, expected)
   },
 }
 ```
@@ -482,8 +522,8 @@ directory path to the CLI tool, so this feature is not commonly used.
 
 ### context-related todo
 
- - write readme about context function
- - add examples of context function
+ - ~~write readme about context function~~
+ - ~~add examples of context function~~
  - write tests for new TestSuite(..., timeout), release `context.timeout` feature
  - accept context as a class
  - only pass context to test functions which accept it
