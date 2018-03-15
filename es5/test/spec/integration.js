@@ -15,7 +15,7 @@ var stripAnsi = require('strip-ansi');
 var _require2 = require('os'),
     EOL = _require2.EOL;
 
-var _require3 = require('noddy'),
+var _require3 = require("noddy/es5"),
     parseVersion = _require3.parseVersion;
 
 var testSuiteDir = join(__dirname, '../fixtures');

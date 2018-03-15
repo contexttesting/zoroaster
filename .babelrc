@@ -27,7 +27,16 @@
       {
         "original": "^assert-throws$",
         "replacement": "assert-throws/es5"
-      }
+      },
+      "es5-assert-throws"
+    ],
+    [
+      "transform-rename-import",
+      {
+        "original": "^noddy$",
+        "replacement": "noddy/es5"
+      },
+      "es5-noddy"
     ]
   ]
 }

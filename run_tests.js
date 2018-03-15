@@ -4,7 +4,7 @@ var _child_process = require("child_process");
 
 var _path = require("path");
 
-var _noddy = require("noddy");
+var _es = require("noddy/es5");
 
 var _package = require("./package.json");
 
@@ -19,7 +19,7 @@ var zoroaster = _package.bin.zoroaster,
 var force = process.argv.some(function (a) {
   return a === '--force';
 });
-var useEs5 = (0, _noddy.nodeLt)('v8.6.0') || force;
+var useEs5 = (0, _es.nodeLt)('v8.6.0') || force;
 
 if (force) {
   console.log(`Using the force to summon the dead with ${zoroasterEs5}...`); // eslint-disable-line no-console
