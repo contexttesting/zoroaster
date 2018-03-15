@@ -1,6 +1,7 @@
 const assert = require('assert')
-const zoroaster = require('../../index')
+const zoroaster = require('../..')
 const { resolve } = require('path')
+const { ChildProcess } = require('child_process')
 
 const TEST_SUITE_PATH = resolve(__dirname, '../fixtures/test_suite.js')
 
@@ -10,7 +11,7 @@ const indexTestSuite = {
   },
   async 'returns a child process'() {
     const proc = zoroaster()
-    assert(proc instanceof require('child_process').ChildProcess)
+    assert(proc instanceof ChildProcess)
     await proc.promise
   },
   async 'returns a promise'() {

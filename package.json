@@ -2,12 +2,18 @@
   "name": "zoroaster",
   "version": "0.5.3",
   "description": "A minimal JavaScript testing framework for Node.js.",
-  "main": "index.js",
+  "main": "src",
   "scripts": {
     "test": "node run_tests",
-    "watch": "node run_tests --watch"
+    "test-es5": "node run_tests --force",
+    "watch": "node run_tests --watch",
+    "build": "bestie bin,src,test,assert",
+    "build-run": "babel run_tests-es7.js --out-file run_tests.js"
   },
-  "bin": "bin/zoroaster",
+  "bin": {
+    "zoroaster": "bin/zoroaster",
+    "zoroaster-es5": "es5/bin/zoroaster"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sobesednik/zoroaster.git"
@@ -23,13 +29,14 @@
   "homepage": "https://github.com/Sobesednik/zoroaster#readme",
   "dependencies": {
     "assert-diff": "1.2.5",
-    "assert-throws": "1.3.0",
+    "assert-throws": "1.3.1",
     "catchment": "2.0.1",
     "clean-stack": "1.3.0",
     "promto": "1.0.1",
     "spawncommand": "1.1.0"
   },
   "devDependencies": {
+    "bestie": "1.0.0",
     "colors": "1.2.1",
     "diff": "3.5.0",
     "noddy": "^1.1.1",
