@@ -12,7 +12,7 @@
   },
   "bin": {
     "zoroaster": "bin/zoroaster",
-    "zoroasterEs5": "es5/bin/zoroaster"
+    "zoroaster-es5": "es5/bin/zoroaster"
   },
   "repository": {
     "type": "git",

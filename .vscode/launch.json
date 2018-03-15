@@ -16,7 +16,7 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}/bin/zoroaster",
       "args": [
-        "test/spec/context-destroy.js"
+        "test/spec/integration.js"
       ],
       "env": {
         "ZOROASTER_TIMEOUT": "9999999"
