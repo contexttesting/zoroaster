@@ -22,6 +22,8 @@ framework-specific global variables such as `describe`,  `it`, `before` and
 `after`. Save it for the after-life. Export test suites as modules and run them
 with `zoroaster` binary.
 
+Read the main idea behind `zoroaster` below, or skip to the [example](#example) to get started.
+
 ### Each Directory is a Test Suite
 
 It's much easier to organise test cases by JavaScript files in directories and
@@ -257,7 +259,7 @@ module.exports = Zoroaster_test_suite
 
 ### async functions
 
-Async functions are perfect to test with [`zoroaster testing framework`][2].
+Async functions are perfect to test with [`zoroaster testing framework`][2] due to the concise async shorthand method notation.
 
 ```js
 {
@@ -277,7 +279,9 @@ Async functions are perfect to test with [`zoroaster testing framework`][2].
 }
 ```
 
-Have a go at writing interactive tests yourself at [`Zoroaster Playground`][3].
+All tests have to complete within the specified [timeout](#timeout).
+
+<!-- Have a go at writing interactive tests yourself at [`Zoroaster Playground`][3]. -->
 
 ### Running Example
 
@@ -289,8 +293,9 @@ zoroaster examples/test/Zoroaster_test.js
 yarn example
 ```
 
-This will init the constructor test suite, which also requires methods as
-paths, therefore we're not testing just the whole directory.
+This will run the constructor test suite, which also requires methods as
+paths, therefore we're not testing the whole directory (otherwise, the methods
+would be tested twice, e.g., try `zoroaster examples/test`).
 
 ```fs
 UNKNOWN:zoroaster user$ yarn example
