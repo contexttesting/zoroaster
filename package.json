@@ -40,7 +40,7 @@
     "bestie": "1.0.0",
     "colors": "1.2.1",
     "diff": "3.5.0",
-    "noddy": "^1.1.1",
-    "strip-ansi": "^4.0.0"
+    "noddy": "1.1.1",
+    "strip-ansi": "4.0.0"
   }
 }
