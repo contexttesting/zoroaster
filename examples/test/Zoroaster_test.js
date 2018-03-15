@@ -4,7 +4,7 @@ const Zoroaster = require('../src/Zoroaster')
 
 const Zoroaster_test_suite = {
   // standard test function
-  'should have static variables': () => {
+  'should have static variables'() {
     assert(Zoroaster.AHURA_MAZDA)
     assert(Zoroaster.ANGRA_MAINYU)
   },
@@ -16,7 +16,7 @@ const Zoroaster_test_suite = {
       assert(zoroaster instanceof Zoroaster)
       equal(zoroaster.name, 'Zarathustra')
     },
-    'should create a new Zoroaster instance with a name': () => {
+    'should create a new Zoroaster instance with a name'() {
       const name = 'Ashu Zarathushtra'
       const zoroaster = new Zoroaster(name)
       equal(zoroaster.name, name)
@@ -25,7 +25,7 @@ const Zoroaster_test_suite = {
       const zoroaster2 = new Zoroaster(name2)
       equal(zoroaster2.name, name2)
     },
-    'should have balance of 0 when initialised': () => {
+    'should have balance of 0 when initialised'() {
       const zoroaster = new Zoroaster()
       equal(zoroaster.balance, 0)
     },
@@ -60,7 +60,7 @@ const Zoroaster_test_suite = {
         equal(zoroaster.balance, 1000)
         assert(zoroaster.checkParadise())
       },
-      'should return false when balance is less than 1000': () => {
+      'should return false when balance is less than 1000'() {
         const zoroaster = new Zoroaster()
         const actual = zoroaster.checkParadise()
         assert(actual === false)
@@ -69,32 +69,25 @@ const Zoroaster_test_suite = {
   },
 
   // asynchronous pattern: return a promise
-  'should decrease and increase balance asynchronously': () => {
+  async 'should decrease and increase balance asynchronously'() {
     const zoroaster = new Zoroaster()
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        zoroaster.side(Zoroaster.ANGRA_MAINYU)
-        resolve()
-      }, 200)
-    })
-      .then(() => new Promise((resolve) => {
-        setTimeout(() => {
-          zoroaster.side(Zoroaster.AHURA_MAZDA)
-          resolve()
-        }, 200)
-      }))
-      .then(() => {
-        assert(zoroaster.balance === 0)
-      })
+    await new Promise(r => setTimeout(r, 50))
+    await zoroaster.side(Zoroaster.ANGRA_MAINYU)
+    equal(zoroaster.balance, -1)
+
+    await new Promise(r => setTimeout(r, 50))
+    await zoroaster.side(Zoroaster.AHURA_MAZDA)
+    equal(zoroaster.balance, 0)
   },
   meta: {
     context: {
       name: 'Zarathustra',
-      getCountry: () => 'Iran',
+      getCountry: async () => 'Iran',
     },
-    'should return correct country of origin'(ctx) {
+    async 'should return correct country of origin'({ getCountry }) {
       const zoroaster = new Zoroaster()
-      assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
+      const expected = await getCountry()
+      assert.equal(zoroaster.countryOfOrigin, expected)
     },
     innerMeta: {
       // inner context extends outer one
