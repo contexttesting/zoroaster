@@ -13,11 +13,11 @@ const expectedWin4 = ` [fixtures_path]
 
 \u001b[31m[fixtures_path] > test_suite.js > test2\u001b[0m
   Error: When you are in doubt abstain.
-    at test2 ([fixture_path]:10:11)
+      at test2 ([fixture_path]:10:11)
 
 \u001b[31m[fixtures_path] > test_suite.js > test6\u001b[0m
   Error: Error from Promise constructor
-    at null._onTimeout ([fixture_path_async]:41:25)
+      at null._onTimeout ([fixture_path_async]:41:25)
 
 Executed 6 tests: 2 errors.
 
