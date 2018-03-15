@@ -7,7 +7,6 @@
           "transform-regenerator",
           "transform-async-to-generator"
         ],
-        "modules": false,
         "debug": true,
         "targets": {
           "node": 4

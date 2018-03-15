@@ -7,7 +7,8 @@
     "test": "node run_tests",
     "test-es5": "node run_tests --force",
     "watch": "node run_tests --watch",
-    "build": "bestie bin,src,test,assert"
+    "build": "bestie bin,src,test,assert",
+    "build-run": "babel run_tests-es5.js --out-file run_tests.js"
   },
   "bin": {
     "zoroaster": "bin/zoroaster",
