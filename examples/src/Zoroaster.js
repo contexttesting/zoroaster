@@ -10,7 +10,7 @@ class Zoroaster {
     this.name = typeof name === 'string' ? name : 'Zarathustra'
     this.balance = 0
   }
-  side(option) {
+  async side(option) {
     switch(option) {
     case Zoroaster.AHURA_MAZDA:
       this.balance++

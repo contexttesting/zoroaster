@@ -1,22 +1,21 @@
-const assert = require('assert')
 const path = require('path')
+const { assert } = require('../../assert')
 const Zoroaster = require('../src/Zoroaster')
 
 const Zoroaster_test_suite = {
-  // standard test function
-  'should have static variables': () => {
+  'should have static variables'() {
     assert(Zoroaster.AHURA_MAZDA)
     assert(Zoroaster.ANGRA_MAINYU)
   },
 
   // recursive test suites
   constructor: {
-    'should create a new Zoroaster instance with default name': () => {
+    'should create a new Zoroaster instance with default name'() {
       const zoroaster = new Zoroaster()
       assert(zoroaster instanceof Zoroaster)
       assert(zoroaster.name === 'Zarathustra')
     },
-    'should create a new Zoroaster instance with a name': () => {
+    'should create a new Zoroaster instance with a name'() {
       const name = 'Ashu Zarathushtra'
       const zoroaster = new Zoroaster(name)
       assert(zoroaster.name === name)
@@ -25,7 +24,7 @@ const Zoroaster_test_suite = {
       const zoroaster2 = new Zoroaster(name2)
       assert(zoroaster2.name === name2)
     },
-    'should have balance of 0 when initialised': () => {
+    'should have balance of 0 when initialised'() {
       const zoroaster = new Zoroaster()
       assert(zoroaster.balance === 0)
     },
@@ -37,59 +36,55 @@ const Zoroaster_test_suite = {
     say: path.join(__dirname, 'methods', 'say'),
 
     // some more standard test cases
-    createWorld: () => {
+    createWorld() {
       const zoroaster = new Zoroaster()
       zoroaster.createWorld()
       assert(zoroaster.balance === 100)
     },
-    destroyWorld: () => {
+    destroyWorld() {
       const zoroaster = new Zoroaster()
       zoroaster.createWorld()
       zoroaster.destroyWorld()
       assert(zoroaster.balance === 0)
     },
     checkParadise: {
-      'should return true when balance of 1000 met': () => {
+      async 'should return true when balance of 1000 met'() {
         const zoroaster = new Zoroaster()
         zoroaster.createWorld()
-        Array.from({ length: 900}).forEach(() => {
-          zoroaster.side(Zoroaster.AHURA_MAZDA)
-        })
+        await Promise.all(
+          Array.from({ length: 900 }).map(async () => {
+            await zoroaster.side(Zoroaster.AHURA_MAZDA)
+          })
+        )
         assert(zoroaster.balance === 1000)
         assert(zoroaster.checkParadise())
       },
-      'should return false when balance is less than 1000': () => {
+      'should return false when balance is less than 1000'() {
         const zoroaster = new Zoroaster()
         assert(zoroaster.checkParadise() === false)
       },
     },
   },
 
-  // asynchronous pattern: return a promise
-  'should decrease and increase balance asynchronously': () => {
+  // asynchronous pattern
+  async 'should decrease and increase balance asynchronously'() {
     const zoroaster = new Zoroaster()
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        zoroaster.side(Zoroaster.ANGRA_MAINYU)
-        resolve()
-      }, 200)
-    })
-      .then(() => new Promise((resolve) => {
-        setTimeout(() => {
-          zoroaster.side(Zoroaster.AHURA_MAZDA)
-          resolve()
-        }, 200)
-      }))
-      .then(() => {
-        assert(zoroaster.balance === 0)
-      })
+
+    await new Promise(r => setTimeout(r, 200))
+    await zoroaster.side(Zoroaster.ANGRA_MAINYU)
+
+    await new Promise(r => setTimeout(r, 200))
+    await zoroaster.side(Zoroaster.AHURA_MAZDA)
+
+    assert(zoroaster.balance === 0)
   },
   meta: {
     context: {
       name: 'Zarathustra',
       getCountry: () => 'Iran',
     },
-    countryOfOrigin: (ctx) => {
+    // use context
+    countryOfOrigin(ctx) {
       const zoroaster = new Zoroaster()
       assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
     },
@@ -98,7 +93,7 @@ const Zoroaster_test_suite = {
       context: {
         born: -628,
       },
-      dateOfBirth: (ctx) => {
+      dateOfBirth(ctx) {
         const zoroaster = new Zoroaster()
         assert.equal(zoroaster.countryOfOrigin, ctx.getCountry())
         assert.equal(zoroaster.dateOfBirth, ctx.born)
