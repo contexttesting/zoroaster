@@ -37,6 +37,14 @@
         "replacement": "noddy/es5"
       },
       "es5-noddy"
+    ],
+    [
+      "transform-rename-import",
+      {
+        "original": "^catchment$",
+        "replacement": "catchment/es5"
+      },
+      "es5-catchment"
     ]
   ]
 }

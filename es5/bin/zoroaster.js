@@ -3,7 +3,7 @@ var fs = require('fs');
 
 var path = require('path');
 
-var Catchment = require('catchment');
+var Catchment = require("catchment/es5");
 
 var _require = require('os'),
     EOL = _require.EOL;
