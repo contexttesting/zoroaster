@@ -19,7 +19,7 @@ var expected8 = ` [fixtures_path]
   Error: Error from Promise constructor
       at Timeout.setTimeout [as _onTimeout] ([fixture_path]:17:16)
 
-Executed 6 tests: 2 errors.
+🦅  Executed 6 tests: 2 errors.
 
 `;
 module.exports = expected8;
