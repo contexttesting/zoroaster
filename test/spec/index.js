@@ -23,7 +23,7 @@ const indexTestSuite = {
     const proc = zoroaster()
     assert(proc.promise instanceof Promise)
     const res = await proc.promise
-    assert.equal('Executed 0 tests.', res.stdout.trim())
+    assert.equal('🦅  Executed 0 tests.', res.stdout.trim())
   },
   async 'should report on test suite executed'() {
     const proc = zoroaster([TEST_SUITE_PATH])

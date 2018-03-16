@@ -47,6 +47,8 @@ export default {
 }
 ```
 
+![tests results](tests.png)
+
 ## Try Zoroaster Today!
 
 Zoroaster allows to write test cases as simple functions, without using
