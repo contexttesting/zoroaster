@@ -15,6 +15,38 @@ Is it not time to say good-bye to the old stereotype that the same software must
 be used every day? Say no more, `zoroaster` is here to save our souls and bring
 a change.
 
+```js
+// zoroaster example.js
+import { assert, equal } from 'zoroaster/assert'
+
+const software = (type) => {
+  switch (type) {
+    case 'boolean':
+      return true
+    case 'string':
+      return 'string'
+    default:
+      return null
+  }
+}
+
+const asyncSoftware = async (type) => {
+  await new Promise(r => setTimeout(r, 50))
+  return software(type)
+}
+
+export default {
+  'should run a test'() {
+    const res = software('boolean')
+    assert(res)
+  },
+  async 'should run an async test'() {
+    const res = await asyncSoftware('string')
+    equal(res, 'string')
+  },
+}
+```
+
 ## Try Zoroaster Today!
 
 Zoroaster allows to write test cases as simple functions, without using
