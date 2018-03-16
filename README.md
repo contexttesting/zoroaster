@@ -362,8 +362,9 @@ $ zoroaster examples/test/Zoroaster_test.js
    async context
     ✓  should return correct country of origin
 
-Executed 17 tests.
-✨  Done in 0.48s.
+🦅  Executed 17 tests.
+
+✨  Done in 0.66s.
 ```
 
 ## CLI
