@@ -19,7 +19,7 @@ var expectedWin = ` [fixtures_path]
   Error: Error from Promise constructor
       at Timeout.setTimeout [as _onTimeout] ([fixture_path_async]:17:16)
 
-Executed 6 tests: 2 errors.
+🦅  Executed 6 tests: 2 errors.
 
 `;
 module.exports = expectedWin;
