@@ -1,5 +1,11 @@
 <a name="1.0.0"></a>
-## [1.0.0](https://github.com/Sobesednik/zoroaster/compare/v0.5.3...v1.0.0) (15 March 2018)
+## [1.0.0](https://github.com/Sobesednik/zoroaster/compare/v1.0.0-beta.2...v1.0.0) (16 March 2018)
+
+- **breaking Node < 8.6** Version 1 🎆
+- readme adjustments, simpler example and emoji 🦅 .
+
+<a name="1.0.0-beta.2"></a>
+## [1.0.0-beta.2](https://github.com/Sobesednik/zoroaster/compare/v0.5.3...v1.0.0-beta.2) (15 March 2018)
 
 - update to using ES7 syntax and provide `zoroaster-es5` support.
 
