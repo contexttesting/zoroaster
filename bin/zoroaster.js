@@ -123,7 +123,7 @@ function test(testSuites, watch, currentlyWatching) {
       process.stdout.write(EOL)
       process.stdout.write(errorsCatchment)
 
-      process.stdout.write(`Executed ${count.total} tests`)
+      process.stdout.write(`🦅  Executed ${count.total} tests`)
       if (count.error) {
         process.stdout.write(
           `: ${count.error} error${count.error > 1 ? 's' : ''}`

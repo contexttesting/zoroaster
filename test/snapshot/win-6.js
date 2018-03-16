@@ -19,7 +19,7 @@ const expectedWin = ` [fixtures_path]
   Error: Error from Promise constructor
       at Timeout._onTimeout ([fixture_path_async]:41:25)
 
-Executed 6 tests: 2 errors.
+🦅  Executed 6 tests: 2 errors.
 
 `
 

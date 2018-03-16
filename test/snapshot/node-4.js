@@ -19,7 +19,7 @@ const expected4 = ` [fixtures_path]
   Error: Error from Promise constructor
       at null._onTimeout ([fixture_path]:41:25)
 
-Executed 6 tests: 2 errors.
+🦅  Executed 6 tests: 2 errors.
 
 `
 

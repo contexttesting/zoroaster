@@ -52,7 +52,7 @@ var indexTestSuite = {
       return Promise.resolve(proc.promise).then(function ($await_3) {
         try {
           res = $await_3;
-          assert.equal('Executed 0 tests.', res.stdout.trim());
+          assert.equal('🦅  Executed 0 tests.', res.stdout.trim());
           return $return();
         } catch ($boundEx) {
           return $error($boundEx);
