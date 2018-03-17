@@ -20,6 +20,5 @@ var expected8 = ` [fixtures_path]
       at Timeout.setTimeout [as _onTimeout] ([fixture_path]:17:16)
 
 🦅  Executed 6 tests: 2 errors.
-
 `;
 module.exports = expected8;

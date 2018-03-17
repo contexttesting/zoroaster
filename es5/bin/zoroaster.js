@@ -55,7 +55,7 @@ function resolveTestSuites(argv) {
     return !/^--/.test(argv);
   }) // create test suites and remove paths that cannot be resolved
   .map(parseArgv).filter(function (testSuite) {
-    return testSuite !== undefined;
+    return testSuite;
   });
 }
 
@@ -87,70 +87,80 @@ function requireTestSuite(ts) {
   return ts.require();
 }
 
-function test(testSuites, watch, currentlyWatching) {
-  clearRequireCache();
-  testSuites.forEach(requireTestSuite);
+function test(testSuites, watch) {
+  var $args = arguments;
+  return new Promise(function ($return, $error) {
+    var currentlyWatching, newCurrentlyWatching, stack, rs, ts, catchment, count, notify, errorsCatchment;
+    currentlyWatching = $args.length > 2 && $args[2] !== undefined ? $args[2] : [];
+    clearRequireCache();
+    testSuites.forEach(requireTestSuite);
 
-  if (watch) {
-    var cw = Array.isArray(currentlyWatching) ? currentlyWatching : [];
-    unwatchFiles(cw);
-    var newCurrentlyWatching = Object.keys(require.cache);
-    watchFiles(newCurrentlyWatching, function () {
-      return test(testSuites, watch, newCurrentlyWatching);
-    });
-  }
-
-  var testSuiteStackTS = stream.createTestSuiteStackStream();
-  var errorTS = stream.createErrorTransformStream();
-  var progressTS = stream.createProgressTransformStream();
-  testSuiteStackTS.pipe(progressTS).pipe(process.stdout);
-  testSuiteStackTS.pipe(errorTS);
-  var catchment = new Catchment({
-    rs: errorTS
-  });
-  var count = {
-    total: 0,
-    error: 0
-  };
-
-  var notify = function notify(data) {
-    if (typeof data !== 'object') return;
-    testSuiteStackTS.write(data);
-
-    if (data.type === 'test-end') {
-      count.total++;
-
-      if (data.error) {
-        count.error++;
-      }
-    }
-  };
-
-  return lib.runInSequence(testSuites, notify).then(function () {
-    return testSuiteStackTS.end();
-  }).then(function () {
-    return catchment.promise;
-  }).then(function (errorsCatchment) {
-    process.stdout.write(EOL);
-    process.stdout.write(errorsCatchment);
-    process.stdout.write(`🦅  Executed ${count.total} tests`);
-
-    if (count.error) {
-      process.stdout.write(`: ${count.error} error${count.error > 1 ? 's' : ''}`);
-    }
-
-    process.stdout.write(`.${EOL}${EOL}`);
-
-    if (count.error) {
-      process.on('exit', function () {
-        return process.exit(1);
+    if (watch) {
+      unwatchFiles(currentlyWatching);
+      newCurrentlyWatching = Object.keys(require.cache);
+      watchFiles(newCurrentlyWatching, function () {
+        return test(testSuites, watch, newCurrentlyWatching);
       });
     }
-  });
+
+    stack = stream.createTestSuiteStackStream();
+    rs = stream.createErrorTransformStream();
+    ts = stream.createProgressTransformStream();
+    stack.pipe(ts).pipe(process.stdout);
+    stack.pipe(rs);
+    catchment = new Catchment({
+      rs
+    });
+    count = {
+      total: 0,
+      error: 0
+    };
+
+    notify = function notify(data) {
+      if (typeof data !== 'object') return;
+      stack.write(data);
+
+      if (data.type === 'test-end') {
+        count.total++;
+
+        if (data.error) {
+          count.error++;
+        }
+      }
+    };
+
+    return Promise.resolve(lib.runInSequence(testSuites, notify)).then(function ($await_2) {
+      try {
+        stack.end();
+        return Promise.resolve(catchment.promise).then(function ($await_3) {
+          try {
+            errorsCatchment = $await_3;
+            process.stdout.write(EOL);
+            process.stdout.write(errorsCatchment);
+            process.stdout.write(`🦅  Executed ${count.total} tests`);
+
+            if (count.error) {
+              process.stdout.write(`: ${count.error} error${count.error > 1 ? 's' : ''}`);
+            }
+
+            process.stdout.write(`.${EOL}`);
+            process.on('exit', function () {
+              return process.exit(count.error);
+            });
+            return $return();
+          } catch ($boundEx) {
+            return $error($boundEx);
+          }
+        }.bind(this), $error);
+      } catch ($boundEx) {
+        return $error($boundEx);
+      }
+    }.bind(this), $error);
+  }.bind(this));
 }
 
-var watch = !!process.argv.find(function (arg) {
-  return arg === '--watch';
+var watch = process.argv.some(function (a) {
+  return a == '--watch';
 });
 var testSuites = resolveTestSuites(process.argv);
 test(testSuites, watch);
