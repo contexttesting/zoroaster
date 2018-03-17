@@ -50,7 +50,7 @@ function resolveTestSuites(argv) {
     })
   // create test suites and remove paths that cannot be resolved
     .map(parseArgv)
-    .filter(testSuite => testSuite !== undefined)
+    .filter(testSuite => testSuite)
 }
 
 function watchFiles(files, callback) {
@@ -79,26 +79,25 @@ function requireTestSuite(ts) {
   return ts.require()
 }
 
-function test(testSuites, watch, currentlyWatching) {
+async function test(testSuites, watch, currentlyWatching = []) {
   clearRequireCache()
   testSuites
     .forEach(requireTestSuite)
 
   if (watch) {
-    const cw = Array.isArray(currentlyWatching) ? currentlyWatching : []
-    unwatchFiles(cw)
+    unwatchFiles(currentlyWatching)
     const newCurrentlyWatching = Object.keys(require.cache)
     watchFiles(newCurrentlyWatching, () => test(testSuites, watch, newCurrentlyWatching))
   }
 
-  const testSuiteStackTS = stream.createTestSuiteStackStream()
+  const stack = stream.createTestSuiteStackStream()
 
-  const errorTS = stream.createErrorTransformStream()
-  const progressTS = stream.createProgressTransformStream()
-  testSuiteStackTS.pipe(progressTS).pipe(process.stdout)
-  testSuiteStackTS.pipe(errorTS)
+  const rs = stream.createErrorTransformStream()
+  const ts = stream.createProgressTransformStream()
+  stack.pipe(ts).pipe(process.stdout)
+  stack.pipe(rs)
 
-  const catchment = new Catchment({ rs: errorTS })
+  const catchment = new Catchment({ rs })
 
   const count = {
     total: 0,
@@ -107,7 +106,7 @@ function test(testSuites, watch, currentlyWatching) {
 
   const notify = (data) => {
     if (typeof data !== 'object') return
-    testSuiteStackTS.write(data)
+    stack.write(data)
     if (data.type === 'test-end') {
       count.total++
       if (data.error) {
@@ -115,29 +114,24 @@ function test(testSuites, watch, currentlyWatching) {
       }
     }
   }
-  return lib
-    .runInSequence(testSuites, notify)
-    .then(() => testSuiteStackTS.end())
-    .then(() => catchment.promise)
-    .then((errorsCatchment) => {
-      process.stdout.write(EOL)
-      process.stdout.write(errorsCatchment)
+  await lib.runInSequence(testSuites, notify)
+  stack.end()
+  const errorsCatchment = await catchment.promise
+  process.stdout.write(EOL)
+  process.stdout.write(errorsCatchment)
 
-      process.stdout.write(`🦅  Executed ${count.total} tests`)
-      if (count.error) {
-        process.stdout.write(
-          `: ${count.error} error${count.error > 1 ? 's' : ''}`
-        )
-      }
-      process.stdout.write(`.${EOL}${EOL}`)
+  process.stdout.write(`🦅  Executed ${count.total} tests`)
+  if (count.error) {
+    process.stdout.write(
+      `: ${count.error} error${count.error > 1 ? 's' : ''}`
+    )
+  }
+  process.stdout.write(`.${EOL}`)
 
-      if (count.error) {
-        process.on('exit', () => process.exit(1))
-      }
-    })
+  process.on('exit', () => process.exit(count.error))
 }
 
-const watch = !!process.argv.find(arg => arg === '--watch')
+const watch = process.argv.some(a => a == '--watch')
 
 const testSuites = resolveTestSuites(process.argv)
 test(testSuites, watch)

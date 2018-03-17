@@ -1,13 +1,15 @@
 const assert = require('assert')
-const zoroaster = require('../..')
 const { resolve } = require('path')
 const { ChildProcess } = require('child_process')
+const zoroaster = require('../..')
+
+const { equal } = assert
 
 const TEST_SUITE_PATH = resolve(__dirname, '../fixtures/test_suite.js')
 
 const indexTestSuite = {
   'exports a function'() {
-    assert.equal(typeof zoroaster, 'function')
+    equal(typeof zoroaster, 'function')
   },
   async 'returns a child process'() {
     const proc = zoroaster()
@@ -23,15 +25,15 @@ const indexTestSuite = {
     const proc = zoroaster()
     assert(proc.promise instanceof Promise)
     const res = await proc.promise
-    assert.equal('🦅  Executed 0 tests.', res.stdout.trim())
+    equal('🦅  Executed 0 tests.', res.stdout.trim())
   },
   async 'should report on test suite executed'() {
     const proc = zoroaster([TEST_SUITE_PATH])
     assert(proc.promise instanceof Promise)
-    const res = await proc.promise
-    assert.equal(res.stderr, '')
-    assert.equal(res.code, 1) // test fixtures not passing
-    assert(res.stdout.length > 100)
+    const { stderr, code, stdout } = await proc.promise
+    equal(stderr, '')
+    equal(code, 2) // test fixtures not passing with 2 errors
+    assert(stdout.length > 100)
   },
 }
 

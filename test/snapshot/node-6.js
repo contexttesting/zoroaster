@@ -20,7 +20,6 @@ const expected6 = ` [fixtures_path]
       at Timeout._onTimeout ([fixture_path]:41:25)
 
 🦅  Executed 6 tests: 2 errors.
-
 `
 
 module.exports = expected6

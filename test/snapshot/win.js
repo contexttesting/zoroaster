@@ -20,7 +20,6 @@ const expectedWin = ` [fixtures_path]
       at Timeout.setTimeout [as _onTimeout] ([fixture_path_async]:17:16)
 
 🦅  Executed 6 tests: 2 errors.
-
 `
 
 module.exports = expectedWin

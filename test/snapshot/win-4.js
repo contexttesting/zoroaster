@@ -20,7 +20,6 @@ const expectedWin4 = ` [fixtures_path]
       at null._onTimeout ([fixture_path_async]:41:25)
 
 🦅  Executed 6 tests: 2 errors.
-
 `
 
 module.exports = expectedWin4
