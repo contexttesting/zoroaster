@@ -21,7 +21,7 @@ var ObjectContext = {
       }, null, Context);
       return Promise.resolve(testSuite.run()).then(function ($await_1) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert(destroyed);
           return $return();
         } catch ($boundEx) {
@@ -57,7 +57,7 @@ var ObjectContext = {
       }, null, Context);
       return Promise.resolve(testSuite.run()).then(function ($await_3) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert(destroyed);
           return $return();
         } catch ($boundEx) {
@@ -85,7 +85,7 @@ var FunctionContext = {
       }, null, Context);
       return Promise.resolve(testSuite.run()).then(function ($await_4) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert(destroyed);
           return $return();
         } catch ($boundEx) {
@@ -122,7 +122,7 @@ var FunctionContext = {
       }, null, Context);
       return Promise.resolve(testSuite.run()).then(function ($await_6) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert(destroyed);
           return $return();
         } catch ($boundEx) {
@@ -213,7 +213,7 @@ var FunctionContext = {
       return Promise.resolve(testSuite.run()).then(function ($await_10) {
         try {
           assert.throws(function () {
-            return lib.assertNoErrosInTestSuite(testSuite);
+            return lib.assertNoErrorsInTestSuite(testSuite);
           }, /Error in test "test-suite > should timeout": Destroy has timed out after 250ms/);
           assert(!destroyed);
           return $return();
@@ -254,7 +254,7 @@ var FunctionContext = {
       return Promise.resolve(testSuite.run()).then(function ($await_12) {
         try {
           assert.throws(function () {
-            return lib.assertNoErrosInTestSuite(testSuite);
+            return lib.assertNoErrorsInTestSuite(testSuite);
           }, /Error in test "test-suite > should timeout": Test has timed out after 250ms/);
           assert(destroyed);
           return $return();

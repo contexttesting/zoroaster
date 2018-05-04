@@ -1,3 +1,5 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -7,7 +9,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var _require = require('os'),
     EOL = _require.EOL;
 
-var lib = require('./lib');
+var _require2 = require('./lib'),
+    isFunction = _require2.isFunction,
+    checkTestSuiteName = _require2.checkTestSuiteName,
+    checkContext = _require2.checkContext,
+    runInSequence = _require2.runInSequence,
+    indent = _require2.indent;
 
 var Test = require('./test');
 
@@ -23,8 +30,8 @@ function () {
   function TestSuite(name, testsOrPath, parent, context, timeout) {
     _classCallCheck(this, TestSuite);
 
-    lib.checkTestSuiteName(name);
-    lib.checkContext(context);
+    checkTestSuiteName(name);
+    checkContext(context);
     this._name = name;
     this._parent = parent;
     this._timeout = timeout || (hasParent(this) ? this.parent.timeout : undefined);
@@ -33,9 +40,9 @@ function () {
       this._context = parent.context;
     }
 
-    if (typeof testsOrPath === 'string') {
+    if (typeof testsOrPath == 'string') {
       this._path = testsOrPath;
-    } else if (typeof testsOrPath === 'object') {
+    } else if (typeof testsOrPath == 'object') {
       this._assignTests(testsOrPath);
     } else {
       throw new Error('You must provide either a path to a module, or tests in an object.');
@@ -45,13 +52,23 @@ function () {
   _createClass(TestSuite, [{
     key: "_assignContext",
     value: function _assignContext(context) {
-      if ((typeof context).toLowerCase() === 'function') {
+      if (Array.isArray(context)) {
         this._context = context;
         return true;
-      } else if ((typeof context).toLowerCase() === 'object') {
-        var extenedContext = Object.assign({}, this._context || {}, context); // + deep assign
+      }
 
-        this._context = Object.freeze(extenedContext);
+      var fn = isFunction(context);
+
+      if (fn) {
+        this._context = context;
+        return true;
+      }
+
+      if ((typeof context).toLowerCase() == 'object') {
+        var extendedContext = _extends({}, this._context || {}, context); // this is for when test suites are extending object contexts
+
+
+        this._context = Object.freeze(extendedContext);
         return true;
       }
     }
@@ -59,7 +76,7 @@ function () {
     key: "_assignTests",
     value: function _assignTests(tests) {
       if ('context' in tests) {
-        lib.checkContext(tests.context);
+        checkContext(tests.context);
 
         this._assignContext(tests.context);
       }
@@ -104,7 +121,7 @@ function () {
           });
         }
 
-        return Promise.resolve(lib.runInSequence(this.tests, notify)).then(function ($await_1) {
+        return Promise.resolve(runInSequence(this.tests, notify)).then(function ($await_1) {
           try {
             res = $await_1;
 
@@ -128,7 +145,7 @@ function () {
       var str = this.name + EOL + this.tests.map(function (test) {
         return test.dump();
       }).join('\n');
-      return this.parent ? lib.indent(str, '    ') : str;
+      return this.parent ? indent(str, '    ') : str;
     }
   }, {
     key: "hasErrors",
@@ -195,11 +212,11 @@ function sort(tests) {
       testSuites.push(test);
     }
   });
-  return Array.prototype.concat([], testCases, testSuites);
+  return testCases.concat(testSuites);
 }
 
 function filterContextKey(key) {
-  return key !== 'context';
+  return key != 'context';
 }
 /**
  * Map object with test names as keys and test functions as values
@@ -212,15 +229,21 @@ function filterContextKey(key) {
 
 function createTests(object, parent) {
   var tests = Object.keys(object).filter(filterContextKey).map(function (key) {
-    switch (typeof object[key]) {
+    var v = object[key];
+
+    switch (typeof v) {
       case 'function':
-        return new Test(key, object[key], parent.timeout || TIMEOUT, parent.context);
+        var test = new Test(key, v, parent.timeout || TIMEOUT, parent.context);
+        return test;
 
       case 'object':
-        return new TestSuite(key, object[key], parent);
+        var ts = new TestSuite(key, v, parent);
+        return ts;
 
       case 'string':
-        return new TestSuite(key, object[key], parent);
+        var _ts = new TestSuite(key, v, parent);
+
+        return _ts;
     }
   }).filter(function (test) {
     return test !== undefined;

@@ -9,7 +9,7 @@ var Test = require('../src/test');
  */
 
 
-function assertNoErrosInTestSuite(testSuite) {
+function assertNoErrorsInTestSuite(testSuite) {
   testSuite.tests.forEach(function (test) {
     if (test instanceof Test) {
       if (test.error) {
@@ -17,11 +17,11 @@ function assertNoErrosInTestSuite(testSuite) {
         throw new Error(message);
       }
     } else if (test instanceof TestSuite) {
-      assertNoErrosInTestSuite(test);
+      assertNoErrorsInTestSuite(test);
     }
   });
 }
 
 module.exports = {
-  assertNoErrosInTestSuite
+  assertNoErrorsInTestSuite
 };

@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 var fs = require('fs');
 
-var path = require('path');
+var _require = require('path'),
+    join = _require.join,
+    resolve = _require.resolve;
 
 var Catchment = require("catchment/es5");
 
-var _require = require('os'),
-    EOL = _require.EOL;
+var _require2 = require('os'),
+    EOL = _require2.EOL;
 
 var TestSuite = require('../src/test_suite');
 
@@ -18,11 +20,11 @@ function buildDirectory(dir) {
   var content = fs.readdirSync(dir);
   var res = {};
   content.forEach(function (node) {
-    var nodePath = path.join(dir, node);
+    var nodePath = join(dir, node);
     var stat = fs.lstatSync(nodePath);
 
     if (stat.isFile()) {
-      res[node] = path.resolve(nodePath);
+      res[node] = resolve(nodePath);
     } else if (stat.isDirectory()) {
       res[node] = buildDirectory(nodePath);
     }
@@ -31,7 +33,7 @@ function buildDirectory(dir) {
 }
 
 function parseArgv(argv) {
-  var argvPath = path.resolve(argv);
+  var argvPath = resolve(argv);
 
   try {
     var res = fs.lstatSync(argvPath);
@@ -120,7 +122,7 @@ function test(testSuites, watch) {
       if (typeof data !== 'object') return;
       stack.write(data);
 
-      if (data.type === 'test-end') {
+      if (data.type == 'test-end') {
         count.total++;
 
         if (data.error) {
@@ -129,12 +131,12 @@ function test(testSuites, watch) {
       }
     };
 
-    return Promise.resolve(lib.runInSequence(testSuites, notify)).then(function ($await_2) {
+    return Promise.resolve(lib.runInSequence(testSuites, notify)).then(function ($await_4) {
       try {
         stack.end();
-        return Promise.resolve(catchment.promise).then(function ($await_3) {
+        return Promise.resolve(catchment.promise).then(function ($await_5) {
           try {
-            errorsCatchment = $await_3;
+            errorsCatchment = $await_5;
             process.stdout.write(EOL);
             process.stdout.write(errorsCatchment);
             process.stdout.write(`🦅  Executed ${count.total} tests`);
@@ -162,5 +164,55 @@ function test(testSuites, watch) {
 var watch = process.argv.some(function (a) {
   return a == '--watch';
 });
+var babel = process.argv.some(function (a) {
+  return a == '--babel';
+});
+
+if (babel) {
+  try {
+    require('@babel/register');
+  } catch (err) {
+    var p = resolve(process.cwd(), 'node_modules/@babel/register');
+
+    require(p);
+  }
+}
+
 var testSuites = resolveTestSuites(process.argv);
-test(testSuites, watch);
+
+(function () {
+  return new Promise(function ($return, $error) {
+    var message;
+
+    var $Try_3_Post = function () {
+      try {
+        return $return();
+      } catch ($boundEx) {
+        return $error($boundEx);
+      }
+    }.bind(this);
+
+    var $Try_3_Catch = function (_ref) {
+      try {
+        message = _ref.message;
+        console.error(message);
+        process.exit(1);
+        return $Try_3_Post();
+      } catch ($boundEx) {
+        return $error($boundEx);
+      }
+    }.bind(this);
+
+    try {
+      return Promise.resolve(test(testSuites, watch)).then(function ($await_6) {
+        try {
+          return $Try_3_Post();
+        } catch ($boundEx) {
+          return $Try_3_Catch($boundEx);
+        }
+      }.bind(this), $Try_3_Catch);
+    } catch (_ref) {
+      $Try_3_Catch(_ref)
+    }
+  }.bind(this));
+})();

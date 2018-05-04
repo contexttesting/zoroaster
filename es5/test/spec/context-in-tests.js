@@ -55,7 +55,7 @@ module.exports = {
       }, null, Context);
       return Promise.resolve(testSuite.run()).then(function ($await_1) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert.notStrictEqual(firstContext, secondContext);
           assert.equal(firstContext[propName], newTestData);
           assert.equal(secondContext[propName], testData);
@@ -118,7 +118,7 @@ module.exports = {
       });
       return Promise.resolve(testSuite.run()).then(function ($await_2) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert.notStrictEqual(firstContext, secondContext);
           assert.equal(firstContext[propName], newTestData);
           assert.equal(secondContext[propName], testData);
@@ -183,7 +183,7 @@ module.exports = {
       });
       return Promise.resolve(testSuite.run()).then(function ($await_4) {
         try {
-          lib.assertNoErrosInTestSuite(testSuite);
+          lib.assertNoErrorsInTestSuite(testSuite);
           assert.notStrictEqual(firstContext, secondContext);
           assert.equal(firstContext[propName], newTestData);
           assert.equal(secondContext[propName], testDataAfterPromise);
@@ -220,7 +220,7 @@ module.exports = {
       return Promise.resolve(testSuite.run()).then(function ($await_6) {
         try {
           assert.throws(function () {
-            return lib.assertNoErrosInTestSuite(testSuite);
+            return lib.assertNoErrorsInTestSuite(testSuite);
           }, /Error in test "test-suite > should timeout": Evaluate has timed out after 150ms/);
           return $return();
         } catch ($boundEx) {

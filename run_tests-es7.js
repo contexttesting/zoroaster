@@ -12,7 +12,7 @@ import { bin } from './package.json'
 
 const { zoroaster, 'zoroaster-es5': zoroasterEs5 } = bin
 
-const force = process.argv.some(a => a === '--force')
+const force = process.argv.some(a => a == '--force')
 const useEs5 = nodeLt('v8.6.0') || force
 
 if (force) {

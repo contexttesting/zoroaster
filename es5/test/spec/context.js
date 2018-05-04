@@ -9,7 +9,7 @@ var TestSuite = require('../../src/test_suite');
 var Test = require('../../src/test');
 
 var _require = require('../lib'),
-    assertNoErrosInTestSuite = _require.assertNoErrosInTestSuite;
+    assertNoErrorsInTestSuite = _require.assertNoErrorsInTestSuite;
 
 var testSuiteName = 'Zoroaster Context Test Suite';
 var testName = 'Zoroaster Context Test';
@@ -195,7 +195,7 @@ var TestSuiteContextFromTests = {
       });
       return Promise.resolve(testSuite.run()).then(function ($await_3) {
         try {
-          assertNoErrosInTestSuite(testSuite);
+          assertNoErrorsInTestSuite(testSuite);
           return $return();
         } catch ($boundEx) {
           return $error($boundEx);
