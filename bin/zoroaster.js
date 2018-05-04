@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-const path = require('path')
+const { join, resolve } = require('path')
 const Catchment = require('catchment')
 const { EOL } = require('os')
 
@@ -13,10 +13,10 @@ function buildDirectory(dir) {
   const content = fs.readdirSync(dir)
   const res = {}
   content.forEach((node) => {
-    const nodePath = path.join(dir, node)
+    const nodePath = join(dir, node)
     const stat = fs.lstatSync(nodePath)
     if (stat.isFile()) {
-      res[node] = path.resolve(nodePath)
+      res[node] = resolve(nodePath)
     } else if (stat.isDirectory()) {
       res[node] = buildDirectory(nodePath)
     }
@@ -25,7 +25,7 @@ function buildDirectory(dir) {
 }
 
 function parseArgv(argv) {
-  const argvPath = path.resolve(argv)
+  const argvPath = resolve(argv)
   try {
     const res = fs.lstatSync(argvPath)
     if (res.isFile()) {
@@ -37,7 +37,7 @@ function parseArgv(argv) {
   } catch (err) {
     // file or directory does not exist
     // eslint-disable-next-line
-        console.error(err)
+    console.error(err)
   }
 }
 
@@ -107,7 +107,7 @@ async function test(testSuites, watch, currentlyWatching = []) {
   const notify = (data) => {
     if (typeof data !== 'object') return
     stack.write(data)
-    if (data.type === 'test-end') {
+    if (data.type == 'test-end') {
       count.total++
       if (data.error) {
         count.error++
@@ -132,6 +132,24 @@ async function test(testSuites, watch, currentlyWatching = []) {
 }
 
 const watch = process.argv.some(a => a == '--watch')
+const babel = process.argv.some(a => a == '--babel')
+
+if (babel) {
+  try {
+    require('@babel/register')
+  } catch (err) {
+    const p = resolve(process.cwd(), 'node_modules/@babel/register')
+    require(p)
+  }
+}
 
 const testSuites = resolveTestSuites(process.argv)
-test(testSuites, watch)
+
+;(async () => {
+  try {
+    await test(testSuites, watch)
+  } catch ({ message }) {
+    console.error(message)
+    process.exit(1)
+  }
+})()

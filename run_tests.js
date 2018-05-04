@@ -17,7 +17,7 @@ var _package = require("./package.json");
 var zoroaster = _package.bin.zoroaster,
     zoroasterEs5 = _package.bin['zoroaster-es5'];
 var force = process.argv.some(function (a) {
-  return a === '--force';
+  return a == '--force';
 });
 var useEs5 = (0, _es.nodeLt)('v8.6.0') || force;
 

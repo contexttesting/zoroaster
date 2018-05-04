@@ -433,6 +433,16 @@ The default timeout is `2000ms`. At the moment, only global timeout
 can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
 `ZOROASTER_TIMEOUT=5000 zoroaster test`
 
+### @babel/register
+
+If you want to use `@babel/register` in your tests, just pass `--babel` flag
+to the CI. It will make a call to require `@babel/register`, so that it must
+be installed as a dependency in your project, because it's not specified as
+`zoroaster`'s dependency.
+
+```sh
+zoroaster test/spec --babel
+```
 
 ### package.json
 
