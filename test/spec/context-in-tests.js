@@ -49,7 +49,7 @@ module.exports = {
       },
     }, null, Context)
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert.notStrictEqual(firstContext, secondContext)
     assert.equal(firstContext[propName], newTestData)
     assert.equal(secondContext[propName], testData)
@@ -100,7 +100,7 @@ module.exports = {
       },
     })
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert.notStrictEqual(firstContext, secondContext)
     assert.equal(firstContext[propName], newTestData)
     assert.equal(secondContext[propName], testData)
@@ -144,7 +144,7 @@ module.exports = {
       },
     })
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert.notStrictEqual(firstContext, secondContext)
     assert.equal(firstContext[propName], newTestData)
     assert.equal(secondContext[propName], testDataAfterPromise)
@@ -158,7 +158,7 @@ module.exports = {
     }, null, Context, 150)
     await testSuite.run()
     assert.throws(
-      () => lib.assertNoErrosInTestSuite(testSuite),
+      () => lib.assertNoErrorsInTestSuite(testSuite),
       /Error in test "test-suite > should timeout": Evaluate has timed out after 150ms/
     )
   },

@@ -7,7 +7,7 @@ const Test = require('../src/test')
  * @param {TestSuite} testSuite - test suite
  * @throws Throws if a test had errors in it.
  */
-function assertNoErrosInTestSuite(testSuite) {
+function assertNoErrorsInTestSuite(testSuite) {
   testSuite.tests.forEach((test) => {
     if (test instanceof Test) {
       if (test.error) {
@@ -15,10 +15,10 @@ function assertNoErrosInTestSuite(testSuite) {
         throw new Error(message)
       }
     } else if (test instanceof TestSuite) {
-      assertNoErrosInTestSuite(test)
+      assertNoErrorsInTestSuite(test)
     }
   })
 }
 module.exports = {
-  assertNoErrosInTestSuite,
+  assertNoErrorsInTestSuite,
 }

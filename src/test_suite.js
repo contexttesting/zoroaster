@@ -1,5 +1,5 @@
 const { EOL } = require('os')
-const lib = require('./lib')
+const { isFunction, checkTestSuiteName, checkContext, runInSequence, indent } = require('./lib')
 const Test = require('./test')
 
 const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
@@ -10,8 +10,8 @@ function hasParent(testSuite) {
 
 class TestSuite {
   constructor (name, testsOrPath, parent, context, timeout) {
-    lib.checkTestSuiteName(name)
-    lib.checkContext(context)
+    checkTestSuiteName(name)
+    checkContext(context)
 
     this._name = name
     this._parent = parent
@@ -21,9 +21,9 @@ class TestSuite {
       this._context = parent.context
     }
 
-    if (typeof testsOrPath === 'string') {
+    if (typeof testsOrPath == 'string') {
       this._path = testsOrPath
-    } else if (typeof testsOrPath === 'object') {
+    } else if (typeof testsOrPath == 'object') {
       this._assignTests(testsOrPath)
     } else {
       throw new Error('You must provide either a path to a module, or tests in an object.')
@@ -52,19 +52,28 @@ class TestSuite {
   }
 
   _assignContext(context) {
-    if ((typeof context).toLowerCase() === 'function') {
+    if (Array.isArray(context)) {
       this._context = context
       return true
-    } else if ((typeof context).toLowerCase() === 'object') {
-      const extenedContext = Object.assign({}, this._context || {}, context)  // + deep assign
-      this._context = Object.freeze(extenedContext)
+    }
+    const fn = isFunction(context)
+    if (fn) {
+      this._context = context
+      return true
+    }
+    if ((typeof context).toLowerCase() == 'object') {
+      const extendedContext = {
+        ...(this._context || {}),
+        ...context,
+      } // this is for when test suites are extending object contexts
+      this._context = Object.freeze(extendedContext)
       return true
     }
   }
 
   _assignTests(tests) {
     if ('context' in tests) {
-      lib.checkContext(tests.context)
+      checkContext(tests.context)
       this._assignContext(tests.context)
     }
     this._rawTests = tests
@@ -97,7 +106,7 @@ class TestSuite {
         name: this.name,
       })
     }
-    const res = await lib.runInSequence(this.tests, notify)
+    const res = await runInSequence(this.tests, notify)
     if (typeof notify === 'function') {
       notify({ type:'test-suite-end', name: this.name })
     }
@@ -107,7 +116,7 @@ class TestSuite {
     const str = this.name + EOL + this.tests
       .map(test => test.dump())
       .join('\n')
-    return this.parent ? lib.indent(str, '    ') : str
+    return this.parent ? indent(str, '    ') : str
   }
   hasErrors() {
     return this.tests
@@ -134,11 +143,11 @@ function sort(tests) {
       testSuites.push(test)
     }
   })
-  return Array.prototype.concat([], testCases, testSuites)
+  return [...testCases, ...testSuites]
 }
 
 function filterContextKey(key) {
-  return key !== 'context'
+  return key != 'context'
 }
 
 /**
@@ -153,13 +162,20 @@ function createTests(object, parent) {
     .keys(object)
     .filter(filterContextKey)
     .map((key) => {
-      switch (typeof object[key]) {
-      case 'function':
-        return new Test(key, object[key], parent.timeout || TIMEOUT, parent.context)
-      case 'object':
-        return new TestSuite(key, object[key], parent)
-      case 'string':
-        return new TestSuite(key, object[key], parent)
+      const v = object[key]
+      switch (typeof v) {
+      case 'function': {
+        const test = new Test(key, v, parent.timeout || TIMEOUT, parent.context)
+        return test
+      }
+      case 'object': {
+        const ts = new TestSuite(key, v, parent)
+        return ts
+      }
+      case 'string': {
+        const ts = new TestSuite(key, v, parent)
+        return ts
+      }
       }
     })
     .filter(test => test !== undefined)

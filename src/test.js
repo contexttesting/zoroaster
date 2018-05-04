@@ -1,6 +1,6 @@
 const { EOL } = require('os')
 const promto = require('promto')
-const lib = require('./lib')
+const { indent, filterStack, checkContext, isFunction } = require('./lib')
 
 /**
  * Create a new test object.
@@ -8,7 +8,7 @@ const lib = require('./lib')
  * @param {function} fn Function as specified in specs
  * @param {Number} timeout Timeout in ms after which to throw timeout Error
  * @param {object|function} context Context object or function
- * @return {Test} A test object with inialised properties.
+ * @return {Test} A test object with initialised properties.
  */
 class Test {
   constructor(name, fn, timeout, context) {
@@ -20,7 +20,7 @@ class Test {
     this.error = null
     this.result = null
 
-    lib.checkContext(context)
+    checkContext(context)
     if (context) {
       this._context = context
     }
@@ -69,9 +69,20 @@ class Test {
    */
   async _evaluateContext() {
     const { context } = this
-    if ((typeof context).toLowerCase() !== 'function') {
+    if (Array.isArray(context)) {
+      const ep = context.map(async (c) => {
+        const fn = isFunction(c)
+        if (!fn) return
+        const d = {}
+        await c.call(d)
+        return d
+      })
+      const res = await Promise.all(ep)
+      this._context = res
       return
     }
+    const fn = isFunction(context)
+    if (!fn) return
 
     const c = {}
     await context.call(c)
@@ -87,24 +98,37 @@ function dumpResult(test) {
     return `${TICK} ${test.name}`
   } else {
     return `${CROSS} ${test.name}` + EOL
-      + lib.indent(lib.filterStack(test), ' | ')
+      + indent(filterStack(test), ' | ')
   }
 }
 
 /**
  * Create a promise for a test function.
- * @param {function} fn - function to execute
- * @param {object} ctx - first argument to pass to the function
+ * @param {function} fn function to execute
+ * @param {object} ctx Contexts to pass as arguments in order
  * @return {Promise} A promise to execute function.
  */
 async function createTestPromise(fn, ctx) {
+  if (Array.isArray(ctx)) {
+    const res = await fn(...ctx)
+    return res
+  }
   const res = await fn(ctx)
   return res
 }
 
-async function plainDestroyContext(test) {
-  if (test.context && typeof test.context._destroy === 'function') {
-    const res = await test.context._destroy()
+async function plainDestroyContext({ context }) {
+  if (Array.isArray(context)) {
+    const ep = context.map(async c => {
+      if (!isFunction(c._destroy)) return
+      const res = await c._destroy()
+      return res
+    })
+    const allRes = await Promise.all(ep)
+    return allRes
+  }
+  if (context && isFunction(context._destroy)) {
+    const res = await context._destroy()
     return res
   }
 }

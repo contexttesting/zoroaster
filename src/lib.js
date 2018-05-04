@@ -26,9 +26,11 @@ function getPadding(level) {
 
 function checkContext(context) {
   const type = (typeof context).toLowerCase()
-  if (type === 'function') {
+  if (Array.isArray(context)) {
+    return // arrays from 1.1.0
+  } else if (type == 'function') {
     return // functions are accepted from 0.4.1
-  } else if (context !== undefined &&  type !== 'object') {
+  } else if (context != undefined && type != 'object') {
     throw new Error('Context must be an object.')
   } else if (context === null) {
     throw new Error('Context cannot be null.')
@@ -59,6 +61,10 @@ function filterStack({ error, name }) {
   return stack.replace(/\n/g, EOL)
 }
 
+function isFunction(fn) {
+  return (typeof fn).toLowerCase() == 'function'
+}
+
 module.exports = {
   runInSequence,
   indent,
@@ -66,4 +72,5 @@ module.exports = {
   checkContext,
   checkTestSuiteName,
   filterStack,
+  isFunction,
 }

@@ -14,7 +14,7 @@ const ObjectContext = {
       test: () => {},
     }, null, Context)
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert(destroyed)
   },
   async 'calls async _destroy'() {
@@ -29,7 +29,7 @@ const ObjectContext = {
       test: () => {},
     }, null, Context)
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert(destroyed)
   },
 }
@@ -46,7 +46,7 @@ const FunctionContext = {
       test: () => {},
     }, null, Context)
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert(destroyed)
   },
   async 'calls async _destroy'() {
@@ -61,7 +61,7 @@ const FunctionContext = {
       test: () => {},
     }, null, Context)
     await testSuite.run()
-    lib.assertNoErrosInTestSuite(testSuite)
+    lib.assertNoErrorsInTestSuite(testSuite)
     assert(destroyed)
   },
   async 'fails the test when _destroy throws an error'() {
@@ -104,7 +104,7 @@ const FunctionContext = {
     await testSuite.run()
 
     assert.throws(
-      () => lib.assertNoErrosInTestSuite(testSuite),
+      () => lib.assertNoErrorsInTestSuite(testSuite),
       /Error in test "test-suite > should timeout": Destroy has timed out after 250ms/
     )
     assert(!destroyed)
@@ -123,7 +123,7 @@ const FunctionContext = {
     }, null, Context, 250)
     await testSuite.run()
     assert.throws(
-      () => lib.assertNoErrosInTestSuite(testSuite),
+      () => lib.assertNoErrorsInTestSuite(testSuite),
       /Error in test "test-suite > should timeout": Test has timed out after 250ms/
     )
     assert(destroyed)

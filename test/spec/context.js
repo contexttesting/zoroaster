@@ -2,7 +2,7 @@ const assert = require('assert')
 const throws = require('assert-throws')
 const TestSuite = require('../../src/test_suite')
 const Test = require('../../src/test')
-const { assertNoErrosInTestSuite } = require('../lib')
+const { assertNoErrorsInTestSuite } = require('../lib')
 
 const testSuiteName = 'Zoroaster Context Test Suite'
 const testName = 'Zoroaster Context Test'
@@ -141,7 +141,7 @@ const TestSuiteContextFromTests = {
       },
     })
     await testSuite.run()
-    assertNoErrosInTestSuite(testSuite)
+    assertNoErrorsInTestSuite(testSuite)
   },
   async 'cannot update context from tests'() {
     const context = createContext()
