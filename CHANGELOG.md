@@ -1,5 +1,15 @@
+## 4 May 2018
+
+<a name="1.1.0"></a>
+## [1.1.0](https://github.com/artdecocode/zoroaster/compare/v1.0.0...v1.1.0)
+
+- [feature] pass `--babel` to include `@babel/register`
+- [feature] multiple contexts
+
+## 16 March 2018
+
 <a name="1.0.0"></a>
-## [1.0.0](https://github.com/Sobesednik/zoroaster/compare/v1.0.0-beta.2...v1.0.0) (16 March 2018)
+## [1.0.0](https://github.com/Sobesednik/zoroaster/compare/v1.0.0-beta.2...v1.0.0)
 
 - **breaking Node < 8.6** Version 1 🎆
 - readme adjustments, simpler example and emoji 🦅 .
