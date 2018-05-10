@@ -1,14 +1,14 @@
 # Zoroaster
 
 [![npm version](https://badge.fury.io/js/zoroaster.svg)](https://badge.fury.io/js/zoroaster)
-[![Build Status](https://travis-ci.org/Sobesednik/zoroaster.svg?branch=master)](https://travis-ci.org/Sobesednik/zoroaster)
+[![Build Status](https://travis-ci.org/artdecocode/zoroaster.svg?branch=master)](https://travis-ci.org/artdecocode/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
 
-A new wave JavaScript testing framework for _Node.js_.
+An Art Deco JavaScript testing framework for _Node.js_.
 
-[![](https://sobes.s3.eu-west-2.amazonaws.com/movflamecolumn.gif)](https://zoroaster.co.uk)
-[![](https://sobes.s3.eu-west-2.amazonaws.com/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
-[![](https://sobes.s3.eu-west-2.amazonaws.com/movflamecolumn.gif)](https://sobesednik.media)
+[![](graphics/movflamecolumn.gif)](https://zoroaster.co.uk)
+[![](graphics/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
+[![](graphics/movflamecolumn.gif)](https://artdecocode.bz)
 
 Are you fed up with `mocha` or have you had enough of `chai` in your life?
 Is it not time to say good-bye to the old stereotype that the same software must
@@ -159,7 +159,7 @@ because
 Think of a test context which can be asynchronously initialised, and
 asynchronously destroyed. The `context` can be reused across multiple test
 suites at ease. This method combines ye olde `beforeEach` and `afterEach` into
-a controlled state for each individual test suite. Just have a look at some of
+a controlled state for each individual test case. Just have a look at some of
 the examples below.
 
 A recommended structure us to have `spec` and `context` directories.
@@ -602,7 +602,7 @@ directory path to the CLI tool, so this feature is not commonly used.
 ## TODO
 
 1. JS API
-2. Timeouts - specific for each test, blocked by `context` feature (10)
+2. time-outs - specific for each test, blocked by `context` feature (10)
 3. Write tests which spawn child_process to test `bin/zoroaster` executable
 4. Add more reasons why to use _Zoroaster_ to readme
 5. Parallel execution with `--parallel` flag
@@ -625,9 +625,10 @@ directory path to the CLI tool, so this feature is not commonly used.
 
 ---
 
-Copyright 2018 [sobes](https://sobes.io)
+Copyright 2018 [Art Deco Code][1]
 
-[1]: #assertion-library
-[2]: https://zoroaster.co.uk
-[3]: https://zoroaster.co.uk/playground
-[4]: https://npmjs.org/packages/assert-throws
+[1]: https://artdeco.bz
+[2]: #assertion-library
+[3]: https://zoroaster.co.uk
+[4]: https://zoroaster.co.uk/playground
+[5]: https://npmjs.org/packages/assert-throws

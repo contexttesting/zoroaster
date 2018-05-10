@@ -18,17 +18,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sobesednik/zoroaster.git"
+    "url": "git+https://github.com/artdecocode/zoroaster.git"
   },
   "keywords": [
     "test"
   ],
-  "author": "Anton <anton@sobes.io>",
+  "author": "Anton <anton@adc.sh>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Sobesednik/zoroaster/issues"
+    "url": "https://github.com/artdecocode/zoroaster/issues"
   },
-  "homepage": "https://github.com/Sobesednik/zoroaster#readme",
+  "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
     "assert-diff": "1.2.5",
     "assert-throws": "1.3.1",
