@@ -16,7 +16,7 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/context/constructors"
+        "test/spec/context/destroy.js"
       ],
       "env": {
         "ZOROASTER_TIMEOUT": "9999999"

@@ -3,7 +3,7 @@ import TestSuite from '../../../src/lib/TestSuite'
 import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 
 /** @type {Object.<string, (ctx: Context)>} */
-const t = {
+const T = {
   context,
   async 'passes multiple contexts to tests'(ctx) {
     const testSuite = new TestSuite('test', {
@@ -46,4 +46,4 @@ const t = {
   },
 }
 
-export default t
+export default T

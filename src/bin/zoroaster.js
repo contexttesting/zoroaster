@@ -15,18 +15,18 @@ function buildDirectory(dir) {
   const res = content.reduce((acc, node) => {
     const path = join(dir, node)
     const stat = lstatSync(path)
-    let res
+    let r
     let name
     if (stat.isFile()) {
-      res = resolve(path)
+      r = resolve(path)
       name = replaceFilename(node)
     } else if (stat.isDirectory()) {
-      res = buildDirectory(path)
+      r = buildDirectory(path)
       name = node
     }
     return {
       ...acc,
-      [name]: res,
+      [name]: r,
     }
   }, {})
   return res
@@ -51,8 +51,8 @@ function parseArgv(argv) {
   }
 }
 
-function resolveTestSuites(argv) {
-  return argv
+function resolveTestSuites(args) {
+  return args
     .slice(2)
   // ignore flags
     .filter((argv) => {

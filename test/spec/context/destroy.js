@@ -1,147 +1,135 @@
-import assert from 'assert'
-import TestSuite from '../../src/test_suite'
-import lib from '../lib'
+import { ok, equal, strictEqual, throws } from 'assert'
+import TestSuite from '../../../src/lib/TestSuite'
+import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 
-const TEST_SUITE_NAME = 'test-suite'
-
-const ObjectContext = {
-  async 'calls _destroy'() {
+/** @type {Object.<string, (ctx: Context)>} */
+export const ObjectContext = {
+  context,
+  async 'calls _destroy'({ assertNoErrorsInTestSuite, TEST_SUITE_NAME, test }) {
     let destroyed = false
-    const Context = {
+    const c = {
       _destroy() { destroyed = true },
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test: () => {},
-    }, null, Context)
-    await testSuite.run()
-    lib.assertNoErrorsInTestSuite(testSuite)
-    assert(destroyed)
+    const ts = new TestSuite(TEST_SUITE_NAME, { test }, null, c)
+    await ts.run()
+    assertNoErrorsInTestSuite(ts)
+    ok(destroyed)
   },
-  async 'calls async _destroy'() {
+  async 'calls async _destroy'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite, test }) {
     let destroyed = false
-    const Context = {
+    const c = {
       async _destroy() {
         await new Promise(r => setTimeout(r, 50))
         destroyed = true
       },
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test: () => {},
-    }, null, Context)
-    await testSuite.run()
-    lib.assertNoErrorsInTestSuite(testSuite)
-    assert(destroyed)
+    const ts = new TestSuite(TEST_SUITE_NAME, { test }, null, c)
+    await ts.run()
+    assertNoErrorsInTestSuite(ts)
+    ok(destroyed)
   },
 }
 
-const FunctionContext = {
-  async 'calls _destroy'() {
+/** @type {Object.<string, (ctx: Context)>} */
+export const FunctionContext = {
+  context,
+  async 'calls _destroy'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite, test }) {
     let destroyed = false
-    function Context() {
+    function c() {
       this._destroy = () => {
         destroyed = true
       }
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test: () => {},
-    }, null, Context)
-    await testSuite.run()
-    lib.assertNoErrorsInTestSuite(testSuite)
-    assert(destroyed)
+    const ts = new TestSuite(TEST_SUITE_NAME, { test }, null, c)
+    await ts.run()
+    assertNoErrorsInTestSuite(ts)
+    ok(destroyed)
   },
-  async 'calls async _destroy'() {
+  async 'calls async _destroy'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite, test }) {
     let destroyed = false
-    function Context() {
+    function c() {
       this._destroy = async () => {
         await new Promise(r => setTimeout(r, 50))
         destroyed = true
       }
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test: () => {},
-    }, null, Context)
-    await testSuite.run()
-    lib.assertNoErrorsInTestSuite(testSuite)
-    assert(destroyed)
+    const ts = new TestSuite(TEST_SUITE_NAME, { test }, null, c)
+    await ts.run()
+    assertNoErrorsInTestSuite(ts)
+    ok(destroyed)
   },
-  async 'fails the test when _destroy throws an error'() {
+  async 'fails the test when _destroy throws an error'({ TEST_SUITE_NAME, test }) {
     const error = new Error('test error message')
-    function Context() {
+    function c() {
       this._destroy = () => {
         throw error
       }
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test: () => {},
-    }, null, Context)
-    await testSuite.run()
-    assert.strictEqual(testSuite.tests[0].error, error)
+    const ts = new TestSuite(TEST_SUITE_NAME, { test }, null, c)
+    await ts.run()
+    strictEqual(ts.tests[0].error, error)
   },
-  async 'fails the test when async _destroy throws an error'() {
+  async 'fails the test when async _destroy throws an error'({ TEST_SUITE_NAME, test }) {
     const error = new Error('test error message')
-    function Context() {
+    function c() {
       this._destroy = async () => {
         throw error
       }
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test: () => {},
-    }, null, Context)
-    await testSuite.run()
-    assert.strictEqual(testSuite.tests[0].error, error)
+    const ts = new TestSuite(TEST_SUITE_NAME, { test }, null, c)
+    await ts.run()
+    strictEqual(ts.tests[0].error, error)
   },
-  async 'times out if _destroy is taking too long'() {
+  async 'times out if _destroy is taking too long'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
     let destroyed = false
-    function Context () {
+    function c () {
       this._destroy = async () => {
         await new Promise(r => setTimeout(r, 500))
         destroyed = true
       }
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
       'should timeout'() {},
-    }, null, Context, 250)
-    await testSuite.run()
+    }, null, c, 250)
+    await ts.run()
 
-    assert.throws(
-      () => lib.assertNoErrorsInTestSuite(testSuite),
-      /Error in test "test-suite > should timeout": Destroy has timed out after 250ms/
+    const re = new RegExp(`Error in test "${TEST_SUITE_NAME} > should timeout": Destroy has timed out after 250ms`)
+    throws(
+      () => assertNoErrorsInTestSuite(ts),
+      re,
     )
-    assert(!destroyed)
+    ok(!destroyed)
   },
-  async 'calls _destroy after test timeout'() {
+  async 'calls _destroy after test timeout'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
     let destroyed = false
-    function Context () {
+    function c() {
       this._destroy = () => {
         destroyed = true
       }
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
       async 'should timeout'() {
         await new Promise(r => setTimeout(r, 500))
       },
-    }, null, Context, 250)
-    await testSuite.run()
-    assert.throws(
-      () => lib.assertNoErrorsInTestSuite(testSuite),
-      /Error in test "test-suite > should timeout": Test has timed out after 250ms/
+    }, null, c, 250)
+    await ts.run()
+
+    const re = new RegExp(`Error in test "${TEST_SUITE_NAME} > should timeout": Test has timed out after 250ms`)
+    throws(
+      () => assertNoErrorsInTestSuite(ts),
+      re
     )
-    assert(destroyed)
+    ok(destroyed)
   },
-  async 'updates test\'s destroyResult'() {
+  async 'updates test\'s destroyResult'({ TEST_SUITE_NAME }) {
     const destroyReturnValue = 'test-value'
-    function Context() {
+    function c() {
       this._destroy = () => destroyReturnValue
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
       'should pass'() {},
-    }, null, Context)
-    await testSuite.run()
-    assert.equal(testSuite.tests[0].destroyResult, destroyReturnValue)
+    }, null, c)
+    await ts.run()
+    equal(ts.tests[0].destroyResult, destroyReturnValue)
   },
-}
-
-export default {
-  FunctionContext,
-  ObjectContext,
 }
