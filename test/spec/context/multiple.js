@@ -1,9 +1,11 @@
 import { equal } from 'assert'
-import TestSuite from '../../src/test_suite'
-import { assertNoErrorsInTestSuite } from '../lib'
+import TestSuite from '../../../src/lib/TestSuite'
+import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 
+/** @type {Object.<string, (ctx: Context)>} */
 const t = {
-  async 'passes multiple contexts to tests'() {
+  context,
+  async 'passes multiple contexts to tests'(ctx) {
     const testSuite = new TestSuite('test', {
       context: [
         async function contextA() {
@@ -19,9 +21,9 @@ const t = {
       },
     })
     await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    ctx.assertNoErrorsInTestSuite(testSuite)
   },
-  async 'destroys multiple contexts'() {
+  async 'destroys multiple contexts'(ctx) {
     let calledA
     let calledB
     const testSuite = new TestSuite('test', {
@@ -38,7 +40,7 @@ const t = {
       },
     })
     await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    ctx.assertNoErrorsInTestSuite(testSuite)
     equal(calledA, true)
     equal(calledB, true)
   },

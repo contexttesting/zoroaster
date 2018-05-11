@@ -1,6 +1,6 @@
 import { EOL } from 'os'
 import promto from 'promto'
-import { indent, filterStack, checkContext, isFunction } from './lib'
+import { indent, filterStack, checkContext, isFunction } from '.'
 
 /**
  * Create a new test object.

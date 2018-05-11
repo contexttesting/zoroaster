@@ -1,6 +1,6 @@
 import { Transform } from 'stream'
 import { EOL } from 'os'
-import { getPadding, indent, filterStack } from './lib'
+import { getPadding, indent, filterStack } from '.'
 
 /**
  * The whole file needs testing when you are especially (depressed)
@@ -21,7 +21,7 @@ import { getPadding, indent, filterStack } from './lib'
  * a different test-suite than the one currently on top of the stack.
  * @todo: check for data to be an object to control this error
  */
-function createTestSuiteStackStream() {
+export function createTestSuiteStackStream() {
   const testSuiteStack = []
   const ts = new Transform({
     objectMode: true,
@@ -50,7 +50,7 @@ function createTestSuiteStackStream() {
  * data[stack]
  * @returns {Transform}
  */
-function createProgressTransformStream() {
+export function createProgressTransformStream() {
   const ts = new Transform({
     objectMode: true,
     transform({ type, name, stack, result }, encoding, callback) {
@@ -74,7 +74,7 @@ function createProgressTransformStream() {
  * data[stack]
  * data[name]
  */
-function createErrorTransformStream() {
+export function createErrorTransformStream() {
   const ts = new Transform({
     objectMode: true,
     transform({ error, stack, name, test }, encoding, callback) {
@@ -109,9 +109,3 @@ function createErrorTransformStream() {
  * a stream, and return (e.g., resolved promise) when stream
  * finished.
  */
-
-module.exports = {
-  createTestSuiteStackStream,
-  createProgressTransformStream,
-  createErrorTransformStream,
-}

@@ -6,7 +6,7 @@ import { EOL } from 'os'
  * @param {Test[]} tests An array with tests
  * @param {function} [notify] A notify function to be passed to run method
  */
-async function runInSequence(tests, notify) {
+export async function runInSequence(tests, notify) {
   await tests.reduce(async (acc, t) => {
     await acc
     await t.run(notify)
@@ -14,17 +14,17 @@ async function runInSequence(tests, notify) {
   return tests
 }
 
-function indent(str, padding) {
+export function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
 }
 
-function getPadding(level) {
+export function getPadding(level) {
   return Array
     .from({ length: level * 2 })
     .join(' ')
 }
 
-function checkContext(context) {
+export function checkContext(context) {
   const type = (typeof context).toLowerCase()
   if (Array.isArray(context)) {
     return // arrays from 1.1.0
@@ -37,8 +37,8 @@ function checkContext(context) {
   }
 }
 
-function checkTestSuiteName(name) {
-  if (typeof name !== 'string') {
+export function checkTestSuiteName(name) {
+  if (typeof name != 'string') {
     throw new Error('Test suite name must be given.')
   }
 }
@@ -47,7 +47,7 @@ function checkTestSuiteName(name) {
  * Get clean stack for a test, without Node internals
  * @param {Test} test - test
  */
-function filterStack({ error, name }) {
+export function filterStack({ error, name }) {
   if (!error) {
     throw new Error('cannot filter stack when a test does not have an error')
   }
@@ -61,16 +61,6 @@ function filterStack({ error, name }) {
   return stack.replace(/\n/g, EOL)
 }
 
-function isFunction(fn) {
+export function isFunction(fn) {
   return (typeof fn).toLowerCase() == 'function'
-}
-
-module.exports = {
-  runInSequence,
-  indent,
-  getPadding,
-  checkContext,
-  checkTestSuiteName,
-  filterStack,
-  isFunction,
 }

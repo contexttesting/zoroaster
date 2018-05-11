@@ -3,9 +3,9 @@ import { readdirSync, lstatSync, watchFile, unwatchFile } from 'fs'
 import { join, resolve } from 'path'
 import Catchment from 'catchment'
 import { EOL } from 'os'
-import TestSuite from '../src/TestSuite'
-import lib from '../src/lib'
-import stream from '../src/stream'
+import TestSuite from '../lib/TestSuite'
+import { runInSequence } from '../lib'
+import { createErrorTransformStream, createProgressTransformStream, createTestSuiteStackStream } from '../lib/stream'
 
 function buildDirectory(dir) {
   const content = readdirSync(dir)
@@ -88,10 +88,10 @@ async function test(testSuites, watch, currentlyWatching = []) {
     watchFiles(newCurrentlyWatching, () => test(testSuites, watch, newCurrentlyWatching))
   }
 
-  const stack = stream.createTestSuiteStackStream()
+  const stack = createTestSuiteStackStream()
 
-  const rs = stream.createErrorTransformStream()
-  const ts = stream.createProgressTransformStream()
+  const rs = createErrorTransformStream()
+  const ts = createProgressTransformStream()
   stack.pipe(ts).pipe(process.stdout)
   stack.pipe(rs)
 
@@ -112,7 +112,7 @@ async function test(testSuites, watch, currentlyWatching = []) {
       }
     }
   }
-  await lib.runInSequence(testSuites, notify)
+  await runInSequence(testSuites, notify)
   stack.end()
   const errorsCatchment = await catchment.promise
   process.stdout.write(EOL)

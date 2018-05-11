@@ -4,7 +4,7 @@
   "description": "A minimal JavaScript testing framework for Node.js.",
   "main": "src",
   "scripts": {
-    "t": "node bin/zoroaster --babel",
+    "t": "node src/bin --babel",
     "test": "node run_tests",
     "test-es5": "node run_tests --force",
     "watch": "node run_tests --watch",

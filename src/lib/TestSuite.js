@@ -1,6 +1,6 @@
 import { EOL } from 'os'
-import { isFunction, checkTestSuiteName, checkContext, runInSequence, indent } from './lib'
-import Test from './test'
+import { isFunction, checkTestSuiteName, checkContext, runInSequence, indent } from '.'
+import Test from './Test'
 
 const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
 
@@ -185,5 +185,3 @@ function createTests(object, parent) {
 function requireModule(modulePath) {
   return require(modulePath)
 }
-
-module.exports = TestSuite

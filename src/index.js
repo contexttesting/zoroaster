@@ -31,4 +31,4 @@ function run(args, options) {
   return proc
 }
 
-module.exports = run
+export default run

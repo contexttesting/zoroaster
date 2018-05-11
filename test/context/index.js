@@ -1,5 +1,5 @@
-import TestSuite from '../src/TestSuite'
-import Test from '../src/Test'
+import TestSuite from '../../src/lib/TestSuite'
+import Test from '../../src/lib/Test'
 
 /**
  * Assert that the test suite does not contain tests with errors by traversing
@@ -7,7 +7,7 @@ import Test from '../src/Test'
  * @param {TestSuite} testSuite - test suite
  * @throws Throws if a test had errors in it.
  */
-export function assertNoErrorsInTestSuite(testSuite) {
+function assertNoErrorsInTestSuite(testSuite) {
   testSuite.tests.forEach((test) => {
     if (test instanceof Test) {
       if (test.error) {
@@ -19,3 +19,19 @@ export function assertNoErrorsInTestSuite(testSuite) {
     }
   })
 }
+
+export default function context() {
+  this.assertNoErrorsInTestSuite = assertNoErrorsInTestSuite
+}
+
+/**
+ * @typedef {Object} Context
+ * @property {(ts:TestSuite) => void} assertNoErrorsInTestSuite
+ */
+
+/**
+ * @type {Context}
+ */
+const Context = {}
+
+export { Context }
