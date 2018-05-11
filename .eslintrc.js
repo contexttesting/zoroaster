@@ -36,6 +36,10 @@ module.exports = {
     "padded-blocks": [
       "error",
       "never"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
     ]
   }
 };

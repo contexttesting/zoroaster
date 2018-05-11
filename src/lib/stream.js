@@ -12,7 +12,7 @@ import { getPadding, indent, filterStack } from '.'
  * test suite stack, and if a notification with type
  * 'test-suite-start' is coming, the name of the test suite
  * is pushed onto the stack. When 'test-suite-end' notification
- * comes, the top item is poped from the stack.
+ * comes, the top item is popped from the stack.
  * data[type]
  * data[name]
  * @returns {Transfrom} A transform stream maintaining a test suite
@@ -26,9 +26,9 @@ export function createTestSuiteStackStream() {
   const ts = new Transform({
     objectMode: true,
     transform({ type, name, ...props }, encoding, callback) {
-      if (type === 'test-suite-start') {
+      if (type == 'test-suite-start' && name != 'default') {
         testSuiteStack.push(name)
-      } else if (type === 'test-suite-end') {
+      } else if (type == 'test-suite-end' && name != 'default') {
         testSuiteStack.pop()
       }
       const stack = testSuiteStack.slice()
@@ -54,10 +54,10 @@ export function createProgressTransformStream() {
   const ts = new Transform({
     objectMode: true,
     transform({ type, name, stack, result }, encoding, callback) {
-      if (type === 'test-suite-start') {
+      if (type == 'test-suite-start' && name != 'default') {
         this.push(indent(name, getPadding(stack.length)))
         this.push(EOL)
-      } else if (type === 'test-end') {
+      } else if (type == 'test-end') {
         this.push(indent(result, getPadding(stack.length)))
         this.push(EOL)
       }

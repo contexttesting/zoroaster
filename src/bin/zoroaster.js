@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { readdirSync, lstatSync, watchFile, unwatchFile } from 'fs'
 import { join, resolve } from 'path'
 import Catchment from 'catchment'
@@ -7,18 +6,29 @@ import TestSuite from '../lib/TestSuite'
 import { runInSequence } from '../lib'
 import { createErrorTransformStream, createProgressTransformStream, createTestSuiteStackStream } from '../lib/stream'
 
+const replaceFilename = (filename) => {
+  return filename.replace(/\.js$/, '')
+}
+
 function buildDirectory(dir) {
   const content = readdirSync(dir)
-  const res = {}
-  content.forEach((node) => {
-    const nodePath = join(dir, node)
-    const stat = lstatSync(nodePath)
+  const res = content.reduce((acc, node) => {
+    const path = join(dir, node)
+    const stat = lstatSync(path)
+    let res
+    let name
     if (stat.isFile()) {
-      res[node] = resolve(nodePath)
+      res = resolve(path)
+      name = replaceFilename(node)
     } else if (stat.isDirectory()) {
-      res[node] = buildDirectory(nodePath)
+      res = buildDirectory(path)
+      name = node
     }
-  })
+    return {
+      ...acc,
+      [name]: res,
+    }
+  }, {})
   return res
 }
 
@@ -27,10 +37,12 @@ function parseArgv(argv) {
   try {
     const res = lstatSync(argvPath)
     if (res.isFile()) {
-      return new TestSuite(argv, argvPath)
+      const ts = new TestSuite(argv, argvPath)
+      return ts
     } else if (res.isDirectory()) {
       const dir = buildDirectory(argv)
-      return new TestSuite(argv, dir)
+      const ts = new TestSuite(argv, dir)
+      return ts
     }
   } catch (err) {
     // file or directory does not exist
@@ -103,7 +115,7 @@ async function test(testSuites, watch, currentlyWatching = []) {
   }
 
   const notify = (data) => {
-    if (typeof data !== 'object') return
+    if (typeof data != 'object') return
     stack.write(data)
     if (data.type == 'test-end') {
       count.total++
@@ -146,7 +158,8 @@ const testSuites = resolveTestSuites(process.argv)
 ;(async () => {
   try {
     await test(testSuites, watch)
-  } catch ({ message }) {
+  } catch ({ message, stack }) {
+    if (process.env.DEBUG) console.log(stack) // eslint-disable-line no-console
     console.error(message) // eslint-disable-line no-console
     process.exit(1)
   }

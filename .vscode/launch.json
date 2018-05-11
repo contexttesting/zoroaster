@@ -14,9 +14,9 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/bin/zoroaster",
+      "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/integration.js"
+        "test/spec/context/constructors"
       ],
       "env": {
         "ZOROASTER_TIMEOUT": "9999999"

@@ -1,3 +1,8 @@
+- [repository] organise files better
+- [style] update to modules
+- [feature] print default test suite without extra `default` indentation
+- [feature] strip `.js` at the end of test suite directory names
+
 ## 4 May 2018
 
 <a name="1.1.0"></a>

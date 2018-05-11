@@ -126,6 +126,12 @@ export default class TestSuite {
   }
 }
 
+const sortTestSuites = ({ name: a }, { name: b }) => {
+  if (a == 'default') return -1
+  if (b == 'default') return 1
+  return 0
+}
+
 /**
  * Sort tests and test suites so that tests run before
  * test suites. We delibarately don't use V8's unstable
@@ -143,7 +149,8 @@ function sort(tests) {
       testSuites.push(test)
     }
   })
-  return [...testCases, ...testSuites]
+  const sts = testSuites.sort(sortTestSuites)
+  return [...testCases, ...sts]
 }
 
 function filterContextKey(key) {
