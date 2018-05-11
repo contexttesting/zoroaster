@@ -1,6 +1,6 @@
-const Transform = require('stream').Transform
-const EOL = require('os').EOL
-const { getPadding, indent, filterStack } = require('./lib')
+import { Transform } from 'stream'
+import { EOL } from 'os'
+import { getPadding, indent, filterStack } from './lib'
 
 /**
  * The whole file needs testing when you are especially (depressed)

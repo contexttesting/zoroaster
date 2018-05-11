@@ -1,5 +1,5 @@
-const { resolve } = require('path')
-const spawnCommand = require('spawncommand')
+import { resolve } from 'path'
+import spawnCommand from 'spawncommand'
 
 const BIN_PATH = resolve(__dirname, '../bin/zoroaster.js')
 

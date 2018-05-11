@@ -1,12 +1,12 @@
-const assert = require('assert')
-const { resolve } = require('path')
-const TestSuite = require('../../src/test_suite')
-const test_suite = require('../fixtures/test_suite')
+import assert from 'assert'
+import { resolve } from 'path'
+import TestSuite from '../../src/test_suite'
+import test_suite from '../fixtures/test_suite'
 
 const testSuiteName = 'Zoroaster Test Suite'
 const errorMessage = 'When you are in doubt abstain.'
 
-const TestSuite_test_suite = {
+const t = {
   constructor: {
     'throws an error if no name is given'() {
       try {
@@ -138,8 +138,8 @@ const TestSuite_test_suite = {
     const testSuite = new TestSuite(testSuiteName, {
       test() {},
     })
-    assert(testSuite._tests[0].timeout === 2000)
+    assert(testSuite._tests[0].timeout == 2000)
   },
 }
 
-module.exports = TestSuite_test_suite
+export default t

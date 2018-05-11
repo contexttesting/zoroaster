@@ -1,6 +1,6 @@
-const { EOL } = require('os')
-const promto = require('promto')
-const { indent, filterStack, checkContext, isFunction } = require('./lib')
+import { EOL } from 'os'
+import promto from 'promto'
+import { indent, filterStack, checkContext, isFunction } from './lib'
 
 /**
  * Create a new test object.
@@ -10,7 +10,7 @@ const { indent, filterStack, checkContext, isFunction } = require('./lib')
  * @param {object|function} context Context object or function
  * @return {Test} A test object with initialised properties.
  */
-class Test {
+export default class Test {
   constructor(name, fn, timeout, context) {
     this.timeout = timeout || 2000
     this.name = name
@@ -161,5 +161,3 @@ async function runTest(test) {
   test.finished = new Date()
   return test
 }
-
-module.exports = Test

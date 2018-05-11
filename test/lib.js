@@ -1,5 +1,5 @@
-const TestSuite = require('../src/test_suite')
-const Test = require('../src/test')
+import TestSuite from '../src/TestSuite'
+import Test from '../src/Test'
 
 /**
  * Assert that the test suite does not contain tests with errors by traversing
@@ -7,7 +7,7 @@ const Test = require('../src/test')
  * @param {TestSuite} testSuite - test suite
  * @throws Throws if a test had errors in it.
  */
-function assertNoErrorsInTestSuite(testSuite) {
+export function assertNoErrorsInTestSuite(testSuite) {
   testSuite.tests.forEach((test) => {
     if (test instanceof Test) {
       if (test.error) {
@@ -18,7 +18,4 @@ function assertNoErrorsInTestSuite(testSuite) {
       assertNoErrorsInTestSuite(test)
     }
   })
-}
-module.exports = {
-  assertNoErrorsInTestSuite,
 }

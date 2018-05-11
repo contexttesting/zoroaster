@@ -4,6 +4,7 @@
   "description": "A minimal JavaScript testing framework for Node.js.",
   "main": "src",
   "scripts": {
+    "t": "node bin/zoroaster --babel",
     "test": "node run_tests",
     "test-es5": "node run_tests --force",
     "watch": "node run_tests --watch",
@@ -38,10 +39,14 @@
     "spawncommand": "1.1.0"
   },
   "devDependencies": {
+    "@babel/core": "7.0.0-beta.46",
+    "@babel/plugin-syntax-object-rest-spread": "7.0.0-beta.46",
+    "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.46",
+    "@babel/register": "7.0.0-beta.46",
     "bestie": "1.0.0",
-    "colors": "1.2.1",
     "diff": "3.5.0",
     "noddy": "1.1.1",
+    "snapshot-context": "1.1.0",
     "strip-ansi": "4.0.0"
   }
 }

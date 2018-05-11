@@ -1,6 +1,6 @@
-const assert = require('assert')
-const TestSuite = require('../../src/test_suite')
-const lib = require('../lib')
+import assert from 'assert'
+import TestSuite from '../../src/test_suite'
+import lib from '../lib'
 
 const TEST_SUITE_NAME = 'test-suite'
 
@@ -141,7 +141,7 @@ const FunctionContext = {
   },
 }
 
-module.exports = {
+export default {
   FunctionContext,
   ObjectContext,
 }

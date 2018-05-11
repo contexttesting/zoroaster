@@ -1,8 +1,8 @@
-const assert = require('assert')
-const throws = require('assert-throws')
-const TestSuite = require('../../src/test_suite')
-const Test = require('../../src/test')
-const { assertNoErrorsInTestSuite } = require('../lib')
+import assert from 'assert'
+import throws from 'assert-throws'
+import TestSuite from '../../src/test_suite'
+import Test from '../../src/test'
+import { assertNoErrorsInTestSuite } from '../lib'
 
 const testSuiteName = 'Zoroaster Context Test Suite'
 const testName = 'Zoroaster Context Test'
@@ -229,7 +229,7 @@ const TestEvaluateContextFunction = {
   },
 }
 
-module.exports = {
+export default {
   'test suite context': TestSuiteContext,
   'test context': TestContext,
   'test suite context from tests': TestSuiteContextFromTests,

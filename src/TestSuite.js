@@ -1,14 +1,14 @@
-const { EOL } = require('os')
-const { isFunction, checkTestSuiteName, checkContext, runInSequence, indent } = require('./lib')
-const Test = require('./test')
+import { EOL } from 'os'
+import { isFunction, checkTestSuiteName, checkContext, runInSequence, indent } from './lib'
+import Test from './test'
 
 const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
 
-function hasParent(testSuite) {
-  return testSuite.parent instanceof TestSuite
+function hasParent({ parent }) {
+  return parent instanceof TestSuite
 }
 
-class TestSuite {
+export default class TestSuite {
   constructor (name, testsOrPath, parent, context, timeout) {
     checkTestSuiteName(name)
     checkContext(context)

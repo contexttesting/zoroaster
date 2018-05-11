@@ -1,28 +1,28 @@
-const assert = require('assert')
-const assertSrc = require('../../../assert')
-const throws = assertSrc.throws
-const equal = assert.equal
-const strictEqual = assert.strictEqual
+import { equal, strictEqual } from 'assert'
+import { throws } from '../../../assert'
 
-const throwsTestSuite = {
-  'asserts on async error'() {
-    return throws({
-      fn() {
-        const err = new Error('test-error')
-        return Promise.reject(err)
+const t = {
+  async 'asserts on async error'() {
+    const message = 'test-error'
+    await throws({
+      async fn() {
+        throw new Error(message)
       },
-      message: 'test-error',
+      message,
     })
   },
-  'asserts on sync error and fail'() {
-    return throws({
-      fn() { },
-    }).catch((error) => {
-      equal(error.message, 'Function should have thrown')
-    })
+  async 'asserts on sync error and fail'() {
+    try {
+      await throws({
+        fn() { },
+      })
+      throw new Error('Throws did not throw')
+    } catch ({ message }) {
+      equal(message, 'Function should have thrown')
+    }
   },
-  'asserts on async error by code and fail'() {
-    return throws({
+  async 'asserts on async error by code and fail'() {
+    await throws({
       fn() {
         const err = new Error('test-error')
         err.code = 'TER'
@@ -84,4 +84,4 @@ const throwsTestSuite = {
   },
 }
 
-module.exports = throwsTestSuite
+export default t

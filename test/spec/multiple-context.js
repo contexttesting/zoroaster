@@ -1,8 +1,8 @@
-const { equal } = require('assert')
-const TestSuite = require('../../src/test_suite')
-const { assertNoErrorsInTestSuite } = require('../lib')
+import { equal } from 'assert'
+import TestSuite from '../../src/test_suite'
+import { assertNoErrorsInTestSuite } from '../lib'
 
-const multipleContextTestSuite = {
+const t = {
   async 'passes multiple contexts to tests'() {
     const testSuite = new TestSuite('test', {
       context: [
@@ -44,4 +44,4 @@ const multipleContextTestSuite = {
   },
 }
 
-module.exports = multipleContextTestSuite
+export default t

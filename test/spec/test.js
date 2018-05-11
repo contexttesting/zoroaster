@@ -1,11 +1,11 @@
-const assert = require('assert')
-const Test = require('../../src/test')
+import assert from 'assert'
+import Test from '../../src/test'
 
 const name = 'The higher we soar the smaller we appear to those who cannot fly.'
 const fn = () => {}
 const errorMessage = 'When you are in doubt abstain.'
 
-const Test_test_suite = {
+const t = {
   instance: {
     'sets the name'() {
       const test = new Test(name, fn)
@@ -99,4 +99,4 @@ const Test_test_suite = {
   },
 }
 
-module.exports = Test_test_suite
+export default t

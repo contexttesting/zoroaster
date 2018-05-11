@@ -1,6 +1,6 @@
 const errorMessage = 'When you are in doubt abstain.'
 
-const testSuite = {
+const t = {
   context: {
     errorMessage,
   },
@@ -13,11 +13,12 @@ const testSuite = {
   },
   async test6() {
     await new Promise((_, reject) => {
-      setTimeout(() =>
-        reject(new Error('Error from Promise constructor'))
-        , 100)
+      setTimeout(
+        () => reject(new Error('Error from Promise constructor')),
+        100,
+      )
     })
   },
 }
 
-module.exports = testSuite
+export default t

@@ -1,18 +1,18 @@
-require('colors')
-const spawnCommand = require('spawncommand')
-const { resolve, join, basename } = require('path')
-const { equal } = require('assert')
-const jsdiff = require('diff')
-const stripAnsi = require('strip-ansi')
-const { EOL } = require('os')
-const { parseVersion } = require('noddy')
-const expectedWin = require('../snapshot/win')
-const expectedWin4 = require('../snapshot/win-4')
-const expectedWin6 = require('../snapshot/win-6')
-const expected8 = require('../snapshot/node-8') // source
-const expected6 = require('../snapshot/node-6') // es5
-const expected4 = require('../snapshot/node-4') // es5
-const expected8Es5 = require('../snapshot/node-8es5')
+import spawnCommand from 'spawncommand'
+import { resolve, join, basename } from 'path'
+import stripAnsi from 'strip-ansi'
+import { EOL } from 'os'
+import { parseVersion } from 'noddy'
+import expectedWin from '../snapshot/win'
+import expectedWin4 from '../snapshot/win-4'
+import expectedWin6 from '../snapshot/win-6'
+import expected8 from '../snapshot/node-8' // source
+import expected6 from '../snapshot/node-6' // es5
+import expected4 from '../snapshot/node-4' // es5
+import expected8Es5 from '../snapshot/node-8es5'
+import context, { SnapshotContext } from 'snapshot-context'
+
+const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 
 const testSuiteDir = join(__dirname, '../fixtures')
 const fixturePath = join(testSuiteDir, 'test_suite.js')
@@ -50,8 +50,11 @@ const expected = exp
   .replace(/\[fixture_path_async\]/g, fixturePath.replace(/\\/g, '/'))
   .replace(/\n/g, EOL)
 
-const integrationTestSuite = {
-  async 'should produce correct output'() {
+/** @type {Object.<string, (ctx: SnapshotContext)>} */
+const t = {
+  context,
+  async 'should produce correct output'(ctx) {
+    ctx.setDir(SNAPSHOT_DIR)
     let program
     let args
     if (!/^win/.test(process.platform)) { // linux
@@ -63,21 +66,25 @@ const integrationTestSuite = {
     }
     const { promise } = spawnCommand(program, args)
     const { stdout: actual } = await promise
-    try {
-      equal(actual, expected)
-    } catch (err) {
-      const diff = jsdiff.diffChars(stripAnsi(actual), stripAnsi(expected))
-      diff.forEach((part) => {
-        var color = part.added ? 'green' :
-          part.removed ? 'red' : 'grey'
 
-        const p = part.added || part.removed ? part.value.replace(/ /g, '_') : part.value
-        process.stderr.write(p[color])
-      })
+    await ctx.test('integration.txt', stripAnsi(actual).trim())
 
-      throw new Error('Result did not match expected')
-    }
+
+    // try {
+    //   equal(actual, expected)
+    // } catch (err) {
+    //   const diff = jsdiff.diffChars(stripAnsi(actual), stripAnsi(expected))
+    //   diff.forEach((part) => {
+    //     var color = part.added ? 'green' :
+    //       part.removed ? 'red' : 'grey'
+
+    //     const p = part.added || part.removed ? part.value.replace(/ /g, '_') : part.value
+    //     process.stderr.write(p[color])
+    //   })
+
+    //   throw new Error('Result did not match expected')
+    // }
   },
 }
 
-module.exports = integrationTestSuite
+export default t

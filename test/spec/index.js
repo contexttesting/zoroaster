@@ -1,13 +1,13 @@
-const assert = require('assert')
-const { resolve } = require('path')
-const { ChildProcess } = require('child_process')
-const zoroaster = require('../..')
+import assert from 'assert'
+import { resolve } from 'path'
+import { ChildProcess } from 'child_process'
+import zoroaster from '../..'
 
 const { equal } = assert
 
 const TEST_SUITE_PATH = resolve(__dirname, '../fixtures/test_suite.js')
 
-const indexTestSuite = {
+const t = {
   'exports a function'() {
     equal(typeof zoroaster, 'function')
   },
@@ -37,4 +37,4 @@ const indexTestSuite = {
   },
 }
 
-module.exports = indexTestSuite
+export default t

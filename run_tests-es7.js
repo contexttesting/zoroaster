@@ -34,8 +34,11 @@ const node = useEs5 ? ZOROASTER_ES5 : ZOROASTER
 
 const args = [spec]
 
-if (process.argv.find(argv => argv === '--watch')) {
+if (process.argv.find(argv => argv == '--watch')) {
   args.push('--watch')
+}
+if (process.argv.find(argv => argv == '--babel')) {
+  args.push('--babel')
 }
 
 fork(node, args)

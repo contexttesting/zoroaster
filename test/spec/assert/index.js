@@ -1,19 +1,15 @@
-const assert = require('assert')
-const assertSrc = require('../../../assert')
+import assert, { equal } from 'assert'
+import { equal as testEqual, deepEqual, assert as testAssert } from '../../../assert'
 
-const equal = assertSrc.equal
-const deepEqual = assertSrc.deepEqual
-const testAssert = assertSrc.assert
-
-const assertTestSuite = {
+const t = {
   'throws if not equal'() {
     try {
-      equal('a', 'b')
+      testEqual('a', 'b')
       throw new Error('should have thrown')
     } catch (error) {
-      assert.equal(error.operator, '==')
-      assert.equal(error.actual, 'a')
-      assert.equal(error.expected, 'b')
+      equal(error.operator, '==')
+      equal(error.actual, 'a')
+      equal(error.expected, 'b')
     }
   },
   'throws if not deep equal'() {
@@ -32,9 +28,9 @@ const assertTestSuite = {
       throw new Error('should have thrown')
     } catch (error) {
       const message = error.message
-      assert.equal(message, 'false == true')
+      equal(message, 'false == true')
     }
   },
 }
 
-module.exports = assertTestSuite
+export default t

@@ -1,20 +1,18 @@
 #!/usr/bin/env node
-
-const fs = require('fs')
-const { join, resolve } = require('path')
-const Catchment = require('catchment')
-const { EOL } = require('os')
-
-const TestSuite = require('../src/test_suite')
-const lib = require('../src/lib')
-const stream = require('../src/stream')
+import { readdirSync, lstatSync, watchFile, unwatchFile } from 'fs'
+import { join, resolve } from 'path'
+import Catchment from 'catchment'
+import { EOL } from 'os'
+import TestSuite from '../src/TestSuite'
+import lib from '../src/lib'
+import stream from '../src/stream'
 
 function buildDirectory(dir) {
-  const content = fs.readdirSync(dir)
+  const content = readdirSync(dir)
   const res = {}
   content.forEach((node) => {
     const nodePath = join(dir, node)
-    const stat = fs.lstatSync(nodePath)
+    const stat = lstatSync(nodePath)
     if (stat.isFile()) {
       res[node] = resolve(nodePath)
     } else if (stat.isDirectory()) {
@@ -27,7 +25,7 @@ function buildDirectory(dir) {
 function parseArgv(argv) {
   const argvPath = resolve(argv)
   try {
-    const res = fs.lstatSync(argvPath)
+    const res = lstatSync(argvPath)
     if (res.isFile()) {
       return new TestSuite(argv, argvPath)
     } else if (res.isDirectory()) {
@@ -56,13 +54,13 @@ function resolveTestSuites(argv) {
 function watchFiles(files, callback) {
   files.forEach((file) => {
     // console.log(`Watching ${file} for changes...`)
-    fs.watchFile(file, callback)
+    watchFile(file, callback)
   })
 }
 function unwatchFiles(files) {
   files.forEach((file) => {
     // console.log(`Unwatching ${file}`)
-    fs.unwatchFile(file)
+    unwatchFile(file)
   })
 }
 
@@ -149,7 +147,7 @@ const testSuites = resolveTestSuites(process.argv)
   try {
     await test(testSuites, watch)
   } catch ({ message }) {
-    console.error(message)
+    console.error(message) // eslint-disable-line no-console
     process.exit(1)
   }
 })()

@@ -1,9 +1,9 @@
-const assert = require('assert')
-const TestSuite = require('../../src/test_suite')
-const lib = require('../lib')
+import assert from 'assert'
+import TestSuite from '../../src/test_suite'
+import lib from '../lib'
 const TEST_SUITE_NAME = 'test-suite'
 
-module.exports = {
+const t = {
   async 'executes context as a function in each test'() {
     const testData = 'some-test-data'
     const newTestData = 'some-new-test-data'
@@ -163,3 +163,5 @@ module.exports = {
     )
   },
 }
+
+export default t

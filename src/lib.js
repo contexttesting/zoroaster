@@ -1,5 +1,5 @@
-const cleanStack = require('clean-stack')
-const { EOL } = require('os')
+import cleanStack from 'clean-stack'
+import { EOL } from 'os'
 
 /**
  * Run all tests in sequence, one by one.
