@@ -8,6 +8,9 @@ function hasParent({ parent }) {
   return parent instanceof TestSuite
 }
 
+/**
+ * A test suite is a collection of tests with any number of contexts.
+ */
 export default class TestSuite {
   constructor (name, testsOrPath, parent, context, timeout) {
     checkTestSuiteName(name)
@@ -41,6 +44,9 @@ export default class TestSuite {
   get rawTests() {
     return this._rawTests
   }
+  /**
+   * @type {Test[]|TestSuite[]}
+   */
   get tests() {
     return this._tests
   }

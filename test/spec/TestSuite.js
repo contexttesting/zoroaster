@@ -1,145 +1,135 @@
-import assert from 'assert'
-import { resolve } from 'path'
-import TestSuite from '../../src/test_suite'
-import test_suite from '../fixtures/test_suite'
+import { ok, equal, deepEqual } from 'assert'
+import throws from 'assert-throws'
+import TestSuite from '../../src/lib/TestSuite'
+import context, { Context } from '../context' // eslint-disable-line
 
-const testSuiteName = 'Zoroaster Test Suite'
-const errorMessage = 'When you are in doubt abstain.'
-
-const t = {
-  constructor: {
-    'throws an error if no name is given'() {
-      try {
+/** @type {Object.<string, (ctx: Context)>} */
+const T = {
+  context,
+  async 'throws an error if no name is given'() {
+    await throws({
+      fn() {
         new TestSuite()
-        throw new Error('No name error should have been thrown.')
-      } catch (err) {
-        assert(err.message === 'Test suite name must be given.')
-      }
-    },
-    'throws an error if neither object nor path given'() {
-      try {
-        new TestSuite(testSuiteName)
-        throw new Error('No path or object error should have been thrown.')
-      } catch (err) {
-        assert(err.message === 'You must provide either a path to a module, or tests in an object.')
-      }
-    },
-    'initialises test suite name'() {
-      const testSuite = new TestSuite(testSuiteName, {})
-      assert(testSuite.name === testSuiteName)
-    },
-    'creates a test suite from an object'() {
-      const testSuite = new TestSuite(testSuiteName, test_suite)
-      assert(testSuite.rawTests === test_suite)
-    },
-    'creates a test suite from a file'() {
-      const test_suite_path = resolve(__dirname, '../fixtures/test_suite')
-      const testSuite = new TestSuite(testSuiteName, test_suite_path)
-      assert(testSuite.path === test_suite_path)
-      testSuite.require()
-      assert(testSuite.rawTests === test_suite)
-    },
+      },
+      message: 'Test suite name must be given.',
+    })
   },
-  'should throw an error when test suite could not be required': () => {
+  'throws an error if neither object nor path given'({ TEST_SUITE_NAME }) {
+    try {
+      new TestSuite(TEST_SUITE_NAME)
+      throw new Error('No path or object error should have been thrown.')
+    } catch ({ message }) {
+      equal(message, 'You must provide either a path to a module, or tests in an object.')
+    }
+  },
+  'initialises test suite name'({ TEST_SUITE_NAME }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {})
+    equal(ts.name, TEST_SUITE_NAME)
+  },
+  'creates a test suite from an object'({ TEST_SUITE_NAME, testSuite }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, testSuite)
+    equal(ts.rawTests, testSuite)
+  },
+  'creates a test suite from a file'({ TEST_SUITE_NAME, testSuite, TEST_SUITE_PATH }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, TEST_SUITE_PATH)
+    equal(ts.path, TEST_SUITE_PATH)
+    ts.require()
+    equal(ts.rawTests.default, testSuite)
+  },
+  'throws an error when test suite could not be required'({ TEST_SUITE_NAME }) {
     const tsPath = 'noop-path'
-    const testSuite = new TestSuite(testSuiteName, tsPath)
-    assert(testSuite.path === tsPath)
+    const testSuite = new TestSuite(TEST_SUITE_NAME, tsPath)
+    equal(testSuite.path, tsPath)
     try {
       testSuite.require()
       throw new Error('Cannot find module error should have been thrown')
-    } catch (err) {
-      assert(err.message === 'Cannot find module \'noop-path\'')
+    } catch ({ message }) {
+      equal(message, 'Cannot find module \'noop-path\'')
     }
   },
-  async 'runs a test suite'() {
-    const testSuite = new TestSuite(testSuiteName, {
-      test() {},
-      async test2() { throw new Error('error') },
-      async test3() {},
+  async 'runs a test suite'({ TEST_SUITE_NAME, tests, assertTestsRun }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
+      ...tests,
     })
-    await testSuite.run()
-    testSuite.tests.forEach((test) => {
-      assert(test.started)
-      assert(test.finished)
-    })
+    await ts.run()
+    assertTestsRun(ts)
   },
-  async 'runs a test suite recursively'() {
-    const testSuite = new TestSuite(testSuiteName, {
+  async 'runs a test suite recursively'({ TEST_SUITE_NAME, tests, assertTestsRun }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
       test_suite: {
-        test() {},
+        ...tests,
       },
     })
-    await testSuite.run()
-    const test = testSuite.tests[0].tests[0]
-    assert(test.started)
-    assert(test.finished)
+    await ts.run()
+    assertTestsRun(ts)
   },
-  'creates test suites recursively'() {
-    const testSuite = new TestSuite(testSuiteName, {
+  'creates test suites recursively'({ TEST_SUITE_NAME }) {
+    const { tests } = new TestSuite(TEST_SUITE_NAME, {
       test_suite_level_A1: {
         test_suite_level_A1B1: {
-          testA1B1() {},
+          testA1B1() { },
         },
         test_suite_level_A1B2: {
-          testA1B2() {},
+          testA1B2() { },
         },
       },
       test_suite_level_A2: {
         test_suite_level_A2B1: {
-          testA2B1() {},
+          testA2B1() { },
         },
         test_suite_level_A2B2: {
-          testA2B2() {},
+          testA2B2() { },
         },
       },
     })
-    assert(testSuite.tests[0].name === 'test_suite_level_A1')
-    assert(testSuite.tests[0].tests[0].name === 'test_suite_level_A1B1')
-    assert(testSuite.tests[0].tests[0].tests[0].name === 'testA1B1')
-    assert(testSuite.tests[0].tests[1].name === 'test_suite_level_A1B2')
-    assert(testSuite.tests[0].tests[1].tests[0].name === 'testA1B2')
+    const [tests0, tests1] = tests
+    equal(tests0.name, 'test_suite_level_A1')
+    equal(tests0.tests[0].name, 'test_suite_level_A1B1')
+    equal(tests0.tests[0].tests[0].name, 'testA1B1')
+    equal(tests0.tests[1].name, 'test_suite_level_A1B2')
+    equal(tests0.tests[1].tests[0].name, 'testA1B2')
 
-    assert(testSuite.tests[1].name === 'test_suite_level_A2')
-    assert(testSuite.tests[1].tests[0].name === 'test_suite_level_A2B1')
-    assert(testSuite.tests[1].tests[0].tests[0].name === 'testA2B1')
-    assert(testSuite.tests[1].tests[1].name === 'test_suite_level_A2B2')
-    assert(testSuite.tests[1].tests[1].tests[0].name === 'testA2B2')
+    equal(tests1.name, 'test_suite_level_A2')
+    equal(tests1.tests[0].name, 'test_suite_level_A2B1')
+    equal(tests1.tests[0].tests[0].name, 'testA2B1')
+    equal(tests1.tests[1].name, 'test_suite_level_A2B2')
+    equal(tests1.tests[1].tests[0].name, 'testA2B2')
   },
-  'creates a recursive test suite using string'() {
-    const test_suite_path = resolve(__dirname, '../fixtures/test_suite')
-    const testSuite = new TestSuite(testSuiteName, {
-      fixtures_test_suite: test_suite_path,
+  'creates a recursive test suite using string'({ TEST_SUITE_NAME, TEST_SUITE_PATH }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
+      fixtures_test_suite: TEST_SUITE_PATH,
     })
-    assert(testSuite.tests[0].name === 'fixtures_test_suite')
-    assert(testSuite.tests[0].path === test_suite_path)
-    assert(testSuite.tests[0].parent === testSuite)
+    const { tests: [{ name, path, parent }] } = ts
+    equal(name, 'fixtures_test_suite')
+    equal(path, TEST_SUITE_PATH)
+    equal(parent, ts)
   },
-  async 'has an error when a test fails'() {
-    const testSuite = new TestSuite(testSuiteName, {
-      test_does_not_have_error() {},
-      test_has_error() { throw new Error(errorMessage) },
+  async 'has an error when a test fails'({ TEST_SUITE_NAME, tests: { test, failingTest } }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
+      test,
+      failingTest,
     })
-    await testSuite.run()
-    assert(testSuite.hasErrors)
+    await ts.run()
+    ok(ts.hasErrors)
   },
-  async 'has an error when a test suite fails'() {
-    const testSuite = new TestSuite(testSuiteName, {
+  async 'has an error when a test suite fails'({ TEST_SUITE_NAME, tests: { test, failingTest } }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
       test_suite_does_not_have_error: {
-        test_does_not_have_error() {},
+        test,
       },
       test_suite_has_error: {
-        test_has_error() { throw new Error(errorMessage) },
+        failingTest,
       },
     })
-    await testSuite.run()
-    assert(testSuite.hasErrors)
+    await ts.run()
+    ok(ts.hasErrors)
   },
-  'creates a test with a default timeout'() {
-    const testSuite = new TestSuite(testSuiteName, {
-      test() {},
+  'creates a test with a default timeout'({ TEST_SUITE_NAME, tests: { test } }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, {
+      test,
     })
-    assert(testSuite._tests[0].timeout == 2000)
+    equal(ts._tests[0].timeout, 2000)
   },
 }
 
-export default t
+export default T

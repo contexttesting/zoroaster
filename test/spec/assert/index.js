@@ -1,5 +1,5 @@
-import assert, { equal } from 'assert'
-import { equal as testEqual, deepEqual, assert as testAssert } from '../../../assert'
+import ok, { equal } from 'assert'
+import { equal as testEqual, deepEqual as testDeepEqual, assert as testAssert } from '../../../src/assert'
 
 const t = {
   'throws if not equal'() {
@@ -14,12 +14,12 @@ const t = {
   },
   'throws if not deep equal'() {
     try {
-      deepEqual({ test: 'string' }, { test: 'string-2' })
+      testDeepEqual({ test: 'string' }, { test: 'string-2' })
       throw new Error('should have thrown')
     } catch (error) {
       const message = error.message
-      assert(/\+ {2}test: "string"/.test(message))
-      assert(/- {2}test: "string-2"/.test(message))
+      ok(/\+ {2}test: "string"/.test(message))
+      ok(/- {2}test: "string-2"/.test(message))
     }
   },
   'throws if not true'() {

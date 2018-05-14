@@ -1,5 +1,5 @@
-import { equal, strictEqual } from 'assert'
-import { throws } from '../../../assert'
+import { equal, strictEqual, ok } from 'assert'
+import { throws } from '../../../src/assert'
 
 const t = {
   async 'asserts on async error'() {
@@ -29,57 +29,56 @@ const t = {
         return Promise.reject(err)
       },
       code: 'TERRA',
-    }).catch((error) => {
-      equal(error.message, 'TER != TERRA')
+    }).catch(({ message }) => {
+      ok(/TER != TERRA/.test(message))
     })
   },
-  'throws when asserting on error strict equality'() {
+  async 'throws when asserting on error strict equality'() {
     const error = new Error('test-error')
-    return throws({
+    await throws({
       fn() {
         return Promise.reject(error)
       },
       error: new Error('test-error-assert'),
-    }).catch((error) => {
-      equal(error.message, 'Error: test-error is not strict equal to Error: test-error-assert.')
+    }).catch(({ message }) => {
+      equal(message, 'Error: test-error is not strict equal to Error: test-error-assert.')
     })
   },
-  'asserts on error strict equality'() {
+  async 'asserts on error strict equality'() {
     const error = new Error('test-error')
-    return throws({
-      fn() {
-        return Promise.reject(error)
+    await throws({
+      async fn() {
+        throw error
       },
       error,
     })
   },
-  'asserts on error message with regular expression'() {
-    return throws({
-      fn() {
-        return Promise.reject(new Error('test-error'))
+  async 'asserts on error message with regular expression'() {
+    await throws({
+      async fn() {
+        throw new Error('test-error')
       },
       message: /test-error/,
     })
   },
-  'returns the thrown error'() {
+  async 'returns the thrown error'() {
     const error = new Error('test-error')
-    return throws({
-      fn() {
-        return Promise.reject(error)
+    const res = await throws({
+      async fn() {
+        throw error
       },
       message: /test-error/,
-    }).then((res) => {
-      strictEqual(res, error)
     })
+    strictEqual(res, error)
   },
-  'throws when asserting on error message with regular expression'() {
-    return throws({
-      fn() {
-        return Promise.reject(new Error('test-error'))
+  async 'throws when asserting on error message with regular expression'() {
+    await throws({
+      async fn() {
+        throw new Error('test-error')
       },
       message: /test-error-assert/,
-    }).catch((error) => {
-      equal(error.message, 'test-error does not match regular expression /test-error-assert/')
+    }).catch(({ message }) => {
+      equal(message, 'test-error does not match regular expression /test-error-assert/')
     })
   },
 }

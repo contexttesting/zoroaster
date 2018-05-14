@@ -8,7 +8,7 @@
     "test": "node run_tests",
     "test-es5": "node run_tests --force",
     "watch": "node run_tests --watch",
-    "build": "bestie bin,src,test,assert",
+    "build": "babel src --out-dir build",
     "build-run": "babel run_tests-es7.js --out-file run_tests.js",
     "example": "zoroaster examples/test/Zoroaster_test.js",
     "example.js": "zoroaster example.js"
@@ -32,7 +32,7 @@
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
     "assert-diff": "1.2.5",
-    "assert-throws": "1.3.1",
+    "assert-throws": "2.1.0",
     "catchment": "2.0.1",
     "clean-stack": "1.3.0",
     "promto": "1.0.1",

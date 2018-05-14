@@ -1,19 +1,18 @@
 import { resolve } from 'path'
 import spawnCommand from 'spawncommand'
 
-const BIN_PATH = resolve(__dirname, '../bin/zoroaster.js')
+const BIN_PATH = resolve(__dirname, 'bin/zoroaster.js')
 
-function getSpawnOptions(bin, _args) {
-  'use strict'
-  let program
-  let args = Array.isArray(_args) ? _args : []
+const getSpawnOptions = (bin, args = []) => {
   if (!/^win/.test(process.platform)) { // linux
-    program = bin
+    return { program: bin, args }
   } else { // windows
-    program = process.env.comspec
-    args = [].concat(['/c', 'node', bin], args)
+    const { env: { comspec } } = process
+    return {
+      program: comspec,
+      args: ['/c', 'node', bin, ...args],
+    }
   }
-  return { program, args }
 }
 
 /**
@@ -26,8 +25,8 @@ function getSpawnOptions(bin, _args) {
  * which will be resolved when tests are finished.
  */
 function run(args, options) {
-  const spawnOptions = getSpawnOptions(BIN_PATH, args)
-  const proc = spawnCommand(spawnOptions.program, spawnOptions.args, options)
+  const { program, args: a } = getSpawnOptions(BIN_PATH, args)
+  const proc = spawnCommand(program, a, options)
   return proc
 }
 

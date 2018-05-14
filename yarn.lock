@@ -260,9 +260,12 @@ assert-plus@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-0.2.0.tgz#d74e1b87e7affc0db8aadb7021f3fe48101ab234"
 
-assert-throws@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/assert-throws/-/assert-throws-1.3.1.tgz#335e64b8820217a9c37e7477153817b2956bc1c7"
+assert-throws@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/assert-throws/-/assert-throws-2.1.0.tgz#bae47b8b04eed7a5953964a567f697c367a51da5"
+  dependencies:
+    erotic "1.1.0"
+    erte "1.1.1"
 
 async-each@^1.0.0:
   version "1.0.1"
@@ -489,6 +492,18 @@ erotic@0.2.0:
   resolved "https://registry.yarnpkg.com/erotic/-/erotic-0.2.0.tgz#4162384016281b1dd313bf1ecc87576f92d8e509"
   dependencies:
     clean-stack "1.3.0"
+
+erotic@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/erotic/-/erotic-1.1.0.tgz#ccfa6c05e836bae8610ac407dbe191efa9cdbeda"
+  dependencies:
+    clean-stack "1.3.0"
+
+erte@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/erte/-/erte-1.1.1.tgz#b9bd6252168c256232a06e37e472d172a895c5ee"
+  dependencies:
+    diff "3.5.0"
 
 es5-ext@0.8.x:
   version "0.8.2"

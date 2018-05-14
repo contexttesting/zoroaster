@@ -13,10 +13,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/context/destroy.js"
+        "test/spec/context/destroy.js",
+        "--babel"
       ],
       "env": {
         "ZOROASTER_TIMEOUT": "9999999"
