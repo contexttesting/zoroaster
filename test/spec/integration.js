@@ -1,14 +1,13 @@
 import { fork } from 'spawncommand'
-import { resolve, join, basename } from 'path'
+import { resolve } from 'path'
 import stripAnsi from 'strip-ansi'
-import { EOL } from 'os'
-import snapshotContext, { SnapshotContext } from 'snapshot-context'
-import context, { Context} from '../context'
+import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line
+import context, { Context } from '../context' // eslint-disable-line
 
 const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 const BIN = resolve(__dirname, '../../src/bin')
 
-const re = new RegExp(process.cwd(), 'g')
+const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
 function getSnapshot(s) {
   const snapshot = stripAnsi(s).trim()
   return snapshot.replace(re, '')
@@ -20,14 +19,14 @@ function getSnapshot(s) {
 const t = {
   context:[
     context,
-    snapshotContext
+    snapshotContext,
   ],
   async 'produces correct output'({ TEST_SUITE_PATH }, { test, setDir }) {
     setDir(SNAPSHOT_DIR)
     const { promise } = fork(BIN, [TEST_SUITE_PATH], {
       stdio: 'pipe',
     })
-    const { stdout, stderr } = await promise
+    const { stdout } = await promise
     await test('integration-stdout.txt', getSnapshot(stdout))
   },
 }
