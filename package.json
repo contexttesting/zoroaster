@@ -46,7 +46,6 @@
     "@babel/register": "7.0.0-beta.46",
     "diff": "3.5.0",
     "erotic": "1.1.0",
-    "noddy": "1.1.1",
     "snapshot-context": "1.1.2",
     "strip-ansi": "4.0.0"
   }
