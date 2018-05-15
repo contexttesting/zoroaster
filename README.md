@@ -10,23 +10,20 @@ An Art Deco JavaScript testing framework for _Node.js_.
 [![](doc/graphics/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
 [![](doc/graphics/movflamecolumn.gif)](https://artdecocode.bz)
 
-Are you fed up with `mocha` or have you had enough of `chai` in your life?
-Is it not time to say good-bye to the old stereotype that the same software must
-be used every day? Say no more, `zoroaster` is here to save our souls and bring
-a change.
+Are you fed up with `mocha` or have you had enough of `chai` in your life? Is it not time to say good-bye to the old stereotype that the same software must be used every day? Say no more, `zoroaster` is here to save our souls and bring a change.
 
 ```js
-// zoroaster example.js
-import { assert, equal } from 'zoroaster/assert'
+/* yarn example/simple.js */
+import { ok, equal } from 'assert'
 
 const software = (type) => {
   switch (type) {
-    case 'boolean':
-      return true
-    case 'string':
-      return 'string'
-    default:
-      return null
+  case 'boolean':
+    return true
+  case 'string':
+    return 'string'
+  default:
+    return null
   }
 }
 
@@ -36,11 +33,11 @@ const asyncSoftware = async (type) => {
 }
 
 export default {
-  'should run a test'() {
+  'runs a test'() {
     const res = software('boolean')
-    assert(res)
+    ok(res)
   },
-  async 'should run an async test'() {
+  async 'runs an async test'() {
     const res = await asyncSoftware('string')
     equal(res, 'string')
   },
@@ -51,34 +48,19 @@ export default {
 
 ## Try Zoroaster Today!
 
-Zoroaster allows to write test cases as simple functions, without using
-framework-specific global variables such as `describe`,  `it`, `before` and
-`after`. Save it for the after-life. Export test suites as modules and run them
-with `zoroaster` binary.
+Zoroaster allows to write test cases as simple functions, without using framework-specific global variables such as `describe`,  `it`, `before` and `after`. Save it for the after-life. Export test suites as modules and run them with `zoroaster` binary.
 
 Read the main idea behind `zoroaster` below, or skip to the [example](#example) to get started.
 
 ### Each Directory is a Test Suite
 
-It's much easier to organise test cases by JavaScript files in directories and
-not by nested function blocks in a single file. Files can be moved around much
-more easily and are more atomic.
+It's much easier to organise test cases by JavaScript files in directories and not by nested function blocks in a single file. Files can be moved around much more easily and are more atomic.
 
-Normally, a directory is a test suite because it groups files together by
-functionality, and as libraries' features develop, their test directory should
-grow more files inside -- testing new features. It's more desirable to create
-many smaller files sorted by directories, rather than put all tests in a single
-file.
+Normally, a directory is a test suite because it groups files together by functionality, and as libraries' features develop, their test directory should grow more files inside -- testing new features. It's more desirable to create many smaller files sorted by directories, rather than put all tests in a single file.
 
-However, it's understandable why one would go down the second route -- this is
-because the traditional frameworks have an inherent limitation in them. They
-force developers to reuse single _set-up_ and _tear-down_ functions such as
-`beforeEach` and `afterEach` within the same file because there's no way to make
-them run across multiple files without duplicating the code. Consider example
-below to understand this point better.
+However, it's understandable why one would go down the second route -- this is because the traditional frameworks have an inherent limitation in them. They force developers to reuse single _set-up_ and _tear-down_ functions such as `beforeEach` and `afterEach` within the same file because there's no way to make them run across multiple files without duplicating the code. Consider example below to understand this point better.
 
-A project has `src` directory and is tested with `mocha`, with tests in `test`
-directory.
+A project has `src` directory and is tested with `mocha`, with tests in `test` directory.
 
 ```fs
 # project structure
@@ -91,9 +73,7 @@ directory.
     - sea.js
 ```
 
-The test suites are for the `night` and `day`. Set-up `beforeEach`'s purpose is
-to open some connections, and tear-down `afterEach`'s purpose is to make sure
-that all the connections are closed.
+The test suites are for the `night` and `day`. Set-up `beforeEach`'s purpose is to open some connections, and tear-down `afterEach`'s purpose is to make sure that all the connections are closed.
 
 ```js
 // night.js
@@ -136,8 +116,7 @@ describe('day') {
 }
 ```
 
-It's impossible to reuse `beforeEach` and `afterEach` by simply creating a new
-file in their parent directory, such as
+It's impossible to reuse `beforeEach` and `afterEach` by simply creating a new file in their parent directory, such as
 
 ```js
 // test/light/set-up.js
@@ -156,13 +135,9 @@ because
 
 ### Context as Alternative Solution
 
-Think of a test context which can be asynchronously initialised, and
-asynchronously destroyed. The `context` can be reused across multiple test
-suites at ease. This method combines ye olde `beforeEach` and `afterEach` into
-a controlled state for each individual test case. Just have a look at some of
-the examples below.
+Think of a test context which can be asynchronously initialised, and asynchronously destroyed. The `context` can be reused across multiple test suites at ease. This method combines the `beforeEach` and `afterEach` into a controlled state for each individual test case. Just have a look at some of the examples below.
 
-A recommended structure us to have `spec` and `context` directories.
+A recommended structure is to have `spec` and `context` directories.
 
 ```fs
 # an updated project structure
@@ -178,11 +153,7 @@ A recommended structure us to have `spec` and `context` directories.
       - sea.js
 ```
 
-A context can and mostly will be asynchronous, but it doesn't have to be.
-The body of the context is the set-up for each test, i.e., `beforeEach`. If
-implementation of `_destroy` is provided, which can also be async, it will be
-called on the tear-down, i.e., `afterEach`. Therefore, we decouple the context
-from the test.
+A context can and mostly will be asynchronous, but it doesn't have to be. The body of the context is the set-up for each test, i.e., `beforeEach`. By assigning properties to `this`, we make them available for tests. If implementation of `_destroy` is provided, which can also be async, it will be called on the tear-down, i.e., `afterEach`. Therefore, we decouple the context from the test.
 
 ```js
 // test/context/index.js
@@ -195,10 +166,7 @@ async function Context() {
 }
 ```
 
-Context is specified as a property of a test suite, and is passed as an argument
-to the test case functions when it's their time to execute. Context can be
-reused across multiple packages, for example, `temp-context` makes it super
-easy to create temp directories for testing, and remove them.
+Context is specified as a property of a test suite, and is passed as an argument to the test case functions when it's their time to execute. Context can be reused across multiple packages, for example, `temp-context` makes it super easy to create temp directories for testing, and remove them, and `snapshot-context` provides API to create and assert against snapshots.
 
 ```js
 // test/spec/light/night
@@ -206,7 +174,7 @@ import { context } from '../context'
 
 const nightTestSuite = {
   context,
-  'should be no light at night'(ctx) {
+  'has no light at night'(ctx) {
     ctx.connections.open()
     // night at 0
     ctx.connections.sendTime(0)
@@ -215,8 +183,7 @@ const nightTestSuite = {
 }
 ```
 
-A cool thing is that you can destructure the context argument and declare only
-the bits of the context that you're interested in.
+A cool thing is that you can destructure the context argument and declare only the bits of the context that you're interested in.
 
 ```js
 // test/spec/light/day
@@ -224,7 +191,7 @@ import { context } from '../context'
 
 const dayTestSuite = {
   context,
-  'should be light at day'({ connections }) {
+  'is light at day'({ connections }) {
     // day at 12
     connections.open()
     connections.sendTime(12)
@@ -233,62 +200,60 @@ const dayTestSuite = {
 }
 ```
 
-Consequently, all of this means that test contexts can be tested separately,
-which is perfect for when it is required to ensure quality of tests.
+Consequently, all of this means that test contexts can be tested separately, which is perfect for when it is required to ensure quality of tests.
 
-In this section, we tried to give a brief overview of why `zoroaster` with its
-`Contexts` should become your new daily routine. The advantage is that you're
-more flexible in organising the `test` directory which is harder with
-`beforeEach` and `afterEach` in _other_ testing frameworks.
+In this section, we tried to give a brief overview of why `zoroaster` with its `Contexts` should become your new daily routine. The advantage is that you're more flexible in organising the `test` directory which is harder with `beforeEach` and `afterEach` in _other_ testing frameworks.
 
 ## Example
 
 See how to write tests with `Zoroaster` in this section.
 
-First, create a module which exports a TEST SUITE as an object in the
-`test/spec` directory. Second, add TESTS as functions -- properties of the test
-suite. Implement the tests with basic assertion methods required from
-`zoroaster/assert`, or use any other assertion library.
+First, create a module which exports a TEST SUITE as an object in the `test/spec` directory. Second, add TESTS as functions -- properties of the test suite. Implement the tests with basic assertion methods required from `zoroaster/assert`, or use any other assertion library.
 
-There are NO global functions. You need to know 2 things: tests are methods
-of test suites, and they can be written in shorthand notation
-(`var o = { foo(){} };`).
+There are NO global functions and tests are just methods of test suites, which can be written using shorthand notation.
 
 ```js
-import { assert, equal } from 'zoroaster/assert'
-import Zoroaster from '../src/Zoroaster'
+/* yarn example/Zoroaster */
+import { ok, equal } from 'zoroaster/assert'
+import Zoroaster from '../../src'
 
-const Zoroaster_test_suite = {
-  'should have static variables'() { // awesome shorthand method notation
-    assert(Zoroaster.AHURA_MAZDA)
-    assert(Zoroaster.ANGRA_MAINYU)
+export default {
+  // standard test function
+  'has static variables'() {
+    ok(Zoroaster.AHURA_MAZDA)
+    ok(Zoroaster.ANGRA_MAINYU)
   },
 
-  // nested test suites
-  standard_constructor: {
-    'should create a new Zoroaster instance with default name'() {
+  // recursive test suites
+  constructor: {
+    'creates a new Zoroaster instance with default name'() {
       const zoroaster = new Zoroaster()
-      assert(zoroaster instanceof Zoroaster)
+      ok(zoroaster instanceof Zoroaster)
       equal(zoroaster.name, 'Zarathustra')
     },
-    world: {
-      'should create a world'() {
-        const zoroaster = new Zoroaster()
-        zoroaster.createWorld()
-        equal(zoroaster.balance, 100)
-      },
-      'should destroy a world'() {
-        const zoroaster = new Zoroaster()
-        zoroaster.createWorld()
-        zoroaster.destroyWorld()
-        equal(zoroaster.balance, 0)
-      },
+    'creates a new Zoroaster instance with a name'() {
+      const name = 'Ashu Zarathushtra'
+      const zoroaster = new Zoroaster(name)
+      equal(zoroaster.name, name)
+
+      const name2 = 'Zarathushtra Spitama'
+      const zoroaster2 = new Zoroaster(name2)
+      equal(zoroaster2.name, name2)
+    },
+    'has a balance of 0 when initialised'() {
+      const zoroaster = new Zoroaster()
+      equal(zoroaster.balance, 0)
     },
   },
-  // ...
 }
 
-module.exports = Zoroaster_test_suite
+export const checkParadise = {
+  'returns false when balance is less than 1000'() {
+    const zoroaster = new Zoroaster()
+    const actual = zoroaster.checkParadise()
+    ok(!actual)
+  },
+}
 ```
 
 ### async functions
@@ -297,8 +262,7 @@ Async functions are perfect to test with [`zoroaster testing framework`][2] due 
 
 ```js
 {
-  // wow what syntax
-  async 'should return true when balance of 1000 met'() {
+  async 'returns true when balance of 1000 met'() {
     const zoroaster = new Zoroaster()
     zoroaster.createWorld()
     await Promise.all(
@@ -307,9 +271,9 @@ Async functions are perfect to test with [`zoroaster testing framework`][2] due 
       })
     )
     equal(zoroaster.balance, 1000)
-    assert(zoroaster.checkParadise())
+    const actual = zoroaster.checkParadise()
+    ok(actual)
   },
-  // ...
 }
 ```
 
@@ -322,101 +286,65 @@ All tests have to complete within the specified [timeout](#timeout).
 To run the example test file, execute
 
 ```sh
-zoroaster examples/test/Zoroaster_test.js
-# or
-yarn example
+yarn example/Zoroaster/
 ```
 
-This will run the constructor test suite, which also requires methods as
-paths, therefore we're not testing the whole directory (otherwise, the methods
-would be tested twice, e.g., try `zoroaster examples/test`).
-
 ```fs
-UNKNOWN:zoroaster user$ yarn example
 yarn run v1.5.1
-$ zoroaster examples/test/Zoroaster_test.js
- examples/test/Zoroaster_test.js
-  ✓  should have static variables
-  ✓  should decrease and increase balance asynchronously
-   standard_constructor
-    ✓  should create a new Zoroaster instance with default name
-    ✓  should create a new Zoroaster instance with a name
-    ✓  should have balance of 0 when initialised
+$ node src/bin example/Zoroaster/test/spec --babel
+ example/Zoroaster/test/spec
+   async-context
+    ✓  returns correct country of origin
+   index
+    ✓  has static variables
+    ✓  decreases and increase balance asynchronously
+     constructor
+      ✓  creates a new Zoroaster instance with default name
+      ✓  creates a new Zoroaster instance with a name
+      ✓  has a balance of 0 when initialised
    methods
-    ✓  should create a world
-    ✓  should destroy a world
+    ✓  creates a world
+    ✓  destroys a world
+    ✓  says a sentence
      side
-      ✓  should increase balance when doing good deed
-      ✓  should decrease balance when doing bad deed
-      ✓  should throw an error when choosing an unknown side
-     say
-      ✓  should say a sentence
+      ✓  increases balance when doing good deed
+      ✓  decreases balance when doing bad deed
+      ✓  throws an error when choosing an unknown side
      checkParadise
-      ✓  should return true when balance of 1000 met
-      ✓  should return false when balance is less than 1000
-   object context
-    ✓  should set correct name
+      ✓  returns true when balance of 1000 met
+      ✓  returns false when balance is less than 1000
+   object-context
+    ✓  sets correct default name
      innerMeta
-      ✓  should access parent context
-      ✓  should return correct date of birth
-   async context
-    ✓  should return correct country of origin
+      ✓  accesses parent context
+      ✓  returns correct date of birth
 
 🦅  Executed 17 tests.
-✨  Done in 0.66s.
+✨  Done in 0.92s.
 ```
 
 ## CLI
 
 This section describes how to use `zoroaster` from command-line interface.
-The `zoroaster` bin is written for Node 8.6, and for older versions transpiled
-`zoroaster-es5` can be used.
 
 ```sh
 zoroaster test/spec
-#or
-zoroaster-es5 test/spec
 ```
 
-### Recursive Resolve
+### Testing a Directory
 
-If a folder is passed as an argument, it will be tested recursively: all modules
-inside of it will be run required tests, and all directories initialised as
-nested test suites.
+If a path to a folder is passed as an argument, it will be tested recursively.
 
 ```sh
-zoroaster examples/test/methods
+zoroaster test/spec
 ```
 
-```fs
- examples/test/methods
-   say.js
-    ✓  should say a sentence
-   side.js
-    ✓  should increase balance when doing good deed
-    ✓  should decrease balance when doing bad deed
-    ✓  should throw an error when choosing an unknown side
+### Testing Files
 
-Executed 4 tests.
-```
-
-### Multiple files
-
-If multiple destinations are passed, they are all tested.
+If a single or multiple file paths are passed, they are all tested.
 
 ```sh
-zoroaster examples/test/methods/say.js examples/test/methods/side.js
-```
-
-```fs
- examples/test/methods/say.js
-  ✓  should say a sentence
- examples/test/methods/side.js
-  ✓  should increase balance when doing good deed
-  ✓  should decrease balance when doing bad deed
-  ✓  should throw an error when choosing an unknown side
-
-Executed 4 tests.
+zoroaster test/spec/lib/index.js
 ```
 
 ### Watch
@@ -424,30 +352,45 @@ Executed 4 tests.
 To watch files for changes, use `--watch` flag, e.g.,
 
 ```sh
-zoroaster examples/test/Zoroaster_test.js --watch
+zoroaster test/spec --watch
 ```
 
 ### Timeout
 
-The default timeout is `2000ms`. At the moment, only global timeout
-can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g.,
-`ZOROASTER_TIMEOUT=5000 zoroaster test`
+The default timeout is `2000ms`. At the moment, only global timeout can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g., `ZOROASTER_TIMEOUT=5000 zoroaster test`
 
 ### @babel/register
 
-If you want to use `@babel/register` in your tests, just pass `--babel` flag
-to the CI. It will make a call to require `@babel/register`, so that it must
-be installed as a dependency in your project, because it's not specified as
-`zoroaster`'s dependency.
+If you want to use `@babel/register` in your tests, just pass `--babel` flag to the CI. It will make a call to require `@babel/register`, so that it must be installed as a dependency in your project, because it's not specified as `zoroaster`'s dependency.
 
 ```sh
 zoroaster test/spec --babel
 ```
 
+When ES modules syntax (`import foo from 'foo'`) is desired, the following `.babelrc` pattern can be used:
+
+```json
+{
+  "plugins": [
+    "@babel/plugin-syntax-object-rest-spread",
+    "@babel/plugin-transform-modules-commonjs"
+  ],
+}
+```
+
+With the following dev dependencies installed:
+
+```fs
+yarn add -E -D \
+@babel/core \
+@babel/register
+@babel/plugin-syntax-object-rest-spread \
+@babel/plugin-transform-modules-commonjs \
+```
+
 ### package.json
 
-To be able to run `yarn test`, or `npm test`, specify the test script in the
-`package.json` as follows:
+To be able to run `yarn test`, or `npm test`, specify the test script in the `package.json` as follows:
 
 ```json
 {
@@ -460,101 +403,153 @@ To be able to run `yarn test`, or `npm test`, specify the test script in the
 
 ## Context
 
-Add `context` property to a test suite, and access it from a test function's
-first argument. It can be specified as an object, or as a function. If it is an
-object, it will be frozen and passed to the test cases as `ctx` argument.
-It can also be extended by inner test suites.
+A context is unique to each test. When added as a `context` property to a test suite, it can be accessed from test function's first argument. Test suite context cannot be updated from within tests (only its state when using a function).
+
+### Object Context
+
+When specified as an object, the context it will be frozen and passed to test cases as an argument. It can also be extended by inner test suites.
 
 ```js
-{
-  'object-context': {
+import { equal } from 'assert'
+import Zoroaster from '../../src'
+
+const context = {
+  name: 'Zarathustra',
+}
+
+/** @type {Object.<string, (ctx: context)>} */
+const T = {
+  context,
+  'sets correct default name'({ name }) {
+    const zoroaster = new Zoroaster()
+    equal(zoroaster.name, name)
+  },
+  innerMeta: {
+    // inner context extends outer one
     context: {
-      name: 'Zarathustra',
+      born: -628,
     },
-    'should set correct name'({ name }) {
+    'accesses parent context'({ name }) {
       const zoroaster = new Zoroaster()
       equal(zoroaster.name, name)
     },
-    innerMeta: {
-      // inner context extends outer one
-      context: {
-        born: -628,
-      },
-      'should return correct date of birth'({ name, born }) {
-        const zoroaster = new Zoroaster()
-        equal(zoroaster.name, name)
-        equal(zoroaster.dateOfBirth, born)
-      },
+    'returns correct date of birth'({ born }) {
+      const zoroaster = new Zoroaster()
+      equal(zoroaster.dateOfBirth, born)
     },
   },
-  // ...
 }
+
+export default T
 ```
 
-If `context` property is a function, then it will be asynchronously evaluated,
-and its `this` used as a context for tests. The timeout for evaluation is equal
-to the test timeout.
+### Function Context
+
+If the `context` property is a function, then it will be asynchronously evaluated, and its `this` used as a context for tests. The timeout for evaluation is equal to the test timeout. The context should also be documented with a JSDoc for IntelliSence support in tests.
 
 ```js
-{
-  'async-context': {
-    async context() {
-      // an async set-up
-      await new Promise(r => setTimeout(r, 50))
-      this.getCountry = async () => 'Iran'
+const getCountry = async () => 'Iran'
 
-      this._destroy = async () => {
-        // some async tear-down
-        await new Promise(r => setTimeout(r, 50))
-      }
-    },
-    async 'should return correct country of origin'({ getCountry }) {
-      const zoroaster = new Zoroaster()
-      const expected = await getCountry()
-      equal(zoroaster.countryOfOrigin, expected)
-    },
-  },
-  // ...
+export default async function context() {
+  // an async set-up
+  await new Promise(r => setTimeout(r, 50))
+  this.getCountry = getCountry
+
+  this._destroy = async () => {
+    // an async tear-down
+    await new Promise(r => setTimeout(r, 50))
+  }
 }
+
+/**
+ * @typedef {Object} Context
+ * @property {getCountry} getCountry Returns country of origin.
+ */
+
+const Context = {}
+
+export { Context }
 ```
 
-Test suite context cannot be updated from within tests.
+```js
+import { equal } from 'assert'
+import Zoroaster from '../../src'
+import context, { Context } from '../context' // eslint-disable-line no-unused-vars
+
+/** @type {Object.<string, (ctx: Context)>} */
+const T = {
+  context,
+  async 'returns correct country of origin'({ getCountry }) {
+    const zoroaster = new Zoroaster()
+    const expected = await getCountry()
+    equal(zoroaster.countryOfOrigin, expected)
+  },
+}
+
+export default T
+```
+
+### Multiple Contexts
+
+It is possible to specify multiple contexts by passing an array to the `context` property.
+
+```js
+import Zoroaster from '../../src'
+import context, { Context } from '../context' // eslint-disable-line no-unused-vars
+import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line no-unused-vars
+import { resolve } from 'path'
+
+const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
+
+/** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
+const T = {
+  context: [
+    context,
+    snapshotContext,
+  ],
+  async 'returns correct country of origin'({ getCountry }, { test, setDir }) {
+    setDir(SNAPSHOT_DIR)
+    const zoroaster = new Zoroaster()
+    const expected = await getCountry()
+    const actual = zoroaster.countryOfOrigin
+    await test(actual, expected)
+  },
+}
+
+export default T
+```
 
 ## Assertion Library
 
-`zoroaster/assert` exports a module which has the following properties for
-assertions in tests:
+`zoroaster/assert` exports a the following methods to be used for assertions in tests:
 
-- `equal` which is `require('assert').equal` for equality assertions on
-primitives such as strings.
-- `deepEqual` which is `require('assert-diff').deepEqual` for assertions of
-complex objects, with red/green difference highlighting.
-- `throws` which is `require('assert-throws')` for assertions on
-synchronous/asynchronous function calls.
+- `equal` which is `require('assert').equal` for equality assertions on primitives such as strings.
+- `ok` which is `require('assert').ok` for truthy assertions.
+- `deepEqual` which is `require('assert-diff').deepEqual` for assertions of complex objects, with red/green difference highlighting.
+- `throws` which is `require('assert-throws')` for assertions on synchronous/asynchronous function calls.
 - `assert` and `assertDiff` which are aliases to the above packages.
 
 ### throws
 
-Use awesome `assert-throws` to test asynchronous throws instead of
-`chai-as-promised` -- leave it behind as not needed.
+Use awesome [`assert-throws`][5] to test whether (asynchronous) functions throw required errors.
 
 ```js
 import { throws } from 'zoroaster/assert'
 
 {
-  // ...
-  async 'should throw an error when choosing an unknown side'() {
+  async 'throws an error when choosing an unknown side'() {
     const zoroaster = new Zoroaster()
     await throws({
-      async fn() { await zoroaster.side(Zoroaster.MAGI) }, // follow yet unknown way
+      async fn() {
+        await zoroaster.side(Zoroaster.MAGI),  // follow yet unknown way
+      },
       message: 'Unknown side',
     })
   },
-  // ...
 }
 ```
 
-See [`assert-throws` API documentation][4] to learn more about assertions.
+See [`assert-throws` API documentation][5] to learn more about assertions.
 
 ## launch.json
 
@@ -579,26 +574,6 @@ The following snippet can be used when debugging tests.
 }
 ```
 
-## Passing Paths to Test Suites
-
-If you want to, you can pass paths to the test files as properties of a test
-suite.
-
-```js
-{
-  // ...
-  methods: {
-    // pass a test suite as a path to the file
-    side: resolve(__dirname, 'methods/side'),
-    say: resolve(__dirname, 'methods/say'),
-  },
-  // ...
-}
-```
-
-The purpose of this is to allow flexibility, however it's more usual to pass a
-directory path to the CLI tool, so this feature is not commonly used.
-
 ## TODO
 
 1. JS API
@@ -622,6 +597,7 @@ directory path to the CLI tool, so this feature is not commonly used.
  - accept context as a class
  - only pass context to test functions which accept it
  - find a way to use `JSDOC` with tests
+ - clean stack traces when context evaluates or destroys with error
 
 ---
 

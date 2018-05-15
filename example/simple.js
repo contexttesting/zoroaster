@@ -17,11 +17,11 @@ const asyncSoftware = async (type) => {
 }
 
 export default {
-  'should run a test'() {
+  'runs a test'() {
     const res = software('boolean')
     ok(res)
   },
-  async 'should run an async test'() {
+  async 'runs an async test'() {
     const res = await asyncSoftware('string')
     equal(res, 'string')
   },

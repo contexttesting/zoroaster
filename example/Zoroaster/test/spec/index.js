@@ -1,7 +1,7 @@
 import { ok, equal } from 'assert'
 import Zoroaster from '../../src'
 
-const T = {
+export default {
   // standard test function
   'has static variables'() {
     ok(Zoroaster.AHURA_MAZDA)
@@ -42,5 +42,3 @@ const T = {
     equal(zoroaster.balance, 0)
   },
 }
-
-export default T
