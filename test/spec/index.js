@@ -1,7 +1,7 @@
 import { ok, equal } from 'assert'
 import { ChildProcess } from 'child_process'
-import zoroaster from '../../build'
 import context, { Context } from '../context' // eslint-disable-line no-unused-vars
+import zoroaster from '../..'
 
 /** @type {Object.<string, (ctx: Context)>} */
 const t = {

@@ -1,0 +1,34 @@
+/Users/zavr/adc/zoroaster/test/fixtures/test_suite.js
+  ✗  failingTest
+  | Error: When you are in doubt abstain.
+  |     at failingTest (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:5:9)
+  ✗  asyncFailingTest
+  | Error: When you are in doubt abstain.
+  |     at asyncFailingTest (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:9:9)
+  ✓  asyncTest
+  ✗  contextFailingTest
+  | Error: When you are in doubt abstain.
+  |     at contextFailingTest (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:17:9)
+  ✗  asyncContextFailingTest
+  | Error: When you are in doubt abstain.
+  |     at Timeout.setTimeout (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:23:20)
+  ✓  contextPassingTest
+  ✓  test
+
+/Users/zavr/adc/zoroaster/test/fixtures/test_suite.js > failingTest
+  Error: When you are in doubt abstain.
+      at failingTest (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:5:9)
+
+/Users/zavr/adc/zoroaster/test/fixtures/test_suite.js > asyncFailingTest
+  Error: When you are in doubt abstain.
+      at asyncFailingTest (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:9:9)
+
+/Users/zavr/adc/zoroaster/test/fixtures/test_suite.js > contextFailingTest
+  Error: When you are in doubt abstain.
+      at contextFailingTest (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:17:9)
+
+/Users/zavr/adc/zoroaster/test/fixtures/test_suite.js > asyncContextFailingTest
+  Error: When you are in doubt abstain.
+      at Timeout.setTimeout (/Users/zavr/adc/zoroaster/test/fixtures/tests.js:23:20)
+
+🦅  Executed 7 tests: 4 errors.

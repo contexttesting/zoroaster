@@ -1,32 +1,21 @@
 import { resolve } from 'path'
-import spawnCommand from 'spawncommand'
+import { fork } from 'spawncommand'
+import { SpawnOptions } from 'child_process'
 
-const BIN_PATH = resolve(__dirname, 'bin/zoroaster.js')
-
-const getSpawnOptions = (bin, args = []) => {
-  if (!/^win/.test(process.platform)) { // linux
-    return { program: bin, args }
-  } else { // windows
-    const { env: { comspec } } = process
-    return {
-      program: comspec,
-      args: ['/c', 'node', bin, ...args],
-    }
-  }
-}
+const BIN = resolve(__dirname, 'bin')
 
 /**
- * Start zoroaster process, and return a child process with .promise property.
- * Basically, a spawnCommand wrapper around zoroaster binary. Works on Windows
- * as well as Linux.
+ * Start zoroaster process, and return a child process with a `promise` property.
  * @param {string[]} args An array of strings as arguments
- * @param {object} options Options to pass when creating child process
+ * @param {SpawnOptions} options Options to pass when creating child process
  * @returns {ChildProcess} An instance of a ChildProcess, with `.promise` property,
  * which will be resolved when tests are finished.
  */
-function run(args, options) {
-  const { program, args: a } = getSpawnOptions(BIN_PATH, args)
-  const proc = spawnCommand(program, a, options)
+function run(args, options = {}) {
+  const proc = fork(BIN, args, {
+    stdio: 'pipe',
+    ...options,
+  })
   return proc
 }
 

@@ -5,7 +5,7 @@
   "main": "src",
   "scripts": {
     "t": "node src/bin --babel",
-    "test": "node run_tests",
+    "test": "yarn t test/spec",
     "test-es5": "node run_tests --force",
     "watch": "node run_tests --watch",
     "build": "babel src --out-dir build",
@@ -14,8 +14,7 @@
     "example.js": "zoroaster example.js"
   },
   "bin": {
-    "zoroaster": "bin/zoroaster.js",
-    "zoroaster-es5": "es5/bin/zoroaster.js"
+    "zoroaster": "bin/zoroaster.js"
   },
   "repository": {
     "type": "git",
@@ -31,12 +30,12 @@
   },
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
-    "assert-diff": "1.2.5",
+    "assert-diff": "1.2.6",
     "assert-throws": "2.1.0",
     "catchment": "2.0.1",
     "clean-stack": "1.3.0",
     "promto": "1.0.1",
-    "spawncommand": "1.1.0"
+    "spawncommand": "2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.46",
@@ -45,9 +44,9 @@
     "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.46",
     "@babel/register": "7.0.0-beta.46",
     "diff": "3.5.0",
-    "erotic": "0.2.0",
+    "erotic": "1.1.0",
     "noddy": "1.1.1",
-    "snapshot-context": "1.1.0",
+    "snapshot-context": "1.1.2",
     "strip-ansi": "4.0.0"
   }
 }

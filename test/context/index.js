@@ -1,5 +1,6 @@
 import { ok } from 'assert'
 import erotic from 'erotic'
+import { resolve } from 'path'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
@@ -18,7 +19,7 @@ const getErrMessage = (testSuiteName, { name, error }) => {
  * @param {TestSuite} testSuite instance of a TestSuite
  * @throws Throws if a test had errors in it.
  */
-function assertNoErrorsInTestSuite({ name, tests: t }, e = erotic()) {
+function assertNoErrorsInTestSuite({ name, tests: t }, e = erotic(true)) {
   t.forEach((test) => {
     if (test instanceof Test) {
       if (test.error) {
@@ -85,7 +86,7 @@ export default function context() {
 /**
  * @param {TestSuite} ts A test suite.
  */
-const assertTestsRun = (ts, e = erotic()) => {
+const assertTestsRun = (ts, e = erotic(true)) => {
   const { name, tests: t } = ts
   t.forEach((test) => {
     if (test instanceof Test) {

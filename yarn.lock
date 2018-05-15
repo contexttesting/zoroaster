@@ -238,13 +238,6 @@ asn1@~0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/asn1/-/asn1-0.2.3.tgz#dac8787713c9966849fc8180777ebe9c1ddf3b86"
 
-assert-diff@1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/assert-diff/-/assert-diff-1.2.5.tgz#2f578de16a2509fee1601eca0afb77ad3fb2c02b"
-  dependencies:
-    assert-plus "1.0.0"
-    json-diff "0.5.2"
-
 assert-diff@1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/assert-diff/-/assert-diff-1.2.6.tgz#1b44d6f24a7e3018f557768ee350ae9a732c2fc6"
@@ -282,6 +275,10 @@ aws-sign2@~0.6.0:
 aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
+
+babel-plugin-transform-rename-import@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-rename-import/-/babel-plugin-transform-rename-import-2.2.0.tgz#6cf6b0fbc1da7fea969851539f0544ffd635e816"
 
 babylon@7.0.0-beta.46:
   version "7.0.0-beta.46"
@@ -335,10 +332,6 @@ caseless@~0.12.0:
 catchment@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/catchment/-/catchment-2.0.1.tgz#df0a05ac2e1194cf280c2444d5bb564a9cc8f488"
-
-catchment@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/catchment/-/catchment-1.0.0.tgz#3061f71be0102710be84328d2f94363a165f8c4b"
 
 chalk@^2.0.0:
   version "2.3.2"
@@ -498,6 +491,12 @@ erotic@1.1.0:
   resolved "https://registry.yarnpkg.com/erotic/-/erotic-1.1.0.tgz#ccfa6c05e836bae8610ac407dbe191efa9cdbeda"
   dependencies:
     clean-stack "1.3.0"
+
+erte@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/erte/-/erte-1.0.0.tgz#2f4d2cd63898520c14273f56d09c8c5ce6351e22"
+  dependencies:
+    diff "3.5.0"
 
 erte@1.1.1:
   version "1.1.1"
@@ -1278,12 +1277,12 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
-snapshot-context@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/snapshot-context/-/snapshot-context-1.1.0.tgz#e2fe75becdc4b5d539234b61db7855392e0f3f87"
+snapshot-context@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/snapshot-context/-/snapshot-context-1.1.2.tgz#4657a7f40720531dbf6bd58406e808e300a31453"
   dependencies:
     assert-diff "1.2.6"
-    diff "3.5.0"
+    erte "1.0.0"
     reloquent "0.2.0"
     wrote "1.4.0"
 
@@ -1303,11 +1302,12 @@ source-map@^0.5.0, source-map@^0.5.6:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
-spawncommand@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-1.1.0.tgz#80a56ed3c06ab3b91643cf3f6cef38bf582fdb15"
+spawncommand@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-2.0.0.tgz#257c9116d1eabbb0edbffd3ca796fa6cddf386e3"
   dependencies:
-    catchment "^1.0.0"
+    babel-plugin-transform-rename-import "2.2.0"
+    catchment "2.0.1"
 
 sshpk@^1.7.0:
   version "1.14.1"
