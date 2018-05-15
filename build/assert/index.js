@@ -15,6 +15,12 @@ Object.defineProperty(exports, "equal", {
     return _assert.equal;
   }
 });
+Object.defineProperty(exports, "ok", {
+  enumerable: true,
+  get: function () {
+    return _assert.ok;
+  }
+});
 Object.defineProperty(exports, "deepEqual", {
   enumerable: true,
   get: function () {
