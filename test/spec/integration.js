@@ -16,6 +16,7 @@ function getSnapshot(s) {
     .replace(re, '')
     .replace(winRe, '')
     .replace(/\\/g, '/')
+    .replace(/\r?\n/g, '\n')
 }
 
 /** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
