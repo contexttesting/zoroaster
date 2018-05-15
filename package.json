@@ -6,12 +6,9 @@
   "scripts": {
     "t": "node src/bin --babel",
     "test": "yarn t test/spec",
-    "test-es5": "node run_tests --force",
-    "watch": "node run_tests --watch",
     "build": "babel src --out-dir build",
-    "build-run": "babel run_tests-es7.js --out-file run_tests.js",
-    "example": "zoroaster examples/test/Zoroaster_test.js",
-    "example.js": "zoroaster example.js"
+    "example/simple.js": "node src/bin example/simple.js --babel",
+    "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec --babel"
   },
   "bin": {
     "zoroaster": "bin/zoroaster.js"

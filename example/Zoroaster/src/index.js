@@ -1,13 +1,12 @@
-'use strict'
 const sayings = [
   'One repays a teacher badly if one always remains nothing but a pupil',
   'Turn yourself not away from three best things: Good Thought, Good Word, and Good Deed.',
   'A reflective, contented mind is the best possession.',
 ]
 
-class Zoroaster {
-  constructor(name) {
-    this.name = typeof name === 'string' ? name : 'Zarathustra'
+export default class Zoroaster {
+  constructor(name = 'Zarathustra') {
+    this.name = name
     this.balance = 0
   }
   side(option) {
@@ -34,7 +33,7 @@ class Zoroaster {
     this.balance = 0
   }
   checkParadise() {
-    return this.balance === 1000
+    return this.balance == 1000
   }
   get countryOfOrigin() {
     return 'Iran'
@@ -42,9 +41,10 @@ class Zoroaster {
   get dateOfBirth() {
     return -628
   }
+  static get AHURA_MAZDA() {
+    return 1
+  }
+  static get ANGRA_MAINYU() {
+    return 2
+  }
 }
-
-Zoroaster.AHURA_MAZDA = 1
-Zoroaster.ANGRA_MAINYU = 2
-
-module.exports = Zoroaster
