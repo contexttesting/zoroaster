@@ -15,6 +15,7 @@ function getSnapshot(s) {
   return snapshot
     .replace(re, '')
     .replace(winRe, '')
+    .replace(/\\/g, '/')
 }
 
 // const WIN = /^win/.test(process.platform)
