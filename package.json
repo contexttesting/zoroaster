@@ -1,18 +1,22 @@
 {
   "name": "zoroaster",
   "version": "1.1.0",
-  "description": "A minimal JavaScript testing framework for Node.js.",
-  "main": "src",
+  "description": "An Art Deco JavaScript testing framework for Node.js",
+  "main": "build",
   "scripts": {
     "t": "node src/bin --babel",
     "test": "yarn t test/spec",
-    "build": "babel src --out-dir build",
+    "build": "babel src --out-dir build --ignore src/bin/index.js",
     "lint": "eslint .",
     "example/simple.js": "node src/bin example/simple.js --babel",
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec --babel"
   },
+  "files": [
+    "build",
+    "assert.js"
+  ],
   "bin": {
-    "zoroaster": "bin/zoroaster.js"
+    "zoroaster": "build/bin/zoroaster.js"
   },
   "repository": {
     "type": "git",
