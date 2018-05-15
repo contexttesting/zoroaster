@@ -1,4 +1,4 @@
-import { ok, equal, deepEqual } from 'assert'
+import { ok, equal } from 'assert'
 import throws from 'assert-throws'
 import TestSuite from '../../src/lib/TestSuite'
 import context, { Context } from '../context' // eslint-disable-line

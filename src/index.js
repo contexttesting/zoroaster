@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 import { fork } from 'spawncommand'
-import { SpawnOptions } from 'child_process'
+import { SpawnOptions } from 'child_process' // eslint-disable-line no-unused-vars
 
 const BIN = resolve(__dirname, 'bin')
 

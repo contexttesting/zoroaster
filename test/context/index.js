@@ -91,7 +91,7 @@ const assertTestsRun = (ts, e = erotic(true)) => {
   t.forEach((test) => {
     if (test instanceof Test) {
       const { started, finished, name: testName } = test
-      if (process.env.DEBUG) console.log('assert %s run', testName) // eslint-disable-line
+      if (process.env.DEBUG) console.log('assert %s > %s run', name, testName) // eslint-disable-line
       try {
         ok(started)
         ok(finished)

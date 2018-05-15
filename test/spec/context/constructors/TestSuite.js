@@ -3,7 +3,7 @@ import TestSuite from '../../../../src/lib/TestSuite'
 import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
 
 /** @type {Object.<string, (ctx: Context)>} */
-const t = {
+const T = {
   context,
   'throws an error when context passed is not an object'({ TEST_SUITE_NAME }) {
     throws(
@@ -18,23 +18,23 @@ const t = {
     )
   },
   'creates a test suite with a cloned context'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, context)
-    notStrictEqual(testSuite.context, context)
-    deepEqual(testSuite.context, context)
+    const ctx = createObjectContext()
+    const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, ctx)
+    notStrictEqual(testSuite.context, ctx)
+    deepEqual(testSuite.context, ctx)
   },
   'freezes context after creation'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, context)
+    const ctx = createObjectContext()
+    const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, ctx)
     ok(Object.isFrozen(testSuite.context))
   },
   async 'passes context to child test suites'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       test_suite: {
         test() {},
       },
-    }, null, context)
+    }, null, ctx)
     await testSuite.run()
     testSuite.tests.forEach((childTestSuite) => {
       ok(childTestSuite instanceof TestSuite)
@@ -42,10 +42,10 @@ const t = {
     })
   },
   async 'passes context to tests'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       test: () => { },
-    }, null, context)
+    }, null, ctx)
     await testSuite.run()
     testSuite.tests.forEach((test) => {
       equal(test.context, testSuite.context)
@@ -53,7 +53,7 @@ const t = {
   },
 }
 
-export default t
+export default T
 
 /** @type {Object.<string, (ctx: Context)>} */
 export const from_tests = {
@@ -71,19 +71,19 @@ export const from_tests = {
     )
   },
   'adds context from passed object'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context,
+      context: ctx,
       test() { },
     })
-    notStrictEqual(testSuite.context, context)
-    deepEqual(testSuite.context, context)
+    notStrictEqual(testSuite.context, ctx)
+    deepEqual(testSuite.context, ctx)
   },
   'freezes passed context'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     ok(!Object.isFrozen(context))
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context,
+      context: ctx,
       test() { },
     })
     ok(Object.isFrozen(testSuite.context))
@@ -91,8 +91,8 @@ export const from_tests = {
   'does not add context as a test'({ createObjectContext, TEST_SUITE_NAME }) {
     const test = () => { }
     const tests = {
-      test,
       context: createObjectContext(),
+      test,
     }
     const testSuite = new TestSuite(TEST_SUITE_NAME, tests)
     equal(testSuite.tests.length, 1)
@@ -101,30 +101,30 @@ export const from_tests = {
   'extends current context'({
     createObjectContext, createObjectContext2, TEST_SUITE_NAME,
   }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     const existingContext = createObjectContext2()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context,
+      context: ctx,
       test() { },
     }, null, existingContext)
-    const expected = { ...existingContext, ...context }
+    const expected = { ...existingContext, ...ctx }
     deepEqual(testSuite.context, expected)
   },
   async 'passes context to tests'({
     createObjectContext, createObjectContext2, TEST_SUITE_NAME, assertNoErrorsInTestSuite,
   }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     const existingContext = createObjectContext2()
     const totalContext = { ...existingContext, ...context }
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context,
-      test(ctx) {
-        deepEqual(ctx, context)
+      context: ctx,
+      test(c) {
+        deepEqual(c, ctx)
       },
       innerTestSuite: {
         context: existingContext,
-        test(ctx) {
-          deepEqual(ctx, totalContext)
+        test(c) {
+          deepEqual(c, totalContext)
         },
       },
     })
@@ -132,11 +132,11 @@ export const from_tests = {
     assertNoErrorsInTestSuite(testSuite)
   },
   async 'cannot update context from tests'({ createObjectContext, TEST_SUITE_NAME }) {
-    const context = createObjectContext()
+    const ctx = createObjectContext()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      context,
-      test(ctx) {
-        ctx.born = 0
+      context: ctx,
+      test(c) {
+        c.born = 0
       },
     })
     await testSuite.run()
