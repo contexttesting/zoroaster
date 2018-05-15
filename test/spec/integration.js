@@ -31,7 +31,6 @@ const t = {
     })
     const { stdout } = await promise
     const s = getSnapshot(stdout)
-    console.log(`"${s}"`)
     await test('integration-stdout.txt', s)
   },
 }
