@@ -7,6 +7,7 @@
 - [repository] organise files better
 - [feature] print default test suite without extra `default` indentation
 - [feature] strip `.js` at the end of test suite directory names
+- [feature] export `ok` for assertions
 
 ## 4 May 2018
 
