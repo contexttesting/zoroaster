@@ -8,9 +8,13 @@ const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 const BIN = resolve(__dirname, '../../src/bin')
 
 const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
+const winRe = new RegExp(process.cwd().replace(/\\/g, '/'), 'g')
+
 function getSnapshot(s) {
   const snapshot = stripAnsi(s).trim()
-  return snapshot.replace(re, '')
+  return snapshot
+    .replace(re, '')
+    .replace(winRe, '')
 }
 
 // const WIN = /^win/.test(process.platform)
