@@ -18,8 +18,6 @@ function getSnapshot(s) {
     .replace(/\\/g, '/')
 }
 
-// const WIN = /^win/.test(process.platform)
-
 /** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
 const t = {
   context:[
@@ -32,7 +30,9 @@ const t = {
       stdio: 'pipe',
     })
     const { stdout } = await promise
-    await test('integration-stdout.txt', getSnapshot(stdout))
+    const s = getSnapshot(stdout)
+    console.log(`"${s}"`)
+    await test('integration-stdout.txt', s)
   },
 }
 
