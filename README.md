@@ -6,9 +6,9 @@
 
 An Art Deco JavaScript testing framework for _Node.js_.
 
-[![](graphics/movflamecolumn.gif)](https://zoroaster.co.uk)
-[![](graphics/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
-[![](graphics/movflamecolumn.gif)](https://artdecocode.bz)
+[![](doc/graphics/movflamecolumn.gif)](https://zoroaster.co.uk)
+[![](doc/graphics/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
+[![](doc/graphics/movflamecolumn.gif)](https://artdecocode.bz)
 
 Are you fed up with `mocha` or have you had enough of `chai` in your life?
 Is it not time to say good-bye to the old stereotype that the same software must
@@ -47,7 +47,7 @@ export default {
 }
 ```
 
-![tests results](tests.png)
+![tests results](doc/tests.png)
 
 ## Try Zoroaster Today!
 
