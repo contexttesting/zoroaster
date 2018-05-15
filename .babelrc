@@ -3,5 +3,24 @@
     "@babel/plugin-syntax-object-rest-spread",
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-transform-modules-commonjs"
-  ]
+  ],
+  "env": {
+    "test-build": {
+      "plugins": [
+        [
+          "transform-rename-import",
+          {
+            "original": "^((../)+)src",
+            "replacement": "$1build"
+          }
+        ]
+      ],
+      "ignore": [
+        "build/**/*.js"
+      ]
+    },
+    "test-debug": {
+      "retainLines": true
+    }
+  }
 }

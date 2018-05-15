@@ -1,7 +1,7 @@
 import { equal, strictEqual, ok } from 'assert'
 import { throws } from '../../../src/assert'
 
-const t = {
+const T = {
   async 'asserts on async error'() {
     const message = 'test-error'
     await throws({
@@ -83,4 +83,4 @@ const t = {
   },
 }
 
-export default t
+export default T

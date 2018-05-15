@@ -7,19 +7,14 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Run tests",
-      "program": "${workspaceFolder}/run_tests.js"
-    },
-    {
-      "type": "node",
-      "request": "launch",
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/context/destroy.js",
+        "test/spec/integration.js",
         "--babel"
       ],
       "env": {
+        "BABEL_ENV": "test-build",
         "ZOROASTER_TIMEOUT": "9999999"
       },
       "console": "integratedTerminal",

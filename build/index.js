@@ -16,7 +16,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // eslint-disable-line no-unused-vars
-const BIN = (0, _path.resolve)(__dirname, 'bin');
+const BIN = (0, _path.resolve)(__dirname, 'bin', process.env.BABEL_ENV == 'test-build' ? 'zoroaster.js' : 'index.js');
 /**
  * Start zoroaster process, and return a child process with a `promise` property.
  * @param {string[]} args An array of strings as arguments

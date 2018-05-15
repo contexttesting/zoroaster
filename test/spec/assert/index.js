@@ -1,7 +1,7 @@
 import ok, { equal } from 'assert'
 import { equal as testEqual, deepEqual as testDeepEqual, assert as testAssert } from '../../../src/assert'
 
-const t = {
+const T = {
   'throws if not equal'() {
     try {
       testEqual('a', 'b')
@@ -33,4 +33,4 @@ const t = {
   },
 }
 
-export default t
+export default T
