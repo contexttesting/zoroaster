@@ -1,3 +1,4 @@
+import erotic from 'erotic'
 export const TEST_ERROR_MESSAGE = 'When you are in doubt abstain.'
 export const TEST_RETURN_MESSAGE = 'test result'
 
@@ -18,9 +19,12 @@ export const contextFailingTest = ({ errorMessage }) => {
 }
 
 export const asyncContextFailingTest = async ({ errorMessage }) => {
+  const e = erotic()
   await new Promise((_, reject) => {
     setTimeout(
-      () => reject(new Error(errorMessage)),
+      () => {
+        reject(e(errorMessage))
+      },
       100,
     )
   })

@@ -1,34 +1,34 @@
-/test/fixtures/test_suite.js
+/test/fixtures/test-suite.js
   ✗  failingTest
   | Error: When you are in doubt abstain.
-  |     at failingTest (/test/fixtures/tests.js:5:9)
+  |     at failingTest (/test/fixtures/tests.js:6:9)
   ✗  asyncFailingTest
   | Error: When you are in doubt abstain.
-  |     at asyncFailingTest (/test/fixtures/tests.js:9:9)
+  |     at asyncFailingTest (/test/fixtures/tests.js:10:9)
   ✓  asyncTest
   ✗  contextFailingTest
   | Error: When you are in doubt abstain.
-  |     at contextFailingTest (/test/fixtures/tests.js:17:9)
+  |     at contextFailingTest (/test/fixtures/tests.js:18:9)
   ✗  asyncContextFailingTest
   | Error: When you are in doubt abstain.
-  |     at Timeout.setTimeout (/test/fixtures/tests.js:23:20)
+  |     at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
   ✓  contextPassingTest
   ✓  test
 
-/test/fixtures/test_suite.js > failingTest
+/test/fixtures/test-suite.js > failingTest
   Error: When you are in doubt abstain.
-      at failingTest (/test/fixtures/tests.js:5:9)
+      at failingTest (/test/fixtures/tests.js:6:9)
 
-/test/fixtures/test_suite.js > asyncFailingTest
+/test/fixtures/test-suite.js > asyncFailingTest
   Error: When you are in doubt abstain.
-      at asyncFailingTest (/test/fixtures/tests.js:9:9)
+      at asyncFailingTest (/test/fixtures/tests.js:10:9)
 
-/test/fixtures/test_suite.js > contextFailingTest
+/test/fixtures/test-suite.js > contextFailingTest
   Error: When you are in doubt abstain.
-      at contextFailingTest (/test/fixtures/tests.js:17:9)
+      at contextFailingTest (/test/fixtures/tests.js:18:9)
 
-/test/fixtures/test_suite.js > asyncContextFailingTest
+/test/fixtures/test-suite.js > asyncContextFailingTest
   Error: When you are in doubt abstain.
-      at Timeout.setTimeout (/test/fixtures/tests.js:23:20)
+      at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
 
 🦅  Executed 7 tests: 4 errors.

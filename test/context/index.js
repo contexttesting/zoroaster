@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
-import testSuite from '../fixtures/test_suite'
+import testSuite from '../fixtures/test-suite'
 
 const { TEST_ERROR_MESSAGE, TEST_RETURN_MESSAGE, ...tests } = _tests
 
@@ -41,7 +41,7 @@ const TEST_NAME = 'Zoroaster Test Name'
 /**
  * Path to an exported test suite file fixture.
  */
-const TEST_SUITE_PATH = resolve(__dirname, '../fixtures/test_suite.js')
+const TEST_SUITE_PATH = resolve(__dirname, '../fixtures/test-suite.js')
 
 /**
  * Create a simple context object with some properties.
@@ -116,7 +116,7 @@ const assertTestsRun = (ts, e = erotic(true)) => {
  * @property {assertTestsRun} assertTestsRun Assert that all tests in the test suite were run. // test this
  * @property {createObjectContext} createObjectContext
  * @property {createObjectContext2} createObjectContext2
- * @property {TEST_SUITE_PATH} TEST_SUITE_PATH Path to the test suite file, i.e. fixtures/test_suite.js
+ * @property {TEST_SUITE_PATH} TEST_SUITE_PATH Path to the test suite file, i.e. fixtures/test-suite.js
  * @property {TEST_ERROR_MESSAGE} TEST_ERROR_MESSAGE Expected error message in the failing test
  * @property {TEST_RETURN_MESSAGE} TEST_RETURN_MESSAGE Message returned by a test
  */
