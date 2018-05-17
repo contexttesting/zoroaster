@@ -1,4 +1,4 @@
-## 15 May 2018
+## 17 May 2018
 
 <a name="2.0.0"></a>
 ### [1.1.0](https://github.com/artdecocode/zoroaster/compare/v1.1.0...v2.0.0)
