@@ -2068,11 +2068,12 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snapshot-context@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/snapshot-context/-/snapshot-context-1.1.3.tgz#12d8571a36cf1955e5feb76a5a6e2f9127f552ed"
+snapshot-context@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/snapshot-context/-/snapshot-context-1.1.6.tgz#c538754710da7738bdc81be29343688221cb5a74"
   dependencies:
     assert-diff "1.2.6"
+    erotic "1.1.0"
     erte "1.1.3"
     reloquent "0.2.0"
     wrote "1.4.0"
@@ -2107,11 +2108,10 @@ spawncommand@1.1.0:
   dependencies:
     catchment "^1.0.0"
 
-spawncommand@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-2.0.0.tgz#257c9116d1eabbb0edbffd3ca796fa6cddf386e3"
+spawncommand@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-2.0.1.tgz#088476fd8aa3c63932309ce0e76a8924d51a34ab"
   dependencies:
-    babel-plugin-transform-rename-import "2.2.0"
     catchment "2.0.1"
 
 split-string@^3.0.1, split-string@^3.0.2:
