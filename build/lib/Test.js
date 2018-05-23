@@ -30,11 +30,7 @@ class Test {
     this.finished = null;
     this.error = null;
     this.result = null;
-    (0, _.checkContext)(context);
-
-    if (context) {
-      this._context = context;
-    }
+    this.context = context;
   }
   /**
    * Run the test.
@@ -42,26 +38,19 @@ class Test {
    */
 
 
-  async run(notify) {
-    if (typeof notify === 'function') {
-      notify({
-        type: 'test-start',
-        name: this.name
-      });
-    }
-
+  async run(notify = () => {}) {
+    notify({
+      type: 'test-start',
+      name: this.name
+    });
     const res = await runTest(this);
-
-    if (typeof notify === 'function') {
-      notify({
-        test: this,
-        type: 'test-end',
-        name: this.name,
-        result: this.dump(),
-        error: this.error
-      });
-    }
-
+    notify({
+      test: this,
+      type: 'test-end',
+      name: this.name,
+      result: this.dump(),
+      error: this.error
+    });
     return res;
   }
 
@@ -73,43 +62,24 @@ class Test {
     return this.error !== null;
   }
   /**
-   * Return test's context (if context is a function, it will be overriden by the
-   * end of the test run with evaluated context function).
-   * @returns {object|function} context in current state
-   */
-
-
-  get context() {
-    return this._context;
-  }
-  /**
-   * Evaluate context function. The context function
+   * Evaluate test's context or contexts.
    */
 
 
   async _evaluateContext() {
-    const {
-      context
-    } = this;
-
-    if (Array.isArray(context)) {
-      const ep = context.map(async c => {
-        const fn = (0, _.isFunction)(c);
-        if (!fn) return;
-        const d = {};
-        await c.call(d);
-        return d;
-      });
-      const res = await Promise.all(ep);
-      this._context = res;
+    if (this.context === undefined) {
+      this.contexts = [];
       return;
     }
 
-    const fn = (0, _.isFunction)(context);
-    if (!fn) return;
-    const c = {};
-    await context.call(c);
-    this._context = c;
+    if (Array.isArray(this.context)) {
+      const ep = this.context.map(_.evaluateContext);
+      this.contexts = await Promise.all(ep);
+      return;
+    }
+
+    const c = await (0, _.evaluateContext)(this.context);
+    this.contexts = [c];
   }
 
 }
@@ -128,38 +98,14 @@ function dumpResult(test) {
 /**
  * Create a promise for a test function.
  * @param {function} fn function to execute
- * @param {object} ctx Contexts to pass as arguments in order
+ * @param {object[]} ctx Contexts to pass as arguments in order
  * @return {Promise} A promise to execute function.
  */
 
 
-async function createTestPromise(fn, ctx) {
-  if (Array.isArray(ctx)) {
-    const res = await fn(...ctx);
-    return res;
-  }
-
-  const res = await fn(ctx);
+async function createTestPromise(fn, contexts) {
+  const res = await fn(...contexts);
   return res;
-}
-
-async function plainDestroyContext({
-  context
-}) {
-  if (Array.isArray(context)) {
-    const ep = context.map(async c => {
-      if (!(0, _.isFunction)(c._destroy)) return;
-      const res = await c._destroy();
-      return res;
-    });
-    const allRes = await Promise.all(ep);
-    return allRes;
-  }
-
-  if (context && (0, _.isFunction)(context._destroy)) {
-    const res = await context._destroy();
-    return res;
-  }
 }
 /**
  * Asynchronously runs the test
@@ -172,18 +118,20 @@ async function runTest(test) {
   test.started = new Date();
 
   try {
-    const evaluateContext = test._evaluateContext();
+    const evaluate = test._evaluateContext();
 
-    await (0, _promto.default)(evaluateContext, test.timeout, 'Evaluate');
-    const run = createTestPromise(test.fn, test.context);
+    await (0, _promto.default)(evaluate, test.timeout, 'Evaluate');
+    const run = createTestPromise(test.fn, test.contexts);
     test.result = await (0, _promto.default)(run, test.timeout, 'Test');
   } catch (err) {
     test.error = err;
-  }
+  } // even if test failed, destroy context
+
 
   try {
-    const destroyContext = plainDestroyContext(test);
-    test.destroyResult = await (0, _promto.default)(destroyContext, test.timeout, 'Destroy');
+    const destroy = (0, _.destroyContexts)(test.contexts || []); // if hasn't evaluated
+
+    test.destroyResult = await (0, _promto.default)(destroy, test.timeout, 'Destroy');
   } catch (err) {
     test.error = err;
   }

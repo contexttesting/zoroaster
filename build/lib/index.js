@@ -6,16 +6,20 @@ Object.defineProperty(exports, "__esModule", {
 exports.runInSequence = runInSequence;
 exports.indent = indent;
 exports.getPadding = getPadding;
-exports.checkContext = checkContext;
 exports.checkTestSuiteName = checkTestSuiteName;
 exports.filterStack = filterStack;
 exports.isFunction = isFunction;
+exports.destroyContexts = exports.evaluateContext = exports.bindMethods = void 0;
 
 var _cleanStack = _interopRequireDefault(require("clean-stack"));
 
 var _os = require("os");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
  * Run all tests in sequence, one by one.
@@ -38,20 +42,6 @@ function getPadding(level) {
   return Array.from({
     length: level * 2
   }).join(' ');
-}
-
-function checkContext(context) {
-  const type = (typeof context).toLowerCase();
-
-  if (Array.isArray(context)) {
-    return; // arrays from 1.1.0
-  } else if (type == 'function') {
-    return; // functions are accepted from 0.4.1
-  } else if (context != undefined && type != 'object') {
-    throw new Error('Context must be an object.');
-  } else if (context === null) {
-    throw new Error('Context cannot be null.');
-  }
 }
 
 function checkTestSuiteName(name) {
@@ -88,3 +78,61 @@ function filterStack({
 function isFunction(fn) {
   return (typeof fn).toLowerCase() == 'function';
 }
+
+const bindMethods = (instance, ignore = []) => {
+  const methods = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(instance));
+  const boundMethods = Object.keys(methods).filter(k => {
+    return ignore.indexOf(k) < 0;
+  }).reduce((acc, k) => {
+    const method = methods[k];
+    const isFn = isFunction(method.value);
+    if (!isFn) return acc;
+    method.value = method.value.bind(instance);
+    return _objectSpread({}, acc, {
+      [k]: method
+    });
+  }, {});
+  Object.defineProperties(instance, boundMethods);
+};
+
+exports.bindMethods = bindMethods;
+
+const evaluateContext = async context => {
+  const fn = isFunction(context);
+  if (!fn) return context;
+
+  try {
+    const c = {};
+    await context.call(c);
+    return c;
+  } catch (err) {
+    if (!/^Class constructor/.test(err.message)) {
+      throw err;
+    } // constructor context
+
+
+    const c = new context();
+
+    if (c._init) {
+      await c._init();
+    }
+
+    bindMethods(c, ['constructor', '_init', '_destroy']);
+    return c;
+  }
+};
+
+exports.evaluateContext = evaluateContext;
+
+const destroyContexts = async contexts => {
+  const dc = contexts.map(async c => {
+    if (isFunction(c._destroy)) {
+      const res = await c._destroy();
+      return res;
+    }
+  });
+  const res = await Promise.all(dc);
+  return res;
+};
+
+exports.destroyContexts = destroyContexts;

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 "use strict";
 
 var _fs = require("fs");
@@ -20,6 +19,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+const watchFlags = ['--watch', '-w'];
+const babelFlags = ['--babel', '-b'];
+const allFlags = [...watchFlags, ...babelFlags];
 
 const replaceFilename = filename => {
   return filename.replace(/\.js$/, '');
@@ -69,13 +72,13 @@ function parseArgv(argv) {
   }
 }
 
-function resolveTestSuites(args) {
+const resolveTestSuites = (args, ignore) => {
   return args.slice(2) // ignore flags
-  .filter(argv => {
-    return !/^--/.test(argv);
+  .filter(a => {
+    return ignore.indexOf(a) < 0;
   }) // create test suites and remove paths that cannot be resolved
   .map(parseArgv).filter(testSuite => testSuite);
-}
+};
 
 function watchFiles(files, callback) {
   files.forEach(file => {
@@ -156,8 +159,8 @@ async function test(testSuites, watch, currentlyWatching = []) {
   process.on('exit', () => process.exit(count.error));
 }
 
-const watch = process.argv.some(a => a == '--watch');
-const babel = process.argv.some(a => a == '--babel');
+const watch = process.argv.some(a => watchFlags.indexOf(a) != -1);
+const babel = process.argv.some(a => babelFlags.indexOf(a) != -1);
 
 if (babel) {
   try {
@@ -169,7 +172,7 @@ if (babel) {
   }
 }
 
-const testSuites = resolveTestSuites(process.argv);
+const testSuites = resolveTestSuites(process.argv, allFlags);
 
 (async () => {
   try {

@@ -32,7 +32,6 @@ function hasParent({
 class TestSuite {
   constructor(name, testsOrPath, parent, context, timeout) {
     (0, _.checkTestSuiteName)(name);
-    (0, _.checkContext)(context);
     this._name = name;
     this._parent = parent;
     this._timeout = timeout || (hasParent(this) ? this.parent.timeout : undefined);
@@ -106,8 +105,6 @@ class TestSuite {
 
   _assignTests(tests) {
     if ('context' in tests) {
-      (0, _.checkContext)(tests.context);
-
       this._assignContext(tests.context);
     }
 
@@ -138,23 +135,16 @@ class TestSuite {
    */
 
 
-  async run(notify) {
-    if (typeof notify === 'function') {
-      notify({
-        type: 'test-suite-start',
-        name: this.name
-      });
-    }
-
+  async run(notify = () => {}) {
+    notify({
+      type: 'test-suite-start',
+      name: this.name
+    });
     const res = await (0, _.runInSequence)(this.tests, notify);
-
-    if (typeof notify === 'function') {
-      notify({
-        type: 'test-suite-end',
-        name: this.name
-      });
-    }
-
+    notify({
+      type: 'test-suite-end',
+      name: this.name
+    });
     return res;
   }
 
