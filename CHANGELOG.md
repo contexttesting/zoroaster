@@ -1,7 +1,15 @@
+## 23 May 2018
+
+<a name="2.1.0"></a>
+### [2.1.0](https://github.com/artdecocode/zoroaster/compare/v2.0.0...v2.1.0)
+
+- [feature] class contexts.
+- [feature] `-b` and `-w` shorthand flags
+
 ## 17 May 2018
 
 <a name="2.0.0"></a>
-### [1.1.0](https://github.com/artdecocode/zoroaster/compare/v1.1.0...v2.0.0)
+### [2.0.0](https://github.com/artdecocode/zoroaster/compare/v1.1.0...v2.0.0)
 
 - [ecma] update to modules syntax
 - [repository] organise files better
