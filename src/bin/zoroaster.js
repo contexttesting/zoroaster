@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { readdirSync, lstatSync, watchFile, unwatchFile } from 'fs'
 import { join, resolve } from 'path'
 import Catchment from 'catchment'
