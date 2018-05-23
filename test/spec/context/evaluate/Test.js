@@ -1,9 +1,9 @@
 import { strictEqual, deepEqual } from 'assert'
 import throws from 'assert-throws'
 import Test from '../../../../src/lib/Test'
-import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
+import context from '../../../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const T = {
   context,
   async 'keeps the object context as is'({ createObjectContext, TEST_NAME, test }) {

@@ -1,8 +1,8 @@
 import { ok, equal } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
-import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
+import context from '../../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const T = {
   context,
   async 'passes multiple contexts to tests'({ assertNoErrorsInTestSuite }) {

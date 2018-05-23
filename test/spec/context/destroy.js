@@ -1,8 +1,8 @@
 import { ok, equal, strictEqual, throws } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
-import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
+import context from '../../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 export const ObjectContext = {
   context,
   async 'calls _destroy'({ assertNoErrorsInTestSuite, TEST_SUITE_NAME, tests: { test } }) {
@@ -30,7 +30,7 @@ export const ObjectContext = {
   },
 }
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 export const FunctionContext = {
   context,
   async 'calls _destroy'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { test } }) {

@@ -1,9 +1,9 @@
 import { ok, equal } from 'assert'
 import throws from 'assert-throws'
 import TestSuite from '../../src/lib/TestSuite'
-import context, { Context } from '../context' // eslint-disable-line
+import context from '../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const T = {
   context,
   async 'throws an error if no name is given'() {

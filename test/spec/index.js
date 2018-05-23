@@ -1,9 +1,9 @@
 import { ok, equal } from 'assert'
 import { ChildProcess } from 'child_process'
-import context, { Context } from '../context' // eslint-disable-line no-unused-vars
 import zoroaster from '../../src'
+import context from '../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const t = {
   context,
   'exports a function'() {

@@ -1,8 +1,8 @@
 import { ok, equal, notStrictEqual, deepEqual } from 'assert'
 import TestSuite from '../../../../src/lib/TestSuite'
-import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
+import context from '../../../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const T = {
   context,
   'creates a test suite with a cloned context'({ createObjectContext, TEST_SUITE_NAME }) {
@@ -43,7 +43,7 @@ const T = {
 
 export default T
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 export const from_tests = {
   context,
   'adds context from passed object'({ createObjectContext, TEST_SUITE_NAME }) {

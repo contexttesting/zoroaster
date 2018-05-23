@@ -1,8 +1,8 @@
 import { equal, strictEqual } from 'assert'
 import Test from '../../../../src/lib/Test'
-import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
+import context from '../../../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const T = {
   context,
   'creates a test with a context'({ createObjectContext, TEST_NAME, tests: { test } }) {

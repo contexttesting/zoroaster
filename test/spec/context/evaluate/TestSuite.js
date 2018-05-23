@@ -1,8 +1,8 @@
 import { ok, equal, notStrictEqual, throws } from 'assert'
 import TestSuite from '../../../../src/lib/TestSuite'
-import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
+import context from '../../../context'
 
-/** @type {Object.<string, (ctx: Context)>} */
+/** @type {Object.<string, (ctx: context)>} */
 const T = {
   context,
   async 'evaluates context for each test'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
