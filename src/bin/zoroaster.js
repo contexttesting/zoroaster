@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { readdirSync, lstatSync, watchFile, unwatchFile } from 'fs'
 import { join, resolve } from 'path'
 import Catchment from 'catchment'
@@ -6,6 +5,10 @@ import { EOL } from 'os'
 import TestSuite from '../lib/TestSuite'
 import { runInSequence } from '../lib'
 import { createErrorTransformStream, createProgressTransformStream, createTestSuiteStackStream } from '../lib/stream'
+
+const watchFlags = ['--watch', '-w']
+const babelFlags = ['--babel', '-b']
+const allFlags = [...watchFlags, ...babelFlags]
 
 const replaceFilename = (filename) => {
   return filename.replace(/\.js$/, '')
@@ -52,14 +55,14 @@ function parseArgv(argv) {
   }
 }
 
-function resolveTestSuites(args) {
+const resolveTestSuites = (args, ignore) => {
   return args
     .slice(2)
-  // ignore flags
-    .filter((argv) => {
-      return !/^--/.test(argv)
+    // ignore flags
+    .filter((a) => {
+      return ignore.indexOf(a) < 0
     })
-  // create test suites and remove paths that cannot be resolved
+    // create test suites and remove paths that cannot be resolved
     .map(parseArgv)
     .filter(testSuite => testSuite)
 }
@@ -142,8 +145,8 @@ async function test(testSuites, watch, currentlyWatching = []) {
   process.on('exit', () => process.exit(count.error))
 }
 
-const watch = process.argv.some(a => a == '--watch')
-const babel = process.argv.some(a => a == '--babel')
+const watch = process.argv.some(a => watchFlags.indexOf(a) != -1)
+const babel = process.argv.some(a => babelFlags.indexOf(a) != -1)
 
 if (babel) {
   try {
@@ -154,7 +157,7 @@ if (babel) {
   }
 }
 
-const testSuites = resolveTestSuites(process.argv)
+const testSuites = resolveTestSuites(process.argv, allFlags)
 
 ;(async () => {
   try {

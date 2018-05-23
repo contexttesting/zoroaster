@@ -10,11 +10,12 @@
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/integration.js",
-        "--babel"
+        "test/spec/",
+        "-b",
+        "-w"
       ],
       "env": {
-        "BABEL_ENV": "test-build",
+        "BABEL_ENV": "test-debug",
         "ZOROASTER_TIMEOUT": "9999999"
       },
       "console": "integratedTerminal",

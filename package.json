@@ -4,7 +4,7 @@
   "description": "An Art Deco JavaScript testing framework for Node.js",
   "main": "build",
   "scripts": {
-    "t": "node src/bin --babel",
+    "t": "node src/bin -b",
     "test": "yarn t test/spec",
     "test-build": "BABEL_ENV=test-build yarn t test/spec",
     "test-all": "yarn-s test test-build",
