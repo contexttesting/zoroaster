@@ -10,8 +10,8 @@
     "test-all": "yarn-s test test-build",
     "build": "babel src --out-dir build --ignore src/bin/index.js",
     "lint": "eslint .",
-    "example/simple.js": "node src/bin example/simple.js --babel",
-    "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec --babel"
+    "example/simple.js": "node src/bin example/simple.js -b",
+    "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
   },
   "files": [
     "build",

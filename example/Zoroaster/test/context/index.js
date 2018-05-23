@@ -1,22 +1,23 @@
-const getCountry = async () => 'Iran'
+import { resolve } from 'path'
 
-export default async function context() {
-  // an async set-up
-  await new Promise(r => setTimeout(r, 50))
-  this.getCountry = getCountry
+const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 
-  this._destroy = async () => {
+export default class Context {
+  async _init() {
+    // an async set-up
+    await new Promise(r => setTimeout(r, 50))
+  }
+  /**
+   * Returns country of origin.
+   */
+  async getCountry() {
+    return 'Iran'
+  }
+  async _destroy() {
     // an async tear-down
     await new Promise(r => setTimeout(r, 50))
   }
+  get SNAPSHOT_DIR() {
+    return SNAPSHOT_DIR
+  }
 }
-
-
-/**
- * @typedef {Object} Context
- * @property {getCountry} getCountry Returns country of origin.
- */
-
-const Context = {}
-
-export { Context }

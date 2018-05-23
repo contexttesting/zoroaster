@@ -1,17 +1,14 @@
 import Zoroaster from '../../src'
-import context, { Context } from '../context' // eslint-disable-line no-unused-vars
+import Context from '../context'
 import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line no-unused-vars
-import { resolve } from 'path'
-
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 
 /** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
 const T = {
   context: [
-    context,
+    Context,
     snapshotContext,
   ],
-  async 'returns correct country of origin'({ getCountry }, { test, setDir }) {
+  async 'returns correct country of origin'({ getCountry, SNAPSHOT_DIR }, { test, setDir }) {
     setDir(SNAPSHOT_DIR)
     const zoroaster = new Zoroaster()
     const expected = await getCountry()

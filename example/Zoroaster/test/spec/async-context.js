@@ -1,10 +1,10 @@
 import { equal } from 'assert'
 import Zoroaster from '../../src'
-import context, { Context } from '../context' // eslint-disable-line no-unused-vars
+import Context from '../context'
 
 /** @type {Object.<string, (ctx: Context)>} */
 const T = {
-  context,
+  context: Context,
   async 'returns correct country of origin'({ getCountry }) {
     const zoroaster = new Zoroaster()
     const expected = await getCountry()
