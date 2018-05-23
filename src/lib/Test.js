@@ -1,6 +1,6 @@
 import { EOL } from 'os'
 import promto from 'promto'
-import { indent, filterStack, checkContext, isFunction } from '.'
+import { indent, filterStack, checkContext, isFunction, bindMethods } from '.'
 
 /**
  * Create a new test object.
@@ -31,14 +31,14 @@ export default class Test {
    * @param {function} notify - notify function
    */
   async run(notify) {
-    if (typeof notify === 'function') {
+    if (typeof notify == 'function') {
       notify({
         type: 'test-start',
         name: this.name,
       })
     }
     const res = await runTest(this)
-    if (typeof notify === 'function') {
+    if (typeof notify == 'function') {
       notify({
         test: this,
         type: 'test-end',
@@ -56,7 +56,7 @@ export default class Test {
     return this.error !== null
   }
   /**
-   * Return test's context (if context is a function, it will be overriden by the
+   * Return test's context (if context is a function, it will be overridden by the
    * end of the test run with evaluated context function).
    * @returns {object|function} context in current state
    */
@@ -84,9 +84,24 @@ export default class Test {
     const fn = isFunction(context)
     if (!fn) return
 
-    const c = {}
-    await context.call(c)
-    this._context = c
+    try {
+      const c = {}
+      await context.call(c)
+      this._context = c
+    } catch (err) {
+      if (!/^Class constructor/.test(err.message)) {
+        throw err
+      }
+      // constructor context
+      const c = new context()
+      if (c._init) {
+        await c._init()
+      }
+
+      bindMethods(c, ['constructor', '_init', '_destroy'])
+
+      this._context = c
+    }
   }
 }
 

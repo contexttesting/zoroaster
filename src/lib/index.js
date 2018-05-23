@@ -64,3 +64,22 @@ export function filterStack({ error, name }) {
 export function isFunction(fn) {
   return (typeof fn).toLowerCase() == 'function'
 }
+
+export const bindMethods = (instance, ignore = []) => {
+  const methods = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(instance))
+  const boundMethods = Object.keys(methods)
+    .filter((k) => {
+      return ignore.indexOf(k) < 0
+    })
+    .reduce((acc, k) => {
+      const method = methods[k]
+      const isFn = isFunction(method.value)
+      if (!isFn) return acc
+      method.value = method.value.bind(instance)
+      return {
+        ...acc,
+        [k]: method,
+      }
+    }, {})
+  Object.defineProperties(instance, boundMethods)
+}
