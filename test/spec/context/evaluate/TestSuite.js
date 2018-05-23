@@ -150,17 +150,19 @@ const T = {
     equal(firstContext[propName], newTestData)
     equal(secondContext[propName], testDataAfterPromise)
   },
-  async 'times out before context finishes evaluating'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
+  async 'times out before context finishes evaluating'(
+    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { test } }
+  ) {
     async function c() {
       await new Promise(r => setTimeout(r, 200))
     }
-    const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      'should timeout'() { },
+    const ts = new TestSuite(TEST_SUITE_NAME, {
+      test,
     }, null, c, 150)
-    await testSuite.run()
+    await ts.run()
     throws(
-      () => assertNoErrorsInTestSuite(testSuite),
-      /Error in test "Zoroaster Test Suite Name > should timeout": Evaluate has timed out after 150ms/
+      () => assertNoErrorsInTestSuite(ts),
+      /Error in test "Zoroaster Test Suite Name > test": Evaluate has timed out after 150ms/
     )
   },
 }

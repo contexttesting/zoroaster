@@ -1,48 +1,59 @@
-import { equal } from 'assert'
+import { ok, equal } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
 import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 
 /** @type {Object.<string, (ctx: Context)>} */
 const T = {
   context,
-  async 'passes multiple contexts to tests'(ctx) {
+  async 'passes multiple contexts to tests'({ assertNoErrorsInTestSuite }) {
     const testSuite = new TestSuite('test', {
       context: [
-        async function contextA() {
-          this.data = 'A'
-        },
-        async function contextB() {
+        'test',
+        { data: 'A' },
+        async function ContextB() {
           this.data = 'B'
         },
+        class ContextC {
+          async _init() {
+            this.data = 'C'
+          }
+        },
       ],
-      testA({ data: A }, { data: B }) {
+      testA(data, { data: A }, { data: B }, { data: C }) {
+        equal(data, 'test')
         equal(A, 'A')
         equal(B, 'B')
+        equal(C, 'C')
       },
     })
     await testSuite.run()
-    ctx.assertNoErrorsInTestSuite(testSuite)
+    assertNoErrorsInTestSuite(testSuite)
   },
-  async 'destroys multiple contexts'(ctx) {
+  async 'destroys multiple contexts'({ assertNoErrorsInTestSuite, tests: { test } }) {
     let calledA
     let calledB
+    let calledC
     const testSuite = new TestSuite('test', {
       context: [
-        async function contextA() {
-          this._destroy = () => { calledA = true }
+        {
+          _destroy() { calledA = true },
         },
-        async function contextB() {
+        async function ContextB() {
           this._destroy = () => { calledB = true }
         },
+        class ContextC {
+          async _destroy() {
+            calledC = true
+          }
+        },
       ],
-      testA() {
-        equal(1, 1)
-      },
+      test,
     })
     await testSuite.run()
-    ctx.assertNoErrorsInTestSuite(testSuite)
-    equal(calledA, true)
-    equal(calledB, true)
+    assertNoErrorsInTestSuite(testSuite)
+    ok(calledA)
+    ok(calledB)
+    ok(calledC)
   },
 }
 

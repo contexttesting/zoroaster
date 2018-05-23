@@ -24,19 +24,6 @@ export function getPadding(level) {
     .join(' ')
 }
 
-export function checkContext(context) {
-  const type = (typeof context).toLowerCase()
-  if (Array.isArray(context)) {
-    return // arrays from 1.1.0
-  } else if (type == 'function') {
-    return // functions are accepted from 0.4.1
-  } else if (context != undefined && type != 'object') {
-    throw new Error('Context must be an object.')
-  } else if (context === null) {
-    throw new Error('Context cannot be null.')
-  }
-}
-
 export function checkTestSuiteName(name) {
   if (typeof name != 'string') {
     throw new Error('Test suite name must be given.')
@@ -82,4 +69,39 @@ export const bindMethods = (instance, ignore = []) => {
       }
     }, {})
   Object.defineProperties(instance, boundMethods)
+}
+
+export const evaluateContext = async (context) => {
+  const fn = isFunction(context)
+  if (!fn) return context
+
+  try {
+    const c = {}
+    await context.call(c)
+    return c
+  } catch (err) {
+    if (!/^Class constructor/.test(err.message)) {
+      throw err
+    }
+    // constructor context
+    const c = new context()
+    if (c._init) {
+      await c._init()
+    }
+
+    bindMethods(c, ['constructor', '_init', '_destroy'])
+
+    return c
+  }
+}
+
+export const destroyContexts = async (contexts) => {
+  const dc = contexts.map(async (c) => {
+    if (isFunction(c._destroy)) {
+      const res = await c._destroy()
+      return res
+    }
+  })
+  const res = await Promise.all(dc)
+  return res
 }

@@ -1,4 +1,4 @@
-import { strictEqual, notStrictEqual, deepEqual } from 'assert'
+import { strictEqual, deepEqual } from 'assert'
 import throws from 'assert-throws'
 import Test from '../../../../src/lib/Test'
 import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
@@ -22,10 +22,9 @@ const T = {
     const t = new Test(TEST_NAME, test, null, c)
     strictEqual(t.context, c)
     await t._evaluateContext()
-    notStrictEqual(t.context, c)
-    deepEqual(t.context, ctx)
+    deepEqual(t.contexts, [ctx])
   },
-  async 'evaluates sync context'({ createObjectContext, TEST_NAME, test }) {
+  async 'evaluates context'({ createObjectContext, TEST_NAME, test }) {
     const ctx = createObjectContext()
     function c() {
       Object.assign(this, ctx)
@@ -33,8 +32,7 @@ const T = {
     const t = new Test(TEST_NAME, test, null, c)
     strictEqual(t.context, c)
     await t._evaluateContext()
-    notStrictEqual(t.context, c)
-    deepEqual(t.context, ctx)
+    deepEqual(t.contexts, [ctx])
   },
   async 'fails the test if evaluation failed'({ TEST_NAME, test }) {
     const error = new Error('test-init-context-error')

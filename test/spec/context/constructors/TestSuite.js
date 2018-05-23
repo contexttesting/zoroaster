@@ -1,22 +1,10 @@
-import { ok, equal, throws, notStrictEqual, deepEqual } from 'assert'
+import { ok, equal, notStrictEqual, deepEqual } from 'assert'
 import TestSuite from '../../../../src/lib/TestSuite'
 import context, { Context } from '../../../context' // eslint-disable-line no-unused-vars
 
 /** @type {Object.<string, (ctx: Context)>} */
 const T = {
   context,
-  'throws an error when context passed is not an object'({ TEST_SUITE_NAME }) {
-    throws(
-      () => new TestSuite(TEST_SUITE_NAME, {}, null, 'context'),
-      /Context must be an object./
-    )
-  },
-  'throws an error when context passed is null'({ TEST_SUITE_NAME }) {
-    throws(
-      () => new TestSuite(TEST_SUITE_NAME, {}, null, null),
-      /Context cannot be null./
-    )
-  },
   'creates a test suite with a cloned context'({ createObjectContext, TEST_SUITE_NAME }) {
     const ctx = createObjectContext()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, ctx)
@@ -58,18 +46,6 @@ export default T
 /** @type {Object.<string, (ctx: Context)>} */
 export const from_tests = {
   context,
-  'throws an error when context passed is not an object'({ TEST_SUITE_NAME }) {
-    throws(
-      () => new TestSuite(TEST_SUITE_NAME, { context: 'context' }),
-      /Context must be an object./
-    )
-  },
-  'throws an error when context passed is null'({ TEST_SUITE_NAME }) {
-    throws(
-      () => new TestSuite(TEST_SUITE_NAME, { context: null }),
-      /Context cannot be null./
-    )
-  },
   'adds context from passed object'({ createObjectContext, TEST_SUITE_NAME }) {
     const ctx = createObjectContext()
     const testSuite = new TestSuite(TEST_SUITE_NAME, {

@@ -1,5 +1,5 @@
 import { EOL } from 'os'
-import { isFunction, checkTestSuiteName, checkContext, runInSequence, indent } from '.'
+import { isFunction, checkTestSuiteName, runInSequence, indent } from '.'
 import Test from './Test'
 
 const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
@@ -14,7 +14,6 @@ function hasParent({ parent }) {
 export default class TestSuite {
   constructor (name, testsOrPath, parent, context, timeout) {
     checkTestSuiteName(name)
-    checkContext(context)
 
     this._name = name
     this._parent = parent
@@ -79,7 +78,6 @@ export default class TestSuite {
 
   _assignTests(tests) {
     if ('context' in tests) {
-      checkContext(tests.context)
       this._assignContext(tests.context)
     }
     this._rawTests = tests
@@ -105,17 +103,13 @@ export default class TestSuite {
   /**
    * Run test suite.
    */
-  async run(notify) {
-    if (typeof notify === 'function') {
-      notify({
-        type:'test-suite-start',
-        name: this.name,
-      })
-    }
+  async run(notify = () => {}) {
+    notify({
+      type:'test-suite-start',
+      name: this.name,
+    })
     const res = await runInSequence(this.tests, notify)
-    if (typeof notify === 'function') {
-      notify({ type:'test-suite-end', name: this.name })
-    }
+    notify({ type:'test-suite-end', name: this.name })
     return res
   }
   dump() {

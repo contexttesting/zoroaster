@@ -10,7 +10,7 @@
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/",
+        "test/spec/Context/evaluate/TestSuite.js",
         "-b",
         "-w"
       ],
