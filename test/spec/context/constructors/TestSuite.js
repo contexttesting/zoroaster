@@ -115,7 +115,7 @@ export const from_tests = {
   }) {
     const ctx = createObjectContext()
     const existingContext = createObjectContext2()
-    const totalContext = { ...existingContext, ...context }
+    const totalContext = { ...existingContext, ...ctx }
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       context: ctx,
       test(c) {
@@ -141,6 +141,6 @@ export const from_tests = {
     })
     await testSuite.run()
     const expected = createObjectContext()
-    deepEqual(context, expected)
+    deepEqual(ctx, expected)
   },
 }

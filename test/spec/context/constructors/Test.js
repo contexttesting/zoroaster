@@ -17,17 +17,17 @@ const T = {
       /Context cannot be null./
     )
   },
-  'creates a test with a context'({ createObjectContext }) {
+  'creates a test with a context'({ createObjectContext, TEST_NAME, tests: { test } }) {
     const ctx = createObjectContext()
-    const test = new Test(ctx.TEST_NAME, ctx.test, null, ctx)
-    strictEqual(test.context, context)
+    const t = new Test(TEST_NAME, test, null, ctx)
+    strictEqual(t.context, ctx)
   },
-  async 'passes context as first argument to function'({ createObjectContext }) {
+  async 'passes context as first argument to function'({ createObjectContext, TEST_NAME }) {
     const ctx = createObjectContext()
     const t = (c) => {
-      equal(c, context)
+      equal(c, ctx)
     }
-    const test = new Test(ctx.TEST_NAME, t, null, context)
+    const test = new Test(TEST_NAME, t, null, ctx)
     await test.run()
     equal(test.error, null)
   },
