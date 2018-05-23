@@ -349,7 +349,7 @@ zoroaster test/spec/lib/index.js
 
 ### Watch
 
-To watch files for changes, use `--watch` flag, e.g.,
+To watch files for changes, use `--watch` (or `-w`) flag, e.g.,
 
 ```sh
 zoroaster test/spec --watch
@@ -361,7 +361,7 @@ The default timeout is `2000ms`. At the moment, only global timeout can be set w
 
 ### @babel/register
 
-If you want to use `@babel/register` in your tests, just pass `--babel` flag to the CI. It will make a call to require `@babel/register`, so that it must be installed as a dependency in your project, because it's not specified as `zoroaster`'s dependency.
+If you want to use `@babel/register` in your tests, just pass `--babel` (or `-b`) flag to the CI. It will make a call to require `@babel/register`, so that it must be installed as a dependency in your project, because it's not specified as `zoroaster`'s dependency.
 
 ```sh
 zoroaster test/spec --babel
