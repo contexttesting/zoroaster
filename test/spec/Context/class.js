@@ -1,10 +1,10 @@
 import { equal, ok } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
-import context from '../../context'
+import Context from '../../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 const T = {
-  context,
+  context: Context,
   async 'evaluates a class constructor'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
     class Test {
       async _init() {

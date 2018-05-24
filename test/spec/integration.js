@@ -1,10 +1,9 @@
 import { fork } from 'spawncommand'
 import { resolve } from 'path'
 import stripAnsi from 'strip-ansi'
-import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line
+import SnapshotContext from 'snapshot-context'
 import Context from '../context'
 
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 const ZOROASTER = process.env.BABEL_ENV == 'test-build' ? '../../build/bin/zoroaster.js' : '../../src/bin'
 const BIN = resolve(__dirname, ZOROASTER)
 
@@ -20,15 +19,15 @@ function getSnapshot(s) {
     .replace(/\r?\n/g, '\n')
 }
 
-/** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
+/** @type {Object.<string, (c: Context, s: SnapshotContext)>} */
 const T = {
   context:[
     Context,
-    snapshotContext,
+    SnapshotContext,
   ],
-  async 'produces correct output'({ TEST_SUITE_PATH }, { test, setDir }) {
+  async 'produces correct output'({ TEST_SUITE_PATH, SNAPSHOT_DIR }, { test, setDir }) {
     setDir(SNAPSHOT_DIR)
-    const { promise } = fork(BIN, [TEST_SUITE_PATH, '--babel'], {
+    const { promise } = fork(BIN, [TEST_SUITE_PATH, '-b'], {
       stdio: 'pipe',
     })
     const { stdout } = await promise

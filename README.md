@@ -347,34 +347,36 @@ If a single or multiple file paths are passed, they are all tested.
 zoroaster test/spec/lib/index.js
 ```
 
-### Watch
+### `--watch`, `-w`: Watch Files for Changes
 
 To watch files for changes, use `--watch` (or `-w`) flag, e.g.,
 
 ```sh
 zoroaster test/spec --watch
+zoroaster test/spec -w
 ```
 
 ### Timeout
 
 The default timeout is `2000ms`. At the moment, only global timeout can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g., `ZOROASTER_TIMEOUT=5000 zoroaster test`
 
-### @babel/register
+### `--babel`, `-b`: `require(@babel/register)`
 
 If you want to use `@babel/register` in your tests, just pass `--babel` (or `-b`) flag to the CI. It will make a call to require `@babel/register`, so that it must be installed as a dependency in your project, because it's not specified as `zoroaster`'s dependency.
 
 ```sh
 zoroaster test/spec --babel
+zoroaster test/spec -b
 ```
 
-When ES modules syntax (`import foo from 'foo'`) is desired, the following `.babelrc` pattern can be used:
+When ES modules syntax (`import foo from 'foo'`) is needed (in other words, always), the following `.babelrc` pattern needs to be used:
 
 ```json
 {
   "plugins": [
     "@babel/plugin-syntax-object-rest-spread",
     "@babel/plugin-transform-modules-commonjs"
-  ],
+  ]
 }
 ```
 
@@ -383,20 +385,36 @@ With the following dev dependencies installed:
 ```fs
 yarn add -E -D \
 @babel/core \
-@babel/register
+@babel/register \
 @babel/plugin-syntax-object-rest-spread \
 @babel/plugin-transform-modules-commonjs \
 ```
 
+When building the project, you're probably using `@babel/cli` as well.
+
 ### package.json
 
-To be able to run `yarn test`, or `npm test`, specify the test script in the `package.json` as follows:
+To be able to run `yarn test`, specify the test script in the `package.json` as follows:
 
 ```json
 {
   "name": "test-package",
   "scripts": {
     "test": "zoroaster test/spec"
+
+  }
+}
+```
+
+Additional shorter scripts for `yarn` can be specified (`-b` is to require `@babel/register`)
+
+```json
+{
+  "scripts": {
+    "t": "zoroaster -b",
+    "tw": "zoroaster -b -w",
+    "test": "yarn t test/spec",
+    "test-watch": "yarn test -w",
   }
 }
 ```
@@ -417,7 +435,7 @@ const context = {
   name: 'Zarathustra',
 }
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: context)>} */
 const T = {
   context,
   'sets correct default name'({ name }) {
@@ -443,7 +461,85 @@ const T = {
 export default T
 ```
 
-### Function Context
+### Class Context
+
+Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this`. Getters and setters are not bound.
+
+```js
+import { resolve } from 'path'
+
+export default class Context {
+  async _init() {
+    // an async set-up
+    await new Promise(r => setTimeout(r, 50))
+  }
+  /**
+   * Returns country of origin.
+   */
+  async getCountry() {
+    return 'Iran'
+  }
+  async _destroy() {
+    // an async tear-down
+    await new Promise(r => setTimeout(r, 50))
+  }
+  get SNAPSHOT_DIR() {
+    return resolve(__dirname, '../snapshot')
+  }
+}
+```
+
+```js
+import { equal } from 'assert'
+import Zoroaster from '../../src'
+import Context from '../context'
+
+/** @type {Object.<string, (c: Context)>} */
+const T = {
+  context,
+  async 'returns correct country of origin'({ getCountry }) {
+    const zoroaster = new Zoroaster()
+    const expected = await getCountry()
+    equal(zoroaster.countryOfOrigin, expected)
+  },
+}
+
+export default T
+```
+
+### Multiple Contexts
+
+It is possible to specify multiple contexts by passing an array to the `context` property.
+
+```js
+import Zoroaster from '../../src'
+import Context from '../context'
+import SnapshotContext from 'snapshot-context'
+import { resolve } from 'path'
+
+const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
+
+/** @type {Object.<string, (c: Context, s: SnapshotContext)>} */
+const T = {
+  context: [
+    context,
+    snapshotContext,
+  ],
+  async 'returns correct country of origin'({ getCountry }, { test, setDir }) {
+    setDir(SNAPSHOT_DIR)
+    const zoroaster = new Zoroaster()
+    const expected = await getCountry()
+    const actual = zoroaster.countryOfOrigin
+    await test(actual, expected)
+  },
+}
+
+export default T
+```
+
+### Function Context (deprecated as of 2.1)
+
+> THIS SHOULD NOT REALLY BE USED AS OF `2.1` WHICH INTRODUCED THE CLASS CONTEXT FEATURE BECAUSE IT'S EASIER TO DOCUMENT A CLASS WITHOUT HAVING TO HACK A DOCTYPE.
 
 If the `context` property is a function, then it will be asynchronously evaluated, and its `this` used as a context for tests. The timeout for evaluation is equal to the test timeout. The context should also be documented with a JSDoc for IntelliSence support in tests.
 
@@ -483,82 +579,6 @@ const T = {
     const zoroaster = new Zoroaster()
     const expected = await getCountry()
     equal(zoroaster.countryOfOrigin, expected)
-  },
-}
-
-export default T
-```
-
-### Class Context
-
-Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context will be bound to the instance of a context for each tests, therefore it's possible to use destructuring.
-
-```js
-import { resolve } from 'path'
-
-export default class Context {
-  async _init() {
-    // an async set-up
-    await new Promise(r => setTimeout(r, 50))
-  }
-  /**
-   * Returns country of origin.
-   */
-  async getCountry() {
-    return 'Iran'
-  }
-  async _destroy() {
-    // an async tear-down
-    await new Promise(r => setTimeout(r, 50))
-  }
-  get SNAPSHOT_DIR() {
-    return resolve(__dirname, '../snapshot')
-  }
-}
-```
-
-```js
-import { equal } from 'assert'
-import Zoroaster from '../../src'
-import context, { Context } from '../context' // eslint-disable-line no-unused-vars
-
-/** @type {Object.<string, (ctx: Context)>} */
-const T = {
-  context,
-  async 'returns correct country of origin'({ getCountry }) {
-    const zoroaster = new Zoroaster()
-    const expected = await getCountry()
-    equal(zoroaster.countryOfOrigin, expected)
-  },
-}
-
-export default T
-```
-
-### Multiple Contexts
-
-It is possible to specify multiple contexts by passing an array to the `context` property.
-
-```js
-import Zoroaster from '../../src'
-import Context from '../context'
-import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line no-unused-vars
-import { resolve } from 'path'
-
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
-
-/** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
-const T = {
-  context: [
-    context,
-    snapshotContext,
-  ],
-  async 'returns correct country of origin'({ getCountry }, { test, setDir }) {
-    setDir(SNAPSHOT_DIR)
-    const zoroaster = new Zoroaster()
-    const expected = await getCountry()
-    const actual = zoroaster.countryOfOrigin
-    await test(actual, expected)
   },
 }
 

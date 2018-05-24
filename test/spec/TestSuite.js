@@ -1,11 +1,11 @@
 import { ok, equal } from 'assert'
 import throws from 'assert-throws'
 import TestSuite from '../../src/lib/TestSuite'
-import context from '../context'
+import Context from '../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 const T = {
-  context,
+  context: Context,
   async 'throws an error if no name is given'() {
     await throws({
       fn() {

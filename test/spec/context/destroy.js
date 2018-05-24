@@ -1,10 +1,10 @@
 import { ok, equal, strictEqual, throws } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
-import context from '../../context'
+import Context from '../../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 export const ObjectContext = {
-  context,
+  context: Context,
   async 'calls _destroy'({ assertNoErrorsInTestSuite, TEST_SUITE_NAME, tests: { test } }) {
     let destroyed = false
     const c = {
@@ -30,9 +30,9 @@ export const ObjectContext = {
   },
 }
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 export const FunctionContext = {
-  context,
+  context: Context,
   async 'calls _destroy'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { test } }) {
     let destroyed = false
     function c() {

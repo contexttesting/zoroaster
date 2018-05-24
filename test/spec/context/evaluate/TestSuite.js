@@ -1,10 +1,10 @@
 import { ok, equal, notStrictEqual, throws } from 'assert'
 import TestSuite from '../../../../src/lib/TestSuite'
-import context from '../../../context'
+import Context from '../../../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 const T = {
-  context,
+  context: Context,
   async 'evaluates context for each test'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
     const testData = 'some-test-data'
     const newTestData = 'some-new-test-data'

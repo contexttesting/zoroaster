@@ -1,14 +1,15 @@
 import { ok, equal } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
-import context from '../../context'
+import Context from '../../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 const T = {
-  context,
+  context: Context,
   async 'passes multiple contexts to tests'({ assertNoErrorsInTestSuite }) {
     const testSuite = new TestSuite('test', {
       context: [
         'test',
+        // null, expect an error with null
         { data: 'A' },
         async function ContextB() {
           this.data = 'B'
@@ -19,8 +20,8 @@ const T = {
           }
         },
       ],
-      testA(data, { data: A }, { data: B }, { data: C }) {
-        equal(data, 'test')
+      testA(S, { data: A }, { data: B }, { data: C }) {
+        equal(S, 'test')
         equal(A, 'A')
         equal(B, 'B')
         equal(C, 'C')
@@ -35,6 +36,8 @@ const T = {
     let calledC
     const testSuite = new TestSuite('test', {
       context: [
+        'a string', // OK
+        // null, // please no
         {
           _destroy() { calledA = true },
         },

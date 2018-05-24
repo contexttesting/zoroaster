@@ -1,10 +1,10 @@
 import { equal, strictEqual } from 'assert'
 import Test from '../../../../src/lib/Test'
-import context from '../../../context'
+import Context from '../../../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 const T = {
-  context,
+  context: Context,
   'creates a test with a context'({ createObjectContext, TEST_NAME, tests: { test } }) {
     const ctx = createObjectContext()
     const t = new Test(TEST_NAME, test, null, ctx)

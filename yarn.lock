@@ -2068,9 +2068,9 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snapshot-context@1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/snapshot-context/-/snapshot-context-1.1.6.tgz#c538754710da7738bdc81be29343688221cb5a74"
+snapshot-context@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/snapshot-context/-/snapshot-context-2.0.0.tgz#d0b9750fa55ac7dde456583ba96ec9a48a09291a"
   dependencies:
     assert-diff "1.2.6"
     erotic "1.1.0"

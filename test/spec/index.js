@@ -1,11 +1,11 @@
 import { ok, equal } from 'assert'
 import { ChildProcess } from 'child_process'
 import zoroaster from '../../src'
-import context from '../context'
+import Context from '../context'
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: Context)>} */
 const t = {
-  context,
+  context: Context,
   'exports a function'() {
     equal(typeof zoroaster, 'function')
   },

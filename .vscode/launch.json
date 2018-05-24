@@ -10,7 +10,7 @@
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/Context/evaluate/TestSuite.js",
+        "test/spec/Context/constructors/TestSuite.js",
         "-b",
         "-w"
       ],
@@ -21,7 +21,8 @@
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"
-      ]
+      ],
+      "sourceMaps": true
     }
   ]
 }

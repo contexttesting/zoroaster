@@ -58,7 +58,7 @@
     "erotic": "1.1.0",
     "eslint": "4.19.1",
     "eslint-config-artdeco": "1.0.0",
-    "snapshot-context": "1.1.6",
+    "snapshot-context": "2.0.0",
     "strip-ansi": "4.0.0"
   }
 }

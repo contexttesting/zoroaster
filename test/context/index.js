@@ -13,6 +13,29 @@ const getErrMessage = (testSuiteName, { name, error }) => {
   return message
 }
 
+const context = Object.freeze({
+  name: 'Zarathustra',
+  country: 'Iran',
+  born: -628,
+  died: -551,
+})
+
+const extension = Object.freeze({
+  phenomena: ['act', 'speech', 'thought'],
+  Činvat: 'Bridge of the Requiter',
+  humans: () => 'Responsibility for fate',
+})
+const totalContext = Object.freeze({
+  ...context,
+  ...extension,
+})
+
+const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
+
+const to = async (n = 50) => {
+  await new Promise(r => setTimeout(r, n))
+}
+
 const C = {
   /**
    * Assert that all tests have completed by recursively traversing the test suite.
@@ -64,24 +87,36 @@ const C = {
    * Create a simple context object with some properties.
    */
   createObjectContext() {
-    return {
-      name: 'Zarathustra',
-      country: 'Iran',
-      born: -628,
-      died: -551,
-    }
+    console.log('deprecated')
+    return C.context
   },
+
+  /**
+   * A context object.
+   */
+  context,
+  /**
+   * An extension to the context object.
+   */
+  extension,
+
+  /**
+   * A context together with extension.
+   */
+  totalContext,
 
   /**
    * Create a simple context object with some properties different from those generated with createObjectContext.
    */
   createObjectContext2() {
-    return {
-      phenomena: ['act', 'speech', 'thought'],
-      Činvat: 'Bridge of the Requiter',
-      humans: () => 'Responsibility for fate',
-    }
+    console.log('depreaced')
+    return C.extension
   },
+
+  /**
+   * Asynchronous function to wait for certain time. Default 50 ms
+   */
+  to,
 
   /**
    * Name of the test suite.
@@ -117,6 +152,11 @@ const C = {
    * Expected message returned by a test.
    */
   TEST_RETURN_MESSAGE,
+
+  /**
+   * Snapshot directory
+   */
+  SNAPSHOT_DIR,
 }
 
 export default C

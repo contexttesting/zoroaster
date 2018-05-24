@@ -5,7 +5,7 @@ const context = {
   name: 'Zarathustra',
 }
 
-/** @type {Object.<string, (ctx: context)>} */
+/** @type {Object.<string, (c: context)>} */
 const T = {
   context,
   'sets correct default name'({ name }) {
