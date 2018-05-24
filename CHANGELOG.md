@@ -1,4 +1,10 @@
-## 23 May 2018
+## 24 May 2018
+
+<a name="2.1.1"></a>
+### [2.1.1](https://github.com/artdecocode/zoroaster/compare/v2.1.0...v2.1.1)
+
+- [code] switch to class snapshot context, better context in tests
+- [readme] documentation for class context as priority over function context
 
 <a name="2.1.0"></a>
 ### [2.1.0](https://github.com/artdecocode/zoroaster/compare/v2.0.0...v2.1.0)
