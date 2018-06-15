@@ -1,4 +1,4 @@
-# Zoroaster
+# zoroaster
 
 [![npm version](https://badge.fury.io/js/zoroaster.svg)](https://badge.fury.io/js/zoroaster)
 [![Build Status](https://travis-ci.org/artdecocode/zoroaster.svg?branch=master)](https://travis-ci.org/artdecocode/zoroaster)
@@ -387,7 +387,7 @@ yarn add -E -D \
 @babel/core \
 @babel/register \
 @babel/plugin-syntax-object-rest-spread \
-@babel/plugin-transform-modules-commonjs \
+@babel/plugin-transform-modules-commonjs
 ```
 
 When building the project, you're probably using `@babel/cli` as well.
@@ -401,7 +401,6 @@ To be able to run `yarn test`, specify the test script in the `package.json` as 
   "name": "test-package",
   "scripts": {
     "test": "zoroaster test/spec"
-
   }
 }
 ```
@@ -414,7 +413,7 @@ Additional shorter scripts for `yarn` can be specified (`-b` is to require `@bab
     "t": "zoroaster -b",
     "tw": "zoroaster -b -w",
     "test": "yarn t test/spec",
-    "test-watch": "yarn test -w",
+    "test-watch": "yarn tw test/spec",
   }
 }
 ```
@@ -468,23 +467,35 @@ Context can be a class, and to initialise it, `_init` function will be called if
 ```js
 import { resolve } from 'path'
 
+const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
+
 export default class Context {
+  /**
+   * An async set-up in which country is acquired.
+   */
   async _init() {
-    // an async set-up
-    await new Promise(r => setTimeout(r, 50))
+    /** @type {'Iran'} A country of origin */
+    const country = await new Promise(r => setTimeout(() => r('Iran'), 50))
+    this._country = country
   }
   /**
    * Returns country of origin.
    */
-  async getCountry() {
-    return 'Iran'
+  getCountry() {
+    return this._country
   }
+  /**
+   * An async tear-down in which country is destroyed
+   */
   async _destroy() {
-    // an async tear-down
     await new Promise(r => setTimeout(r, 50))
+    this._country = null
   }
+  /**
+   * Directory in which to save snapshots.
+   */
   get SNAPSHOT_DIR() {
-    return resolve(__dirname, '../snapshot')
+    return SNAPSHOT_DIR
   }
 }
 ```
@@ -509,33 +520,34 @@ export default T
 
 ### Multiple Contexts
 
-It is possible to specify multiple contexts by passing an array to the `context` property.
+It is possible to specify multiple contexts by passing an array to the `context` property. Passing a string or anything else than `null` will also work.
 
 ```js
 import Zoroaster from '../../src'
 import Context from '../context'
 import SnapshotContext from 'snapshot-context'
-import { resolve } from 'path'
-
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
 
 /** @type {Object.<string, (c: Context, s: SnapshotContext)>} */
 const T = {
   context: [
-    context,
-    snapshotContext,
+    Context,
+    SnapshotContext,
   ],
-  async 'returns correct country of origin'({ getCountry }, { test, setDir }) {
+  async 'returns correct country of origin'(
+    { SNAPSHOT_DIR },
+    { setDir, test }
+  ) {
     setDir(SNAPSHOT_DIR)
     const zoroaster = new Zoroaster()
-    const expected = await getCountry()
     const actual = zoroaster.countryOfOrigin
-    await test(actual, expected)
+    await test('country-of-origin.txt', actual)
   },
 }
 
 export default T
 ```
+
+<!-- [![multiple-context](doc/multiple-context.gif)](https://artdecocode.bz) -->
 
 ### Function Context (deprecated as of 2.1)
 
@@ -619,16 +631,18 @@ See [`assert-throws` API documentation][5] to learn more about assertions.
 
 ## launch.json
 
-The following snippet can be used when debugging tests.
+The following snippet can be used when debugging tests. Because `-w` argument is also passed, the tests will automatically restart and repause at the breakpoints.
 
 ```json
 {
   "type": "node",
   "request": "launch",
-  "name": "Launch Program",
-  "program": "${workspaceFolder}/bin/zoroaster",
+  "name": "Launch Zoroaster",
+  "program": "${workspaceFolder}/.bin/zoroaster",
   "args": [
-    "test/spec/integration.js"
+    "test/spec/integration.js",
+    "-b",
+    "-w"
   ],
   "env": {
     "ZOROASTER_TIMEOUT": "9999999"
@@ -654,6 +668,7 @@ The following snippet can be used when debugging tests.
 10. ~~Context object as an optional argument to test functions~~
 11. Pass path to a context file in CLI
 12. Catch global errors
+13. Make sure source maps are updated as well when running `-w` and `-b` mode to show the correct line.
 
 ### context-related todo
 
