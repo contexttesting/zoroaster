@@ -56,8 +56,14 @@ export const checkParadise = {
     const actual = zoroaster.checkParadise()
     ok(actual)
   },
-  'returns false when balance is less than 1000'() {
+  async 'returns false when balance is less than 1000'() {
     const zoroaster = new Zoroaster()
+    await Promise.all(
+      Array.from({ length: 500 }).map(async () => {
+        await zoroaster.side(Zoroaster.AHURA_MAZDA)
+      })
+    )
+    equal(zoroaster.balance, 500)
     const actual = zoroaster.checkParadise()
     ok(!actual)
   },
