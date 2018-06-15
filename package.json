@@ -5,12 +5,14 @@
   "main": "build",
   "scripts": {
     "t": "node src/bin -b",
+    "tw": "node src/bin -b -w",
     "test": "yarn t test/spec",
     "test-build": "BABEL_ENV=test-build yarn t test/spec",
     "test-all": "yarn-s test test-build",
     "build": "babel src --out-dir build --ignore src/bin/index.js",
     "lint": "eslint .",
     "example/simple.js": "node src/bin example/simple.js -b",
+    "example/": "yarn example/Zoroaster/",
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
   },
   "files": [
