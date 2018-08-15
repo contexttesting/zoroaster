@@ -8,7 +8,7 @@
     "test": "yarn t test/spec",
     "test-build": "BABEL_ENV=test-build yarn t test/spec",
     "test-all": "yarn-s test test-build",
-    "build": "babel src --out-dir build --ignore src/bin/index.js",
+    "build": "alamode src -o build",
     "lint": "eslint .",
     "example/simple.js": "node src/bin example/simple.js -b",
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
@@ -47,6 +47,7 @@
     "yarn-s": "1.1.0"
   },
   "devDependencies": {
+    "alamode": "1.1.0",
     "diff": "3.5.0",
     "erotic": "1.1.0",
     "eslint": "4.19.1",
