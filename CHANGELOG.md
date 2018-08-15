@@ -1,3 +1,12 @@
+## 15 August 2018
+
+<a name="2.2.0"></a>
+### [2.2.0](https://github.com/artdecocode/zoroaster/compare/v2.1.1...v2.2.0)
+
+- [package] Build w/ [`alamode`](https://alamode.cc)
+- [feature] Add `getTests` method for mask testing.
+- [deps] update `assert-diff@2`, `catchment@3`.
+
 ## 24 May 2018
 
 <a name="2.1.1"></a>
