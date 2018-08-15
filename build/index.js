@@ -20,3 +20,7 @@ function run(args, options = {}) {
 }
 
 module.exports = run
+
+const $default = require('./lib/mask')
+
+module.exports.getTests = $default
