@@ -20,3 +20,5 @@ function run(args, options = {}) {
 }
 
 export default run
+
+export { default as getTests } from './lib/mask'
