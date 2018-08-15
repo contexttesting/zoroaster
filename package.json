@@ -38,9 +38,9 @@
   },
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
-    "assert-diff": "1.2.6",
+    "assert-diff": "2.0.3",
     "assert-throws": "2.1.0",
-    "catchment": "2.0.1",
+    "catchment": "3.0.0",
     "clean-stack": "1.3.0",
     "mismatch": "1.0.2",
     "promto": "1.0.1",
@@ -50,9 +50,9 @@
   "devDependencies": {
     "alamode": "1.1.0",
     "diff": "3.5.0",
-    "erotic": "1.1.0",
-    "eslint-config-artdeco": "1.0.0",
-    "snapshot-context": "2.0.0",
+    "erotic": "1.2.1",
+    "eslint-config-artdeco": "1.0.1",
+    "snapshot-context": "2.0.4",
     "strip-ansi": "4.0.0"
   }
 }
