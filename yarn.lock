@@ -161,6 +161,10 @@ makepromise@2.0.0:
   dependencies:
     erotic "1.0.1"
 
+mismatch@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/mismatch/-/mismatch-1.0.2.tgz#80262a922a420b7ace005195ee14508787d9072f"
+
 promto@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promto/-/promto-1.0.1.tgz#0a169fc7bd8f48cef1ee9faeace61a100305a536"
