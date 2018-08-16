@@ -36,6 +36,8 @@ const to = async (n = 50) => {
   await new Promise(r => setTimeout(r, n))
 }
 
+const MASK_PATH = resolve(__dirname, '../fixtures/mask.js')
+
 const C = {
   /**
    * Assert that all tests have completed by recursively traversing the test suite.
@@ -157,7 +159,11 @@ const C = {
    * Snapshot directory
    */
   SNAPSHOT_DIR,
+
+  /**
+   * Path to a mask fixture.
+   */
+  MASK_PATH,
 }
 
 export default C
-
