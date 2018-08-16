@@ -1,3 +1,10 @@
+## 16 August 2018
+<a name="2.2.1"></a>
+### [2.2.0](https://github.com/artdecocode/zoroaster/compare/v2.2.0...v2.2.1)
+
+- [fix] Allow to split mask properties without any whitespace.
+- [test] Add snapshot test for the mask.
+
 ## 15 August 2018
 
 <a name="2.2.0"></a>
