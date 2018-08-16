@@ -7,10 +7,10 @@ const makeRegex = (keys = []) => {
   const n = '\\n'
   const titleAndBody = `^// (.+?)${n}(${ms})${n.repeat(2)}`
   const vals = keys.map(k => {
-    const s = `(?:/\\* *${k} *\\*/${n}(${ms})${n}/\\*\\*/\\s+)?`
+    const s = `(?:/\\* *${k} *\\*/${n}(${ms})${n}/\\*\\*/)?`
     return s
   })
-  const allVals = vals.join('')
+  const allVals = vals.join('\\s+')
   const regex = new RegExp(`${titleAndBody}${allVals}`, 'gm')
   return regex
 }
@@ -31,7 +31,7 @@ const getTests = (path, keys = ['expected']) => {
   const lines = m.split('\n')
   /**
    * A function to be called on error in a test.
-   * @param {string} name 
+   * @param {string} name
    * @param {Error} error
    * @throws {Error} An error with a stack trace pointing at the line in the mask file.
    */
