@@ -1,6 +1,6 @@
 {
   "name": "zoroaster",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "An Art Deco JavaScript testing framework for Node.js",
   "main": "build",
   "scripts": {
