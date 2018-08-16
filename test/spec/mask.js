@@ -8,7 +8,7 @@ const T = {
   context: [Context, SnapshotContext],
   async 'can make a mask'({ MASK_PATH, SNAPSHOT_DIR }, { setDir, test }) {
     setDir(SNAPSHOT_DIR)
-    const res = getTests(MASK_PATH, ['expected', 'exports'])
+    const res = getTests(MASK_PATH, ['expected', 'exports', 'error'])
     const fr = res.map(({ onError, ...rest }) => {
       ok(onError)
       return rest

@@ -10,7 +10,7 @@ const makeRegex = (keys = []) => {
     const s = `(?:/\\* *${k} *\\*/${n}(${ms})${n}/\\*\\*/)?`
     return s
   })
-  const allVals = vals.join('\\s+')
+  const allVals = vals.join('\\s*')
   const regex = new RegExp(`${titleAndBody}${allVals}`, 'gm')
   return regex
 }
