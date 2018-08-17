@@ -36,7 +36,8 @@ const to = async (n = 50) => {
   await new Promise(r => setTimeout(r, n))
 }
 
-const MASK_PATH = resolve(__dirname, '../fixtures/mask.js')
+const FIXTURE = resolve(__dirname, '../fixtures')
+const MASK_PATH = resolve(FIXTURE, 'mask.js')
 
 const C = {
   /**
@@ -111,7 +112,7 @@ const C = {
    * Create a simple context object with some properties different from those generated with createObjectContext.
    */
   createObjectContext2() {
-    console.log('depreaced')
+    console.log('deprecated')
     return C.extension
   },
 
@@ -164,6 +165,11 @@ const C = {
    * Path to a mask fixture.
    */
   MASK_PATH,
+
+  /**
+   * Path to a mask fixture to test the `makeTestSuite` function.
+   */
+  TS_MASK_PATH: resolve(FIXTURE, 'mask-test-suite.js'),
 }
 
 export default C

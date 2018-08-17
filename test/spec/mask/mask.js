@@ -1,6 +1,6 @@
 import SnapshotContext from 'snapshot-context'
-import Context from '../context'
-import { getTests } from '../../src'
+import Context from '../../context'
+import { getTests } from '../../../src'
 import { ok } from 'assert'
 
 /** @type {Object.<string, (c: Context, sc: SnapshotContext)>} */
