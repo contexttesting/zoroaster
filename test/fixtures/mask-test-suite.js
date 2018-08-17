@@ -16,7 +16,7 @@ an input to expected - fail
 !an input to error
 
 /* error */
-!an input to error - pass1
+!an input to error - pass
 /**/
 
 // error fail

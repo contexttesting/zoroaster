@@ -32,7 +32,7 @@ const makeTestSuite = (maskPath, {
       if (error) {
         if (!getThrowsConfig) throw new Error('No throws config is given.')
         const throwsConfig = getThrowsConfig(input, ...contexts)
-        await assertError(throwsConfig)
+        await assertError(throwsConfig, error)
         return
       }
       if (expected) {
