@@ -1,0 +1,26 @@
+<types>
+  <type name="Context" desc="A context made with a constructor.">
+    <prop opt name="_init" type="() => void">A function to initialise the context.</prop>
+    <prop opt name="_destroy" type="() => void">A function to destroy the context.</prop>
+  </type>
+  <type name="MakeTestSuiteConf" desc="Configuration for making test suites.">
+    <prop opt name="getActual" type="(input: string, ...contexts?: Context[]) => string">
+      A function which should return the actual value as a string to be compared with `expected` mask property.
+    </prop>
+    <prop opt name="getThrowsConfig" type="(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }">
+      A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
+    </prop>
+    <prop opt name="context" type="({new(): Context}|{new(): Context}[]|{})">
+      Single or multiple context constructors or objects to initialise for each test.
+    </prop>
+    <prop opt name="customTest" type="(input: string, props: Object.<string, (string|object)>, ...contexts?: Context[])">
+      Additional custom-written tests to execute.
+    </prop>
+    <prop opt name="customProps" type="string[]">
+      An array of custom properties' names to extract from the mask.
+    </prop>
+    <prop opt name="jsonProps" type="string[]">
+      Any additional properties to extract from the mask, and parse as _JSON_ values.
+    </prop>
+  </type>
+</types>
