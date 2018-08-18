@@ -25,3 +25,24 @@ an input to error
 /* error */
 an input to error - fail
 /**/
+
+// duplicate name
+an input
+
+/* expected */
+ok
+/**/
+
+// duplicate name
+an input
+
+/* expected */
+ok
+/**/
+
+// incorrect json
+an input
+
+/* json */
+not ok
+/**/

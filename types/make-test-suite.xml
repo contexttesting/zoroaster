@@ -13,7 +13,7 @@
     <prop opt name="getThrowsConfig" type="(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }">
       A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
     </prop>
-    <prop opt name="getActual" type="(results: any) => string">
+    <prop opt name="mapActual" type="(results: any) => string">
       An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
     </prop>
     <prop opt name="assertResults" type="(results: any, props: Object.<string, (string|object)>) => void">
