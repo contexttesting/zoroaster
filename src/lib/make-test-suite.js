@@ -10,17 +10,21 @@ const makeTestSuite = (maskPath, {
   getActual,
   getThrowsConfig,
   context,
+  customTest,
+  customProps = [],
+  jsonProps = [],
 }) => {
   const tests = getTests(maskPath, [
     'expected',
     'error',
-    // ...eventTitles,
+    ...customProps,
+    ...jsonProps,
   ])
 
   const hasFocused = tests.some(({ name }) => name.startsWith('!'))
 
   const t = tests.reduce((acc, {
-    name, input, expected, error, onError,
+    name, input, expected, error, onError, ...rest
   }) => {
     if (hasFocused && !name.startsWith('!')) return acc
     const nameError = name in acc ?
@@ -30,15 +34,24 @@ const makeTestSuite = (maskPath, {
       if (nameError) throw nameError
 
       if (error) {
-        if (!getThrowsConfig) throw new Error('No throws config is given.')
+        if (!getThrowsConfig)
+          throw new Error('No getThrowsConfig function is given.')
         const throwsConfig = getThrowsConfig(input, ...contexts)
         await assertError(throwsConfig, error)
         return
       }
       if (expected) {
+        if (!getActual)
+          throw new Error('No getActual function is given.')
         const actual = await getActual(input, ...contexts)
         assertExpected(actual, expected)
       }
+      const parsedRest = Object.keys(rest).reduce((ac, k) => {
+        const val = jsonProps.includes(k) ? JSON.parse(rest[k]) : rest[k]
+        ac[k] = val
+        return ac
+      }, {})
+      if (customTest) await customTest(input, parsedRest, ...contexts)
     }
     acc[name] = async (...args) => {
       try {

@@ -1,13 +1,12 @@
 import throws from 'assert-throws'
-import SnapshotContext from 'snapshot-context'
-import { equal } from 'assert'
+import { equal, deepEqual } from 'assert'
 import Context from '../../context'
 import makeTestSuite from '../../../src/lib/make-test-suite'
 
 /** @type {Object.<string, (c: Context)>} */
-const T = {
-  context: [Context, SnapshotContext],
-  async 'can create a test suite'({ TS_MASK_PATH }) {
+const expectedAndError = {
+  context: Context,
+  async 'can create a test suite'({ TS_MASK_PATH, runTest }) {
     const t = 'pass'
     let called = 0
 
@@ -39,35 +38,72 @@ const T = {
     await runTest(ts, 'expected pass')
     equal(called, 1)
     await throws({
-      async fn() {
-        await runTest(ts, 'expected fail')
-      },
+      fn: runTest,
+      args: [ts, 'expected fail'],
+      message: /an input to expected - pass' == 'an input to expected - fail/,
     })
     equal(called, 2)
     await runTest(ts, 'error pass')
     equal(called, 3)
     await throws({
-      async fn() {
-        await runTest(ts, 'error fail')
-      },
+      fn: runTest,
+      args: [ts, 'error fail'],
+      message: /Function should have thrown/,
     })
     equal(called, 4)
   },
 }
 
+/** @type {Object.<string, (c: Context)>} */
+const custom = {
+  context: Context,
+  async 'allows to run custom tests'({ TS_CUSTOM_MASK_PATH, runTest }) {
+    const t = 'pass'
+    let called = 0
 
-const runTest = async (testSuite, name) => {
-  if (!(name in testSuite)) throw new Error('No such test found')
-  const con = Array.isArray(testSuite.context) ? testSuite.context : [testSuite.context]
-
-  const ic = await con.reduce(async (acc, C) => {
-    await acc
-    const c = new C()
-    if ('_init' in c) await c._init()
-    return [...acc, c]
-  }, [])
-  const test = testSuite[name]
-  await test(...ic)
+    class TestContext {
+      async stream(input) {
+        called++
+        const json = input
+          .split(', ')
+          .map(a => a.startsWith('!') ? a : `${a} - ${t}`)
+        return {
+          json,
+          additional: json.join(', '),
+        }
+      }
+    }
+    const customTest = async (input, { additional, json }, { stream }) => {
+      const { additional: actual, json: actualJson } = await stream(input)
+      if (additional) equal(actual, additional)
+      if (json) deepEqual(actualJson, json)
+    }
+    const ts = makeTestSuite(TS_CUSTOM_MASK_PATH, {
+      context: TestContext,
+      customTest,
+      customProps: ['additional'],
+      jsonProps: ['json'],
+    })
+    await runTest(ts, 'additional pass')
+    equal(called, 1)
+    await throws({
+      fn: runTest,
+      args: [ts, 'additional fail'],
+      message: /!hello, !world' == 'hello - pass, world - pass/,
+    })
+    equal(called, 2)
+    await runTest(ts, 'json pass')
+    equal(called, 3)
+    await throws({
+      fn: runTest,
+      args: [ts, 'json fail'],
+      message: /\[ '!hello', '!world' ] deepEqual \[ 'hello - pass', 'world - pass' ]/,
+    })
+    equal(called, 4)
+  },
 }
 
-export default T
+export default {
+  ...expectedAndError,
+  ...custom,
+}
