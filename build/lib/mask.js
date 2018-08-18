@@ -42,8 +42,11 @@ const getTests = (path, keys = ['expected']) => {
       if (lineRe.test(current)) return index + 1
       return acc
     }, null)
-    const message = makeStack(error.message, name, path, lineNumber)
-    throw new Error(message)
+    const err = new Error(error.message)
+    // possibly also remember custom test stack later
+    const stack = makeStack(error.message, name, path, lineNumber)
+    err.stack = stack
+    throw err
   }
   const testsWithOnError = tests.map(({ name, ...rest }) => {
     /**
@@ -61,7 +64,7 @@ const getTests = (path, keys = ['expected']) => {
 }
 
 const makeStack = (message, name, path, lineNumber) => {
-  return `${message}\n    at ${name} (${path}:${lineNumber}:1)`
+  return `Error: ${message}\n    at ${name} (${path}:${lineNumber}:1)`
 }
 
 module.exports = getTests
