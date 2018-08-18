@@ -4,17 +4,20 @@
     <prop opt name="_destroy" type="() => void">A function to destroy the context.</prop>
   </type>
   <type name="MakeTestSuiteConf" desc="Configuration for making test suites.">
-    <prop opt name="getActual" type="(input: string, ...contexts?: Context[]) => string">
-      A function which should return the actual value as a string to be compared with `expected` mask property.
+    <prop opt name="context" type="({new(): Context}|{new(): Context}[]|{})">
+      Single or multiple context constructors or objects to initialise for each test.
+    </prop>
+    <prop opt name="getResults" type="(input: string, ...contexts?: Context[]) => string">
+      A function which should return results of a test.
     </prop>
     <prop opt name="getThrowsConfig" type="(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }">
       A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
     </prop>
-    <prop opt name="context" type="({new(): Context}|{new(): Context}[]|{})">
-      Single or multiple context constructors or objects to initialise for each test.
+    <prop opt name="getActual" type="(results: any) => string">
+      An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
     </prop>
-    <prop opt name="customTest" type="(input: string, props: Object.<string, (string|object)>, ...contexts?: Context[])">
-      Additional custom-written tests to execute.
+    <prop opt name="assertResults" type="(results: any, props: Object.<string, (string|object)>) => void">
+      A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask using `customProps` and `jsonProps` will be passed as first and second arguments.
     </prop>
     <prop opt name="customProps" type="string[]">
       An array of custom properties' names to extract from the mask.
