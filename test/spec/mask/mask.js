@@ -1,7 +1,7 @@
 import SnapshotContext from 'snapshot-context'
-import Context from '../../context'
-import { getTests } from '../../../src'
 import { ok } from 'assert'
+import Context from '../../context'
+import getTests from '../../../src/lib/mask'
 
 /** @type {Object.<string, (c: Context, sc: SnapshotContext)>} */
 const T = {
