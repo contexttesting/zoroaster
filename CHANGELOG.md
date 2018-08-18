@@ -1,5 +1,11 @@
+## 18 August 2018
+
+### [2.3.0](https://github.com/artdecocode/zoroaster/compare/v2.2.2...v2.3.0)
+
+- [feature] `makeTestSuite` method to create test suites from masks.
+
 ## 16 August 2018
-<!-- <a name="2.2.2"></a> -->
+
 ### [2.2.1, 2.2.2](https://github.com/artdecocode/zoroaster/compare/v2.2.0...v2.2.2)
 
 - [fix] Allow to split mask properties without any whitespace.
