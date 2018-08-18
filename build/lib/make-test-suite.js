@@ -3,17 +3,25 @@ let getTests = require('../lib/mask'); if (getTests && getTests.__esModule) getT
 const { equal, throws } = require('../assert')
 
 /**
- * Make a test suite to test against a mask. `expected`, `error` properties  will always be available, and additional extensions to the test are available.
+ * Make a test suite to test against a mask. The `expected` property of the mask will be compared against the actual value returned by the `getActual` function. To test for the correct error message, the `error` property will be tested using `assert-throws` configuration returned by `getThrowsConfig` function. Any additional tests can be performed with `customTest` function, which will receive any additional properties extracted from the mask using `customProps` and `jsonProps`. The JSON properties will be parsed into an object.
  * @param {string} maskPath Path to the mask.
+ * @param {MakeTestSuiteConf} [conf] Configuration for making test suites.
+ * @param {(input: string, ...contexts?: Context[]) => string} [conf.getActual] A function which should return the actual value as a string to be compared with `expected` mask property.
+ * @param {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [conf.getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
+ * @param {({new(): Context}|{new(): Context}[]|{})} [conf.context] Single or multiple context constructors or objects to initialise for each test.
+ * @param {(input: string, props: Object.<string, (string|object)>, ...contexts?: Context[])} [conf.customTest] Additional custom-written tests to execute.
+ * @param {string[]} [conf.customProps] An array of custom properties' names to extract from the mask.
+ * @param {string[]} [conf.jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
-const makeTestSuite = (maskPath, {
-  getActual,
-  getThrowsConfig,
-  context,
-  customTest,
-  customProps = [],
-  jsonProps = [],
-}) => {
+const makeTestSuite = (maskPath, conf) => {
+  const {
+    getActual,
+    getThrowsConfig,
+    context,
+    customTest,
+    customProps = [],
+    jsonProps = [],
+  } = conf
   const tests = getTests(maskPath, [
     'expected',
     'error',
@@ -82,5 +90,20 @@ const assertExpected = (result, expected) => {
     throw err
   }
 }
+
+/* documentary types/make-test-suite.xml */
+/**
+ * @typedef {Object} Context A context made with a constructor.
+ * @prop {() => void} [_init] A function to initialise the context.
+ * @prop {() => void} [_destroy] A function to destroy the context.
+ *
+ * @typedef {Object} MakeTestSuiteConf Configuration for making test suites.
+ * @prop {(input: string, ...contexts?: Context[]) => string} [getActual] A function which should return the actual value as a string to be compared with `expected` mask property.
+ * @prop {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
+ * @prop {({new(): Context}|{new(): Context}[]|{})} [context] Single or multiple context constructors or objects to initialise for each test.
+ * @prop {(input: string, props: Object.<string, (string|object)>, ...contexts?: Context[])} [customTest] Additional custom-written tests to execute.
+ * @prop {string[]} [customProps] An array of custom properties' names to extract from the mask.
+ * @prop {string[]} [jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
+ */
 
 module.exports = makeTestSuite
