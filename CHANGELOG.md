@@ -1,3 +1,9 @@
+## 22 August 2018
+
+### [2.4.0](https://github.com/artdecocode/zoroaster/compare/v2.3.0...v2.4.0)
+
+- [feature] Require `alamode` for testing of code with `import/export` statements with `-a` flag.
+
 ## 18 August 2018
 
 ### [2.3.0](https://github.com/artdecocode/zoroaster/compare/v2.2.2...v2.3.0)
