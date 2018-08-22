@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
+    "alamode": "1.2.0",
     "assert-diff": "2.0.3",
     "assert-throws": "2.1.0",
     "catchment": "3.0.0",
@@ -49,7 +50,6 @@
     "yarn-s": "1.1.0"
   },
   "devDependencies": {
-    "alamode": "1.1.0",
     "diff": "3.5.0",
     "erotic": "1.2.1",
     "eslint-config-artdeco": "1.0.1",
