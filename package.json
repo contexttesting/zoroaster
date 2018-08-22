@@ -4,11 +4,11 @@
   "description": "An Art Deco JavaScript testing framework for Node.js",
   "main": "build",
   "scripts": {
-    "t": "node src/bin -b",
+    "t": "node src/bin/alamode",
     "test": "yarn t test/spec",
     "test-build": "BABEL_ENV=test-build yarn t test/spec",
     "test-all": "yarn-s test test-build",
-    "build": "alamode src -o build",
+    "build": "alamode src -o build -i bin/alamode.js",
     "lint": "eslint .",
     "example/simple.js": "node src/bin example/simple.js -b",
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
@@ -18,7 +18,7 @@
     "assert.js"
   ],
   "bin": {
-    "zoroaster": "build/bin/zoroaster.js"
+    "zoroaster": "build/bin/index.js"
   },
   "repository": {
     "type": "git",
