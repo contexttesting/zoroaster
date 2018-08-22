@@ -11,6 +11,7 @@
   |     at contextFailingTest (/test/fixtures/tests.js:18:9)
   ✗  asyncContextFailingTest
   | Error: When you are in doubt abstain.
+  |     at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:26:16)
   |     at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
   ✓  contextPassingTest
   ✓  test
@@ -29,6 +30,7 @@
 
 /test/fixtures/test-suite.js > asyncContextFailingTest
   Error: When you are in doubt abstain.
+      at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:26:16)
       at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
 
 🦅  Executed 7 tests: 4 errors.

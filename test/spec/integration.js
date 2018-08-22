@@ -4,7 +4,7 @@ import stripAnsi from 'strip-ansi'
 import SnapshotContext from 'snapshot-context'
 import Context from '../context'
 
-const ZOROASTER = process.env.BABEL_ENV == 'test-build' ? '../../build/bin/zoroaster.js' : '../../src/bin'
+const ZOROASTER = process.env.ALAMODE_ENV == 'test-build' ? '../../build/bin' : '../../src/bin/alamode.js'
 const BIN = resolve(__dirname, ZOROASTER)
 
 const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
@@ -27,7 +27,7 @@ const T = {
   ],
   async 'produces correct output'({ TEST_SUITE_PATH, SNAPSHOT_DIR }, { test, setDir }) {
     setDir(SNAPSHOT_DIR)
-    const { promise } = fork(BIN, [TEST_SUITE_PATH, '-b'], {
+    const { promise } = fork(BIN, [TEST_SUITE_PATH, '-a'], {
       stdio: 'pipe',
     })
     const { stdout } = await promise

@@ -34,7 +34,7 @@ const T = {
     const ts = new TestSuite(TEST_SUITE_NAME, TEST_SUITE_PATH)
     equal(ts.path, TEST_SUITE_PATH)
     ts.require()
-    equal(ts.rawTests.default, testSuite)
+    equal(ts.rawTests, testSuite)
   },
   'throws an error when test suite could not be required'({ TEST_SUITE_NAME }) {
     const tsPath = 'noop-path'

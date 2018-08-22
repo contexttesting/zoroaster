@@ -26,9 +26,9 @@ const t = {
     equal('🦅  Executed 0 tests.', res.stdout.trim())
   },
   async 'reports on test suite executed'({ TEST_SUITE_PATH }) {
-    const proc = zoroaster([TEST_SUITE_PATH, '--babel'])
-    ok(proc.promise instanceof Promise)
-    const { stderr, code, stdout } = await proc.promise
+    const { promise } = zoroaster([TEST_SUITE_PATH, '--alamode'])
+    ok(promise instanceof Promise)
+    const { stderr, code, stdout } = await promise
     equal(stderr, '')
     equal(code, 4) // test fixtures not passing with 4 errors
     ok(stdout.length > 100)

@@ -1,4 +1,4 @@
-import * as t from './tests'
+import t from './tests' // return to import * as t when added in @a-la/import
 
 const { TEST_ERROR_MESSAGE, TEST_RETURN_MESSAGE, ...tests } = t
 
