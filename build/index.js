@@ -1,7 +1,7 @@
 const { resolve } = require('path')
 const { fork } = require('spawncommand')
 
-const BIN = resolve(__dirname, 'bin', process.env.BABEL_ENV == 'test-build' ? 'zoroaster.js' : 'index.js')
+const BIN = resolve(__dirname, 'bin', process.env.ALAMODE_ENV == 'test-build' ? 'index.js' : 'alamode.js')
 
 /**
  * Start zoroaster process, and return a child process with a `promise` property.
@@ -18,9 +18,9 @@ function run(args, options = {}) {
   return proc
 }
 
-module.exports = run
+module.exports=run
 
-const $default = require('./lib/make-test-suite')
+const $_lib_make_test_suite = require('./lib/make-test-suite');
 
 /* documentary types/make-test-suite.xml */
 /**
@@ -38,4 +38,6 @@ const $default = require('./lib/make-test-suite')
  * @prop {string[]} [jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
 
-module.exports.makeTestSuite = $default
+
+module.exports.makeTestSuite = $_lib_make_test_suite
+//# sourceMappingURL=index.js.map

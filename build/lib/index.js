@@ -6,7 +6,7 @@ const { EOL } = require('os')
  * @param {Test[]} tests An array with tests
  * @param {function} [notify] A notify function to be passed to run method
  */
-async function runInSequence(tests, notify) {
+       async function runInSequence(tests, notify) {
   await tests.reduce(async (acc, t) => {
     await acc
     await t.run(notify)
@@ -14,17 +14,17 @@ async function runInSequence(tests, notify) {
   return tests
 }
 
-function indent(str, padding) {
+       function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
 }
 
-function getPadding(level) {
+       function getPadding(level) {
   return Array
     .from({ length: level * 2 })
     .join(' ')
 }
 
-function checkTestSuiteName(name) {
+       function checkTestSuiteName(name) {
   if (typeof name != 'string') {
     throw new Error('Test suite name must be given.')
   }
@@ -34,7 +34,7 @@ function checkTestSuiteName(name) {
  * Get clean stack for a test, without Node internals
  * @param {Test} test - test
  */
-function filterStack({ error, name }) {
+       function filterStack({ error, name }) {
   if (!error) {
     throw new Error('cannot filter stack when a test does not have an error')
   }
@@ -48,11 +48,11 @@ function filterStack({ error, name }) {
   return stack.replace(/\n/g, EOL)
 }
 
-function isFunction(fn) {
+       function isFunction(fn) {
   return (typeof fn).toLowerCase() == 'function'
 }
 
-const bindMethods = (instance, ignore = []) => {
+       const bindMethods = (instance, ignore = []) => {
   const methods = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(instance))
   const boundMethods = Object.keys(methods)
     .filter((k) => {
@@ -71,7 +71,7 @@ const bindMethods = (instance, ignore = []) => {
   Object.defineProperties(instance, boundMethods)
 }
 
-const evaluateContext = async (context) => {
+       const evaluateContext = async (context) => {
   const fn = isFunction(context)
   if (!fn) return context
 
@@ -95,7 +95,7 @@ const evaluateContext = async (context) => {
   }
 }
 
-const destroyContexts = async (contexts) => {
+       const destroyContexts = async (contexts) => {
   const dc = contexts.map(async (c) => {
     if (isFunction(c._destroy)) {
       const res = await c._destroy()
@@ -106,6 +106,7 @@ const destroyContexts = async (contexts) => {
   return res
 }
 
+
 module.exports.runInSequence = runInSequence
 module.exports.indent = indent
 module.exports.getPadding = getPadding
@@ -115,3 +116,4 @@ module.exports.isFunction = isFunction
 module.exports.bindMethods = bindMethods
 module.exports.evaluateContext = evaluateContext
 module.exports.destroyContexts = destroyContexts
+//# sourceMappingURL=index.js.map

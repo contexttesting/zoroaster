@@ -11,7 +11,7 @@ function hasParent({ parent }) {
 /**
  * A test suite is a collection of tests with any number of contexts.
  */
-class TestSuite {
+               class TestSuite {
   constructor (name, testsOrPath, parent, context, timeout) {
     checkTestSuiteName(name)
 
@@ -193,4 +193,6 @@ function requireModule(modulePath) {
   return require(modulePath)
 }
 
+
 module.exports = TestSuite
+//# sourceMappingURL=TestSuite.js.map

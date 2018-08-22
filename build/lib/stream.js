@@ -21,7 +21,7 @@ const { getPadding, indent, filterStack } = require('.')
  * a different test-suite than the one currently on top of the stack.
  * @todo: check for data to be an object to control this error
  */
-function createTestSuiteStackStream() {
+       function createTestSuiteStackStream() {
   const testSuiteStack = []
   const ts = new Transform({
     objectMode: true,
@@ -50,7 +50,7 @@ function createTestSuiteStackStream() {
  * data[stack]
  * @returns {Transform}
  */
-function createProgressTransformStream() {
+       function createProgressTransformStream() {
   const ts = new Transform({
     objectMode: true,
     transform({ type, name, stack, result }, encoding, callback) {
@@ -74,7 +74,7 @@ function createProgressTransformStream() {
  * data[stack]
  * data[name]
  */
-function createErrorTransformStream() {
+       function createErrorTransformStream() {
   const ts = new Transform({
     objectMode: true,
     transform({ error, stack, name, test }, encoding, callback) {
@@ -110,6 +110,8 @@ function createErrorTransformStream() {
  * finished.
  */
 
+
 module.exports.createTestSuiteStackStream = createTestSuiteStackStream
 module.exports.createProgressTransformStream = createProgressTransformStream
 module.exports.createErrorTransformStream = createErrorTransformStream
+//# sourceMappingURL=stream.js.map

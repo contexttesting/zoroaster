@@ -1,10 +1,12 @@
 let throws = require('assert-throws'); if (throws && throws.__esModule) throws = throws.default;
-const $default = require('assert')
-const { equal: $equal, ok: $ok } = $default
-const { deepEqual: $deepEqual } = require('assert-diff')
+const $assert = require('assert');
+const $assert_diff = require('assert-diff');
 
-module.exports.equal = $equal
-module.exports.ok = $ok
-module.exports.assert = $default
-module.exports.deepEqual = $deepEqual
+
+
+module.exports.assert = $assert
+module.exports.equal = $assert.equal
+module.exports.ok = $assert.ok
+module.exports.deepEqual = $assert_diff.deepEqual
 module.exports.throws = throws
+//# sourceMappingURL=index.js.map

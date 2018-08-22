@@ -67,4 +67,5 @@ const makeStack = (message, name, path, lineNumber) => {
   return `Error: ${message}\n    at ${name} (${path}:${lineNumber}:1)`
 }
 
-module.exports = getTests
+module.exports=getTests
+//# sourceMappingURL=mask.js.map

@@ -21,8 +21,25 @@
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Zoroaster Build",
+      "program": "${workspaceFolder}/build/bin/index.js",
+      "args": [
+        "build-test/spec/TestSuite.js",
+        "-w"
       ],
-      "sourceMaps": true
+      "env": {
+        "BABEL_ENV": "test-debug",
+        "ZOROASTER_TIMEOUT": "9999999"
+      },
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

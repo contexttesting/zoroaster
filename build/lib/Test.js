@@ -10,7 +10,7 @@ const { indent, filterStack, destroyContexts, evaluateContext } = require('.')
  * @param {object|function} context Context object or function
  * @return {Test} A test object with initialised properties.
  */
-class Test {
+               class Test {
   constructor(name, fn, timeout, context) {
     this.timeout = timeout || 2000
     this.name = name
@@ -122,4 +122,6 @@ async function runTest(test) {
   return test
 }
 
+
 module.exports = Test
+//# sourceMappingURL=Test.js.map

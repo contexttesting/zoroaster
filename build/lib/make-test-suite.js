@@ -124,4 +124,5 @@ const assertExpected = (result, expected) => {
  * @prop {string[]} [jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
 
-module.exports = makeTestSuite
+module.exports=makeTestSuite
+//# sourceMappingURL=make-test-suite.js.map
