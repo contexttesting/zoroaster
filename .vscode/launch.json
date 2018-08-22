@@ -8,14 +8,14 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Zoroaster",
-      "program": "${workspaceFolder}/src/bin/index.js",
+      "program": "${workspaceFolder}/src/bin/alamode.js",
       "args": [
         "test/spec/mask/make-test-suite.js",
         "-b",
         "-w"
       ],
       "env": {
-        "BABEL_ENV": "test-debug",
+        "ALAMODE_ENV": "test-debug",
         "ZOROASTER_TIMEOUT": "9999999"
       },
       "console": "integratedTerminal",
@@ -29,11 +29,12 @@
       "name": "Launch Zoroaster Build",
       "program": "${workspaceFolder}/build/bin/index.js",
       "args": [
-        "build-test/spec/TestSuite.js",
-        "-w"
+        "test/spec/index.js",
+        "-w",
+        "-a"
       ],
       "env": {
-        "BABEL_ENV": "test-debug",
+        "ALAMODE_ENV": "test-debug",
         "ZOROASTER_TIMEOUT": "9999999"
       },
       "console": "integratedTerminal",

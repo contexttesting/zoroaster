@@ -20,9 +20,9 @@ const t = {
     await proc.promise
   },
   async 'reports on 0 tests executed when empty args'() {
-    const proc = zoroaster()
-    ok(proc.promise instanceof Promise)
-    const res = await proc.promise
+    const { promise } = zoroaster()
+    ok(promise instanceof Promise)
+    const res = await promise
     equal('🦅  Executed 0 tests.', res.stdout.trim())
   },
   async 'reports on test suite executed'({ TEST_SUITE_PATH }) {
