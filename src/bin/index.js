@@ -9,7 +9,8 @@ import { createErrorTransformStream, createProgressTransformStream, createTestSu
 
 const watchFlags = ['--watch', '-w']
 const babelFlags = ['--babel', '-b']
-const allFlags = [...watchFlags, ...babelFlags]
+const alamodeFlags = ['--alamode', '-a']
+const allFlags = [...watchFlags, ...babelFlags, ...alamodeFlags]
 
 const replaceFilename = (filename) => {
   return filename.replace(/\.js$/, '')
@@ -148,6 +149,7 @@ async function test(testSuites, watch, currentlyWatching = []) {
 
 const watch = process.argv.some(a => watchFlags.indexOf(a) != -1)
 const babel = process.argv.some(a => babelFlags.indexOf(a) != -1)
+const alamode = process.argv.some(a => alamodeFlags.indexOf(a) != -1)
 
 if (babel) {
   try {
@@ -156,6 +158,10 @@ if (babel) {
     const p = resolve(process.cwd(), 'node_modules/@babel/register')
     require(p)
   }
+}
+
+if (alamode) {
+  require('alamode')()
 }
 
 const testSuites = resolveTestSuites(process.argv, allFlags)
