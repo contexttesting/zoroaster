@@ -6,7 +6,7 @@
   "scripts": {
     "t": "node src/bin/alamode",
     "test": "yarn t test/spec",
-    "test-build": "BABEL_ENV=test-build yarn t test/spec",
+    "test-build": "ALAMODE_ENV=test-build yarn t test/spec",
     "test-all": "yarn-s test test-build",
     "build": "alamode src -o build -i bin/alamode.js",
     "lint": "eslint .",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
-    "alamode": "1.2.0",
+    "alamode": "1.2.1",
     "assert-diff": "2.0.3",
     "assert-throws": "2.1.0",
     "catchment": "3.0.0",

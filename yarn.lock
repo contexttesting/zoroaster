@@ -22,9 +22,9 @@
   dependencies:
     makepromise "2.0.0"
 
-alamode@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-1.2.0.tgz#2ed8a0b5cd2866f70d9b01427c9ae7389daa2f7e"
+alamode@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-1.2.1.tgz#8c0d7d573cbdac6b2f9b99a10fdbb6931e2ed55e"
   dependencies:
     "@a-la/export" "1.2.1"
     "@a-la/import" "1.4.1"
