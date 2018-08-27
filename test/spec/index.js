@@ -21,9 +21,8 @@ const t = {
   },
   async 'reports on 0 tests executed when empty args'() {
     const { promise } = zoroaster()
-    ok(promise instanceof Promise)
-    const res = await promise
-    equal('🦅  Executed 0 tests.', res.stdout.trim())
+    const { stdout } = await promise
+    equal('🦅  Executed 0 tests.', stdout.trim())
   },
   async 'reports on test suite executed'({ TEST_SUITE_PATH }) {
     const { promise } = zoroaster([TEST_SUITE_PATH, '--alamode'])

@@ -1,16 +1,44 @@
 #!/usr/bin/env node
-import { readdirSync, lstatSync, watchFile, unwatchFile } from 'fs'
+import { readdirSync, lstatSync } from 'fs'
 import { join, resolve } from 'path'
-import Catchment from 'catchment'
-import { EOL } from 'os'
 import TestSuite from '../lib/TestSuite'
-import { runInSequence } from '../lib'
-import { createErrorTransformStream, createProgressTransformStream, createTestSuiteStackStream } from '../lib/stream'
+import { test } from '../lib/bin'
+import argufy from 'argufy'
+import { version } from '../../package.json'
+import usually from 'usually'
 
-const watchFlags = ['--watch', '-w']
-const babelFlags = ['--babel', '-b']
-const alamodeFlags = ['--alamode', '-a']
-const allFlags = [...watchFlags, ...babelFlags, ...alamodeFlags]
+const {
+  babel, alamode, watch: _watch, version: _version, help: _help, tests: _tests = [],
+} = argufy({
+  tests: { command: true, multiple: true },
+  babel: { short: 'b', boolean: true },
+  alamode: { short: 'a', boolean: true },
+  watch: { short: 'w', boolean: true },
+  version: { short: 'v', boolean: true },
+  help: { short: 'h', boolean: true },
+})
+
+if (_version) {
+  console.log(version)
+  process.exit()
+}
+if (_help) {
+  const usage = usually({
+    usage: {
+      pathToSpec: 'The path to a test suite file.',
+      '-w, --watch': 'Monitor files for changes and re-run tests.',
+      '-a, --alamode': 'Require alamode (to enable import/export).',
+      '-b, --babel': 'Require babel/register.',
+      '-v, --version': 'Print version number and exit.',
+      '-h, --help': 'Display this usage information.',
+    },
+    description: 'A testing framework with support for test contexts.',
+    line: 'zoroaster pathToSpec [pathToSpecN] [-w] [-ab] [-vh]',
+    example: 'zoroaster test/spec -a',
+  })
+  console.log(usage)
+  process.exit()
+}
 
 const replaceFilename = (filename) => {
   return filename.replace(/\.js$/, '')
@@ -57,99 +85,12 @@ function parseArgv(argv) {
   }
 }
 
-const resolveTestSuites = (args, ignore) => {
+const resolveTestSuites = (args) => {
   return args
-    .slice(2)
-    // ignore flags
-    .filter((a) => {
-      return ignore.indexOf(a) < 0
-    })
     // create test suites and remove paths that cannot be resolved
     .map(parseArgv)
     .filter(testSuite => testSuite)
 }
-
-function watchFiles(files, callback) {
-  files.forEach((file) => {
-    // console.log(`Watching ${file} for changes...`)
-    watchFile(file, callback)
-  })
-}
-function unwatchFiles(files) {
-  files.forEach((file) => {
-    // console.log(`Unwatching ${file}`)
-    unwatchFile(file)
-  })
-}
-
-/**
- * Remove modules cached by require.
- */
-function clearRequireCache() {
-  Object.keys(require.cache).forEach((key) => {
-    delete require.cache[key]
-  })
-}
-
-function requireTestSuite(ts) {
-  return ts.require()
-}
-
-async function test(testSuites, watch, currentlyWatching = []) {
-  clearRequireCache()
-  testSuites
-    .forEach(requireTestSuite)
-
-  if (watch) {
-    unwatchFiles(currentlyWatching)
-    const newCurrentlyWatching = Object.keys(require.cache)
-    watchFiles(newCurrentlyWatching, () => test(testSuites, watch, newCurrentlyWatching))
-  }
-
-  const stack = createTestSuiteStackStream()
-
-  const rs = createErrorTransformStream()
-  const ts = createProgressTransformStream()
-  stack.pipe(ts).pipe(process.stdout)
-  stack.pipe(rs)
-
-  const catchment = new Catchment({ rs })
-
-  const count = {
-    total: 0,
-    error: 0,
-  }
-
-  const notify = (data) => {
-    if (typeof data != 'object') return
-    stack.write(data)
-    if (data.type == 'test-end') {
-      count.total++
-      if (data.error) {
-        count.error++
-      }
-    }
-  }
-  await runInSequence(testSuites, notify)
-  stack.end()
-  const errorsCatchment = await catchment.promise
-  process.stdout.write(EOL)
-  process.stdout.write(errorsCatchment)
-
-  process.stdout.write(`🦅  Executed ${count.total} tests`)
-  if (count.error) {
-    process.stdout.write(
-      `: ${count.error} error${count.error > 1 ? 's' : ''}`
-    )
-  }
-  process.stdout.write(`.${EOL}`)
-
-  process.on('exit', () => process.exit(count.error))
-}
-
-const watch = process.argv.some(a => watchFlags.indexOf(a) != -1)
-const babel = process.argv.some(a => babelFlags.indexOf(a) != -1)
-const alamode = process.argv.some(a => alamodeFlags.indexOf(a) != -1)
 
 if (babel) {
   try {
@@ -164,11 +105,11 @@ if (alamode) {
   require('alamode')()
 }
 
-const testSuites = resolveTestSuites(process.argv, allFlags)
+const testSuites = resolveTestSuites(_tests)
 
 ;(async () => {
   try {
-    await test(testSuites, watch)
+    await test(testSuites, _watch)
   } catch ({ message, stack }) {
     if (process.env.DEBUG) console.log(stack) // eslint-disable-line no-console
     console.error(message) // eslint-disable-line no-console

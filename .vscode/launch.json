@@ -11,7 +11,7 @@
       "program": "${workspaceFolder}/src/bin/alamode.js",
       "args": [
         "test/spec/mask/make-test-suite.js",
-        "-b",
+        "-a",
         "-w"
       ],
       "env": {
