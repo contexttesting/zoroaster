@@ -83,5 +83,7 @@ export async function test(testSuites, watch, currentlyWatching = []) {
   }
   process.stdout.write(`.${EOL}`)
 
-  process.on('exit', () => process.exit(count.error))
+  process.removeAllListeners('exit')
+
+  process.once('exit', () => process.exit(count.error))
 }
