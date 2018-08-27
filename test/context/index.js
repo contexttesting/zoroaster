@@ -3,7 +3,7 @@ import erotic from 'erotic'
 import { resolve } from 'path'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
-import _tests from '../fixtures/tests' // return to import * as _tests when added in @a-la/import
+import * as _tests from '../fixtures/tests'
 import testSuite from '../fixtures/test-suite'
 
 const { TEST_ERROR_MESSAGE, TEST_RETURN_MESSAGE, ...tests } = _tests
