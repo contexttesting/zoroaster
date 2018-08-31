@@ -1,16 +1,16 @@
-const { EOL } = require('os')
+const { EOL } = require('os');
 let promto = require('promto'); if (promto && promto.__esModule) promto = promto.default;
-const { indent, filterStack, destroyContexts, evaluateContext } = require('.')
+const { indent, filterStack, destroyContexts, evaluateContext } = require('.');
 
-/**
- * Create a new test object.
- * @param {string} name Name of a test
- * @param {function} fn Function as specified in specs
- * @param {Number} timeout Timeout in ms after which to throw timeout Error
- * @param {object|function} context Context object or function
- * @return {Test} A test object with initialised properties.
- */
                class Test {
+  /**
+   * Create a new test object.
+   * @constructor
+   * @param {string} name Name of the test.
+   * @param {function} fn Function as specified in the specs.
+   * @param {Number} timeout Timeout in ms after which to throw the timeout error.
+   * @param {object|function} context The context object, function or constructor.
+   */
   constructor(name, fn, timeout, context) {
     this.timeout = timeout || 2000
     this.name = name
@@ -66,6 +66,9 @@ const { indent, filterStack, destroyContexts, evaluateContext } = require('.')
 
     const c = await evaluateContext(this.context)
     this.contexts = [c]
+  }
+  get isFocused() {
+    return this.name.startsWith('!')
   }
 }
 

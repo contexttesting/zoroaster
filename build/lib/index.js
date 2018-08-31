@@ -1,18 +1,5 @@
 let cleanStack = require('clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
-const { EOL } = require('os')
-
-/**
- * Run all tests in sequence, one by one.
- * @param {Test[]} tests An array with tests
- * @param {function} [notify] A notify function to be passed to run method
- */
-       async function runInSequence(tests, notify) {
-  await tests.reduce(async (acc, t) => {
-    await acc
-    await t.run(notify)
-  }, Promise.resolve())
-  return tests
-}
+const { EOL } = require('os');
 
        function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
@@ -22,12 +9,6 @@ const { EOL } = require('os')
   return Array
     .from({ length: level * 2 })
     .join(' ')
-}
-
-       function checkTestSuiteName(name) {
-  if (typeof name != 'string') {
-    throw new Error('Test suite name must be given.')
-  }
 }
 
 /**
@@ -106,11 +87,8 @@ const { EOL } = require('os')
   return res
 }
 
-
-module.exports.runInSequence = runInSequence
 module.exports.indent = indent
 module.exports.getPadding = getPadding
-module.exports.checkTestSuiteName = checkTestSuiteName
 module.exports.filterStack = filterStack
 module.exports.isFunction = isFunction
 module.exports.bindMethods = bindMethods

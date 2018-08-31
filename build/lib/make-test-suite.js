@@ -1,6 +1,6 @@
 let erte = require('erte'); if (erte && erte.__esModule) erte = erte.default;
 let getTests = require('../lib/mask'); if (getTests && getTests.__esModule) getTests = getTests.default;
-const { equal, throws } = require('../assert')
+const { equal, throws } = require('../assert');
 
 // The `expected` property of the mask will be compared against the actual value returned by the `getActual` function. To test for the correct error message, the `error` property will be tested using `assert-throws` configuration returned by `getThrowsConfig` function. Any additional tests can be performed with `customTest` function, which will receive any additional properties extracted from the mask using `customProps` and `jsonProps`. The JSON properties will be parsed into an object.
 

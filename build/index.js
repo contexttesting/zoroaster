@@ -1,5 +1,5 @@
-const { resolve } = require('path')
-const { fork } = require('spawncommand')
+const { resolve } = require('path');
+const { fork } = require('spawncommand');
 
 const BIN = resolve(__dirname, 'bin', process.env.ALAMODE_ENV == 'test-build' ? 'index.js' : 'alamode.js')
 

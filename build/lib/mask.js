@@ -1,5 +1,5 @@
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
-const { readFileSync } = require('fs')
+const { readFileSync } = require('fs');
 
 const makeRegex = (keys = []) => {
   const m = /[\s\S]+?/

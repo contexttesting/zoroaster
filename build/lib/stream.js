@@ -1,6 +1,6 @@
-const { Transform } = require('stream')
-const { EOL } = require('os')
-const { getPadding, indent, filterStack } = require('.')
+const { Transform } = require('stream');
+const { EOL } = require('os');
+const { getPadding, indent, filterStack } = require('.');
 
 /**
  * The whole file needs testing when you are especially (depressed)
