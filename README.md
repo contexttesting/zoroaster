@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/artdecocode/zoroaster.svg?branch=master)](https://travis-ci.org/artdecocode/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
 
-A modern JavaScript testing framework for _Node.js_. It introduces the concept of test contexts, that aim in helping to provide documentable and re-usable test infrastructure, across spec files in a single package, as well as across packages.
+A modern JavaScript testing framework for _Node.js_. It introduces the concept of test contexts, which aim in helping to provide documentable and re-usable test infrastructure, across spec files in a single package, as well as across packages.
 
 [![](doc/graphics/movflamecolumn.gif)](https://zoroaster.co.uk)
 [![](doc/graphics/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
@@ -21,17 +21,16 @@ yarn add -DE zoroaster
 
 - [Table Of Contents](#table-of-contents)
 - [Quick Example](#quick-example)
-- [TODO](#todo)
 - [Copyright](#copyright)
 
 ## Quick Example
 
 All _Zoroaster_ tests are written in spec files and exported as tests suites which are objects.
 
-```js
-import { ok, equal } from 'assert'
+For example, tests can be run against sync and async methods.
 
-const software = (type) => {
+```js
+export const software = (type) => {
   switch (type) {
   case 'boolean':
     return true
@@ -42,10 +41,15 @@ const software = (type) => {
   }
 }
 
-const asyncSoftware = async (type) => {
+export const asyncSoftware = async (type) => {
   await new Promise(r => setTimeout(r, 50))
   return software(type)
 }
+```
+
+```js
+import { ok, equal } from 'assert'
+import { software, asyncSoftware } from './src'
 
 export default {
   'runs a test'() {
@@ -60,10 +64,6 @@ export default {
 ```
 
 ![tests results](doc/tests.png)
-## TODO
-
-- [ ] fix missing `v2.0.0` commit.
-
 ## Copyright
 
 (c) [Art Deco][1] 2018
