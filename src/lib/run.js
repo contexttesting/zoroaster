@@ -6,7 +6,7 @@ import {
   createProgressTransformStream,
   createTestSuiteStackStream,
 } from './stream'
-import { buildTestSuites, clearRequireCache } from './bin'
+import { buildRootTestSuite, clearRequireCache } from './bin'
 
 
 function watchFiles(files, callback) {
@@ -28,16 +28,24 @@ function unwatchFiles(files) {
  * @param {boolean} [watch] Whether to watch files for changes.
  * @param {string[]} [_currentlyWatching]
  */
-export default async function run(paths, watch, _currentlyWatching = []) {
+export default async function run({
+  paths,
+  watch,
+  timeout,
+}, _currentlyWatching = []) {
   clearRequireCache()
-  const rootTestSuite = await buildTestSuites(paths)
+  const rootTestSuite = await buildRootTestSuite(paths, timeout)
 
   if (watch) {
     unwatchFiles(_currentlyWatching)
     const newCurrentlyWatching = Object.keys(require.cache)
     watchFiles(newCurrentlyWatching, async () => {
       // we can also re-run only changed test suites
-      await run(paths, watch, newCurrentlyWatching)
+      await run({
+        paths,
+        watch,
+        timeout,
+      }, newCurrentlyWatching)
     })
   }
 

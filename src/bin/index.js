@@ -6,14 +6,21 @@ import getUsage from './usage'
 import { version } from '../../package.json'
 
 const {
-  babel, alamode, watch: _watch, version: _version, help: _help, tests: _tests = [],
+  babel,
+  alamode,
+  watch: _watch,
+  version: _version,
+  help: _help,
+  paths: _paths = [],
+  timeout: _timeout = 2000,
 } = argufy({
-  tests: { command: true, multiple: true },
+  paths: { command: true, multiple: true },
   babel: { short: 'b', boolean: true },
   alamode: { short: 'a', boolean: true },
   watch: { short: 'w', boolean: true },
   version: { short: 'v', boolean: true },
   help: { short: 'h', boolean: true },
+  timeout: { short: 't', number: true },
 })
 
 if (_version) {
@@ -41,7 +48,11 @@ if (alamode) {
 
 (async () => {
   try {
-    await run(_tests, _watch)
+    await run({
+      paths: _paths,
+      watch: _watch,
+      timeout: _timeout,
+    })
   } catch ({ message, stack }) {
     if (process.env.DEBUG) console.log(stack) // eslint-disable-line no-console
     console.error(message) // eslint-disable-line no-console

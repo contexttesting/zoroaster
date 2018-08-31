@@ -14,6 +14,8 @@
   |     at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:26:16)
   |     at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
   ✓  contextPassingTest
+  ✗  timeoutFailingTest
+  | Error: Test has timed out after 250ms
   ✓  test
 
 /test/fixtures/test-suite.js > failingTest
@@ -33,4 +35,7 @@
       at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:26:16)
       at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
 
-🦅  Executed 7 tests: 4 errors.
+/test/fixtures/test-suite.js > timeoutFailingTest
+  Error: Test has timed out after 250ms
+
+🦅  Executed 8 tests: 5 errors.

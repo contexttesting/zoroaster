@@ -25,9 +25,11 @@ const T = {
     Context,
     SnapshotContext,
   ],
-  async 'produces correct output'({ TEST_SUITE_PATH, SNAPSHOT_DIR }, { test, setDir }) {
+  async 'produces correct output'(
+    { TEST_SUITE_PATH, SNAPSHOT_DIR }, { test, setDir },
+  ) {
     setDir(SNAPSHOT_DIR)
-    const { promise } = fork(BIN, [TEST_SUITE_PATH, '-a'], {
+    const { promise } = fork(BIN, [TEST_SUITE_PATH, '-a', '-t', 250], {
       stdio: 'pipe',
     })
     const { stdout } = await promise

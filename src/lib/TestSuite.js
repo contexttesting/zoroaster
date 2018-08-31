@@ -2,8 +2,6 @@ import { EOL } from 'os'
 import { isFunction, indent } from '.'
 import Test from './Test'
 
-const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
-
 function hasParent({ parent }) {
   return parent instanceof TestSuite
 }
@@ -221,7 +219,7 @@ function createTests(object, parent) {
       if (v instanceof TestSuite) return v
       switch (typeof v) {
       case 'function': {
-        const test = new Test(key, v, parent.timeout || TIMEOUT, parent.context)
+        const test = new Test(key, v, parent.timeout, parent.context)
         return test
       }
       case 'object': {

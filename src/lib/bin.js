@@ -16,17 +16,19 @@ export function clearRequireCache() {
  * Create a root test suite.
  * @param {string[]} paths
  */
-export const buildTestSuites = async (paths) => {
-  const testSuites = await paths.reduce(async (acc, path) => {
+export const buildRootTestSuite = async (paths, timeout) => {
+  const tree = await paths.reduce(async (acc, path) => {
     const accRes = await acc
-    const r = await requireTestSuite(path)
+    const r = await requireTests(path)
     if (!r) return accRes
     return {
       ...accRes,
       [path]: r,
     }
   }, {})
-  const ts = new TestSuite('Zoroaster Root Test Suite', testSuites)
+  const ts = new TestSuite(
+    'Zoroaster Root Test Suite', tree, null, null, timeout,
+  )
   return ts
 }
 
@@ -63,21 +65,19 @@ async function buildDirectory(dir) {
 }
 
 /**
- * Recursively load a file/directory test suite into memory.
+ * Recursively load a file/directory tests as a tree into memory.
  * @param {string} path Path to a test suite
  */
-async function requireTestSuite(path) {
+async function requireTests(path) {
   try {
     const res = await makePromise(lstat, path)
     if (res.isFile()) {
       const p = resolve(path)
       const tests = require(p)
-      const ts = new TestSuite(path, tests)
-      return ts
+      return tests
     } else if (res.isDirectory()) {
       const dir = await buildDirectory(path)
-      const ts = new TestSuite(path, dir)
-      return ts
+      return dir
     }
   } catch (err) {
     // file or directory does not exist

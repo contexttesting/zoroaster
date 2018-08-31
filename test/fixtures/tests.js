@@ -34,6 +34,12 @@ export const contextPassingTest = ({ returnMessage }) => {
   return returnMessage
 }
 
+export const timeoutFailingTest = async () => {
+  await new Promise((r) => {
+    setTimeout(r, 300)
+  })
+}
+
 export const test = () => {
   return TEST_RETURN_MESSAGE
 }
