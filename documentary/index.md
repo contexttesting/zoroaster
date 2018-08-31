@@ -1,6 +1,6 @@
 # zoroaster
 
-[![npm version](https://badge.fury.io/js/zoroaster.svg)](https://npmjs.org/package/zoroaster)
+%NPM: zoroaster%
 
 [![Build Status](https://travis-ci.org/artdecocode/zoroaster.svg?branch=master)](https://travis-ci.org/artdecocode/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
@@ -19,53 +19,12 @@ yarn add -DE zoroaster
 
 ## Table Of Contents
 
-- [Table Of Contents](#table-of-contents)
-- [Quick Example](#quick-example)
-- [TODO](#todo)
-- [Copyright](#copyright)
+%TOC%
 
 ## Quick Example
 
 All _Zoroaster_ tests are written in spec files and exported as tests suites which are objects.
 
-```js
-import { ok, equal } from 'assert'
-
-const software = (type) => {
-  switch (type) {
-  case 'boolean':
-    return true
-  case 'string':
-    return 'string'
-  default:
-    return null
-  }
-}
-
-const asyncSoftware = async (type) => {
-  await new Promise(r => setTimeout(r, 50))
-  return software(type)
-}
-
-export default {
-  'runs a test'() {
-    const res = software('boolean')
-    ok(res)
-  },
-  async 'runs an async test'() {
-    const res = await asyncSoftware('string')
-    equal(res, 'string')
-  },
-}
-```
+%EXAMPLE: example/simple.js%
 
 ![tests results](doc/tests.png)
-## TODO
-
-- [ ] fix missing `v2.0.0` commit.
-
-## Copyright
-
-(c) [Art Deco][1] 2018
-
-[1]: https://artdeco.bz
