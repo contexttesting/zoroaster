@@ -13,6 +13,7 @@ const {
   help: _help,
   paths: _paths = [],
   timeout: _timeout = 2000,
+  _argv,
 } = argufy({
   paths: { command: true, multiple: true },
   babel: { short: 'b', boolean: true },
@@ -49,7 +50,7 @@ if (alamode) {
 (async () => {
   try {
     await run({
-      paths: _paths,
+      paths: [..._paths, ..._argv],
       watch: _watch,
       timeout: _timeout,
     })
