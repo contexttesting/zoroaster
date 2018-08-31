@@ -1,23 +1,6 @@
 import cleanStack from 'clean-stack'
 import { EOL } from 'os'
 
-/** @typedef {import('./TestSuite').default} TestSuite
- *  @typedef {import('./Test').default} Test
- */
-
-/**
- * Run all tests in sequence, one by one.
- * @param {(TestSuite|Test)[]} tests An array with tests and test suites.
- * @param {function} [notify] A notify function to be passed to run method.
- */
-export async function runInSequence(tests, notify) {
-  await tests.reduce(async (acc, t) => {
-    const acRes = await acc
-    const res = await t.run(notify)
-    return [...acRes, res]
-  }, [])
-}
-
 export function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
 }
@@ -26,12 +9,6 @@ export function getPadding(level) {
   return Array
     .from({ length: level * 2 })
     .join(' ')
-}
-
-export function checkTestSuiteName(name) {
-  if (typeof name != 'string') {
-    throw new Error('Test suite name must be given.')
-  }
 }
 
 /**

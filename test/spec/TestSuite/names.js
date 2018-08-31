@@ -20,7 +20,7 @@ const T = {
       },
     })
     const res = ts.names
-    deepEqual(res, [TEST_SUITE_NAME, n, n1, 'testSuiteB', n2, n3])
+    deepEqual(res, [n, n1, 'testSuiteB', n2, n3])
   },
 }
 

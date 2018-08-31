@@ -14,13 +14,13 @@ const T = {
       message: 'Test suite name must be given.',
     })
   },
-  'throws an error if neither object nor path given'({ TEST_SUITE_NAME }) {
-    try {
-      new TestSuite(TEST_SUITE_NAME)
-      throw new Error('No path or object error should have been thrown.')
-    } catch ({ message }) {
-      equal(message, 'You must provide either a path to a module, or tests in an object.')
-    }
+  async 'throws an error if neither object nor path given'({ TEST_SUITE_NAME }) {
+    await throws({
+      async fn() {
+        new TestSuite(TEST_SUITE_NAME)
+      },
+      message: 'You must provide tests in an object.',
+    })
   },
   'initialises test suite name'({ TEST_SUITE_NAME }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {})
@@ -29,23 +29,6 @@ const T = {
   'creates a test suite from an object'({ TEST_SUITE_NAME, testSuite }) {
     const ts = new TestSuite(TEST_SUITE_NAME, testSuite)
     equal(ts.rawTests, testSuite)
-  },
-  'creates a test suite from a file'({ TEST_SUITE_NAME, testSuite, TEST_SUITE_PATH }) {
-    const ts = new TestSuite(TEST_SUITE_NAME, TEST_SUITE_PATH)
-    equal(ts.path, TEST_SUITE_PATH)
-    ts.require()
-    equal(ts.rawTests, testSuite)
-  },
-  'throws an error when test suite could not be required'({ TEST_SUITE_NAME }) {
-    const tsPath = 'noop-path'
-    const testSuite = new TestSuite(TEST_SUITE_NAME, tsPath)
-    equal(testSuite.path, tsPath)
-    try {
-      testSuite.require()
-      throw new Error('Cannot find module error should have been thrown')
-    } catch ({ message }) {
-      equal(message, 'Cannot find module \'noop-path\'')
-    }
   },
   async 'runs a test suite'({ TEST_SUITE_NAME, tests, assertTestsRun }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
@@ -94,15 +77,6 @@ const T = {
     equal(tests1.tests[0].tests[0].name, 'testA2B1')
     equal(tests1.tests[1].name, 'test_suite_level_A2B2')
     equal(tests1.tests[1].tests[0].name, 'testA2B2')
-  },
-  'creates a recursive test suite using string'({ TEST_SUITE_NAME, TEST_SUITE_PATH }) {
-    const ts = new TestSuite(TEST_SUITE_NAME, {
-      fixtures_test_suite: TEST_SUITE_PATH,
-    })
-    const { tests: [{ name, path, parent }] } = ts
-    equal(name, 'fixtures_test_suite')
-    equal(path, TEST_SUITE_PATH)
-    equal(parent, ts)
   },
   async 'has an error when a test fails'({ TEST_SUITE_NAME, tests: { test, failingTest } }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {

@@ -1,5 +1,5 @@
 import { EOL } from 'os'
-import { isFunction, checkTestSuiteName, runInSequence, indent } from '.'
+import { isFunction, indent } from '.'
 import Test from './Test'
 
 const TIMEOUT = parseInt(process.env.ZOROASTER_TIMEOUT, 10) || 2000
@@ -9,13 +9,40 @@ function hasParent({ parent }) {
 }
 
 /**
+ * @param {string[]} names
+ */
+const hasFocused = names => names.some(n => n.startsWith('!'))
+
+/**
+ *
+ * @param {(TestSuite|Test)[]} tests
+ */
+const getChildrenNames = (tests) => {
+  return tests.reduce((acc, test) => {
+    if (test instanceof TestSuite) {
+      return [...acc, test.name, ...test.names]
+    }
+    return [...acc, test.name]
+  }, [])
+}
+
+/**
  * A test suite is a collection of tests with any number of contexts.
  */
 export default class TestSuite {
-  constructor (name, testsOrPath, parent, context, timeout) {
-    checkTestSuiteName(name)
+  /**
+   * @constructor
+   * @param {string} name
+   * @param {object} tests
+   * @param {TestSuite} parent
+   * @param {object|function} context
+   * @param {number} timeout
+   */
+  constructor (name, tests, parent, context, timeout) {
+    if (!name) throw new Error('Test suite name must be given.')
 
     this._name = name
+    this._selfFocused = this.name.startsWith('!')
     this._parent = parent
     this._timeout = timeout || (hasParent(this) ? this.parent.timeout : undefined)
 
@@ -23,13 +50,10 @@ export default class TestSuite {
       this._context = parent.context
     }
 
-    if (typeof testsOrPath == 'string') {
-      this._path = testsOrPath
-    } else if (typeof testsOrPath == 'object') {
-      this._assignTests(testsOrPath)
-    } else {
-      throw new Error('You must provide either a path to a module, or tests in an object.')
+    if (typeof tests != 'object') {
+      throw new Error('You must provide tests in an object.')
     }
+    this._assignTests(tests)
   }
   get path() {
     return this._path
@@ -76,51 +100,40 @@ export default class TestSuite {
     }
   }
 
+  /**
+   * Whether test suite has focused tests.
+   */
+  get hasFocused(){
+    return this._hasFocused
+  }
+
   _assignTests(tests) {
     if ('context' in tests) {
       this._assignContext(tests.context)
     }
     this._rawTests = tests
     this._tests = createTests(tests, this)
+
+    this._names = getChildrenNames(this._tests)
+    this._hasFocused = hasFocused(this._names)
   }
 
   /**
-   * Recursively require files for a test suite.
-   * @todo require for a single test
-   */
-  require() {
-    if (this._path) {
-      const tests = requireModule(this._path)
-      this._assignTests(tests)
-    }
-    this.tests.forEach((test) => {
-      if (test instanceof TestSuite) {
-        test.require()
-      }
-    })
-  }
-
-  /**
-   * @returns {string[]} An array with recursively gathered test names, including the name of this test suite.
+   * @returns {string[]} An array with all recursively gathered test and test suite names inside of the test suite.
    */
   get names() {
-    return this.tests.reduce((acc, test) => {
-      if (test instanceof TestSuite) {
-        return [...acc, ...test.names]
-      }
-      return [...acc, test.name]
-    }, [this.name])
+    return this._names
+  }
+  get isSelfFocused() {
+    return this._selfFocused
   }
 
   /**
    * Run test suite.
    */
-  async run(notify = () => {}) {
-    notify({
-      type:'test-suite-start',
-      name: this.name,
-    })
-    const res = await runInSequence(this.tests, notify)
+  async run(notify = () => {}, onlyFocused) {
+    notify({ type:'test-suite-start', name: this.name })
+    const res = await this.runInSequence(notify, onlyFocused)
     notify({ type:'test-suite-end', name: this.name })
     return res
   }
@@ -135,6 +148,26 @@ export default class TestSuite {
       .find(test =>
         test.hasErrors()
       )
+  }
+
+  /**
+   * Run all tests in sequence, one by one.
+   * @param {function} [notify] A notify function to be passed to run method.
+   * @param {boolean} [onlyFocused = false] Run only focused tests.
+   */
+  async runInSequence(notify, onlyFocused = false) {
+    await this.tests.reduce(async (acc, test) => {
+      const acRes = await acc
+      // let shouldBeRun
+      // if (test instanceof Test) {
+      //   // shouldBeRun = hasFocused ? test.name.startsWith('!') : true
+      // } else if (test instanceof TestSuite) {
+      //   // shouldBeRun = hasFocused ? test.hasFocused : true
+      // }
+      // if (!shouldBeRun) return acRes
+      const res = await test.run(notify)
+      return [...acRes, res]
+    }, [])
   }
 }
 
@@ -177,11 +210,11 @@ function filterContextKey(key) {
  * @return {Array<Test>} An array with tests.
  */
 function createTests(object, parent) {
-  const tests = Object
-    .keys(object)
+  const tests = Object.keys(object)
     .filter(filterContextKey)
     .map((key) => {
       const v = object[key]
+      if (v instanceof TestSuite) return v
       switch (typeof v) {
       case 'function': {
         const test = new Test(key, v, parent.timeout || TIMEOUT, parent.context)
@@ -191,16 +224,8 @@ function createTests(object, parent) {
         const ts = new TestSuite(key, v, parent)
         return ts
       }
-      case 'string': {
-        const ts = new TestSuite(key, v, parent)
-        return ts
-      }
       }
     })
     .filter(t => t)
   return sort(tests)
-}
-
-function requireModule(modulePath) {
-  return require(modulePath)
 }

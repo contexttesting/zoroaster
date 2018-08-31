@@ -2,15 +2,15 @@ import { EOL } from 'os'
 import promto from 'promto'
 import { indent, filterStack, destroyContexts, evaluateContext } from '.'
 
-/**
- * Create a new test object.
- * @param {string} name Name of a test
- * @param {function} fn Function as specified in specs
- * @param {Number} timeout Timeout in ms after which to throw timeout Error
- * @param {object|function} context Context object or function
- * @return {Test} A test object with initialised properties.
- */
 export default class Test {
+  /**
+   * Create a new test object.
+   * @constructor
+   * @param {string} name Name of the test.
+   * @param {function} fn Function as specified in the specs.
+   * @param {Number} timeout Timeout in ms after which to throw the timeout error.
+   * @param {object|function} context The context object, function or constructor.
+   */
   constructor(name, fn, timeout, context) {
     this.timeout = timeout || 2000
     this.name = name
@@ -27,7 +27,8 @@ export default class Test {
    * Run the test.
    * @param {function} notify - notify function
    */
-  async run(notify = () => {}) {
+  async run(notify = () => {}, onlyFocused) {
+    if (onlyFocused && this.name.startsWith('!')) return
     notify({
       type: 'test-start',
       name: this.name,
