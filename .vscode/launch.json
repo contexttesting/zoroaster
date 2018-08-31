@@ -10,7 +10,7 @@
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/alamode.js",
       "args": [
-        "test/spec/TestSuite/names.js",
+        "test/spec",
         "-a",
         "-w"
       ],

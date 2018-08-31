@@ -65,7 +65,7 @@ export default async function run(paths, watch, _currentlyWatching = []) {
       }
     }
   }
-  await rootTestSuite.runInSequence(notify)
+  await rootTestSuite.runInSequence(notify, rootTestSuite.hasFocused)
 
   stack.end()
   const errorsCatchment = await errorsPromise

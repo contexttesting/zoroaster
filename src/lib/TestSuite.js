@@ -132,9 +132,10 @@ export default class TestSuite {
    * Run test suite.
    */
   async run(notify = () => {}, onlyFocused) {
-    notify({ type:'test-suite-start', name: this.name })
+    const { name } = this
+    notify({ type:'test-suite-start', name })
     const res = await this.runInSequence(notify, onlyFocused)
-    notify({ type:'test-suite-end', name: this.name })
+    notify({ type:'test-suite-end', name })
     return res
   }
   dump() {
@@ -155,18 +156,21 @@ export default class TestSuite {
    * @param {function} [notify] A notify function to be passed to run method.
    * @param {boolean} [onlyFocused = false] Run only focused tests.
    */
-  async runInSequence(notify, onlyFocused = false) {
+  async runInSequence(notify, onlyFocused) {
     await this.tests.reduce(async (acc, test) => {
-      const acRes = await acc
-      // let shouldBeRun
-      // if (test instanceof Test) {
-      //   // shouldBeRun = hasFocused ? test.name.startsWith('!') : true
-      // } else if (test instanceof TestSuite) {
-      //   // shouldBeRun = hasFocused ? test.hasFocused : true
-      // }
-      // if (!shouldBeRun) return acRes
-      const res = await test.run(notify)
-      return [...acRes, res]
+      const accRes = await acc
+      let res
+      if (!onlyFocused) {
+        res = await test.run(notify)
+      } else if (test instanceof Test && test.isFocused) {
+        res = await test.run(notify)
+      // a test suite
+      } else if (test.isSelfFocused) {
+        res = await test.run(notify, test.hasFocused)
+      } else if (test.hasFocused) {
+        res = await test.run(notify, true)
+      }
+      return [...accRes, res]
     }, [])
   }
 }

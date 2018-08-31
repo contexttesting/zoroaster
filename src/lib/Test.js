@@ -27,8 +27,7 @@ export default class Test {
    * Run the test.
    * @param {function} notify - notify function
    */
-  async run(notify = () => {}, onlyFocused) {
-    if (onlyFocused && this.name.startsWith('!')) return
+  async run(notify = () => {}) {
     notify({
       type: 'test-start',
       name: this.name,
@@ -67,6 +66,9 @@ export default class Test {
 
     const c = await evaluateContext(this.context)
     this.contexts = [c]
+  }
+  get isFocused() {
+    return this.name.startsWith('!')
   }
 }
 
