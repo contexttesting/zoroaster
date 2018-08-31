@@ -1,7 +1,7 @@
 import { ok, equal } from 'assert'
 import throws from 'assert-throws'
-import TestSuite from '../../src/lib/TestSuite'
-import Context from '../context'
+import TestSuite from '../../../src/lib/TestSuite'
+import Context from '../../context'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {

@@ -1,17 +1,21 @@
 import cleanStack from 'clean-stack'
 import { EOL } from 'os'
 
+/** @typedef {import('./TestSuite').default} TestSuite
+ *  @typedef {import('./Test').default} Test
+ */
+
 /**
  * Run all tests in sequence, one by one.
- * @param {Test[]} tests An array with tests
- * @param {function} [notify] A notify function to be passed to run method
+ * @param {(TestSuite|Test)[]} tests An array with tests and test suites.
+ * @param {function} [notify] A notify function to be passed to run method.
  */
 export async function runInSequence(tests, notify) {
   await tests.reduce(async (acc, t) => {
-    await acc
-    await t.run(notify)
-  }, Promise.resolve())
-  return tests
+    const acRes = await acc
+    const res = await t.run(notify)
+    return [...acRes, res]
+  }, [])
 }
 
 export function indent(str, padding) {

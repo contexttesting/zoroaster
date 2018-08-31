@@ -101,6 +101,18 @@ export default class TestSuite {
   }
 
   /**
+   * @returns {string[]} An array with recursively gathered test names, including the name of this test suite.
+   */
+  get names() {
+    return this.tests.reduce((acc, test) => {
+      if (test instanceof TestSuite) {
+        return [...acc, ...test.names]
+      }
+      return [...acc, test.name]
+    }, [this.name])
+  }
+
+  /**
    * Run test suite.
    */
   async run(notify = () => {}) {
@@ -185,7 +197,7 @@ function createTests(object, parent) {
       }
       }
     })
-    .filter(test => test !== undefined)
+    .filter(t => t)
   return sort(tests)
 }
 
