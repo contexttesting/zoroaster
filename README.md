@@ -644,9 +644,11 @@ The following snippet can be used in _VS Code_ when debugging tests.
 
 ### documentation todo
 
-- [ ] document masks
-- [ ] document focusing on tests
-- [ ] document using zarathustra example
+- [ ] masks
+- [ ] alamode
+- [ ] focusing on tests
+- [ ] using zarathustra example
+- [ ] timeouts
 
 ### context-related todo
 

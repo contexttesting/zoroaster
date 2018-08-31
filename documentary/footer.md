@@ -1,7 +1,3 @@
-<!-- ## TODO
-
-- [ ] fix missing `v2.0.0` commit. -->
-
 ## TODO
 
 1. JS API
@@ -19,9 +15,11 @@
 
 ### documentation todo
 
-- [ ] document masks
-- [ ] document focusing on tests
-- [ ] document using zarathustra example
+- [ ] masks
+- [ ] alamode
+- [ ] focusing on tests
+- [ ] using zarathustra example
+- [ ] timeouts
 
 ### context-related todo
 
