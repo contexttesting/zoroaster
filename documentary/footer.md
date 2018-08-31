@@ -17,6 +17,12 @@
 11. Pass path to a context file in CLI
 12. Catch global errors
 
+### documentation todo
+
+- [ ] document masks
+- [ ] document focusing on tests
+- [ ] document using zarathustra example
+
 ### context-related todo
 
  - ~~write readme about context function~~

@@ -3,7 +3,7 @@
 
 The following snippet can be used in _VS Code_ when debugging tests.
 
-```json
+```json5
 {
   "type": "node",
   "request": "launch",

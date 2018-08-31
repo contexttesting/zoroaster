@@ -21,7 +21,7 @@ yarn add -DE zoroaster
 
 - [Table Of Contents](#table-of-contents)
 - [Quick Example](#quick-example)
-- [Try Zoroaster Today!](#try-zoroaster-today)
+- [Why Use Zoroaster](#why-use-zoroaster)
   * [Each Directory is a Test Suite](#each-directory-is-a-test-suite)
   * [Context as Alternative Solution](#context-as-alternative-solution)
 - [Example](#example)
@@ -42,6 +42,7 @@ yarn add -DE zoroaster
   * [throws](#throws)
 - [launch.json](#launchjson)
 - [TODO](#todo)
+  * [documentation todo](#documentation-todo)
   * [context-related todo](#context-related-todo)
 - [Copyright](#copyright)
 
@@ -87,20 +88,18 @@ export default {
 
 ![tests results](doc/tests.png)
 
-## Try Zoroaster Today!
+## Why Use Zoroaster
 
-Zoroaster allows to write test cases as simple functions, without using framework-specific global variables such as `describe`,  `it`, `before` and `after`. Save it for the after-life. Export test suites as modules and run them with `zoroaster` binary.
+_Zoroaster_ allows to write test cases as simple functions, without using framework-specific global variables such as `describe`,  `it`, `before` and `after`. Save it for the after-life. Export test suites as modules and run them with `zoroaster` binary.
 
-Read the main idea behind `zoroaster` below, or skip to the [example](#example) to get started.
-
-
+Read the main idea behind _Zoroaster_ below, or skip to the [example](#example) to get started.
 ### Each Directory is a Test Suite
 
 It's much easier to organise test cases by JavaScript files in directories and not by nested function blocks in a single file. Files can be moved around much more easily and are more atomic.
 
 Normally, a directory is a test suite because it groups files together by functionality, and as libraries' features develop, their test directory should grow more files inside -- testing new features. It's more desirable to create many smaller files sorted by directories, rather than put all tests in a single file.
 
-However, it's understandable why one would go down the second route -- this is because the traditional frameworks have an inherent limitation in them. They force developers to reuse single _set-up_ and _tear-down_ functions such as `beforeEach` and `afterEach` within the same file because there's no way to make them run across multiple files without duplicating the code. Consider example below to understand this point better.
+However, it's understandable why one would go down the second route -- this is because the traditional frameworks have an inherent limitation in them. They force developers to reuse single _set-up_ and _tear-down_ functions such as `beforeEach` and `afterEach` within the same file because there's no way to make them run across multiple files without duplicating the code. Consider the example below to understand this point better.
 
 A project has `src` directory and is tested with `mocha`, with tests in `test` directory.
 
@@ -115,7 +114,7 @@ A project has `src` directory and is tested with `mocha`, with tests in `test` d
     - sea.js
 ```
 
-The test suites are for the `night` and `day`. Set-up `beforeEach`'s purpose is to open some connections, and tear-down `afterEach`'s purpose is to make sure that all the connections are closed.
+The test suites are for the `night` and `day`. The purpose of the `beforeEach` set-up routine is to open some connections, and the purpose of the `afterEach` tear-down is to make sure that all the connections are closed.
 
 ```js
 // night.js
@@ -130,13 +129,12 @@ describe('night') {
   it('should be no light at night', () => {
     connections.open()
     connections.sendTime(0)
-    // assert(!light)
     connections.close()
   })
 }
 ```
 
-Both test suites have to repeat the same code for tests' set-up and tear-down.
+Both test suites in separate files have to repeat the same code for their set-up and tear-down routines.
 
 ```js
 // day.js
@@ -174,7 +172,6 @@ because
 
 * the variable `connections` are not not available in the individual test suites;
 * both functions will be run for higher-level test suites (such as `earth`) as well, which is not desirable.
-
 
 ### Context as Alternative Solution
 
@@ -610,7 +607,7 @@ See [`assert-throws` API documentation][5] to learn more about assertions.
 
 The following snippet can be used in _VS Code_ when debugging tests.
 
-```json
+```json5
 {
   "type": "node",
   "request": "launch",
@@ -629,7 +626,8 @@ The following snippet can be used in _VS Code_ when debugging tests.
     "<node_internals>/**/*.js"
   ]
 }
-```## TODO
+```
+## TODO
 
 1. JS API
 2. time-outs - specific for each test, blocked by `context` feature (10)
@@ -643,6 +641,12 @@ The following snippet can be used in _VS Code_ when debugging tests.
 10. ~~Context object as an optional argument to test functions~~
 11. Pass path to a context file in CLI
 12. Catch global errors
+
+### documentation todo
+
+- [ ] document masks
+- [ ] document focusing on tests
+- [ ] document using zarathustra example
 
 ### context-related todo
 
