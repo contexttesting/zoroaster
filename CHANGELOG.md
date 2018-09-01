@@ -1,3 +1,15 @@
+## 1 September 2018
+
+### [3.0.0](https://github.com/artdecocode/zoroaster/compare/v2.4.0...v3.0.0)
+
+- [feature] Focus on !tests and !testsuites.
+- [feature] Show usage using `usually`.
+- [feature] Parse args with `argufy`.
+- [feature] Add the` timeout` argument.
+- [breaking] Remove passing tests as paths to files, remove `ZOROASTER_TIMEOUT` in favour of CLI argument.
+- [fix] Fix `MaxListenersExceededWarning` warning.
+- [doc] Use `documentary` for documentation.
+
 ## 22 August 2018
 
 ### [2.4.0](https://github.com/artdecocode/zoroaster/compare/v2.3.0...v2.4.0)
