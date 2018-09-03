@@ -54,10 +54,6 @@ ansi-regex@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-3.0.0.tgz#ed0317c322064f79466c02966bddb605ab37d998"
 
-argufy@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.1.2.tgz#e99107e00e84b6272bedc0b9a93e42014edd5a72"
-
 argufy@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.2.1.tgz#34985fe1087dee7fd96c92fad17c0dd137991d95"
@@ -112,15 +108,18 @@ difflib@~0.2.1:
   dependencies:
     heap ">= 0.2.0"
 
-documentary@1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.10.0.tgz#f3d5e915a1d6d71805f804e0b71fef278680c68b"
+documentary@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.11.0.tgz#b0211293858ef749ac2fd589be02398af122810f"
   dependencies:
-    argufy "1.1.2"
-    catchment "2.0.1"
+    argufy "1.2.1"
+    catchment "3.0.1"
+    mismatch "1.0.2"
     pedantry "1.0.1"
-    restream "2.1.0"
+    restream "3.1.1"
+    rexml "1.1.0"
     spawncommand "2.0.1"
+    which-stream "1.0.1"
 
 dreamopt@~0.6.0:
   version "0.6.0"
@@ -236,13 +235,13 @@ restream@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/restream/-/restream-1.2.0.tgz#fd13b031a54e80cc65d1878c43149f1b3a40efbb"
 
-restream@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/restream/-/restream-2.1.0.tgz#934e177343e81bd6a64fc555f91085544da56db1"
-
 restream@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/restream/-/restream-3.1.1.tgz#36084997bd3e765c2da484700e16b850c2f9ffb4"
+
+rexml@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/rexml/-/rexml-1.1.0.tgz#d005c515528aa0c81a39cd456a0da40321ab3fe8"
 
 snapshot-context@2.0.4:
   version "2.0.4"
