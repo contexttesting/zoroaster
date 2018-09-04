@@ -18,7 +18,7 @@ const T = {
       })
       throw new Error('Throws did not throw')
     } catch ({ message }) {
-      equal(message, 'Function should have thrown')
+      equal(message, 'Function should have thrown.')
     }
   },
   async 'asserts on async error by code and fail'() {
