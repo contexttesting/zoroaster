@@ -32,22 +32,15 @@ function unwatchFiles(files) {
   paths,
   watch,
   timeout,
-}, _currentlyWatching = []) {
+}, {
+  _currentlyWatching = [],
+  exitListener,
+} = {}) {
+  unwatchFiles(_currentlyWatching)
+  if (exitListener) process.removeListener('beforeExit', exitListener)
+
   clearRequireCache()
   const rootTestSuite = await buildRootTestSuite(paths, timeout)
-
-  if (watch) {
-    unwatchFiles(_currentlyWatching)
-    const newCurrentlyWatching = Object.keys(require.cache)
-    watchFiles(newCurrentlyWatching, async () => {
-      // we can also re-run only changed test suites
-      await run({
-        paths,
-        watch,
-        timeout,
-      }, newCurrentlyWatching)
-    })
-  }
 
   const stack = createTestSuiteStackStream()
 
@@ -88,9 +81,25 @@ function unwatchFiles(files) {
   }
   process.stdout.write(`.${EOL}`)
 
-  process.removeAllListeners('exit')
+  const newExitListener = () => {
+    process.exit(count.error)
+  }
+  process.once('beforeExit', newExitListener)
 
-  process.once('exit', () => process.exit(count.error))
+  if (watch) {
+    const newCurrentlyWatching = Object.keys(require.cache)
+    watchFiles(newCurrentlyWatching, async () => {
+      // we can also re-run only changed test suites
+      await run({
+        paths,
+        watch,
+        timeout,
+      }, {
+        _currentlyWatching: newCurrentlyWatching,
+        exitListener: newExitListener,
+      })
+    })
+  }
 }
 
 
