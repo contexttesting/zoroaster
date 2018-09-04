@@ -1,3 +1,10 @@
+## 4 September 2018
+
+### [3.0.1](https://github.com/artdecocode/zoroaster/compare/v3.0.0...v3.0.1)
+
+- [deps] Update `clean-stack`, `erotic`, `assert-throws`.
+- [fix] Display a missing global error on watch with `beforeExit` listener.
+
 ## 1 September 2018
 
 ### [3.0.0](https://github.com/artdecocode/zoroaster/compare/v2.4.0...v3.0.0)
