@@ -1,5 +1,9 @@
 ## 4 September 2018
 
+### [3.0.2](https://github.com/artdecocode/zoroaster/compare/v3.0.1...v3.0.2)
+
+- [build] `ln -s` the `assert` lib instead of proxying modules.
+
 ### [3.0.1](https://github.com/artdecocode/zoroaster/compare/v3.0.0...v3.0.1)
 
 - [deps] Update `clean-stack`, `erotic`, `assert-throws`.
