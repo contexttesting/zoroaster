@@ -44,7 +44,7 @@
     "alamode": "1.4.0",
     "argufy": "1.2.1",
     "assert-diff": "2.0.3",
-    "assert-throws": "3.0.0",
+    "assert-throws": "3.1.0",
     "catchment": "3.0.1",
     "clean-stack": "artdecocode/clean-stack#82625bf",
     "erte": "1.1.4",

@@ -69,9 +69,9 @@ assert-plus@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
 
-assert-throws@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/assert-throws/-/assert-throws-3.0.0.tgz#f2cf2f696f9cc90285ab4f47908c039e9b5ba220"
+assert-throws@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/assert-throws/-/assert-throws-3.1.0.tgz#eab72d819ff2c614f8e7ec4c616ba2b7aea98465"
   dependencies:
     erotic "2.0.0"
     erte "1.1.4"
