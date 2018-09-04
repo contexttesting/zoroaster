@@ -1,3 +1,9 @@
+## 5 September 2018
+
+### [3.0.3](https://github.com/artdecocode/zoroaster/compare/v3.0.1...v3.0.2)
+
+- [deps] Update `assert-throws` to allow testing any of the error properties, and use function assertions.
+
 ## 4 September 2018
 
 ### [3.0.2](https://github.com/artdecocode/zoroaster/compare/v3.0.1...v3.0.2)
