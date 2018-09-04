@@ -1,1 +1,1 @@
-module.exports = require('./build/assert')
+build/assert/index.js
