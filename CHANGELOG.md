@@ -1,3 +1,9 @@
+## 12 September
+
+### [3.0.4](https://github.com/artdecocode/zoroaster/compare/v3.0.3...v3.0.4)
+
+- [fix] Allow masks to have new lines in inputs.
+
 ## 5 September 2018
 
 ### [3.0.3](https://github.com/artdecocode/zoroaster/compare/v3.0.1...v3.0.2)
