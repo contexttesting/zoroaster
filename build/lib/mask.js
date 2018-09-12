@@ -1,33 +1,34 @@
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
 const { readFileSync } = require('fs');
 
-const makeRegex = (keys = []) => {
-  const m = /[\s\S]+?/
-  const ms = m.source
-  const n = '\\n'
-  const titleAndBody = `^// (.+?)${n}(${ms})${n.repeat(2)}`
-  const vals = keys.map(k => {
-    const s = `(?:/\\* *${k} *\\*/${n}(${ms})${n}/\\*\\*/)?`
-    return s
-  })
-  const allVals = vals.join('\\s*')
-  const regex = new RegExp(`${titleAndBody}${allVals}`, 'gm')
-  return regex
-}
-
 /**
  * A function to construct tests from a mask file.
  * @param {string} path Path to the mask file.
- * @param {string[]} [keys] Properties of each test to extract. Default `['expected']`.
  */
-const getTests = (path, keys = ['expected']) => {
+const getTests = (path) => {
   const m = `${readFileSync(path)}`
-  const re = makeRegex(keys)
-  const tests = mismatch(
-    re,
-    m,
-    ['name', 'input', ...keys],
-  )
+  const t = m.split(/^\/\/ /gm).filter(a => a)
+  const tests = t.map((test) => {
+    const [name, total] = split(test, '\n')
+    const [input, body] = split(total, '\n\n/*')
+
+    const expected = mismatch(
+      /\/\* +(.+) +\*\/\n([\s\S]+?)\n\/\*\*\//g,
+      body,
+      ['key', 'value'],
+    ).reduce((acc, { key, value }) => {
+      return {
+        ...acc,
+        [key]: value,
+      }
+    }, {})
+    return {
+      name,
+      input,
+      ...expected,
+    }
+  })
+
   const lines = m.split('\n')
   /**
    * A function to be called on error in a test.
@@ -65,6 +66,13 @@ const getTests = (path, keys = ['expected']) => {
 
 const makeStack = (message, name, path, lineNumber) => {
   return `Error: ${message}\n    at ${name} (${path}:${lineNumber}:1)`
+}
+
+const split = (s, del) => {
+  const nl = s.indexOf(del)
+  const first = s.substr(0, nl)
+  const second = s.substr(nl + 1)
+  return [first, second]
 }
 
 module.exports=getTests
