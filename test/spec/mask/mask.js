@@ -15,6 +15,15 @@ const T = {
     })
     await test('mask.json', fr)
   },
+  async 'can make a mask with a new line'({ MASK_NL_PATH, SNAPSHOT_DIR }, { setDir, test }) {
+    setDir(SNAPSHOT_DIR)
+    const res = getTests(MASK_NL_PATH, ['expected', 'exports', 'error'])
+    const fr = res.map(({ onError, ...rest }) => {
+      ok(onError)
+      return rest
+    })
+    await test('mask-nl.json', fr)
+  },
 }
 
 export default T

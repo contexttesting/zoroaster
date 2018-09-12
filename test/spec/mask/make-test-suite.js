@@ -49,7 +49,7 @@ const expectedAndError = {
     await throws({
       fn: runTest,
       args: [ts, 'error fail'],
-      message: /Function should have thrown/,
+      message: /Function stream should have thrown/,
     })
     equal(called, 4)
   },

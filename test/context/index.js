@@ -165,6 +165,10 @@ const C = {
    * Path to a mask fixture.
    */
   MASK_PATH,
+  /**
+   * Path to a mask fixture with a new line.
+   */
+  MASK_NL_PATH: resolve(FIXTURE, 'mask-nl.js'),
 
   /**
    * Path to a mask fixture to test the `makeTestSuite` function.

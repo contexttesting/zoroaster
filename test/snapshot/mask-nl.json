@@ -1,0 +1,14 @@
+[
+  {
+    "input": "export default function test() {}\n\nexport function test() {}",
+    "expected": "module.exports = function test() {}\n\nmodule.exports.test = function test() {}",
+    "exports": "[{ \"default\": \"test\" }]",
+    "name": "a mask with a new line"
+  },
+  {
+    "input": "export default function test() {}\n\nexport function test() {}",
+    "expected": "module.exports = function test() {}\n\nmodule.exports.test = function test() {}",
+    "exports": "[{ \"default\": \"test\" }]",
+    "name": "a second mask with a new line"
+  }
+]
