@@ -1,4 +1,4 @@
-## 12 September
+## 13 September
 
 ### [3.0.4](https://github.com/artdecocode/zoroaster/compare/v3.0.3...v3.0.4)
 
