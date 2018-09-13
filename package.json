@@ -29,11 +29,17 @@
     "url": "git+https://github.com/artdecocode/zoroaster.git"
   },
   "keywords": [
+    "zoroaster",
     "test",
     "tdd",
     "mocha",
     "jest",
-    "tape"
+    "jasmine",
+    "tape",
+    "testing",
+    "context",
+    "documentation",
+    "jsdoc"
   ],
   "author": "Anton <anton@adc.sh>",
   "license": "MIT",
