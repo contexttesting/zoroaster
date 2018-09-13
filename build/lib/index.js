@@ -1,4 +1,4 @@
-let cleanStack = require('clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
+let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
 const { EOL } = require('os');
 
        function indent(str, padding) {
@@ -22,7 +22,7 @@ const { EOL } = require('os');
   const splitStack = error.stack.split('\n') // break stack by \n and not EOL intentionally because Node uses \n
   // node 4 will print: at test_suite.test2
   // node 6 will print: at test2
-  const regex = new RegExp(`at (.+\.)?${name}`)
+  const regex = new RegExp(`at (.+\\.)?${name}`)
   const resIndex = splitStack.findIndex(element => regex.test(element)) + 1
   const joinedStack = splitStack.slice(0, resIndex).join('\n')
   const stack = joinedStack ? joinedStack : cleanStack(error.stack) // use clean stack for async errors
