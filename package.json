@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "diff": "3.5.0",
-    "documentary": "1.15.1",
+    "documentary": "1.15.2",
     "erotic": "2.0.1",
     "eslint-config-artdeco": "1.0.1",
     "snapshot-context": "2.0.4",
