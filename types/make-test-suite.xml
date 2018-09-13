@@ -17,10 +17,7 @@
       An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
     </prop>
     <prop opt name="assertResults" type="(results: any, props: Object.<string, (string|object)>) => void">
-      A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask using `customProps` and `jsonProps` will be passed as first and second arguments.
-    </prop>
-    <prop opt name="customProps" type="string[]">
-      An array of custom properties' names to extract from the mask.
+      A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
     </prop>
     <prop opt name="jsonProps" type="string[]">
       Any additional properties to extract from the mask, and parse as _JSON_ values.

@@ -12,8 +12,7 @@ import { equal, throws } from '../assert'
  * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A function which should return results of a test.
  * @param {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [conf.getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @param {(results: any) => string} [conf.mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
- * @param {(results: any, props: Object.<string, (string|object)>) => void} [conf.assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask using `customProps` and `jsonProps` will be passed as first and second arguments.
- * @param {string[]} [conf.customProps] An array of custom properties' names to extract from the mask.
+ * @param {(results: any, props: Object.<string, (string|object)>) => void} [conf.assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
  * @param {string[]} [conf.jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
 const makeTestSuite = (maskPath, conf) => {
@@ -24,15 +23,9 @@ const makeTestSuite = (maskPath, conf) => {
     getThrowsConfig,
     mapActual = a => a,
     assertResults,
-    customProps = [],
     jsonProps = [],
   } = conf
-  const tests = getTests(maskPath, [
-    'expected',
-    'error',
-    ...customProps,
-    ...jsonProps,
-  ])
+  const tests = getTests(maskPath)
 
   const hasFocused = tests.some(({ name }) => name.startsWith('!'))
 
@@ -119,8 +112,7 @@ const assertExpected = (result, expected) => {
  * @prop {(input: string, ...contexts?: Context[]) => string} [getResults] A function which should return results of a test.
  * @prop {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @prop {(results: any) => string} [mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
- * @prop {(results: any, props: Object.<string, (string|object)>) => void} [assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask using `customProps` and `jsonProps` will be passed as first and second arguments.
- * @prop {string[]} [customProps] An array of custom properties' names to extract from the mask.
+ * @prop {(results: any, props: Object.<string, (string|object)>) => void} [assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
  * @prop {string[]} [jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
 
