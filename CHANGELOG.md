@@ -3,6 +3,7 @@
 ### [3.1.0](https://github.com/artdecocode/zoroaster/compare/v3.0.4...v3.1.0)
 
 - [feature] Allow to construct mask test suites from a directory.
+- [deps] Use `@artdeco/clean-stack@1`.
 
 ### [3.0.4](https://github.com/artdecocode/zoroaster/compare/v3.0.3...v3.0.4)
 
