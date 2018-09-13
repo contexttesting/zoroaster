@@ -1,5 +1,9 @@
 ## 13 September
 
+### [3.1.0](https://github.com/artdecocode/zoroaster/compare/v3.0.4...v3.1.0)
+
+- [feature] Allow to construct mask test suites from a directory.
+
 ### [3.0.4](https://github.com/artdecocode/zoroaster/compare/v3.0.3...v3.0.4)
 
 - [fix] Allow masks to have new lines in inputs.
