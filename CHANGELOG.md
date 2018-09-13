@@ -1,5 +1,9 @@
 ## 13 September
 
+### [3.1.1](https://github.com/artdecocode/zoroaster/compare/v3.1.0...v3.1.1)
+
+- [deps] Up deps.
+
 ### [3.1.0](https://github.com/artdecocode/zoroaster/compare/v3.0.4...v3.1.0)
 
 - [feature] Allow to construct mask test suites from a directory.
