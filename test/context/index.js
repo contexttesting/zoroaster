@@ -179,6 +179,11 @@ const C = {
    */
   TS_CUSTOM_MASK_PATH: resolve(FIXTURE, 'mask/test-suite-custom.js'),
 
+  /**
+   * Path to a directory with masks.
+   */
+  MASK_DIR_PATH: resolve(FIXTURE, 'mask'),
+
   /** Run a test from a test suite. */
   runTest,
 }

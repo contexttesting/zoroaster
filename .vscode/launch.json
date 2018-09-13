@@ -12,12 +12,10 @@
       "args": [
         "test/spec",
         "-a",
-        "-w"
+        "-w",
+        "-t",
+        "999999999"
       ],
-      "env": {
-        "ALAMODE_ENV": "test-debug",
-        "ZOROASTER_TIMEOUT": "9999999"
-      },
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"

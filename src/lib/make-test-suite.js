@@ -1,12 +1,12 @@
 import erte from 'erte'
+import { readdirSync, lstatSync } from 'fs'
+import { resolve, join } from 'path'
 import getTests from '../lib/mask'
 import { equal, throws } from '../assert'
 
-// The `expected` property of the mask will be compared against the actual value returned by the `getActual` function. To test for the correct error message, the `error` property will be tested using `assert-throws` configuration returned by `getThrowsConfig` function. Any additional tests can be performed with `customTest` function, which will receive any additional properties extracted from the mask using `customProps` and `jsonProps`. The JSON properties will be parsed into an object.
-
 /**
  * Make a test suite to test against a mask.
- * @param {string} maskPath Path to the mask.
+ * @param {string} path Path to the mask file or directory of files.
  * @param {MakeTestSuiteConf} [conf] Configuration for making test suites.
  * @param {({new(): Context}|{new(): Context}[]|{})} [conf.context] Single or multiple context constructors or objects to initialise for each test.
  * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A function which should return results of a test.
@@ -15,7 +15,26 @@ import { equal, throws } from '../assert'
  * @param {(results: any, props: Object.<string, (string|object)>) => void} [conf.assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
  * @param {string[]} [conf.jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
-const makeTestSuite = (maskPath, conf) => {
+export default function makeTestSuite(path, conf) {
+  const pathStat = lstatSync(path)
+  if (pathStat.isFile()) {
+    return makeATestSuite(path, conf)
+  } else if (pathStat.isDirectory()) {
+    const content = readdirSync(path)
+    const res = content.reduce((acc, node) => {
+      const newPath = join(path, node)
+      return {
+        ...acc,
+        [node]: makeTestSuite(newPath, conf),
+      }
+    }, {})
+    return res
+  }
+}
+
+// The `expected` property of the mask will be compared against the actual value returned by the `getActual` function. To test for the correct error message, the `error` property will be tested using `assert-throws` configuration returned by `getThrowsConfig` function. Any additional tests can be performed with `customTest` function, which will receive any additional properties extracted from the mask using `customProps` and `jsonProps`. The JSON properties will be parsed into an object.
+
+const makeATestSuite = (maskPath, conf) => {
   if (!conf) throw new Error('No configuration is given. A config should at least contain either a "getThrowsConfig" or "getResults" functions.')
   const {
     context,
@@ -116,4 +135,4 @@ const assertExpected = (result, expected) => {
  * @prop {string[]} [jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
  */
 
-export default makeTestSuite
+// export default makeTestSuite

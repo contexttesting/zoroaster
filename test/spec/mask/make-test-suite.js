@@ -1,7 +1,9 @@
 import throws from 'assert-throws'
 import { equal, deepEqual } from 'assert'
+import SnapshotContext from 'snapshot-context'
 import Context from '../../context'
 import makeTestSuite from '../../../src/lib/make-test-suite'
+import { inspect } from 'util'
 
 /** @type {Object.<string, (c: Context)>} */
 const expectedAndError = {
@@ -98,9 +100,21 @@ const errors = {
   },
 }
 
-/** @type {Object.<string, (c: Context)>} */
+/** @type {Object.<string, (c: Context, sc: SnapshotContext)>} */
 const assertResults = {
-  context: Context,
+  context: [Context, SnapshotContext],
+  async 'can create a test suite from a directory'(
+    { MASK_DIR_PATH, SNAPSHOT_DIR }, { setDir, test },
+  ) {
+    setDir(SNAPSHOT_DIR)
+    const ts = makeTestSuite(MASK_DIR_PATH, {
+      getResults(input) {
+        return input + ' - ok'
+      },
+    })
+    const s = inspect(ts)
+    await test('mask-dir.txt', s)
+  },
   async 'asserts on results'({ TS_CUSTOM_MASK_PATH, runTest }) {
     const t = 'pass'
     let called = 0
