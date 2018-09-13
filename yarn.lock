@@ -95,6 +95,13 @@ catchment@3.1.0:
     clean-stack artdecocode/clean-stack#82625bf
     erotic "2.0.0"
 
+catchment@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/catchment/-/catchment-3.1.1.tgz#dad005e4383cb56f0108d8ea1f877608df22be59"
+  dependencies:
+    "@artdeco/clean-stack" "1.0.0"
+    erotic "2.0.1"
+
 catchment@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/catchment/-/catchment-1.0.0.tgz#3061f71be0102710be84328d2f94363a165f8c4b"
@@ -165,6 +172,12 @@ erotic@2.0.0:
   resolved "https://registry.yarnpkg.com/erotic/-/erotic-2.0.0.tgz#1484efb37a465369cf0e57662d6fb271c3e850fd"
   dependencies:
     clean-stack artdecocode/clean-stack#82625bf
+
+erotic@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/erotic/-/erotic-2.0.1.tgz#bcb45bf61e5a3a9006bbee2cf998515a56f3961b"
+  dependencies:
+    "@artdeco/clean-stack" "1.0.0"
 
 erte@1.1.4:
   version "1.1.4"

@@ -53,7 +53,7 @@
     "argufy": "1.2.1",
     "assert-diff": "2.0.3",
     "assert-throws": "3.1.0",
-    "catchment": "3.1.0",
+    "catchment": "3.1.1",
     "erte": "1.1.4",
     "makepromise": "3.0.1",
     "mismatch": "1.0.2",
@@ -65,7 +65,7 @@
   "devDependencies": {
     "diff": "3.5.0",
     "documentary": "1.15.1",
-    "erotic": "2.0.0",
+    "erotic": "2.0.1",
     "eslint-config-artdeco": "1.0.1",
     "snapshot-context": "2.0.4",
     "strip-ansi": "4.0.0"
