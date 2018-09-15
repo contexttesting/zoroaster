@@ -169,6 +169,10 @@ const C = {
    * Path to a mask fixture with a new line.
    */
   MASK_NL_PATH: resolve(FIXTURE, 'mask-nl.js'),
+  /**
+   * Path to a mask fixture where tests are split with custom separator.
+   */
+  MASK_SPLIT_PATH: resolve(FIXTURE, 'mask-split.js'),
 
   /**
    * Path to a mask fixture to test the `makeTestSuite` function.

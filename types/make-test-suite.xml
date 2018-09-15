@@ -22,5 +22,8 @@
     <prop opt name="jsonProps" type="string[]">
       Any additional properties to extract from the mask, and parse as _JSON_ values.
     </prop>
+    <prop name="splitRe" type="RegExp" default="/^\/\/ /gm">
+      A regular expression used to detect the beginning of a new test in a mask file.
+    </prop>
   </type>
 </types>
