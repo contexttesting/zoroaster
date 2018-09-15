@@ -5,9 +5,11 @@ const { readFileSync } = require('fs');
  * A function to construct tests from a mask file.
  * @param {string} path Path to the mask file.
  */
-const getTests = (path) => {
+const getTests = ({
+  path, splitRe = /^\/\/ /gm,
+}) => {
   const m = `${readFileSync(path)}`
-  const t = m.split(/^\/\/ /gm).filter(a => a)
+  const t = m.split(splitRe).filter(a => a)
   const tests = t.map((test) => {
     const [name, total] = split(test, '\n')
     const [input, body] = split(total, '\n\n/*')

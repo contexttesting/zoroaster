@@ -14,6 +14,7 @@ const { equal, throws } = require('../assert');
  * @param {(results: any) => string} [conf.mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
  * @param {(results: any, props: Object.<string, (string|object)>) => void} [conf.assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
  * @param {string[]} [conf.jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
+ * @param {RegExp} [conf.splitRe="/^\/\/ /gm"] A regular expression used to detect the beginning of a new test in a mask file. Default `/^\/\/ /gm`.
  */
                function makeTestSuite(path, conf) {
   const pathStat = lstatSync(path)
@@ -43,8 +44,9 @@ const makeATestSuite = (maskPath, conf) => {
     mapActual = a => a,
     assertResults,
     jsonProps = [],
+    splitRe,
   } = conf
-  const tests = getTests(maskPath)
+  const tests = getTests({ path: maskPath, splitRe })
 
   const hasFocused = tests.some(({ name }) => name.startsWith('!'))
 
@@ -133,6 +135,7 @@ const assertExpected = (result, expected) => {
  * @prop {(results: any) => string} [mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
  * @prop {(results: any, props: Object.<string, (string|object)>) => void} [assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
  * @prop {string[]} [jsonProps] Any additional properties to extract from the mask, and parse as _JSON_ values.
+ * @prop {RegExp} [splitRe="/^\/\/ /gm"] A regular expression used to detect the beginning of a new test in a mask file. Default `/^\/\/ /gm`.
  */
 
 // export default makeTestSuite
