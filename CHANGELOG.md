@@ -1,3 +1,9 @@
+## 15 September 2018
+
+### [3.2.0](https://github.com/artdecocode/zoroaster/compare/v3.1.1...v3.2.0)
+
+- [feature] Allow to split tests in a mask file with a custom regular expression.
+
 ## 13 September 2018
 
 ### [3.1.2](https://github.com/artdecocode/zoroaster/compare/v3.1.0...v3.1.1), [3.1.1](https://github.com/artdecocode/zoroaster/compare/v3.1.1...v3.1.2)
