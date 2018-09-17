@@ -1,5 +1,6 @@
 <types>
-  <type name="Writable" type="{ end: (s: string) => void }">
+  <import name="Transform" from="stream"/>
+  <import name="Readable" from="stream"/>
   <type name="Context" desc="A context made with a constructor.">
     <prop opt name="_init" type="() => void">A function to initialise the context.</prop>
     <prop opt name="_destroy" type="() => void">A function to destroy the context.</prop>
@@ -11,8 +12,11 @@
     <prop opt name="getResults" type="(input: string, ...contexts?: Context[]) => string">
       A function which should return results of a test.
     </prop>
-    <prop opt name="streamResult" type="(...contexts?: Context[]) => Writable">
-      A function which returns a stream to be ended with the input specified in the mask to get the test result. The stream should implement both _Writable_ and _Readable_ interfaces as its output will be accumulated and compared against the expected output of the mask. This method is useful for testing _Transform_ streams.
+    <prop opt name="getTransform" type="(...contexts?: Context[]) => Transform">
+      A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+    </prop>
+    <prop opt name="getReadable" type="(input: string, ...contexts?: Context[]) => Readable">
+      A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
     </prop>
     <prop opt name="getThrowsConfig" type="(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }">
       A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.

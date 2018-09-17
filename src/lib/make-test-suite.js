@@ -11,7 +11,8 @@ import { equal, throws } from '../assert'
  * @param {MakeTestSuiteConf} [conf] Configuration for making test suites.
  * @param {({new(): Context}|{new(): Context}[]|{})} [conf.context] Single or multiple context constructors or objects to initialise for each test.
  * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A function which should return results of a test.
- * @param {(...contexts?: Context[]) => Writable} [conf.streamResult] A function which returns a stream to be ended with the input specified in the mask to get the test result. The stream should implement both _Writable_ and _Readable_ interfaces as its output will be accumulated and compared against the expected output of the mask. This method is useful for testing _Transform_ streams.
+ * @param {(...contexts?: Context[]) => Transform} [conf.getTransform] A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+ * @param {(input: string, ...contexts?: Context[]) => Readable} [conf.getReadable] A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
  * @param {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [conf.getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @param {(results: any) => string} [conf.mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
  * @param {(results: any, props: Object.<string, (string|object)>) => void} [conf.assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
@@ -52,11 +53,11 @@ const parseProps = (props, jsonProps) => {
 
 /**
  * Create a new test.
- * @param {{ streamResult: () => Writable }} param
+ * @param {{ getTransform: () => Transform, getReadable: (input: string) => Readable }} param
  */
 const makeTest = ({
-  input, error, getThrowsConfig, streamResult, getResults, expected,
-  assertResults, props, mapActual,
+  input, error, getThrowsConfig, getTransform, getResults, expected,
+  assertResults, props, mapActual, getReadable,
 }) => {
   const test = async (...contexts) => {
     if (error) {
@@ -65,15 +66,20 @@ const makeTest = ({
       const throwsConfig = getThrowsConfig(input, ...contexts)
       await assertError(throwsConfig, error)
       return
-    } else if (streamResult) {
-      const rs = streamResult(...contexts)
+    } else if (getTransform) {
+      const rs = getTransform(...contexts)
       rs.end(input)
+      const actual = await collect(rs)
+      assertExpected(actual, expected)
+      return
+    } else if (getReadable) {
+      const rs = getReadable(input, ...contexts)
       const actual = await collect(rs)
       assertExpected(actual, expected)
       return
     }
 
-    if (!getResults) return
+    if (!getResults) throw new Error('Nothing was tested.')
 
     const results = await getResults(input, ...contexts)
 
@@ -91,11 +97,12 @@ const makeTest = ({
 }
 
 const makeATestSuite = (maskPath, conf) => {
-  if (!conf) throw new Error('No configuration is given. A config should at least contain either a "getThrowsConfig", "getResults" or "streamResult" functions.')
+  if (!conf) throw new Error('No configuration is given. A config should at least contain either a "getThrowsConfig", "getResults", "getTransform" or "getReadable" functions.')
   const {
     context,
     getResults,
-    streamResult,
+    getTransform,
+    getReadable,
     getThrowsConfig,
     mapActual = a => a,
     assertResults,
@@ -119,7 +126,7 @@ const makeATestSuite = (maskPath, conf) => {
     const test = setupError ? () => {
       throw new Error(setupError)
     } : makeTest({
-      input, error, getThrowsConfig, streamResult, getResults, expected,
+      input, error, getThrowsConfig, getTransform, getReadable, getResults, expected,
       assertResults, props, mapActual,
     })
 
@@ -155,14 +162,18 @@ const assertExpected = (result, expected) => {
 
 /* documentary types/make-test-suite.xml */
 /**
- * @typedef {{ end: (s: string) => void }} Writable
+ * @typedef {import('stream').Transform} Transform
+ * @typedef {import('stream').Readable} Readable
+ *
+ * @typedef {Object} Context A context made with a constructor.
  * @prop {() => void} [_init] A function to initialise the context.
  * @prop {() => void} [_destroy] A function to destroy the context.
  *
  * @typedef {Object} MakeTestSuiteConf Configuration for making test suites.
  * @prop {({new(): Context}|{new(): Context}[]|{})} [context] Single or multiple context constructors or objects to initialise for each test.
  * @prop {(input: string, ...contexts?: Context[]) => string} [getResults] A function which should return results of a test.
- * @prop {(...contexts?: Context[]) => Writable} [streamResult] A function which returns a stream to be ended with the input specified in the mask to get the test result. The stream should implement both _Writable_ and _Readable_ interfaces as its output will be accumulated and compared against the expected output of the mask. This method is useful for testing _Transform_ streams.
+ * @prop {(...contexts?: Context[]) => Transform} [getTransform] A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+ * @prop {(input: string, ...contexts?: Context[]) => Readable} [getReadable] A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
  * @prop {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @prop {(results: any) => string} [mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
  * @prop {(results: any, props: Object.<string, (string|object)>) => void} [assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.

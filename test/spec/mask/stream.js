@@ -1,14 +1,15 @@
-import { Transform } from 'stream'
+import { Transform, Readable } from 'stream'
 import throws from 'assert-throws'
 import Context from '../../context'
 import makeTestSuite from '../../../src/lib/make-test-suite'
+import { fork } from 'child_process'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
   async 'can stream the result'({ runTest }) {
     const ts = makeTestSuite('test/fixture/result/index.md', {
-      streamResult({ test }) {
+      getTransform({ test }) {
         const t = new Transform({
           transform(chunk, encoding, next) {
             const r = `${chunk}`.replace(/input/, 'output')
@@ -30,7 +31,7 @@ const T = {
   },
   async 'displays the error from the stream'({ runTest }) {
     const ts = makeTestSuite('test/fixture/result/index.md', {
-      streamResult({ test }) {
+      getTransform({ test }) {
         const t = new Transform({
           transform(chunk, encoding, next) {
             next(new Error(`test-error: ${test}`))
@@ -45,6 +46,32 @@ const T = {
       args: [ts, 'displays correct error'],
       message: /test-error: pass/,
     })
+  },
+  async 'can stream a test with args'({ runTest }) {
+    const ts = makeTestSuite('test/fixture/result/stream-arg.md', {
+      getReadable(input, { test }) {
+        const r = new Readable({
+          read() {
+            this.push(`${input}: ${test}`)
+            this.push(null)
+          },
+        })
+        return r
+      },
+      context: { test: 'pass' },
+    })
+    await runTest(ts, 'streams result with argument')
+  },
+  async 'tests a forks'({ runTest }) {
+    const ts = makeTestSuite('test/fixture/result/stream-arg.md', {
+      getReadable(input) {
+        const proc = fork('test/fixture/echo', [input], {
+          stdio: 'pipe',
+        })
+        return proc.stdout
+      },
+    })
+    await runTest(ts, 'streams to a fork')
   },
 }
 
