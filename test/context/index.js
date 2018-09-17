@@ -169,6 +169,8 @@ const C = {
    * Path to a mask fixture with a new line.
    */
   MASK_NL_PATH: resolve(FIXTURE, 'mask-nl.js'),
+  MASK_EMPTY_PATH: 'test/fixture/mask/empty.md',
+  MASK_BLANK_PATH: 'test/fixture/mask/blank.md',
   /**
    * Path to a mask fixture where tests are split with custom separator.
    */

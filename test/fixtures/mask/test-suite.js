@@ -46,3 +46,15 @@ an input
 /* json */
 not ok
 /**/
+
+// empty expected
+pass
+
+/* expected */
+/**/
+
+// empty expected fail
+fail
+
+/* expected */
+/**/

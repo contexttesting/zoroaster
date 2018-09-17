@@ -83,7 +83,7 @@ const makeTest = ({
 
     const results = await getResults(input, ...contexts)
 
-    if (expected) {
+    if (expected !== undefined) {
       const actual = mapActual(results)
       if ((typeof actual).toLowerCase() != 'string')
         throw new Error('The actual result is not an a string. Use "mapActual" function to map to a string result.')
@@ -150,7 +150,6 @@ const assertError = async (throwsConfig, error) => {
 }
 
 const assertExpected = (result, expected) => {
-  if (!expected) return
   try {
     equal(result, expected)
   } catch (err) {

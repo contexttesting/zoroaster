@@ -9,4 +9,6 @@
      'error pass': [AsyncFunction],
      'error fail': [AsyncFunction],
      'duplicate name': [AsyncFunction],
-     'incorrect json': [AsyncFunction] } }
+     'incorrect json': [AsyncFunction],
+     'empty expected': [AsyncFunction],
+     'empty expected fail': [AsyncFunction] } }

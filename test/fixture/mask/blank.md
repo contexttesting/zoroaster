@@ -1,0 +1,5 @@
+// a blank expected
+
+/* expected */
+
+/**/

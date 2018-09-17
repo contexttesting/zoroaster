@@ -1,5 +1,6 @@
+import { deepEqual } from 'assert-diff'
 import SnapshotContext from 'snapshot-context'
-import { ok } from 'assert'
+import { ok, equal } from 'assert'
 import Context from '../../context'
 import getTests from '../../../src/lib/mask'
 
@@ -36,6 +37,30 @@ const T = {
       return rest
     })
     await test('mask-nl.json', fr)
+  },
+  async 'can make a mask with empty expected'({ MASK_EMPTY_PATH }) {
+    const res = getTests({ path: MASK_EMPTY_PATH })
+    equal(res.length, 1)
+    const [test] = res
+    ok(test.onError)
+    delete test.onError
+    deepEqual(test, {
+      name: 'an empty expected',
+      input: '',
+      expected: '',
+    })
+  },
+  async 'can make a mask with blank expected'({ MASK_BLANK_PATH }) {
+    const res = getTests({ path: MASK_BLANK_PATH })
+    equal(res.length, 1)
+    const [test] = res
+    ok(test.onError)
+    delete test.onError
+    deepEqual(test, {
+      name: 'a blank expected',
+      input: '',
+      expected: '\n',
+    })
   },
 }
 

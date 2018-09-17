@@ -55,6 +55,20 @@ const expectedAndError = {
     })
     equal(called, 4)
   },
+  async 'asserts on empty result'({ TS_MASK_PATH, runTest }) {
+    const ts = makeTestSuite(TS_MASK_PATH, {
+      getResults(input) {
+        if (input == 'fail') return input
+        return ''
+      },
+    })
+    await runTest(ts, 'empty expected')
+    await throws({
+      fn: runTest,
+      args: [ts, 'empty expected fail'],
+      message: /'fail' == ''/,
+    })
+  },
 }
 
 /** @type {Object.<string, (c: Context)>} */
