@@ -1,5 +1,9 @@
 ## 17 September 2018
 
+### [3.4.1](https://github.com/artdecocode/zoroaster/compare/v3.4.0...v3.4.1)
+
+- [fix] Allow to pass `async` `getTransform` and `getReadable`.
+
 ### [3.4.0](https://github.com/artdecocode/zoroaster/compare/v3.3.0...v3.4.0)
 
 - [feature] Rename `streamResult` to `getTransform` and add `getReadable` to test streams which can be constructed using the `input` property of a mask.
