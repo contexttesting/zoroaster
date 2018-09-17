@@ -118,7 +118,6 @@ const makeForkTest = (forkModule, input, { stdout, stderr, code }) => {
     const args = getArgs(input)
     const f = fork(forkModule, args, {
       stdio: 'pipe',
-      execArgv: [],
     })
     const [, o, e, c] = await Promise.all([
       f.promise,
