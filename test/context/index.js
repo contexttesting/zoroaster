@@ -205,7 +205,7 @@ async function runTest(ts, name) {
 
   const ic = await contexts.reduce(async (acc, Con) => {
     await acc
-    const c = new Con()
+    const c = typeof Con == 'object' ? Con : new Con()
     if ('_init' in c) await c._init()
     return [...acc, c]
   }, [])

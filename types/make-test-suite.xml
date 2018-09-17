@@ -1,4 +1,5 @@
 <types>
+  <type name="Writable" type="{ end: (s: string) => void }">
   <type name="Context" desc="A context made with a constructor.">
     <prop opt name="_init" type="() => void">A function to initialise the context.</prop>
     <prop opt name="_destroy" type="() => void">A function to destroy the context.</prop>
@@ -9,6 +10,9 @@
     </prop>
     <prop opt name="getResults" type="(input: string, ...contexts?: Context[]) => string">
       A function which should return results of a test.
+    </prop>
+    <prop opt name="streamResult" type="(...contexts?: Context[]) => Writable">
+      A function which returns a stream to be ended with the input specified in the mask to get the test result. The stream should implement both _Writable_ and _Readable_ interfaces as its output will be accumulated and compared against the expected output of the mask. This method is useful for testing _Transform_ streams.
     </prop>
     <prop opt name="getThrowsConfig" type="(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }">
       A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
