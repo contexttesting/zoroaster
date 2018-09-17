@@ -1,3 +1,9 @@
+## 17 September 2018
+
+### [3.3.0](https://github.com/artdecocode/zoroaster/compare/v3.2.0...v3.3.0)
+
+- [feature] Implement `streamResult` for masks, allowing to easily test `Transform` streams.
+
 ## 15 September 2018
 
 ### [3.2.0](https://github.com/artdecocode/zoroaster/compare/v3.1.1...v3.2.0)
