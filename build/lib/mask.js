@@ -12,16 +12,18 @@ const getTests = ({
   const t = m.split(splitRe).filter(a => a)
   const tests = t.map((test) => {
     const [name, total] = split(test, '\n')
-    const [input, body] = split(total, '\n\n/*')
+    const [i, body] = split(total, '\n/*')
+    const input = i.replace(/\n$/, '')
 
     const expected = mismatch(
-      /\/\* +(.+) +\*\/\n([\s\S]+?)\n\/\*\*\//g,
+      /\/\* +(.+) +\*\/(\n?)([\s\S]*?)\n\/\*\*\//g,
       body,
-      ['key', 'value'],
-    ).reduce((acc, { key, value }) => {
+      ['key', 'newLine', 'value'],
+    ).reduce((acc, { key, newLine, value }) => {
+      const val = (!value && newLine) ? newLine : value
       return {
         ...acc,
-        [key]: value,
+        [key]: val,
       }
     }, {})
     return {

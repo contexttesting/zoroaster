@@ -1,7 +1,11 @@
 let erte = require('erte'); if (erte && erte.__esModule) erte = erte.default;
+const { c: color } = require('erte');
 const { readdirSync, lstatSync } = require('fs');
 const { join } = require('path');
 const { collect } = require('catchment');
+const { fork } = require('spawncommand');
+let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
+const { deepEqual } = require('assert-diff');
 let getTests = require('../lib/mask'); if (getTests && getTests.__esModule) getTests = getTests.default;
 const { equal, throws } = require('../assert');
 
@@ -10,8 +14,10 @@ const { equal, throws } = require('../assert');
  * @param {string} path Path to the mask file or directory of files.
  * @param {MakeTestSuiteConf} [conf] Configuration for making test suites.
  * @param {({new(): Context}|{new(): Context}[]|{})} [conf.context] Single or multiple context constructors or objects to initialise for each test.
- * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A function which should return results of a test.
- * @param {(...contexts?: Context[]) => Writable} [conf.streamResult] A function which returns a stream to be ended with the input specified in the mask to get the test result. The stream should implement both _Writable_ and _Readable_ interfaces as its output will be accumulated and compared against the expected output of the mask. This method is useful for testing _Transform_ streams.
+ * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
+ * @param {(...contexts?: Context[]) => Transform} [conf.getTransform] A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+ * @param {(input: string, ...contexts?: Context[]) => Readable} [conf.getReadable] A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
+ * @param {string} [conf.fork] A path to the module which will be forked with input as arguments, and its output compared against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`.
  * @param {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [conf.getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @param {(results: any) => string} [conf.mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
  * @param {(results: any, props: Object.<string, (string|object)>) => void} [conf.assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
@@ -52,11 +58,11 @@ const parseProps = (props, jsonProps) => {
 
 /**
  * Create a new test.
- * @param {{ streamResult: () => Writable }} param
+ * @param {{ getTransform: () => Transform, getReadable: (input: string) => Readable }} param
  */
 const makeTest = ({
-  input, error, getThrowsConfig, streamResult, getResults, expected,
-  assertResults, props, mapActual,
+  input, error, getThrowsConfig, getTransform, getResults, expected,
+  assertResults, props, mapActual, getReadable,
 }) => {
   const test = async (...contexts) => {
     if (error) {
@@ -65,23 +71,34 @@ const makeTest = ({
       const throwsConfig = getThrowsConfig(input, ...contexts)
       await assertError(throwsConfig, error)
       return
-    } else if (streamResult) {
-      const rs = streamResult(...contexts)
+    } else if (getTransform) {
+      if (expected === undefined) throw new Error('No expected output was given.')
+      const rs = getTransform(...contexts)
       rs.end(input)
+      const actual = await collect(rs)
+      assertExpected(actual, expected)
+      return
+    } else if (getReadable) {
+      if (expected === undefined) throw new Error('No expected output was given.')
+      const rs = getReadable(input, ...contexts)
       const actual = await collect(rs)
       assertExpected(actual, expected)
       return
     }
 
-    if (!getResults) return
+    if (!getResults) throw new Error('Nothing was tested.')
 
     const results = await getResults(input, ...contexts)
 
-    if (expected) {
+    if (expected !== undefined) {
       const actual = mapActual(results)
-      if ((typeof actual).toLowerCase() != 'string')
-        throw new Error('The actual result is not an a string. Use "mapActual" function to map to a string result.')
-      assertExpected(actual, expected)
+      if (typeof expected != 'string') { // already parsed
+        deepEqual(actual, expected)
+      } else if ((typeof actual).toLowerCase() != 'string') {
+        throw new Error('The actual result is not an a string. Use "mapActual" function to map to a string result, or add "expected" to "jsonProps".')
+      } else {
+        assertExpected(actual, expected)
+      }
     }
     if (assertResults) {
       assertResults(results, props)
@@ -90,43 +107,76 @@ const makeTest = ({
   return test
 }
 
+       const getArgs = (input) => {
+  const res = mismatch(/(['"])?([\s\S]+?)\1(\s+|$)/g, input, ['q', 'a'])
+    .map(({ a }) => a)
+  return res
+}
+
+const makeForkTest = (forkModule, input, { stdout, stderr, code }) => {
+  return async () => {
+    const args = getArgs(input)
+    const f = fork(forkModule, args, {
+      stdio: 'pipe',
+    })
+    const [, o, e, c] = await Promise.all([
+      f.promise,
+      collect(f.stdout),
+      collect(f.stderr),
+      new Promise(r => f.on('exit', cc => r(cc))),
+    ])
+    if (stdout) assertExpected(stdout, o)
+    if (stderr) assertExpected(stderr, e)
+    if (code && c != code) throw new Error(`Fork exited with code ${c} != ${code}`)
+  }
+}
+
 const makeATestSuite = (maskPath, conf) => {
-  if (!conf) throw new Error('No configuration is given. A config should at least contain either a "getThrowsConfig", "getResults" or "streamResult" functions.')
+  if (!conf) throw new Error('No configuration is given. A config should at least contain either a "getThrowsConfig", "getResults", "getTransform" or "getReadable" functions.')
   const {
     context,
     getResults,
-    streamResult,
+    getTransform,
+    getReadable,
     getThrowsConfig,
     mapActual = a => a,
     assertResults,
     jsonProps = [],
     splitRe,
+    fork: forkModule,
   } = conf
   const tests = getTests({ path: maskPath, splitRe })
 
   const t = tests.reduce((acc, {
-    name, input, expected, error, onError, ...rest
+    name, input, error, onError, ...rest
   }) => {
     let setupError
     let props
+    let expected
     if (name in acc) setupError = `Repeated use of the test name "${name}".`
     try {
-      props = parseProps(rest, jsonProps)
+      ({ expected, ...props } = parseProps(rest, jsonProps))
     } catch ({ message }) {
       setupError = message
     }
 
-    const test = setupError ? () => {
-      throw new Error(setupError)
-    } : makeTest({
-      input, error, getThrowsConfig, streamResult, getResults, expected,
-      assertResults, props, mapActual,
-    })
+    let test
+    if (setupError) {
+      test = () => { throw new Error(setupError) }
+    } else if (forkModule) {
+      test = makeForkTest(forkModule, input, props)
+    } else {
+      test = makeTest({
+        input, error, getThrowsConfig, getTransform, getReadable, getResults, expected,
+        assertResults, props, mapActual,
+      })
+    }
 
     acc[name] = async (...args) => {
       try {
         await test(...args)
       } catch (err) {
+        if (process.env.DEBUG) console.log(color(err.stack, 'red'))
         onError(err) // show location in the error stack. TODO: keep mask line
       }
     }
@@ -143,7 +193,6 @@ const assertError = async (throwsConfig, error) => {
 }
 
 const assertExpected = (result, expected) => {
-  if (!expected) return
   try {
     equal(result, expected)
   } catch (err) {
@@ -155,14 +204,19 @@ const assertExpected = (result, expected) => {
 
 /* documentary types/make-test-suite.xml */
 /**
- * @typedef {{ end: (s: string) => void }} Writable
+ * @typedef {import('stream').Transform} Transform
+ * @typedef {import('stream').Readable} Readable
+ *
+ * @typedef {Object} Context A context made with a constructor.
  * @prop {() => void} [_init] A function to initialise the context.
  * @prop {() => void} [_destroy] A function to destroy the context.
  *
  * @typedef {Object} MakeTestSuiteConf Configuration for making test suites.
  * @prop {({new(): Context}|{new(): Context}[]|{})} [context] Single or multiple context constructors or objects to initialise for each test.
- * @prop {(input: string, ...contexts?: Context[]) => string} [getResults] A function which should return results of a test.
- * @prop {(...contexts?: Context[]) => Writable} [streamResult] A function which returns a stream to be ended with the input specified in the mask to get the test result. The stream should implement both _Writable_ and _Readable_ interfaces as its output will be accumulated and compared against the expected output of the mask. This method is useful for testing _Transform_ streams.
+ * @prop {(input: string, ...contexts?: Context[]) => string} [getResults] A function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
+ * @prop {(...contexts?: Context[]) => Transform} [getTransform] A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+ * @prop {(input: string, ...contexts?: Context[]) => Readable} [getReadable] A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
+ * @prop {string} [fork] A path to the module which will be forked with input as arguments, and its output compared against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`.
  * @prop {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @prop {(results: any) => string} [mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
  * @prop {(results: any, props: Object.<string, (string|object)>) => void} [assertResults] A function containing any addition assertions on the results. The results from `getResults` and a map of expected values extracted from the mask (where `jsonProps` are parsed into JS objects) will be passed as arguments.
@@ -172,4 +226,5 @@ const assertExpected = (result, expected) => {
 
 
 module.exports = makeTestSuite
+module.exports.getArgs = getArgs
 //# sourceMappingURL=make-test-suite.js.map
