@@ -62,7 +62,7 @@ const T = {
     })
     await runTest(ts, 'streams result with argument')
   },
-  async 'tests a forks'({ runTest }) {
+  async 'tests a readable fork'({ runTest }) {
     const ts = makeTestSuite('test/fixture/result/stream-arg.md', {
       getReadable(input) {
         const proc = fork('test/fixture/echo', [input], {

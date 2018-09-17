@@ -11,6 +11,7 @@
       "program": "${workspaceFolder}/src/bin/alamode.js",
       "args": [
         "test/spec",
+        "test/mask",
         "-a",
         "-w",
         "-t",
