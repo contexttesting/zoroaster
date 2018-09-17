@@ -1,4 +1,5 @@
 import erte from 'erte'
+import { c as color } from 'erte'
 import { readdirSync, lstatSync } from 'fs'
 import { join } from 'path'
 import { collect } from 'catchment'
@@ -71,12 +72,14 @@ const makeTest = ({
       await assertError(throwsConfig, error)
       return
     } else if (getTransform) {
+      if (expected === undefined) throw new Error('No expected output was given.')
       const rs = getTransform(...contexts)
       rs.end(input)
       const actual = await collect(rs)
       assertExpected(actual, expected)
       return
     } else if (getReadable) {
+      if (expected === undefined) throw new Error('No expected output was given.')
       const rs = getReadable(input, ...contexts)
       const actual = await collect(rs)
       assertExpected(actual, expected)
@@ -174,6 +177,7 @@ const makeATestSuite = (maskPath, conf) => {
       try {
         await test(...args)
       } catch (err) {
+        if (process.env.DEBUG) console.log(color(err.stack, 'red'))
         onError(err) // show location in the error stack. TODO: keep mask line
       }
     }
