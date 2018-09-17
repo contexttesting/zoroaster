@@ -1,5 +1,11 @@
 ## 17 September 2018
 
+### [3.4.0](https://github.com/artdecocode/zoroaster/compare/v3.3.0...v3.4.0)
+
+- [feature] Rename `streamResult` to `getTransform` and add `getReadable` to test streams which can be constructed using the `input` property of a mask.
+- [feature] Add the `fork` property to the mask factory.
+- [fix] Allow `expected` value in the mask to be empty or with a blank line (to test single new lines).
+
 ### [3.3.0](https://github.com/artdecocode/zoroaster/compare/v3.2.0...v3.3.0)
 
 - [feature] Implement `streamResult` for masks, allowing to easily test `Transform` streams.
