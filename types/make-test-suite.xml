@@ -10,13 +10,13 @@
       Single or multiple context constructors or objects to initialise for each test.
     </prop>
     <prop opt name="getResults" type="(input: string, ...contexts?: Context[]) => string">
-      A function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
+      A possibly async function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
     </prop>
-    <prop opt name="getTransform" type="(...contexts?: Context[]) => Transform">
-      A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+    <prop opt name="getTransform" type="(...contexts?: Context[]) => Transform|Promise.<Transform>">
+      A possibly async function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
     </prop>
-    <prop opt name="getReadable" type="(input: string, ...contexts?: Context[]) => Readable">
-      A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
+    <prop opt name="getReadable" type="(input: string, ...contexts?: Context[]) => Readable|Promise.<Readable>">
+      A possibly async function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
     </prop>
     <prop opt name="fork" type="string">
       A path to the module which will be forked with input as arguments, and its output compared against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`.

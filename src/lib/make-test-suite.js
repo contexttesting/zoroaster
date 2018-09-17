@@ -14,9 +14,9 @@ import { equal, throws } from '../assert'
  * @param {string} path Path to the mask file or directory of files.
  * @param {MakeTestSuiteConf} [conf] Configuration for making test suites.
  * @param {({new(): Context}|{new(): Context}[]|{})} [conf.context] Single or multiple context constructors or objects to initialise for each test.
- * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
- * @param {(...contexts?: Context[]) => Transform} [conf.getTransform] A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
- * @param {(input: string, ...contexts?: Context[]) => Readable} [conf.getReadable] A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
+ * @param {(input: string, ...contexts?: Context[]) => string} [conf.getResults] A possibly async function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
+ * @param {(...contexts?: Context[]) => Transform|Promise.<Transform>} [conf.getTransform] A possibly async function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+ * @param {(input: string, ...contexts?: Context[]) => Readable|Promise.<Readable>} [conf.getReadable] A possibly async function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
  * @param {string} [conf.fork] A path to the module which will be forked with input as arguments, and its output compared against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`.
  * @param {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [conf.getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @param {(results: any) => string} [conf.mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
@@ -73,14 +73,14 @@ const makeTest = ({
       return
     } else if (getTransform) {
       if (expected === undefined) throw new Error('No expected output was given.')
-      const rs = getTransform(...contexts)
+      const rs = await getTransform(...contexts)
       rs.end(input)
       const actual = await collect(rs)
       assertExpected(actual, expected)
       return
     } else if (getReadable) {
       if (expected === undefined) throw new Error('No expected output was given.')
-      const rs = getReadable(input, ...contexts)
+      const rs = await getReadable(input, ...contexts)
       const actual = await collect(rs)
       assertExpected(actual, expected)
       return
@@ -213,9 +213,9 @@ const assertExpected = (result, expected) => {
  *
  * @typedef {Object} MakeTestSuiteConf Configuration for making test suites.
  * @prop {({new(): Context}|{new(): Context}[]|{})} [context] Single or multiple context constructors or objects to initialise for each test.
- * @prop {(input: string, ...contexts?: Context[]) => string} [getResults] A function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
- * @prop {(...contexts?: Context[]) => Transform} [getTransform] A function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
- * @prop {(input: string, ...contexts?: Context[]) => Readable} [getReadable] A function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
+ * @prop {(input: string, ...contexts?: Context[]) => string} [getResults] A possibly async function which should return results of a test. If it returns a string, it will be compared against the `expected` property of the mask using string comparison. If it returns an object, its deep equality with `expected` can be tested by adding `'expected'` to the `jsonProps`.
+ * @prop {(...contexts?: Context[]) => Transform|Promise.<Transform>} [getTransform] A possibly async function which returns a _Transform_ stream to be ended with the input specified in the mask. Its output will be accumulated and compared against the expected output of the mask.
+ * @prop {(input: string, ...contexts?: Context[]) => Readable|Promise.<Readable>} [getReadable] A possibly async function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
  * @prop {string} [fork] A path to the module which will be forked with input as arguments, and its output compared against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`.
  * @prop {(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }} [getThrowsConfig] A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.
  * @prop {(results: any) => string} [mapActual] An optional function to get a value to test against `expected` mask property from results. By default, the full result is used.
