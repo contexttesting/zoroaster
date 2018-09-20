@@ -27,6 +27,52 @@ const T = {
       message: /Fork exited with code 127 != 1/,
     })
   },
+  async 'tests a fork with properties'({ runTest }) {
+    const t = '--test'
+    const e = 'TEST'
+    const ts = makeTestSuite('test/fixture/result/fork-options.md', {
+      fork: {
+        module: 'test/fixture/fork-options',
+        getArgs(args, { arg }) {
+          return [...args, arg]
+        },
+        getOptions({ FORK_ENV }) {
+          return {
+            env: {
+              FORK_ENV,
+            },
+            execArgv: [],
+          }
+        },
+      },
+      jsonProps: ['stdout'],
+      context: { arg: t, FORK_ENV: e },
+    })
+    await runTest(ts, 'forks a module')
+  },
+  async 'fails a fork with options'({ runTest }) {
+    const t = '--test'
+    const ts = makeTestSuite('test/fixture/result/fork-options.md', {
+      fork: {
+        module: 'test/fixture/fork-options',
+        getArgs(args, { arg }) {
+          return [...args, arg]
+        },
+        options: {
+          env: {
+            FORK_ENV: 'FAIL',
+          },
+        },
+      },
+      jsonProps: ['stdout'],
+      context: { arg: t },
+    })
+    await throws({
+      fn: runTest,
+      args: [ts, 'forks a module'],
+      message: /'FAIL' == 'TEST'/,
+    })
+  },
 }
 
 export default T

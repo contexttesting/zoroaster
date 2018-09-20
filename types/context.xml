@@ -1,0 +1,10 @@
+<types>
+  <type name="Context" desc="A context made with a constructor.">
+    <prop opt name="_init" type="() => void">
+      A function to initialise the context.
+    </prop>
+    <prop opt name="_destroy" type="() => void">
+      A function to destroy the context.
+    </prop>
+  </type>
+</types>

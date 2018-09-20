@@ -9,6 +9,9 @@
       "request": "launch",
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/alamode.js",
+      "env": {
+        "DEBUG": "1",
+      },
       "args": [
         "test/spec",
         "test/mask",

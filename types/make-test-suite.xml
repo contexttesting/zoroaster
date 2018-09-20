@@ -1,10 +1,6 @@
 <types>
   <import name="Transform" from="stream"/>
   <import name="Readable" from="stream"/>
-  <type name="Context" desc="A context made with a constructor.">
-    <prop opt name="_init" type="() => void">A function to initialise the context.</prop>
-    <prop opt name="_destroy" type="() => void">A function to destroy the context.</prop>
-  </type>
   <type name="MakeTestSuiteConf" desc="Configuration for making test suites.">
     <prop opt name="context" type="({new(): Context}|{new(): Context}[]|{})">
       Single or multiple context constructors or objects to initialise for each test.
@@ -18,8 +14,8 @@
     <prop opt name="getReadable" type="(input: string, ...contexts?: Context[]) => Readable|Promise.<Readable>">
       A possibly async function which returns a _Readable_ stream constructed with the input from the mask. Its output will be stored in memory and compared against the expected output of the mask. This could be used to test a forked child process, for example.
     </prop>
-    <prop opt name="fork" type="string">
-      A path to the module which will be forked with input as arguments, and its output compared against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`.
+    <prop opt name="fork" type="string|ForkConfig">
+      A path to the module to fork with input as arguments, and compare its output against the `code`, `stdout` and `stderr` properties of the mask. Arguments with whitespace should be wrapped in speech marks, i.e. `'` or `"`. Additionally, `ForkConfig` with `module`, `getArgs`, `options` and `getOptions` properties can be passed for more control of how the fork will be started.
     </prop>
     <prop opt name="getThrowsConfig" type="(input: string, ...contexts?: Context[]) => { fn: function, args?: any[], message?: (string|RegExp) }">
       A function which should return a configuration for [`assert-throws`](https://github.com/artdecocode/assert-throws), including `fn` and `args`, when testing an error.

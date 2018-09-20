@@ -1,0 +1,17 @@
+<types>
+  <import name="ForkOptions" from="child_process"/>
+  <type name="ForkConfig" desc="Parameters for forking.">
+    <prop string name="module">
+      The path to the module to fork.
+    </prop>
+    <prop opt name="getArgs" type="(args: string[], ...contexts?: Context[]) => string[]|Promise.<string[]>">
+      The function to get arguments to pass the forked processed based on parsed masks input and contexts.
+    </prop>
+    <prop opt name="getOptions" type="(...contexts?: Context[]) => ForkOptions">
+      The function to get options for the forked processed, such as `ENV` and `cwd`, based on contexts.
+    </prop>
+    <prop opt name="options" type="ForkOptions">
+      Options for the forked processed, such as `ENV` and `cwd`.
+    </prop>
+  </type>
+</types>
