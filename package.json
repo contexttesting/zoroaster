@@ -7,7 +7,7 @@
     "t": "node src/bin/alamode",
     "test": "yarn t test/spec test/mask",
     "mask": "yarn t test/mask",
-    "test-build": "ALAMODE_ENV=test-build yarn t test/spec",
+    "test-build": "ALAMODE_ENV=test-build yarn test",
     "test-all": "yarn-s test test-build",
     "b": "alamode src -o build -i bin/alamode.js",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
