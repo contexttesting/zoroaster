@@ -17,6 +17,8 @@ Are you fed up with `mocha` or have you had enough of `chai` in your life? Is it
 yarn add -DE zoroaster
 ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
+
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
@@ -45,6 +47,8 @@ yarn add -DE zoroaster
   * [documentation todo](#documentation-todo)
   * [context-related todo](#context-related-todo)
 - [Copyright](#copyright)
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
 ## Quick Example
 
@@ -88,11 +92,14 @@ export default {
 
 ![tests results](doc/tests.png)
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
+
 ## Why Use Zoroaster
 
 _Zoroaster_ allows to write test cases as simple functions, without using framework-specific global variables such as `describe`,  `it`, `before` and `after`. Save it for the after-life. Export test suites as modules and run them with `zoroaster` binary.
 
 Read the main idea behind _Zoroaster_ below, or skip to the [example](#example) to get started.
+
 ### Each Directory is a Test Suite
 
 It's much easier to organise test cases by JavaScript files in directories and not by nested function blocks in a single file. Files can be moved around much more easily and are more atomic.
@@ -243,6 +250,9 @@ const dayTestSuite = {
 Consequently, all of this means that test contexts can be tested separately, which is perfect for when it is required to ensure quality of tests.
 
 In this section, we tried to give a brief overview of why `zoroaster` with its `Contexts` should become your new daily routine. The advantage is that you're more flexible in organising the `test` directory which is harder with `beforeEach` and `afterEach` in _other_ testing frameworks.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
+
 ## Example
 
 See how to write tests with `Zoroaster` in this section.
@@ -318,7 +328,6 @@ Async functions are perfect to test with [`zoroaster testing framework`][2] due 
 
 All tests have to complete within the specified [timeout](#timeout).
 
-
 ### Running Example
 
 To run the example test file, execute
@@ -360,6 +369,9 @@ $ node src/bin example/Zoroaster/test/spec --babel
 🦅  Executed 17 tests.
 ✨  Done in 0.92s.
 ```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+
 ## CLI
 
 This section describes how to use `zoroaster` from command-line interface.
@@ -455,6 +467,9 @@ Additional shorter scripts for `yarn` can be specified (`-b` is to require `@bab
   }
 }
 ```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
+
 ## Context
 
 A context is unique to each test. When added as a `context` property to a test suite, it can be accessed from test function's first argument. Test suite context cannot be updated from within tests (only its state when using a function).
@@ -496,6 +511,7 @@ const T = {
 
 export default T
 ```
+
 ### Class Context
 
 Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this`. Getters and setters are not bound.
@@ -571,6 +587,9 @@ const T = {
 
 export default T
 ```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
+
 ## Assertion Library
 
 `zoroaster/assert` exports a the following methods to be used for assertions in tests:
@@ -603,6 +622,8 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
+
 ## launch.json
 
 The following snippet can be used in _VS Code_ when debugging tests.
@@ -611,22 +632,24 @@ The following snippet can be used in _VS Code_ when debugging tests.
 {
   "type": "node",
   "request": "launch",
-  "name": "Launch Program",
+  "name": "Launch Zoroaster",
   "program": "${workspaceFolder}/node_modules/.bin/zoroaster",
   "args": [
-    "test/spec/integration.js",
+    "test/spec",
     "-a",
-    "-w"
+    "-w",
+    "-t",
+    "9999999",
   ],
-  "env": {
-    "ZOROASTER_TIMEOUT": "9999999"
-  },
   "console": "integratedTerminal",
   "skipFiles": [
     "<node_internals>/**/*.js"
   ]
 }
 ```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+
 ## TODO
 
 1. JS API
@@ -660,6 +683,8 @@ The following snippet can be used in _VS Code_ when debugging tests.
  - find a way to use `JSDOC` with tests
  - clean stack traces when context evaluates or destroys with error
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+
 ## Copyright
 
 (c) [Art Deco][1] 2018
@@ -669,3 +694,5 @@ The following snippet can be used in _VS Code_ when debugging tests.
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
 [5]: https://npmjs.org/packages/assert-throws
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>

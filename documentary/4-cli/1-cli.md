@@ -1,4 +1,3 @@
-
 ### Testing a Directory
 
 If a path to a folder is passed as an argument, it will be tested recursively.
@@ -86,3 +85,5 @@ Additional shorter scripts for `yarn` can be specified (`-b` is to require `@bab
   }
 }
 ```
+
+%~%

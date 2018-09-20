@@ -1,4 +1,3 @@
-
 ### async functions
 
 Async functions are perfect to test with [`zoroaster testing framework`][2] due to the concise async shorthand method notation.
@@ -20,6 +19,6 @@ Async functions are perfect to test with [`zoroaster testing framework`][2] due 
 }
 ```
 
-All tests have to complete within the specified [timeout](#timeout).
-
 <!-- Have a go at writing interactive tests yourself at [`Zoroaster Playground`][3]. -->
+
+All tests have to complete within the specified [timeout](#timeout).

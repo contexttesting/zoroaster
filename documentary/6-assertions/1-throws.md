@@ -1,4 +1,3 @@
-
 ### throws
 
 Use awesome [`assert-throws`][5] to test whether (asynchronous) functions throw required errors.
@@ -20,3 +19,5 @@ import { throws } from 'zoroaster/assert'
 ```
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
+
+%~%

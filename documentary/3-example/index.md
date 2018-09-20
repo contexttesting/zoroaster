@@ -1,4 +1,3 @@
-
 ## Example
 
 See how to write tests with `Zoroaster` in this section.

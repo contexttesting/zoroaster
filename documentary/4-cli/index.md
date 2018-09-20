@@ -1,4 +1,3 @@
-
 ## CLI
 
 This section describes how to use `zoroaster` from command-line interface.

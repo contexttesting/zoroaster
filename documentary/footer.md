@@ -31,6 +31,8 @@
  - find a way to use `JSDOC` with tests
  - clean stack traces when context evaluates or destroys with error
 
+%~%
+
 ## Copyright
 
 (c) [Art Deco][1] 2018
@@ -40,3 +42,5 @@
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
 [5]: https://npmjs.org/packages/assert-throws
+
+%~ -1%

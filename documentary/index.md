@@ -17,6 +17,10 @@ Are you fed up with `mocha` or have you had enough of `chai` in your life? Is it
 yarn add -DE zoroaster
 ```
 
+%~%
+
 ## Table Of Contents
 
 %TOC%
+
+%~%

@@ -1,4 +1,3 @@
-
 ## Assertion Library
 
 `zoroaster/assert` exports a the following methods to be used for assertions in tests:

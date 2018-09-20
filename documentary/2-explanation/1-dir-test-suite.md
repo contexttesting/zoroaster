@@ -1,4 +1,3 @@
-
 ### Each Directory is a Test Suite
 
 It's much easier to organise test cases by JavaScript files in directories and not by nested function blocks in a single file. Files can be moved around much more easily and are more atomic.

@@ -1,4 +1,3 @@
-
 ### Running Example
 
 To run the example test file, execute
@@ -40,3 +39,5 @@ $ node src/bin example/Zoroaster/test/spec --babel
 🦅  Executed 17 tests.
 ✨  Done in 0.92s.
 ```
+
+%~%
