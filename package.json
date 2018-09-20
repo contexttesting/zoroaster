@@ -1,7 +1,7 @@
 {
   "name": "zoroaster",
   "version": "3.5.0",
-  "description": "A Modern Testing Framework For Node.js With Support For Test Contexts Which Can Be Reused Across Test Suites And Packages. This Improves Developer Productivity And Experience With IDE Hints, And Test Reliability.",
+  "description": "A Modern Testing Framework For Node.js With Support For Test Contexts Which Can Be Reused Across Test Suites And Packages. Zoroaster Improves Developer Productivity And Experience With IDE Hints, And Test Reliability.",
   "main": "build",
   "scripts": {
     "t": "node src/bin/alamode",
