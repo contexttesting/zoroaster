@@ -1,5 +1,10 @@
 ## 20 September 2018
 
+### [3.5.1](https://github.com/artdecocode/zoroaster/compare/v3.5.0...v3.5.1)
+
+- [fix] Update `alamode@1.5.1` to import babel-transpiled modules correctly.
+- [doc] Document `alamode` usage, improve introductory description.
+
 ### [3.5.0](https://github.com/artdecocode/zoroaster/compare/v3.4.1...v3.5.0)
 
 - [feature] Add `forkConfig` option to the mask.
