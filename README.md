@@ -33,7 +33,9 @@ yarn add -DE zoroaster
   * [Testing a Directory](#testing-a-directory)
   * [Testing Files](#testing-files)
   * [`--watch`, `-w`: Watch Files for Changes](#--watch--w-watch-files-for-changes)
-  * [Timeout](#timeout)
+  * [`--timeout`, `-t`: Timeout](#--timeout--t-timeout)
+  * [`--alamode`, `-a`: `require('alamode)()`](#--alamode--a-requirealamode)
+    * [`.alamoderc.json`](#alamodercjson)
   * [`--babel`, `-b`: `require(@babel/register)`](#--babel--b-requirebabelregister)
   * [package.json](#packagejson)
 - [Context](#context)
@@ -374,11 +376,13 @@ $ node src/bin example/Zoroaster/test/spec --babel
 
 ## CLI
 
-This section describes how to use `zoroaster` from command-line interface.
+This section describes how to use `zoroaster` from the command-line interface.
 
 ```sh
 zoroaster test/spec
 ```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
 
 ### Testing a Directory
 
@@ -388,6 +392,8 @@ If a path to a folder is passed as an argument, it will be tested recursively.
 zoroaster test/spec
 ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
+
 ### Testing Files
 
 If a single or multiple file paths are passed, they are all tested.
@@ -395,6 +401,8 @@ If a single or multiple file paths are passed, they are all tested.
 ```sh
 zoroaster test/spec/lib/index.js
 ```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
 
 ### `--watch`, `-w`: Watch Files for Changes
 
@@ -405,20 +413,53 @@ zoroaster test/spec --watch
 zoroaster test/spec -w
 ```
 
-### Timeout
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
 
-The default timeout is `2000ms`. At the moment, only global timeout can be set with the `ZOROASTER_TIMEOUT` environment variable, e.g., `ZOROASTER_TIMEOUT=5000 zoroaster test`
+### `--timeout`, `-t`: Timeout
+
+Sets the global timeout for each test in ms. The default timeout is `2000ms`.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="15"></a></p>
+
+### `--alamode`, `-a`: `require('alamode)()`
+
+[ÀLaMode](https://github.com/a-la/alamode) is a Regex-Based transpiler that allows to write `import` and `export` statements. It will transpile tests and source files on-the-fly when this option is used.
+
+```sh
+zoroaster test/spec -a
+```
+
+#### `.alamoderc.json`
+
+One of the advantages of using `alamode` is that it can substitute a path to the imported module according to the configuration found in the `.alamoderc.json` file in the project directory. For example, if it is required to test the `build` directory instead of the `src` directory, the following configuration can be used:
+
+```json5
+{
+  "env": {
+    "test-build": {
+      "import": {
+        "replacement": {
+          "from": "^((../)+)src",
+          "to": "$1build"
+        }
+      }
+    }
+  }
+}
+```
+
+This will make `zoroaster` import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that).
 
 ### `--babel`, `-b`: `require(@babel/register)`
 
-If you want to use `@babel/register` in your tests, just pass `--babel` (or `-b`) flag to the CI. It will make a call to require `@babel/register`, so that it must be installed as a dependency in your project, because it's not specified as `zoroaster`'s dependency.
+To use `@babel/register` in tests, the `--babel` (or `-b`) flag can be passed to the CLI. It will make a call to require `@babel/register`, therefore it must be installed as a dependency in the project, because it's not specified as `zoroaster`'s dependency.
 
 ```sh
 zoroaster test/spec --babel
 zoroaster test/spec -b
 ```
 
-When ES modules syntax (`import foo from 'foo'`) is needed (in other words, always), the following `.babelrc` pattern needs to be used:
+For example, when the _ES6_ modules syntax (`import package from 'package'`) is needed, the following `.babelrc` pattern needs to be used:
 
 ```json
 {
@@ -429,7 +470,7 @@ When ES modules syntax (`import foo from 'foo'`) is needed (in other words, alwa
 }
 ```
 
-With the following dev dependencies installed:
+with the following _dev_ dependencies installed:
 
 ```fs
 yarn add -E -D \
@@ -439,36 +480,35 @@ yarn add -E -D \
 @babel/plugin-transform-modules-commonjs \
 ```
 
-When building the project, you're probably using `@babel/cli` as well.
+However, the above set-up can be easily achieved with `alamode` which has much less dependencies than `Babel`. This option therefore should be used for cases when more advanced transforms need to be added.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="15"></a></p>
 
 ### package.json
 
-To be able to run `yarn test`, specify the test script in the `package.json` as follows:
+To be able to run tests from the project directory, it is advised to use `package.json` scripts. There is the main `test` script, and additional shorter scripts for `yarn` and `npm` which makes it easy to run tests.
 
-```json
+|  Command   |                                                                                                           Meaning                                                                                                           |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| t          | Command which could be used to point to the exact file, e.g., `yarn t test/spec/lib.js`.                                                                                                                      |
+| test       | Run all tests found in the `spec` and `mask` directories.                                                                                                 |
+| mask       | Run just `mask` tests.                                                                                                                                                                     |
+| spec       | Run only `spec` tests.                                                                                                                                                                     |
+| test-build | When a project is build into `build`, and `ALAMODE_ENV` is configured in [`.alamoderc.json`](#alamodercjson), this allows to substitute all paths to source files in the `src` directory to paths in the `build` directory. |
+
+```json5
 {
-  "name": "test-package",
   "scripts": {
-    "test": "zoroaster test/spec"
-
+    "t": "zoroaster -a",
+    "test": "yarn t test/spec test/mask",
+    "mask": "yarn t test/mask",
+    "spec": "yarn t test/spec",
+    "test-build": "ALAMODE_ENV=test-build yarn test",
   }
 }
 ```
 
-Additional shorter scripts for `yarn` can be specified (`-b` is to require `@babel/register`)
-
-```json
-{
-  "scripts": {
-    "t": "zoroaster -b",
-    "tw": "zoroaster -b -w",
-    "test": "yarn t test/spec",
-    "test-watch": "yarn test -w",
-  }
-}
-```
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Context
 
@@ -588,7 +628,7 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -622,7 +662,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -648,7 +688,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 ## TODO
 
@@ -683,7 +723,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
  - find a way to use `JSDOC` with tests
  - clean stack traces when context evaluates or destroys with error
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
 
 ## Copyright
 
