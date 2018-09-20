@@ -1,23 +1,3 @@
-### Testing a Directory
-
-If a path to a folder is passed as an argument, it will be tested recursively.
-
-```sh
-zoroaster test/spec
-```
-
-%~ width="15"%
-
-### Testing Files
-
-If a single or multiple file paths are passed, they are all tested.
-
-```sh
-zoroaster test/spec/lib/index.js
-```
-
-%~ width="15"%
-
 ### `--watch`, `-w`: Watch Files for Changes
 
 To watch files for changes, use `--watch` (or `-w`) flag, e.g.,

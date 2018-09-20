@@ -30,8 +30,6 @@ yarn add -DE zoroaster
   * [async functions](#async-functions)
   * [Running Example](#running-example)
 - [CLI](#cli)
-  * [Testing a Directory](#testing-a-directory)
-  * [Testing Files](#testing-files)
   * [`--watch`, `-w`: Watch Files for Changes](#--watch--w-watch-files-for-changes)
   * [`--timeout`, `-t`: Timeout](#--timeout--t-timeout)
   * [`--alamode`, `-a`: `require('alamode)()`](#--alamode--a-requirealamode)
@@ -376,33 +374,23 @@ $ node src/bin example/Zoroaster/test/spec --babel
 
 ## CLI
 
-This section describes how to use `zoroaster` from the command-line interface.
+This section describes how to use _Zoroaster_ from the command-line interface. If it was installed globally, the `zoroaster` command could be used. For locally installed _Zoroaster_, the `yarn` or `npm run` commands are preferred with scripts added to the [`package.json`](#packagejson).
+
+When the path passed is a directory, all test suites it contains will be constructed recursively and executed. Multiple paths can be passed.
 
 ```sh
 zoroaster test/spec
+yarn t test/spec test/mask
+```
+
+When the path is a file, it is made into a single test suite and run. Multiple files could also be given.
+
+```sh
+zoroaster test/spec/lib.js
+yarn t test/spec/lib.js test/mask/lib.js
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
-
-### Testing a Directory
-
-If a path to a folder is passed as an argument, it will be tested recursively.
-
-```sh
-zoroaster test/spec
-```
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
-
-### Testing Files
-
-If a single or multiple file paths are passed, they are all tested.
-
-```sh
-zoroaster test/spec/lib/index.js
-```
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
 
 ### `--watch`, `-w`: Watch Files for Changes
 
@@ -413,13 +401,13 @@ zoroaster test/spec --watch
 zoroaster test/spec -w
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
 
 ### `--timeout`, `-t`: Timeout
 
 Sets the global timeout for each test in ms. The default timeout is `2000ms`.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
 
 ### `--alamode`, `-a`: `require('alamode)()`
 
@@ -482,7 +470,7 @@ yarn add -E -D \
 
 However, the above set-up can be easily achieved with `alamode` which has much less dependencies than `Babel`. This option therefore should be used for cases when more advanced transforms need to be added.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
 
 ### package.json
 
@@ -508,7 +496,7 @@ To be able to run tests from the project directory, it is advised to use `packag
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 ## Context
 
@@ -628,7 +616,7 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -662,7 +650,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -688,7 +676,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## TODO
 
@@ -723,7 +711,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
  - find a way to use `JSDOC` with tests
  - clean stack traces when context evaluates or destroys with error
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Copyright
 
