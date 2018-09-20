@@ -42,11 +42,11 @@ One of the advantages of using `alamode` is that it can substitute a path to the
 }
 ```
 
-This will make `zoroaster` import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that).
+This will make _Zoroaster_ import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that).
 
 ### `--babel`, `-b`: `require(@babel/register)`
 
-To use `@babel/register` in tests, the `--babel` (or `-b`) flag can be passed to the CLI. It will make a call to require `@babel/register`, therefore it must be installed as a dependency in the project, because it's not specified as `zoroaster`'s dependency.
+To use `@babel/register` in tests, the `--babel` (or `-b`) flag can be passed to the CLI. It will make a call to require `@babel/register`, therefore it must be installed as a dependency in the project, because it's not specified as _Zoroaster_'s dependency.
 
 ```sh
 zoroaster test/spec --babel

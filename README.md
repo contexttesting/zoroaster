@@ -1,20 +1,24 @@
-# zoroaster
+# Zoroaster
 
 [![npm version](https://badge.fury.io/js/zoroaster.svg)](https://npmjs.org/package/zoroaster)
 
 [![Build Status](https://travis-ci.org/artdecocode/zoroaster.svg?branch=master)](https://travis-ci.org/artdecocode/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
 
-_Zoroaster_ is a modern JavaScript testing framework for _Node.js_. It introduces the concept of test contexts, which aim in helping to provide documentable and re-usable test infrastructure, across spec files in a single package, as well as across packages.
+[<img src="doc/graphics/movzcard.gif" align="right">](http://www.crystalinks.com/zoroaster.html) _Zoroaster_ is a modern JavaScript testing framework for _Node.js_. It introduces the concept of test contexts, which aim in helping to provide documentable and re-usable test infrastructure, across spec files in a single package, as well as across packages. It's a completely new and developer-friendly approach to writing tests, which greatly improves productivity, testing experience and the reliability on tests. In addition, it allows to write _ES6_ module syntax without `Babel`.
 
-[![](doc/graphics/movflamecolumn.gif)](https://zoroaster.co.uk)
-[![](doc/graphics/movzcard.gif)](http://www.crystalinks.com/zoroaster.html)
-[![](doc/graphics/movflamecolumn.gif)](https://artdeco.bz)
+For example, you can make use of `https-context` to set-up a mock HTTP server with configurable responses and `temp-context` to create and remove a temp directory ready for each test without having to worry about repetitively writing the same code across projects. The way tests are written allows to see IDE suggestions for every method and property available in a context. Because these packages are maintained as separate pieces of software, they are also tested which means that there are less chances of an error in test set-ups which could lead to false-positive results.
 
-Are you fed up with `mocha` or have you had enough of `chai` in your life? Is it not time to say good-bye to the old stereotype that the same software must be used every day? Say no more, `zoroaster` is here to save our souls and bring a change.
+[<img src="doc/graphics/movflamecolumn.gif" align="left">](http://contexttesting.com)[<img src="doc/graphics/movflamecolumn.gif" align="right">](http://nodejs.tools) Are you fed up with `mocha` or have you had enough `chai` in your life? Is it not time to say good-bye to the old stereotype that the same software must be used every day? Say no more, _Zoroaster_ is here to save our souls and bring a change.
 
-```
+---
+
+```fs
 yarn add -DE zoroaster
+```
+
+```fs
+npm i --save-dev zoroaster
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -249,13 +253,13 @@ const dayTestSuite = {
 
 Consequently, all of this means that test contexts can be tested separately, which is perfect for when it is required to ensure quality of tests.
 
-In this section, we tried to give a brief overview of why `zoroaster` with its `Contexts` should become your new daily routine. The advantage is that you're more flexible in organising the `test` directory which is harder with `beforeEach` and `afterEach` in _other_ testing frameworks.
+In this section, we tried to give a brief overview of why _Zoroaster_ with its `Contexts` should become your new daily routine. The advantage is that you're more flexible in organising the `test` directory which is harder with `beforeEach` and `afterEach` in _other_ testing frameworks.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
 
 ## Example
 
-See how to write tests with `Zoroaster` in this section.
+See how to write tests with _Zoroaster_ in this section.
 
 First, create a module which exports a TEST SUITE as an object in the `test/spec` directory. Second, add TESTS as functions -- properties of the test suite. Implement the tests with basic assertion methods required from `zoroaster/assert`, or use any other assertion library.
 
@@ -436,11 +440,11 @@ One of the advantages of using `alamode` is that it can substitute a path to the
 }
 ```
 
-This will make `zoroaster` import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that).
+This will make _Zoroaster_ import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that).
 
 ### `--babel`, `-b`: `require(@babel/register)`
 
-To use `@babel/register` in tests, the `--babel` (or `-b`) flag can be passed to the CLI. It will make a call to require `@babel/register`, therefore it must be installed as a dependency in the project, because it's not specified as `zoroaster`'s dependency.
+To use `@babel/register` in tests, the `--babel` (or `-b`) flag can be passed to the CLI. It will make a call to require `@babel/register`, therefore it must be installed as a dependency in the project, because it's not specified as _Zoroaster_'s dependency.
 
 ```sh
 zoroaster test/spec --babel

@@ -67,6 +67,6 @@ const dayTestSuite = {
 
 Consequently, all of this means that test contexts can be tested separately, which is perfect for when it is required to ensure quality of tests.
 
-In this section, we tried to give a brief overview of why `zoroaster` with its `Contexts` should become your new daily routine. The advantage is that you're more flexible in organising the `test` directory which is harder with `beforeEach` and `afterEach` in _other_ testing frameworks.
+In this section, we tried to give a brief overview of why _Zoroaster_ with its `Contexts` should become your new daily routine. The advantage is that you're more flexible in organising the `test` directory which is harder with `beforeEach` and `afterEach` in _other_ testing frameworks.
 
 %~%

@@ -1,6 +1,6 @@
 ## Example
 
-See how to write tests with `Zoroaster` in this section.
+See how to write tests with _Zoroaster_ in this section.
 
 First, create a module which exports a TEST SUITE as an object in the `test/spec` directory. Second, add TESTS as functions -- properties of the test suite. Implement the tests with basic assertion methods required from `zoroaster/assert`, or use any other assertion library.
 
