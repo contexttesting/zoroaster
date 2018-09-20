@@ -121,16 +121,16 @@ difflib@~0.2.1:
   dependencies:
     heap ">= 0.2.0"
 
-documentary@1.16.1:
-  version "1.16.1"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.16.1.tgz#71a8076adf78251501d2c26b37deedbc5e039437"
+documentary@1.18.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.18.0.tgz#4c4dc0b3b937b6066fe8d184050e6eac2352841e"
   dependencies:
     "@wrote/clone" "1.0.1"
     "@wrote/ensure-path" "1.0.3"
     argufy "1.2.1"
     catchment "3.1.1"
     erte "1.1.4"
-    mismatch "1.0.2"
+    mismatch "1.0.3"
     pedantry "2.2.0"
     restream "3.2.1"
     rexml "1.1.0"
@@ -211,10 +211,6 @@ makepromise@3.0.1:
   dependencies:
     erotic "1.2.1"
 
-mismatch@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/mismatch/-/mismatch-1.0.2.tgz#80262a922a420b7ace005195ee14508787d9072f"
-
 mismatch@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/mismatch/-/mismatch-1.0.3.tgz#416cbe164971a8eafc6f3a68c7c63a77bdf06bfb"
@@ -288,6 +284,12 @@ spawncommand@2.0.1:
   resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-2.0.1.tgz#088476fd8aa3c63932309ce0e76a8924d51a34ab"
   dependencies:
     catchment "2.0.1"
+
+spawncommand@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-2.1.0.tgz#a5ef60ae7892e8718a9c717fc52fe5f54521e0de"
+  dependencies:
+    catchment "3.1.1"
 
 strip-ansi@4.0.0:
   version "4.0.0"
