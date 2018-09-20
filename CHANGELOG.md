@@ -1,3 +1,9 @@
+## 20 September 2018
+
+### [3.5.0](https://github.com/artdecocode/zoroaster/compare/v3.4.1...v3.5.0)
+
+- [feature] Add `forkConfig` option to the mask.
+
 ## 17 September 2018
 
 ### [3.4.1](https://github.com/artdecocode/zoroaster/compare/v3.4.0...v3.4.1)
