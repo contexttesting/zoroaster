@@ -1,4 +1,4 @@
-## TODO
+<!-- ## TODO
 
 1. JS API
 2. time-outs - specific for each test, blocked by `context` feature (10)
@@ -31,7 +31,7 @@
  - find a way to use `JSDOC` with tests
  - clean stack traces when context evaluates or destroys with error
 
-%~%
+%~% -->
 
 ## Copyright
 

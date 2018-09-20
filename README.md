@@ -5,11 +5,11 @@
 [![Build Status](https://travis-ci.org/artdecocode/zoroaster.svg?branch=master)](https://travis-ci.org/artdecocode/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
 
-[<img src="doc/graphics/movzcard.gif" align="right">](http://www.crystalinks.com/zoroaster.html) _Zoroaster_ is a modern JavaScript testing framework for _Node.js_. It introduces the concept of test contexts, which aim in helping to provide documentable and re-usable test infrastructure, across spec files in a single package, as well as across packages. It's a completely new and developer-friendly approach to writing tests, which greatly improves productivity, testing experience and the reliability on tests. In addition, it allows to write _ES6_ module syntax without `Babel`.
+[<img src="doc/graphics/movzcard.gif" align="right">](https://contexttesting.com) _Zoroaster_ is a modern JavaScript testing framework for _Node.js_. It introduces the concept of test contexts, which aim in helping to provide documentable and re-usable test infrastructure, across spec files in a single package, as well as across packages. It's a completely new and developer-friendly approach to writing tests, which greatly improves productivity, testing experience and the reliability on tests. In addition, it allows to write _ES6_ module syntax without `Babel`.
 
 For example, you can make use of `https-context` to set-up a mock HTTP server with configurable responses and `temp-context` to create and remove a temp directory ready for each test without having to worry about repetitively writing the same code across projects. The way tests are written allows to see IDE suggestions for every method and property available in a context. Because these packages are maintained as separate pieces of software, they are also tested which means that there are less chances of an error in test set-ups which could lead to false-positive results.
 
-[<img src="doc/graphics/movflamecolumn.gif" align="left">](http://contexttesting.com)[<img src="doc/graphics/movflamecolumn.gif" align="right">](http://nodejs.tools) Are you fed up with `mocha` or have you had enough `chai` in your life? Is it not time to say good-bye to the old stereotype that the same software must be used every day? Say no more, _Zoroaster_ is here to save our souls and bring a change.
+[<img src="doc/graphics/movflamecolumn.gif" align="left">](http://www.crystalinks.com/zoroaster.html)[<img src="doc/graphics/movflamecolumn.gif" align="right">](http://nodejs.tools) Are you fed up with `mocha` or have you had enough `chai` in your life? Is it not time to say good-bye to the old stereotype that the same software must be used every day? Say no more, _Zoroaster_ is here to save our souls and bring a change.
 
 ---
 
@@ -47,9 +47,6 @@ npm i --save-dev zoroaster
 - [Assertion Library](#assertion-library)
   * [throws](#throws)
 - [launch.json](#launchjson)
-- [TODO](#todo)
-  * [documentation todo](#documentation-todo)
-  * [context-related todo](#context-related-todo)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
@@ -681,41 +678,6 @@ The following snippet can be used in _VS Code_ when debugging tests.
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
-
-## TODO
-
-1. JS API
-2. time-outs - specific for each test, blocked by `context` feature (10)
-3. Write tests which spawn child_process to test `bin/zoroaster` executable
-4. Add more reasons why to use _Zoroaster_ to readme
-5. Parallel execution with `--parallel` flag
-6. Only and Exclude
-7. Zoroaster for browsers and Karma
-8. Event listeners
-9. ~~Progress stream~~
-10. ~~Context object as an optional argument to test functions~~
-11. Pass path to a context file in CLI
-12. Catch global errors
-
-### documentation todo
-
-- [ ] masks
-- [ ] alamode
-- [ ] focusing on tests
-- [ ] using zarathustra example
-- [ ] timeouts
-
-### context-related todo
-
- - ~~write readme about context function~~
- - ~~add examples of context function~~
- - write tests for new TestSuite(..., timeout), release `context.timeout` feature
- - accept context as a class
- - only pass context to test functions which accept it
- - find a way to use `JSDOC` with tests
- - clean stack traces when context evaluates or destroys with error
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Copyright
 
