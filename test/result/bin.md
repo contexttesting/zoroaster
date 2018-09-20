@@ -1,0 +1,17 @@
+// runs a test with alamode
+-a test/fixture/alamode/test.js
+
+/* expected */
+test/fixture/alamode/test.js
+  ✓  runs erte
+  ✓  runs c
+  ✗  runs b
+  | AssertionError [ERR_ASSERTION]: 'b' == 'a'
+  |     at runs b (/test/fixture/alamode/test.js:15:5)
+
+test/fixture/alamode/test.js > runs b
+  AssertionError [ERR_ASSERTION]: 'b' == 'a'
+      at runs b (/test/fixture/alamode/test.js:15:5)
+
+🦅  Executed 3 tests: 1 error.
+/**/

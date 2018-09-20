@@ -1,6 +1,7 @@
 import { ok } from 'assert'
 import erotic from 'erotic'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
+import stripAnsi from 'strip-ansi'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
@@ -39,7 +40,27 @@ const to = async (n = 50) => {
 const FIXTURE = resolve(__dirname, '../fixtures')
 const MASK_PATH = resolve(FIXTURE, 'mask.js')
 
+const ZOROASTER = process.env.ALAMODE_ENV == 'test-build' ? '../../build/bin' : '../../src/bin/alamode'
+const BIN = join(__dirname, ZOROASTER)
+
+
+const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
+const winRe = new RegExp(process.cwd().replace(/\\/g, '/'), 'g')
+
+function getSnapshot(s) {
+  const snapshot = stripAnsi(s).trim()
+  return snapshot
+    .replace(re, '')
+    .replace(winRe, '')
+    .replace(/\\/g, '/')
+    .replace(/\r?\n/g, '\n')
+}
+
 const C = {
+  /**
+   * Return a normalised snapshot that can be tested both on Win and Linux.
+   */
+  getSnapshot,
   /**
    * Assert that all tests have completed by recursively traversing the test suite.
    * @param {TestSuite} ts A test suite.
@@ -192,6 +213,7 @@ const C = {
 
   /** Run a test from a test suite. */
   runTest,
+  BIN,
 }
 
 /**
