@@ -33,25 +33,6 @@ const { EOL } = require('os');
   return (typeof fn).toLowerCase() == 'function'
 }
 
-       const bindMethods = (instance, ignore = []) => {
-  const methods = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(instance))
-  const boundMethods = Object.keys(methods)
-    .filter((k) => {
-      return ignore.indexOf(k) < 0
-    })
-    .reduce((acc, k) => {
-      const method = methods[k]
-      const isFn = isFunction(method.value)
-      if (!isFn) return acc
-      method.value = method.value.bind(instance)
-      return {
-        ...acc,
-        [k]: method,
-      }
-    }, {})
-  Object.defineProperties(instance, boundMethods)
-}
-
        const evaluateContext = async (context) => {
   const fn = isFunction(context)
   if (!fn) return context
@@ -70,9 +51,17 @@ const { EOL } = require('os');
       await c._init()
     }
 
-    bindMethods(c, ['constructor', '_init', '_destroy'])
+    const p = new Proxy(c, {
+      get(target, key) {
+        if (key == 'then') return target
+        if (typeof target[key] == 'function') {
+          return target[key].bind(target)
+        }
+        return target[key]
+      },
+    })
 
-    return c
+    return p
   }
 }
 
@@ -91,7 +80,6 @@ module.exports.indent = indent
 module.exports.getPadding = getPadding
 module.exports.filterStack = filterStack
 module.exports.isFunction = isFunction
-module.exports.bindMethods = bindMethods
 module.exports.evaluateContext = evaluateContext
 module.exports.destroyContexts = destroyContexts
 //# sourceMappingURL=index.js.map
