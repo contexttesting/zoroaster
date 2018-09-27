@@ -1,3 +1,9 @@
+## 28 September 2018
+
+### [3.5.2](https://github.com/artdecocode/zoroaster/compare/v3.5.1...v3.5.2)
+
+- [fix] Bind inherited methods by using a Proxy.
+
 ## 20 September 2018
 
 ### [3.5.1](https://github.com/artdecocode/zoroaster/compare/v3.5.0...v3.5.1)
