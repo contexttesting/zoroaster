@@ -33,25 +33,6 @@ export function isFunction(fn) {
   return (typeof fn).toLowerCase() == 'function'
 }
 
-export const bindMethods = (instance, ignore = []) => {
-  const methods = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(instance))
-  const boundMethods = Object.keys(methods)
-    .filter((k) => {
-      return ignore.indexOf(k) < 0
-    })
-    .reduce((acc, k) => {
-      const method = methods[k]
-      const isFn = isFunction(method.value)
-      if (!isFn) return acc
-      method.value = method.value.bind(instance)
-      return {
-        ...acc,
-        [k]: method,
-      }
-    }, {})
-  Object.defineProperties(instance, boundMethods)
-}
-
 export const evaluateContext = async (context) => {
   const fn = isFunction(context)
   if (!fn) return context
@@ -70,9 +51,17 @@ export const evaluateContext = async (context) => {
       await c._init()
     }
 
-    bindMethods(c, ['constructor', '_init', '_destroy'])
+    const p = new Proxy(c, {
+      get(target, key) {
+        if (key == 'then') return target
+        if (typeof target[key] == 'function') {
+          return target[key].bind(target)
+        }
+        return target[key]
+      },
+    })
 
-    return c
+    return p
   }
 }
 
