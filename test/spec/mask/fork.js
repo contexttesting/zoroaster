@@ -73,6 +73,43 @@ const T = {
       message: /'FAIL' == 'TEST'/,
     })
   },
+  async 'passes inputs to stdin'({ runTest }) {
+    const ts = makeTestSuite('test/fixture/result/fork-input.md', {
+      fork: {
+        module: 'test/fixture/fork-inputs',
+        inputs: [
+          [/Answer 1/, 'input1'],
+          [/Answer 2/, 'input2'],
+        ],
+        options: {
+          execArgv: [],
+        },
+        // log: true,
+      },
+      mapActual({ stdout }) {
+        return stdout.trim()
+      },
+    })
+    await runTest(ts, 'writes inputs')
+  },
+  async 'passes inputs to stdin on stderr'({ runTest }) {
+    const ts = makeTestSuite('test/fixture/result/fork-input.md', {
+      fork: {
+        module: 'test/fixture/fork-inputs-stderr',
+        stderrInputs: [
+          [/Answer 1/, 'input1'],
+        ],
+        options: {
+          execArgv: [],
+        },
+        // log: true,
+      },
+      mapActual({ stderr }) {
+        return stderr.trim()
+      },
+    })
+    await runTest(ts, 'writes inputs on stderr')
+  },
 }
 
 export default T

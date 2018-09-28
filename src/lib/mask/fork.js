@@ -1,7 +1,7 @@
 import { deepEqual } from 'assert-diff'
 import { fork } from 'spawncommand'
 import mismatch from 'mismatch'
-import { assertExpected } from './'
+import { assertExpected, setupAnswers } from './'
 
 /**
  * @param {string|ForkConfig} forkConfig Parameters for forking.
@@ -53,9 +53,8 @@ export const getForkArguments = async (forkConfig, args, context) => {
   }
 }
 
-
 /**
- * @param {string|ForkConfig} forkConfig
+ * @param {{forkConfig: string|ForkConfig}}
  */
 const runFork = async ({
   forkConfig,
@@ -64,8 +63,26 @@ const runFork = async ({
   contexts,
 }) => {
   const a = getArgs(input)
-  const { mod, args, options } = await getForkArguments(forkConfig, a, contexts)
-  const { promise } = fork(mod, args, options)
+  const {
+    mod, args, options,
+  } = await getForkArguments(forkConfig, a, contexts)
+  const { promise,
+    stdout: so,
+    stdin: i,
+    stderr: se,
+  } = fork(mod, args, options)
+
+  let logStdout, logStderr
+  if (forkConfig.log === true) {
+    logStdout = process.stdout
+    logStderr = process.stderr
+  } else if (typeof forkConfig == 'object') {
+    ({ stdout: logStdout, stderr: logStderr } = forkConfig)
+  }
+
+  setupAnswers(so, i, forkConfig.inputs, logStdout)
+  setupAnswers(se, i, forkConfig.stderrInputs, logStderr)
+
   const res = await promise
   const { code: c, stdout: o, stderr: e } = res
   assertForkOutput(o, stdout)
@@ -84,6 +101,7 @@ const assertForkOutput = (actual, expected) => {
   }
 }
 
+/** @param {string} input */
 export const getArgs = (input) => {
   const res = mismatch(/(['"])?([\s\S]+?)\1(\s+|$)/g, input, ['q', 'a'])
     .map(({ a }) => a)
@@ -108,4 +126,7 @@ export default runFork
  * @prop {(args: string[], ...contexts?: Context[]) => string[]|Promise.<string[]>} [getArgs] The function to get arguments to pass the forked processed based on parsed masks input and contexts.
  * @prop {(...contexts?: Context[]) => ForkOptions} [getOptions] The function to get options for the forked processed, such as `ENV` and `cwd`, based on contexts.
  * @prop {ForkOptions} [options] Options for the forked processed, such as `ENV` and `cwd`.
+ * @prop {[RegExp, string][]} [inputs] Inputs to push to `stdin` when `stdout` writes data. The inputs are kept on stack, and taken off the stack when the RegExp matches the written data.
+ * @prop {[RegExp, string][]} [stderrInputs] Inputs to push to `stdin` when `stderr` writes data (similar to `inputs`).
+ * @prop {boolean|{stderr: Writable, stdout: Writable}} [log=false] Whether to pipe data from `stdout`, `stderr` to the process's streams. If an object is passed, the output will be piped to streams specified as its `stdout` and `stderr` properties. Default `false`.
  */

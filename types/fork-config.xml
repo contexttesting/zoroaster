@@ -13,5 +13,14 @@
     <prop opt name="options" type="ForkOptions">
       Options for the forked processed, such as `ENV` and `cwd`.
     </prop>
+    <prop opt name="inputs" type="[RegExp, string][]">
+      Inputs to push to `stdin` when `stdout` writes data. The inputs are kept on stack, and taken off the stack when the RegExp matches the written data.
+    </prop>
+    <prop opt name="stderrInputs" type="[RegExp, string][]">
+      Inputs to push to `stdin` when `stderr` writes data (similar to `inputs`).
+    </prop>
+    <prop name="log" default="false" type="boolean|{stderr: Writable, stdout: Writable}">
+      Whether to pipe data from `stdout`, `stderr` to the process's streams. If an object is passed, the output will be piped to streams specified as its `stdout` and `stderr` properties.
+    </prop>
   </type>
 </types>
