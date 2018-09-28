@@ -18,6 +18,7 @@ export const getForkArguments = async (forkConfig, args, context) => {
    */
   const stdioOpts = {
     stdio: 'pipe',
+    execArgv: [],
   }
   if (typeof forkConfig == 'string') {
     return {
@@ -33,7 +34,7 @@ export const getForkArguments = async (forkConfig, args, context) => {
     getOptions,
   } = forkConfig
   const a = getForkArgs ? await getForkArgs(args, ...context) : args
-  let opt
+  let opt = stdioOpts
   if (options) {
     opt = {
       ...stdioOpts,

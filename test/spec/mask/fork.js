@@ -41,7 +41,6 @@ const T = {
             env: {
               FORK_ENV,
             },
-            execArgv: [],
           }
         },
       },
@@ -81,9 +80,6 @@ const T = {
           [/Answer 1/, 'input1'],
           [/Answer 2/, 'input2'],
         ],
-        options: {
-          execArgv: [],
-        },
         // log: true,
       },
       mapActual({ stdout }) {
@@ -99,9 +95,6 @@ const T = {
         stderrInputs: [
           [/Answer 1/, 'input1'],
         ],
-        options: {
-          execArgv: [],
-        },
         // log: true,
       },
       mapActual({ stderr }) {
