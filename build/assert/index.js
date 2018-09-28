@@ -9,4 +9,3 @@ module.exports.equal = $assert.equal
 module.exports.ok = $assert.ok
 module.exports.deepEqual = $assert_diff.deepEqual
 module.exports.throws = throws
-//# sourceMappingURL=index.js.map

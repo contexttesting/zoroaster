@@ -114,4 +114,3 @@ const { getPadding, indent, filterStack } = require('.');
 module.exports.createTestSuiteStackStream = createTestSuiteStackStream
 module.exports.createProgressTransformStream = createProgressTransformStream
 module.exports.createErrorTransformStream = createErrorTransformStream
-//# sourceMappingURL=stream.js.map

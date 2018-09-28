@@ -43,4 +43,3 @@ const { equal } = require('assert');
 
 module.exports.assertExpected = assertExpected
 module.exports.setupAnswers = setupAnswers
-//# sourceMappingURL=index.js.map

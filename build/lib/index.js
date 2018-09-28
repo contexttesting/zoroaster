@@ -82,4 +82,3 @@ module.exports.filterStack = filterStack
 module.exports.isFunction = isFunction
 module.exports.evaluateContext = evaluateContext
 module.exports.destroyContexts = destroyContexts
-//# sourceMappingURL=index.js.map

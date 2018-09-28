@@ -216,4 +216,3 @@ const assertError = async (throwsConfig, error) => {
 
 
 module.exports = makeTestSuite
-//# sourceMappingURL=make-test-suite.js.map

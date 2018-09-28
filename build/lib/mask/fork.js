@@ -18,6 +18,7 @@ const { assertExpected, setupAnswers } = require('./');
    */
   const stdioOpts = {
     stdio: 'pipe',
+    execArgv: [],
   }
   if (typeof forkConfig == 'string') {
     return {
@@ -33,7 +34,7 @@ const { assertExpected, setupAnswers } = require('./');
     getOptions,
   } = forkConfig
   const a = getForkArgs ? await getForkArgs(args, ...context) : args
-  let opt
+  let opt = stdioOpts
   if (options) {
     opt = {
       ...stdioOpts,
@@ -134,4 +135,3 @@ module.exports=runFork
 
 module.exports.getForkArguments = getForkArguments
 module.exports.getArgs = getArgs
-//# sourceMappingURL=fork.js.map

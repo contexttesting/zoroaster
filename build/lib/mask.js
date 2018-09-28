@@ -80,4 +80,3 @@ const split = (s, del) => {
 }
 
 module.exports=getTests
-//# sourceMappingURL=mask.js.map

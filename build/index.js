@@ -40,4 +40,3 @@ const $_lib_make_test_suite = require('./lib/make-test-suite');
 
 
 module.exports.makeTestSuite = $_lib_make_test_suite
-//# sourceMappingURL=index.js.map

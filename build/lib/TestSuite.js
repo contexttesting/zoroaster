@@ -233,4 +233,3 @@ function createTests(object, parent) {
 }
 
 module.exports = TestSuite
-//# sourceMappingURL=TestSuite.js.map

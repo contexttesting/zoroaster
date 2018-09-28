@@ -16,4 +16,3 @@ module.exports=() => {
   })
   return usage
 }
-//# sourceMappingURL=usage.js.map

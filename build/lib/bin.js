@@ -88,4 +88,3 @@ async function requireTests(path) {
 
 module.exports.clearRequireCache = clearRequireCache
 module.exports.buildRootTestSuite = buildRootTestSuite
-//# sourceMappingURL=bin.js.map
