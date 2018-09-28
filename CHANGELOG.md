@@ -1,3 +1,10 @@
+## 29 September 2018
+
+### [3.6.0](https://github.com/artdecocode/zoroaster/compare/v3.5.2...v3.6.0)
+
+- [feature] Allow to pass inputs to the `fork` via _ForkConfig_, and log the fork streams.
+- [deps] Remove `yarn-s` dep.
+
 ## 28 September 2018
 
 ### [3.5.2](https://github.com/artdecocode/zoroaster/compare/v3.5.1...v3.5.2)
