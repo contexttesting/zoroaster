@@ -1,5 +1,10 @@
 ## 29 September 2018
 
+### [3.6.1](https://github.com/artdecocode/zoroaster/compare/v3.6.0...v3.6.1)
+
+- [fix] Make sure options for fork are always returned; set `execArgv` to `[]` always to enable debugging.
+- [build] Remove source maps from build.
+
 ### [3.6.0](https://github.com/artdecocode/zoroaster/compare/v3.5.2...v3.6.0)
 
 - [feature] Allow to pass inputs to the `fork` via _ForkConfig_, and log the fork streams.
