@@ -1,3 +1,9 @@
+## 7 October 2018
+
+### [3.6.2](https://github.com/artdecocode/zoroaster/compare/v3.6.1...v3.6.2)
+
+- [deps] Install and use `forkFeed`.
+
 ## 29 September 2018
 
 ### [3.6.1](https://github.com/artdecocode/zoroaster/compare/v3.6.0...v3.6.1)
