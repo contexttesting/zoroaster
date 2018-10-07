@@ -28,6 +28,27 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Example",
+      "program": "${workspaceFolder}/src/bin/alamode.js",
+      "env": {
+        "DEBUG": "1",
+      },
+      "args": [
+        "example/Zoroaster/test/spec",
+        "example/Zoroaster/test/mask",
+        "-a",
+        "-w",
+        "-t",
+        "999999999"
+      ],
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Zoroaster Build",
       "program": "${workspaceFolder}/build/bin/index.js",
       "args": [
