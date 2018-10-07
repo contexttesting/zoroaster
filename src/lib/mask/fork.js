@@ -1,6 +1,7 @@
 import { deepEqual } from 'assert-diff'
 import { fork } from 'spawncommand'
 import mismatch from 'mismatch'
+import forkFeed from 'forkfeed'
 import { assertExpected, setupAnswers } from './'
 
 /**
@@ -81,8 +82,8 @@ const runFork = async ({
     ({ stdout: logStdout, stderr: logStderr } = forkConfig)
   }
 
-  setupAnswers(so, i, forkConfig.inputs, logStdout)
-  setupAnswers(se, i, forkConfig.stderrInputs, logStderr)
+  forkFeed(so, i, forkConfig.inputs, logStdout)
+  forkFeed(se, i, forkConfig.stderrInputs, logStderr)
 
   const res = await promise
   const { code: c, stdout: o, stderr: e } = res
