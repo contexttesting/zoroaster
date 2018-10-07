@@ -63,6 +63,7 @@
     "assert-throws": "3.1.1",
     "catchment": "3.1.1",
     "erte": "1.1.4",
+    "forkfeed": "1.0.0",
     "makepromise": "3.0.1",
     "mismatch": "1.0.3",
     "promto": "1.0.1",
