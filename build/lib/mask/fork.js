@@ -1,7 +1,8 @@
 const { deepEqual } = require('assert-diff');
 const { fork } = require('spawncommand');
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
-const { assertExpected, setupAnswers } = require('./');
+let forkFeed = require('forkfeed'); if (forkFeed && forkFeed.__esModule) forkFeed = forkFeed.default;
+const { assertExpected } = require('./');
 
 /**
  * @param {string|ForkConfig} forkConfig Parameters for forking.
@@ -81,8 +82,8 @@ const runFork = async ({
     ({ stdout: logStdout, stderr: logStderr } = forkConfig)
   }
 
-  setupAnswers(so, i, forkConfig.inputs, logStdout)
-  setupAnswers(se, i, forkConfig.stderrInputs, logStderr)
+  forkFeed(so, i, forkConfig.inputs, logStdout)
+  forkFeed(se, i, forkConfig.stderrInputs, logStderr)
 
   const res = await promise
   const { code: c, stdout: o, stderr: e } = res

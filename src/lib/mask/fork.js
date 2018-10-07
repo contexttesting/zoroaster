@@ -2,7 +2,7 @@ import { deepEqual } from 'assert-diff'
 import { fork } from 'spawncommand'
 import mismatch from 'mismatch'
 import forkFeed from 'forkfeed'
-import { assertExpected, setupAnswers } from './'
+import { assertExpected } from './'
 
 /**
  * @param {string|ForkConfig} forkConfig Parameters for forking.
