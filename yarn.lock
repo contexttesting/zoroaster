@@ -7,6 +7,16 @@
   resolved "https://registry.yarnpkg.com/@a-la/export/-/export-1.3.0.tgz#aaa22530315f85557331ddd2fc096b1b20d11afb"
   integrity sha512-IeKQCGLTNgs7fXe23FiJEO0z1XYqNBl5FE+BBXcKgDhT6MRBeorqyh1rqE+95fxlfmgXy+eGENWe8o2Kz1lehQ==
 
+"@a-la/fixture-alamode@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@a-la/fixture-alamode/-/fixture-alamode-1.0.0.tgz#387c93cec4171bfe7fe61d928539509cf94c06b9"
+  integrity sha512-kHTS1Dv1HTO2dQHEfelDwxNckOCJBW2qy0P8rNvJFnEuLm58ojvqDA8Sx98FVLlQmSnDDueJt5okKBOMLoY05Q==
+
+"@a-la/fixture-babel@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@a-la/fixture-babel/-/fixture-babel-1.0.0.tgz#d8b4281833cc4865a54340fdc7373d8b5699fd19"
+  integrity sha512-cK1JTH5ZZ3/x2eZnDDqAJ7sk8YizhkMabRdDpqwNDEy8j9iAVggqUzRd0BdRJiG7jstBykt71+c5zL1/WCvifQ==
+
 "@a-la/import@1.6.2":
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@a-la/import/-/import-1.6.2.tgz#34666b0e358398b5c795fe9eda09261d522e361a"

@@ -71,6 +71,8 @@
     "usually": "1.0.0"
   },
   "devDependencies": {
+    "@a-la/fixture-alamode": "1.0.0",
+    "@a-la/fixture-babel": "1.0.0",
     "diff": "3.5.0",
     "documentary": "1.20.1",
     "erotic": "2.0.1",

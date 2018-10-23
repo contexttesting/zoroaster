@@ -1,5 +1,5 @@
 import { equal } from 'assert'
-import erte, { c, b } from './src'
+import erte, { c, b } from '@a-la/fixture-alamode'
 
 export default {
   'runs erte'() {
