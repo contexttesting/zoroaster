@@ -79,7 +79,6 @@
     "eslint-config-artdeco": "1.0.1",
     "reloquent": "1.2.3",
     "snapshot-context": "2.0.4",
-    "strip-ansi": "5.0.0",
     "yarn-s": "1.1.0"
   }
 }

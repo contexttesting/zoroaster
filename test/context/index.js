@@ -1,7 +1,6 @@
 import { ok } from 'assert'
 import erotic from 'erotic'
 import { resolve } from 'path'
-import stripAnsi from 'strip-ansi'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
@@ -46,12 +45,13 @@ const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
 const winRe = new RegExp(process.cwd().replace(/\\/g, '/'), 'g')
 
 function getSnapshot(s) {
-  const snapshot = stripAnsi(s).trim()
-  return snapshot
+  return s
+    .replace(/\033\[.*?m/g, '')
     .replace(re, '')
     .replace(winRe, '')
     .replace(/\\/g, '/')
     .replace(/\r?\n/g, '\n')
+    .trim()
 }
 
 const C = {
