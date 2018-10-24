@@ -85,6 +85,9 @@ const makeTest = ({
       const rs = await getReadable(input, ...contexts)
       results = await collect(rs)
     } else if (forkConfig) {
+      if (props.inputs) {
+        forkConfig.inputs = getInputsFromProps(props.inputs)
+      }
       const r = await fork({
         forkConfig,
         input,
@@ -113,6 +116,15 @@ const makeTest = ({
     }
   }
   return test
+}
+
+const getInputsFromProps = (s) => {
+  const res = s.split('\n').map(i => {
+    const [q, a] = i.split(/: +/)
+    const re = new RegExp(q)
+    return [re, a]
+  })
+  return res
 }
 
 const makeATestSuite = (maskPath, conf) => {

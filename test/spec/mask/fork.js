@@ -2,7 +2,8 @@ import throws from 'assert-throws'
 import Context from '../../context'
 import makeTestSuite from '../../../src/lib/make-test-suite'
 
-/** @type {Object.<string, (c: Context)>} */
+
+/** @type {Object.<string, (c: Context, fi: FORK_INPUT)>} */
 const T = {
   context: Context,
   async 'tests a fork'({ runTest }) {
@@ -72,8 +73,14 @@ const T = {
       message: /'FAIL' == 'TEST'/,
     })
   },
-  async 'passes inputs to stdin'({ runTest }) {
-    const ts = makeTestSuite('test/fixture/result/fork-input.md', {
+}
+
+const FORK_INPUT = 'test/fixture/result/fork-input.md'
+
+export const inputs = {
+  context: [Context, FORK_INPUT],
+  async 'passes inputs to stdin'({ runTest }, result) {
+    const ts = makeTestSuite(result, {
       fork: {
         module: 'test/fixture/fork-inputs',
         inputs: [
@@ -87,8 +94,8 @@ const T = {
     })
     await runTest(ts, 'writes inputs')
   },
-  async 'passes inputs to stdin without logging answers'({ runTest }) {
-    const ts = makeTestSuite('test/fixture/result/fork-input.md', {
+  async 'passes inputs to stdin without logging answers'({ runTest }, result) {
+    const ts = makeTestSuite(result, {
       fork: {
         module: 'test/fixture/fork-inputs',
         inputs: [
@@ -103,8 +110,8 @@ const T = {
     })
     await runTest(ts, 'writes inputs without answers')
   },
-  async 'passes inputs to stdin on stderr'({ runTest }) {
-    const ts = makeTestSuite('test/fixture/result/fork-input.md', {
+  async 'passes inputs to stdin on stderr'({ runTest }, result) {
+    const ts = makeTestSuite(result, {
       fork: {
         module: 'test/fixture/fork-inputs-stderr',
         stderrInputs: [
@@ -116,6 +123,17 @@ const T = {
       },
     })
     await runTest(ts, 'writes inputs on stderr')
+  },
+  async 'passes inputs from the mask property'({ runTest }, result) {
+    const ts = makeTestSuite(result, {
+      fork: {
+        module: 'test/fixture/fork-inputs',
+      },
+      mapActual({ stdout }) {
+        return stdout.trim()
+      },
+    })
+    await runTest(ts, '!writes inputs from props')
   },
 }
 
