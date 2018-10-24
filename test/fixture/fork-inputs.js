@@ -1,7 +1,7 @@
 const ask = require('reloquent')
 
 ;(async () => {
-  const { t, t2 } = await ask.default({
+  const { t, t2 } = await ask({
     t: {
       text: 'Answer 1',
     },

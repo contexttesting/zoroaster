@@ -57,7 +57,7 @@
   "dependencies": {
     "@artdeco/clean-stack": "1.0.0",
     "@zoroaster/fork": "1.0.0",
-    "alamode": "1.5.1",
+    "alamode": "1.6.0",
     "argufy": "1.2.1",
     "assert-diff": "2.0.3",
     "assert-throws": "3.1.1",
@@ -77,9 +77,9 @@
     "documentary": "1.20.1",
     "erotic": "2.0.1",
     "eslint-config-artdeco": "1.0.1",
-    "reloquent": "1.0.6",
+    "reloquent": "1.2.3",
     "snapshot-context": "2.0.4",
-    "strip-ansi": "4.0.0",
+    "strip-ansi": "5.0.0",
     "yarn-s": "1.1.0"
   }
 }
