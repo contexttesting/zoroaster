@@ -5,8 +5,8 @@ const { collect } = require('catchment');
 const { deepEqual } = require('assert-diff');
 let getTests = require('../lib/mask'); if (getTests && getTests.__esModule) getTests = getTests.default;
 const { throws } = require('../assert');
-const { assertExpected } = require('./mask/');
-let runFork = require('./mask/fork'); if (runFork && runFork.__esModule) runFork = runFork.default;
+const { assertExpected } = require('./mask');
+let fork = require('@zoroaster/fork'); if (fork && fork.__esModule) fork = fork.default;
 
 /**
  * Make a test suite to test against a mask.
@@ -85,7 +85,7 @@ const makeTest = ({
       const rs = await getReadable(input, ...contexts)
       results = await collect(rs)
     } else if (forkConfig) {
-      const r = await runFork({
+      const r = await fork({
         forkConfig,
         input,
         props,
@@ -182,7 +182,7 @@ const assertError = async (throwsConfig, error) => {
  * @prop {() => void} [_destroy] A function to destroy the context.
  */
 
-/* documentary types/fork-config.xml */
+/* documentary node_modules/@zoroaster/fork/types/index.xml */
 /**
  * @typedef {import('child_process').ForkOptions} ForkOptions
  *
@@ -194,6 +194,7 @@ const assertError = async (throwsConfig, error) => {
  * @prop {[RegExp, string][]} [inputs] Inputs to push to `stdin` when `stdout` writes data. The inputs are kept on stack, and taken off the stack when the RegExp matches the written data.
  * @prop {[RegExp, string][]} [stderrInputs] Inputs to push to `stdin` when `stderr` writes data (similar to `inputs`).
  * @prop {boolean|{stderr: Writable, stdout: Writable}} [log=false] Whether to pipe data from `stdout`, `stderr` to the process's streams. If an object is passed, the output will be piped to streams specified as its `stdout` and `stderr` properties. Default `false`.
+ * @prop {boolean} [includeAnswers=true] Whether to add the answers to the `stderr` and `stdout` output. Default `true`.
  */
 
 /* documentary types/make-test-suite.xml */

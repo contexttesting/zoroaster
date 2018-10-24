@@ -1,3 +1,5 @@
+let erte = require('erte'); if (erte && erte.__esModule) erte = erte.default;
+const { equal } = require('assert');
 let mismatch = require('mismatch'); if (mismatch && mismatch.__esModule) mismatch = mismatch.default;
 const { readFileSync } = require('fs');
 
@@ -79,4 +81,17 @@ const split = (s, del) => {
   return [first, second]
 }
 
+
+       const assertExpected = (result, expected) => {
+  try {
+    equal(result, expected)
+  } catch (err) {
+    const e = erte(result, expected)
+    console.log(e) // eslint-disable-line no-console
+    throw err
+  }
+}
+
 module.exports=getTests
+
+module.exports.assertExpected = assertExpected
