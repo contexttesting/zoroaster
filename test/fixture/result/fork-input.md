@@ -2,6 +2,14 @@
 test
 
 /* expected */
+Answer 1: input1
+Answer 2: input2
+/**/
+
+// writes inputs without answers
+test
+
+/* expected */
 Answer 1: Answer 2:
 /**/
 
@@ -20,5 +28,5 @@ input1
 /**/
 
 /* expected */
-Answer 1:
+Answer 1: input1
 /**/

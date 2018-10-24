@@ -4,18 +4,17 @@
   "description": "A Modern Testing Framework For Node.js With Support For Test Contexts Which Can Be Reused Across Test Suites And Packages. Zoroaster Improves Developer Productivity And Experience With IDE Hints, And Test Reliability.",
   "main": "build",
   "scripts": {
-    "t": "node src/bin/alamode",
+    "t": "node src/bin",
     "test": "yarn t test/spec test/mask",
     "mask": "yarn t test/mask",
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "test-all": "yarn-s test test-build",
-    "b": "alamode src -o build -i bin/alamode.js -s",
+    "b": "alamode src -o build -i bin/index.js -s",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "build": "yarn-s d b doc",
     "d1": "NODE_DEBUG=doc doc src/lib/make-test-suite.js -g",
-    "d2": "NODE_DEBUG=doc doc src/lib/mask/fork.js -g",
-    "d": "yarn-s d1 d2",
-    "dev": "node src/bin/alamode",
+    "d": "yarn-s d1",
+    "dev": "node src/bin",
     "lint": "eslint .",
     "example/simple.js": "node src/bin example/simple.js -b",
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
@@ -25,7 +24,7 @@
     "assert.js"
   ],
   "bin": {
-    "zoroaster": "build/bin/index.js"
+    "zoroaster": "build/bin/zoroaster.js"
   },
   "repository": {
     "type": "git",

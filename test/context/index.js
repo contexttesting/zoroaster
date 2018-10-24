@@ -1,6 +1,6 @@
 import { ok } from 'assert'
 import erotic from 'erotic'
-import { resolve, join } from 'path'
+import { resolve } from 'path'
 import stripAnsi from 'strip-ansi'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
@@ -40,9 +40,7 @@ const to = async (n = 50) => {
 const FIXTURE = resolve(__dirname, '../fixtures')
 const MASK_PATH = resolve(FIXTURE, 'mask.js')
 
-const ZOROASTER = process.env.ALAMODE_ENV == 'test-build' ? '../../build/bin' : '../../src/bin/alamode'
-const BIN = join(__dirname, ZOROASTER)
-
+const ZOROASTER = process.env.ALAMODE_ENV == 'test-build' ? 'build/bin/zoroaster' : 'src/bin'
 
 const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
 const winRe = new RegExp(process.cwd().replace(/\\/g, '/'), 'g')
@@ -213,7 +211,7 @@ const C = {
 
   /** Run a test from a test suite. */
   runTest,
-  BIN,
+  BIN: ZOROASTER,
 }
 
 /**

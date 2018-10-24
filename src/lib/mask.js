@@ -1,3 +1,5 @@
+import erte from 'erte'
+import { equal } from 'assert'
 import mismatch from 'mismatch'
 import { readFileSync } from 'fs'
 
@@ -77,6 +79,17 @@ const split = (s, del) => {
   const first = s.substr(0, nl)
   const second = s.substr(nl + 1)
   return [first, second]
+}
+
+
+export const assertExpected = (result, expected) => {
+  try {
+    equal(result, expected)
+  } catch (err) {
+    const e = erte(result, expected)
+    console.log(e) // eslint-disable-line no-console
+    throw err
+  }
 }
 
 export default getTests

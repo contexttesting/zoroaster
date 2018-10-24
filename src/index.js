@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { fork } from 'spawncommand'
 
-const BIN = resolve(__dirname, 'bin', process.env.ALAMODE_ENV == 'test-build' ? 'index.js' : 'alamode.js')
+const BIN = resolve(__dirname, 'bin', process.env.ALAMODE_ENV == 'test-build' ? 'zoroaster.js' : 'index.js')
 
 /**
  * Start zoroaster process, and return a child process with a `promise` property.

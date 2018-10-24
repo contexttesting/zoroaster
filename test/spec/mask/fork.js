@@ -80,13 +80,28 @@ const T = {
           [/Answer 1/, 'input1'],
           [/Answer 2/, 'input2'],
         ],
-        // log: true,
       },
       mapActual({ stdout }) {
         return stdout.trim()
       },
     })
     await runTest(ts, 'writes inputs')
+  },
+  async 'passes inputs to stdin without logging answers'({ runTest }) {
+    const ts = makeTestSuite('test/fixture/result/fork-input.md', {
+      fork: {
+        module: 'test/fixture/fork-inputs',
+        inputs: [
+          [/Answer 1/, 'input1'],
+          [/Answer 2/, 'input2'],
+        ],
+        includeAnswers: false,
+      },
+      mapActual({ stdout }) {
+        return stdout.trim()
+      },
+    })
+    await runTest(ts, 'writes inputs without answers')
   },
   async 'passes inputs to stdin on stderr'({ runTest }) {
     const ts = makeTestSuite('test/fixture/result/fork-input.md', {
@@ -95,7 +110,6 @@ const T = {
         stderrInputs: [
           [/Answer 1/, 'input1'],
         ],
-        // log: true,
       },
       mapActual({ stderr }) {
         return stderr.trim()

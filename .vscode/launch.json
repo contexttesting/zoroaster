@@ -8,12 +8,12 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Zoroaster",
-      "program": "${workspaceFolder}/src/bin/alamode.js",
+      "program": "${workspaceFolder}/src/bin/index.js",
       "env": {
         "DEBUG": "1",
       },
       "args": [
-        "test/spec",
+        // "test/spec",
         "test/mask",
         "-a",
         "-w",

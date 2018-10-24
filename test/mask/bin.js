@@ -4,12 +4,7 @@ import Context from '../context'
 const { BIN, getSnapshot } = Context
 
 const ts = makeTestSuite('test/result/bin.md', {
-  fork: {
-    module: BIN,
-    options: {
-      execArgv: [],
-    },
-  },
+  fork: BIN,
   mapActual({ stdout }) {
     const s = getSnapshot(stdout)
     return s
