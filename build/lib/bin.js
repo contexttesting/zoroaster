@@ -1,7 +1,7 @@
 const { lstat, readdir } = require('fs');
 const { resolve, join } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
-let TestSuite = require('./TestSuite'); if (TestSuite && TestSuite.__esModule) TestSuite = TestSuite.default;
+const TestSuite = require('./TestSuite');
 
 /**
  * Remove modules cached by require.

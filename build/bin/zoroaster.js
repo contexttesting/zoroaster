@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 const { resolve } = require('path');
-let run = require('../lib/run'); if (run && run.__esModule) run = run.default;
+const run = require('../lib/run');
 let argufy = require('argufy'); if (argufy && argufy.__esModule) argufy = argufy.default;
-let getUsage = require('./usage'); if (getUsage && getUsage.__esModule) getUsage = getUsage.default;
+const getUsage = require('./usage');
 const { version } = require('../../package.json');
 
 const {

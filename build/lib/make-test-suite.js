@@ -3,7 +3,7 @@ const { readdirSync, lstatSync } = require('fs');
 const { join } = require('path');
 const { collect } = require('catchment');
 const { deepEqual } = require('assert-diff');
-let getTests = require('../lib/mask'); if (getTests && getTests.__esModule) getTests = getTests.default;
+const getTests = require('../lib/mask');
 const { throws } = require('../assert');
 const { assertExpected } = require('./mask');
 let fork = require('@zoroaster/fork'); if (fork && fork.__esModule) fork = fork.default;

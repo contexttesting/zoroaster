@@ -1,6 +1,6 @@
 const { EOL } = require('os');
 const { isFunction, indent } = require('.');
-let Test = require('./Test'); if (Test && Test.__esModule) Test = Test.default;
+const Test = require('./Test');
 
 function hasParent({ parent }) {
   return parent instanceof TestSuite
