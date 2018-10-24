@@ -1,3 +1,10 @@
+## 24 October 2018
+
+### [3.6.3](https://github.com/artdecocode/zoroaster/compare/v3.6.2...v3.6.3)
+
+- [deps] Refactor mask fork into `@zoroaster/fork`.
+- [fix/feature] Include answers in the fork stdout.
+
 ## 7 October 2018
 
 ### [3.6.2](https://github.com/artdecocode/zoroaster/compare/v3.6.1...v3.6.2)
