@@ -1,5 +1,9 @@
 ## 24 October 2018
 
+### [3.6.4](https://github.com/artdecocode/zoroaster/compare/v3.6.4...v3.6.4)
+
+- [feature] Parse inputs from the mask properties.
+
 ### [3.6.3](https://github.com/artdecocode/zoroaster/compare/v3.6.2...v3.6.3)
 
 - [deps] Refactor mask fork into `@zoroaster/fork`.
