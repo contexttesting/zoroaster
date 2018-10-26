@@ -1,126 +1,70 @@
+import { runTest } from '@zoroaster/reducer'
 import { EOL } from 'os'
-import promto from 'promto'
-import { indent, filterStack, destroyContexts, evaluateContext } from '.'
+import { TICK, CROSS, indent, filterStack } from '.'
 
 export default class Test {
   /**
    * Create a new test object.
    * @constructor
-   * @param {string} name Name of the test.
-   * @param {function} fn Function as specified in the specs.
-   * @param {Number} timeout Timeout in ms after which to throw the timeout error.
-   * @param {object|function} context The context object, function or constructor.
+   * @param {string} name The name of the test.
+   * @param {function} fn The function as specified in the specs.
+   * @param {Number} [timeout=2000] The timeout in ms after which to throw the timeout error.
+   * @param {ContextConstructor[]} [context] The contexts as objects, functions or constructors.
    */
-  constructor(name, fn, timeout, context) {
-    this.timeout = timeout || 2000
+  constructor(name, fn, timeout = 2000, context = []) {
+    this.timeout = timeout
     this.name = name
     this.fn = fn
-    this.started = null
-    this.finished = null
-    this.error = null
-    this.result = null
-
     this.context = context
   }
 
   /**
    * Run the test.
-   * @param {function} notify - notify function
+   * @param {function} [notify] - notify function
    */
-  async run(notify = () => {}) {
-    notify({
+  async run(notify) {
+    const { name } = this
+    if (notify) notify({
+      name,
       type: 'test-start',
+    })
+    const res = await runTest({
+      context: this.context,
+      fn: this.fn,
+      timeout: this.timeout,
       name: this.name,
     })
-    const res = await runTest(this)
-    notify({
+    const { error } = res
+    if (notify) notify({
       test: this,
+      name,
+      error,
       type: 'test-end',
-      name: this.name,
-      result: this.dump(),
-      error: this.error,
+      result: dumpResult({ error, name }),
     })
+    Object.assign(this, res)
     return res
   }
-  dump() {
-    return dumpResult(this)
-  }
+
   hasErrors() {
     return this.error !== null
   }
 
-  /**
-   * Evaluate test's context or contexts.
-   */
-  async _evaluateContext() {
-    if (this.context === undefined) {
-      this.contexts = []
-      return
-    }
-
-    if (Array.isArray(this.context)) {
-      const ep = this.context.map(evaluateContext)
-      this.contexts = await Promise.all(ep)
-      return
-    }
-
-    const c = await evaluateContext(this.context)
-    this.contexts = [c]
-  }
   get isFocused() {
     return this.name.startsWith('!')
   }
 }
 
-const TICK = '\x1b[32m \u2713 \x1b[0m'
-const CROSS = '\x1b[31m \u2717 \x1b[0m'
-
-function dumpResult(test) {
-  if (test.error === null) {
-    return `${TICK} ${test.name}`
+export function dumpResult({ error, name }) {
+  if (error === null) {
+    return `${TICK} ${name}`
   } else {
-    return `${CROSS} ${test.name}` + EOL
-      + indent(filterStack(test), ' | ')
+    return `${CROSS} ${name}` + EOL
+      + indent(filterStack({ error, name }), ' | ')
   }
 }
 
 /**
- * Create a promise for a test function.
- * @param {function} fn function to execute
- * @param {object[]} ctx Contexts to pass as arguments in order
- * @return {Promise} A promise to execute function.
+ * @typedef {import('@zoroaster/types').ContextConstructor} ContextConstructor
+ * @typedef {import('@zoroaster/types').Context} Context
  */
-async function createTestPromise(fn, contexts) {
-  const res = await fn(...contexts)
-  return res
-}
-
-/**
- * Asynchronously runs the test
- * @param {Test} test A test to run.
- * @return {Promise.<Test>} A promise resolved with the run test.
- */
-async function runTest(test) {
-  test.started = new Date()
-
-  try {
-    const evaluate = test._evaluateContext()
-    await promto(evaluate, test.timeout, 'Evaluate')
-
-    const run = createTestPromise(test.fn, test.contexts)
-    test.result = await promto(run, test.timeout, 'Test')
-  } catch (err) {
-    test.error = err
-  }
-
-  // even if test failed, destroy context
-  try {
-    const destroy = destroyContexts(test.contexts || []) // if hasn't evaluated
-    test.destroyResult = await promto(destroy, test.timeout, 'Destroy')
-  } catch (err) {
-    test.error = err
-  }
-
-  test.finished = new Date()
-  return test
-}

@@ -13,7 +13,7 @@
         "DEBUG": "1",
       },
       "args": [
-        // "test/spec",
+        "test/spec",
         "test/mask",
         "-a",
         "-w",
