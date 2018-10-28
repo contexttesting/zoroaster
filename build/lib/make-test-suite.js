@@ -200,8 +200,8 @@ const assertError = async (throwsConfig, error) => {
  *
  * @typedef {Object} ForkConfig Parameters for forking.
  * @prop {string} module The path to the module to fork.
- * @prop {(args: string[], ...contexts?: Context[]) => string[]|Promise.<string[]>} [getArgs] The function to get arguments to pass the forked processed based on parsed masks input and contexts.
- * @prop {(...contexts?: Context[]) => ForkOptions} [getOptions] The function to get options for the forked processed, such as `ENV` and `cwd`, based on contexts.
+ * @prop {(args: string[], ...contexts?: Context[]) => string[]|Promise.<string[]>} [getArgs] The function to get arguments to pass the fork based on the parsed mask input and contexts.
+ * @prop {(...contexts?: Context[]) => ForkOptions} [getOptions] The function to get options for the fork, such as `ENV` and `cwd`, based on contexts.
  * @prop {ForkOptions} [options] Options for the forked processed, such as `ENV` and `cwd`.
  * @prop {[RegExp, string][]} [inputs] Inputs to push to `stdin` when `stdout` writes data. The inputs are kept on stack, and taken off the stack when the RegExp matches the written data.
  * @prop {[RegExp, string][]} [stderrInputs] Inputs to push to `stdin` when `stderr` writes data (similar to `inputs`).

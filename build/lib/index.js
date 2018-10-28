@@ -5,6 +5,10 @@ const { EOL } = require('os');
   return str.replace(/^(?!\s*$)/mg, padding)
 }
 
+       function isFunction(fn) {
+  return (typeof fn).toLowerCase() == 'function'
+}
+
        function getPadding(level) {
   return Array
     .from({ length: level * 2 })
@@ -29,56 +33,14 @@ const { EOL } = require('os');
   return stack.replace(/\n/g, EOL)
 }
 
-       function isFunction(fn) {
-  return (typeof fn).toLowerCase() == 'function'
-}
 
-       const evaluateContext = async (context) => {
-  const fn = isFunction(context)
-  if (!fn) return context
+       const TICK = '\x1b[32m \u2713 \x1b[0m'
+       const CROSS = '\x1b[31m \u2717 \x1b[0m'
 
-  try {
-    const c = {}
-    await context.call(c)
-    return c
-  } catch (err) {
-    if (!/^Class constructor/.test(err.message)) {
-      throw err
-    }
-    // constructor context
-    const c = new context()
-    if (c._init) {
-      await c._init()
-    }
-
-    const p = new Proxy(c, {
-      get(target, key) {
-        if (key == 'then') return target
-        if (typeof target[key] == 'function') {
-          return target[key].bind(target)
-        }
-        return target[key]
-      },
-    })
-
-    return p
-  }
-}
-
-       const destroyContexts = async (contexts) => {
-  const dc = contexts.map(async (c) => {
-    if (isFunction(c._destroy)) {
-      const res = await c._destroy()
-      return res
-    }
-  })
-  const res = await Promise.all(dc)
-  return res
-}
 
 module.exports.indent = indent
+module.exports.isFunction = isFunction
 module.exports.getPadding = getPadding
 module.exports.filterStack = filterStack
-module.exports.isFunction = isFunction
-module.exports.evaluateContext = evaluateContext
-module.exports.destroyContexts = destroyContexts
+module.exports.TICK = TICK
+module.exports.CROSS = CROSS

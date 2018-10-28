@@ -1,6 +1,7 @@
 const { EOL } = require('os');
 const { isFunction, indent } = require('.');
 const Test = require('./Test');
+const { runTestSuiteAndNotify } = require('./run-test');
 
 function hasParent({ parent }) {
   return parent instanceof TestSuite
@@ -122,18 +123,20 @@ const getChildrenNames = (tests) => {
   get names() {
     return this._names
   }
-  get isSelfFocused() {
-    return this._selfFocused
+  get isFocused() {
+    return this.name.startsWith('!')
   }
 
   /**
-   * Run test suite.
+   * Run without notifying of itself.
+   * @param {function} [notify] A notify function to be passed to run method.
+   * @param {boolean} [onlyFocused = false] Run only focused tests.
    */
   async run(notify = () => {}, onlyFocused) {
-    const { name } = this
-    notify({ type:'test-suite-start', name })
-    const res = await this.runInSequence(notify, onlyFocused)
-    notify({ type:'test-suite-end', name })
+    const res = await runTestSuiteAndNotify(notify, {
+      name: this.name,
+      tests: this.tests,
+    }, onlyFocused)
     return res
   }
   dump() {
@@ -149,28 +152,6 @@ const getChildrenNames = (tests) => {
       )
   }
 
-  /**
-   * Run all tests in sequence, one by one.
-   * @param {function} [notify] A notify function to be passed to run method.
-   * @param {boolean} [onlyFocused = false] Run only focused tests.
-   */
-  async runInSequence(notify, onlyFocused) {
-    await this.tests.reduce(async (acc, test) => {
-      const accRes = await acc
-      let res
-      if (!onlyFocused) {
-        res = await test.run(notify)
-      } else if (test instanceof Test && test.isFocused) {
-        res = await test.run(notify)
-      // a test suite
-      } else if (test.isSelfFocused) {
-        res = await test.run(notify, test.hasFocused)
-      } else if (test.hasFocused) {
-        res = await test.run(notify, true)
-      }
-      return [...accRes, res]
-    }, [])
-  }
 }
 
 const sortTestSuites = ({ name: a }, { name: b }) => {
