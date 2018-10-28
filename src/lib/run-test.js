@@ -1,6 +1,5 @@
-import { runTest } from '@zoroaster/reducer'
 import { EOL } from 'os'
-import reducer from '@zoroaster/reducer'
+import reducer, { runTest } from '@zoroaster/reducer'
 import { TICK, CROSS, indent, filterStack } from '.'
 
 /**
