@@ -41,7 +41,6 @@ const getChildrenNames = (tests) => {
     if (!name) throw new Error('Test suite name must be given.')
 
     this._name = name
-    this._selfFocused = this.name.startsWith('!')
     this._parent = parent
     this._timeout = timeout || (hasParent(this) ? this.parent.timeout : undefined)
 
@@ -151,7 +150,6 @@ const getChildrenNames = (tests) => {
         test.hasErrors()
       )
   }
-
 }
 
 const sortTestSuites = ({ name: a }, { name: b }) => {
