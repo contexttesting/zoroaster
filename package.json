@@ -5,7 +5,7 @@
   "main": "build",
   "scripts": {
     "t": "node src/bin",
-    "test": "yarn t test/spec test/mask",
+    "test": "yarn t test/spec test/mask -t 10000",
     "mask": "yarn t test/mask",
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "test-all": "yarn-s test test-build",
@@ -57,6 +57,7 @@
   "dependencies": {
     "@artdeco/clean-stack": "1.0.0",
     "@zoroaster/fork": "1.0.0",
+    "@zoroaster/reducer": "1.0.0",
     "alamode": "1.6.0",
     "argufy": "1.2.1",
     "assert-diff": "2.0.3",
