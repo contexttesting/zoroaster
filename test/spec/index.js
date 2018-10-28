@@ -9,23 +9,24 @@ const t = {
   'exports a function'() {
     equal(typeof zoroaster, 'function')
   },
-  async 'returns a child process'() {
+  async 'returns a child process w/ a promise'() {
     const proc = zoroaster()
     ok(proc instanceof ChildProcess)
-    await proc.promise
-  },
-  async 'returns a promise'() {
-    const proc = zoroaster()
     ok(proc.promise instanceof Promise)
     await proc.promise
   },
   async 'reports on 0 tests executed when empty args'() {
-    const { promise } = zoroaster()
-    const { stdout } = await promise
+    const { promise } = zoroaster([], {
+      execArgv: [],
+    })
+    const { stdout, stderr } = await promise
+    if (stderr) throw new Error(stderr)
     equal('🦅  Executed 0 tests.', stdout.trim())
   },
   async 'reports on test suite executed'({ TEST_SUITE_PATH }) {
-    const { promise } = zoroaster([TEST_SUITE_PATH, '--alamode'])
+    const { promise } = zoroaster([TEST_SUITE_PATH, '--alamode'], {
+      execArgv: [],
+    })
     ok(promise instanceof Promise)
     const { stderr, code, stdout } = await promise
     equal(stderr, '')

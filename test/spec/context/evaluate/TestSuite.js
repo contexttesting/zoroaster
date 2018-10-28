@@ -162,7 +162,7 @@ const T = {
     await ts.run()
     throws(
       () => assertNoErrorsInTestSuite(ts),
-      /Error in test "Zoroaster Test Suite Name > test": Evaluate has timed out after 150ms/
+      /Error in test "Zoroaster Test Suite Name > test": Evaluate context has timed out after 150ms/
     )
   },
 }

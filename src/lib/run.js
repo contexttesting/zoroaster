@@ -7,6 +7,7 @@ import {
   createTestSuiteStackStream,
 } from './stream'
 import { buildRootTestSuite, clearRequireCache } from './bin'
+import { runInSequence } from './run-test'
 
 
 function watchFiles(files, callback) {
@@ -66,14 +67,15 @@ export default async function run({
       }
     }
   }
-  await rootTestSuite.runInSequence(notify, rootTestSuite.hasFocused)
+
+  await runInSequence(notify, rootTestSuite.tests, rootTestSuite.hasFocused)
 
   stack.end()
   const errorsCatchment = await errorsPromise
   process.stdout.write(EOL)
   process.stdout.write(errorsCatchment)
 
-  process.stdout.write(`🦅  Executed ${count.total} tests`)
+  process.stdout.write(`🦅  Executed ${count.total} test${count.total == 1 ? '' : 's'}`)
   if (count.error) {
     process.stdout.write(
       `: ${count.error} error${count.error > 1 ? 's' : ''}`

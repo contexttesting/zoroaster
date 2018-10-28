@@ -11,9 +11,10 @@
       "program": "${workspaceFolder}/src/bin/index.js",
       "env": {
         "DEBUG": "1",
+        // "ALAMODE_ENV": "test-build"
       },
       "args": [
-        // "test/spec",
+        "test/spec",
         "test/mask",
         "-a",
         "-w",

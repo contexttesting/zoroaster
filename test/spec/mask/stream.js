@@ -106,6 +106,7 @@ const T = {
       getReadable(input) {
         const proc = fork('test/fixture/echo', [input], {
           stdio: 'pipe',
+          execArgv: [],
         })
         return proc.stdout
       },
