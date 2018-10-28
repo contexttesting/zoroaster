@@ -5,10 +5,6 @@ export function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
 }
 
-export function isFunction(fn) {
-  return (typeof fn).toLowerCase() == 'function'
-}
-
 export function getPadding(level) {
   return Array
     .from({ length: level * 2 })
@@ -33,6 +29,9 @@ export function filterStack({ error, name }) {
   return stack.replace(/\n/g, EOL)
 }
 
+export function isFunction(fn) {
+  return (typeof fn).toLowerCase() == 'function'
+}
 
 export const TICK = '\x1b[32m \u2713 \x1b[0m'
 export const CROSS = '\x1b[31m \u2717 \x1b[0m'

@@ -5,10 +5,6 @@ const { EOL } = require('os');
   return str.replace(/^(?!\s*$)/mg, padding)
 }
 
-       function isFunction(fn) {
-  return (typeof fn).toLowerCase() == 'function'
-}
-
        function getPadding(level) {
   return Array
     .from({ length: level * 2 })
@@ -33,14 +29,17 @@ const { EOL } = require('os');
   return stack.replace(/\n/g, EOL)
 }
 
+       function isFunction(fn) {
+  return (typeof fn).toLowerCase() == 'function'
+}
 
        const TICK = '\x1b[32m \u2713 \x1b[0m'
        const CROSS = '\x1b[31m \u2717 \x1b[0m'
 
 
 module.exports.indent = indent
-module.exports.isFunction = isFunction
 module.exports.getPadding = getPadding
 module.exports.filterStack = filterStack
+module.exports.isFunction = isFunction
 module.exports.TICK = TICK
 module.exports.CROSS = CROSS
