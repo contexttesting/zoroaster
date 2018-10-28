@@ -32,7 +32,7 @@ export function createTestSuiteStackStream() {
         testSuiteStack.pop()
       }
       const stack = testSuiteStack.slice()
-      ts.push({ type, name, stack, ...props })
+      this.push({ type, name, stack, ...props })
       callback()
     },
   })
@@ -77,7 +77,7 @@ export function createProgressTransformStream() {
 export function createErrorTransformStream() {
   const ts = new Transform({
     objectMode: true,
-    transform({ error, stack, name, test }, encoding, callback) {
+    transform({ error, stack, name }, encoding, callback) {
       if (!error) {
         return callback()
       }
@@ -86,7 +86,7 @@ export function createErrorTransformStream() {
       this.push(` > ${name}`)
       this.push('\x1b[0m')
       this.push(EOL)
-      this.push(indent(filterStack(test), '  '))
+      this.push(indent(filterStack({ error, name }), '  '))
       this.push(EOL)
       this.push(EOL)
       callback()

@@ -58,7 +58,7 @@ export const FunctionContext = {
     assertNoErrorsInTestSuite(ts)
     ok(destroyed)
   },
-  async 'fails the test when _destroy throws an error'({ TEST_SUITE_NAME, tests: { test } }) {
+  async 'fails when _destroy throws an error'({ TEST_SUITE_NAME, tests: { test } }) {
     const error = new Error('test error message')
     function c() {
       this._destroy = () => {

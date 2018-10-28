@@ -1,6 +1,4 @@
-import { runTest } from '@zoroaster/reducer'
-import { EOL } from 'os'
-import { TICK, CROSS, indent, filterStack } from '.'
+import runTestAndNotify from './run-test'
 
 export default class Test {
   /**
@@ -14,36 +12,8 @@ export default class Test {
   constructor(name, fn, timeout = 2000, context = []) {
     this.timeout = timeout
     this.name = name
-    this.fn = fn
+    this._fn = fn
     this.context = context
-  }
-
-  /**
-   * Run the test.
-   * @param {function} [notify] - notify function
-   */
-  async run(notify) {
-    const { name } = this
-    if (notify) notify({
-      name,
-      type: 'test-start',
-    })
-    const res = await runTest({
-      context: this.context,
-      fn: this.fn,
-      timeout: this.timeout,
-      name: this.name,
-    })
-    const { error } = res
-    if (notify) notify({
-      test: this,
-      name,
-      error,
-      type: 'test-end',
-      result: dumpResult({ error, name }),
-    })
-    Object.assign(this, res)
-    return res
   }
 
   hasErrors() {
@@ -53,16 +23,17 @@ export default class Test {
   get isFocused() {
     return this.name.startsWith('!')
   }
-}
-
-export function dumpResult({ error, name }) {
-  if (error === null) {
-    return `${TICK} ${name}`
-  } else {
-    return `${CROSS} ${name}` + EOL
-      + indent(filterStack({ error, name }), ' | ')
+  get fn() {
+    return this._fn
+  }
+  async run(notify) {
+    console.warn('deprecated method run')
+    const res = await runTestAndNotify(notify, { name: this.name, fn: this.fn, context: this.context, timeout: this.timeout })
+    Object.assign(this, res)
+    return res
   }
 }
+
 
 /**
  * @typedef {import('@zoroaster/types').ContextConstructor} ContextConstructor
