@@ -20,6 +20,10 @@ function run(args, options = {}) {
 
 export default run
 
+export { default as throws } from 'assert-throws'
+export { default as assert, equal, ok } from 'assert'
+export { deepEqual } from 'assert-diff'
+
 export { default as makeTestSuite } from './lib/make-test-suite'
 
 /* documentary types/make-test-suite.xml */

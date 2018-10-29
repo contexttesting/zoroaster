@@ -20,6 +20,10 @@ function run(args, options = {}) {
 
 module.exports=run
 
+const $assert_throws = require('assert-throws');
+const $assert = require('assert');
+const $assert_diff = require('assert-diff');
+
 const $_lib_make_test_suite = require('./lib/make-test-suite');
 
 /* documentary types/make-test-suite.xml */
@@ -39,4 +43,9 @@ const $_lib_make_test_suite = require('./lib/make-test-suite');
  */
 
 
+module.exports.throws = $assert_throws
+module.exports.assert = $assert
+module.exports.equal = $assert.equal
+module.exports.ok = $assert.ok
+module.exports.deepEqual = $assert_diff.deepEqual
 module.exports.makeTestSuite = $_lib_make_test_suite

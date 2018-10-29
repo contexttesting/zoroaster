@@ -1,5 +1,5 @@
 import ok, { equal } from 'assert'
-import { equal as testEqual, deepEqual as testDeepEqual, assert as testAssert } from '../../../src/assert'
+import { equal as testEqual, deepEqual as testDeepEqual, assert as testAssert } from '../../../src'
 
 const T = {
   'throws if not equal'() {
