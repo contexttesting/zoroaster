@@ -1,5 +1,9 @@
 ## 29 October 2018
 
+### [3.6.6](https://github.com/artdecocode/zoroaster/compare/v3.6.5...v3.6.5)
+
+- [feature] Export the assertions in the main file.
+
 ### [3.6.5](https://github.com/artdecocode/zoroaster/compare/v3.6.4...v3.6.5)
 
 - [dep] Refactor the runner into `@zoroaster/reducer`.
