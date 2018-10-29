@@ -1,12 +1,12 @@
-## 28 October 2018
+## 29 October 2018
 
-### [3.6.5](https://github.com/artdecocode/zoroaster/compare/v3.6.5...v3.6.5)
+### [3.6.5](https://github.com/artdecocode/zoroaster/compare/v3.6.4...v3.6.5)
 
 - [dep] Refactor the runner into `@zoroaster/reducer`.
 
 ## 24 October 2018
 
-### [3.6.4](https://github.com/artdecocode/zoroaster/compare/v3.6.4...v3.6.4)
+### [3.6.4](https://github.com/artdecocode/zoroaster/compare/v3.6.3...v3.6.4)
 
 - [feature] Parse inputs from the mask properties.
 
