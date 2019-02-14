@@ -1,3 +1,9 @@
+## 15 February 2019
+
+### [3.6.7](https://github.com/artdecocode/zoroaster/compare/v3.6.6...v3.6.7)
+
+- [deps] Update Dependencies.
+
 ## 29 October 2018
 
 ### [3.6.6](https://github.com/artdecocode/zoroaster/compare/v3.6.5...v3.6.5)
