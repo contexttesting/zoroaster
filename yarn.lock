@@ -104,12 +104,27 @@
   dependencies:
     makepromise "3.0.2"
 
+"@wrote/read@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@wrote/read/-/read-1.0.0.tgz#ab57de1def7af1ec0b63853b63147ed641ba0db0"
+  integrity sha512-oUI1SAvdlTVYlbro4sfm5OzsT6GSuisqrJsi2YqaAgVNykqm5flPXsnttOeDksjvMD9LjHXPMkTtmytmzfoluQ==
+  dependencies:
+    catchment "3.1.1"
+
 "@wrote/read@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@wrote/read/-/read-1.0.2.tgz#6d1d2b2f3e2e1830007384b06c31fb58ec77cf21"
   integrity sha512-Db4j0GimaxxK4oudPvtlyirgNzmVgadiBv2pu1qWYWQM9M2/Pt53cnbSaJplnORZV19908NWm2x18g5XZNoKDQ==
   dependencies:
     catchment "3.2.1"
+
+"@wrote/rm@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@wrote/rm/-/rm-1.1.0.tgz#6dd14b164e9ac11e9c5c90b569ca7a987bea5b52"
+  integrity sha512-iS3T9GSQ3QLYpteizMHgsj30j/uhFpHJ/lh9JAhUzMw5bvANX5AB7ycL1UwanHqcnzjEWQDnWsP/RoxuDeRFng==
+  dependencies:
+    "@wrote/read-dir-structure" "1.0.1"
+    makepromise "3.0.1"
 
 "@wrote/rm@1.1.2":
   version "1.1.2"
@@ -118,6 +133,13 @@
   dependencies:
     "@wrote/read-dir-structure" "1.0.2"
     makepromise "3.0.2"
+
+"@wrote/write@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@wrote/write/-/write-1.0.0.tgz#4f8d5339d0bd46d71f2f5997ed786a6e9ed88941"
+  integrity sha512-7aS/tolrw6M7uMZ9iERDXVFkGUu3YyGFJ7R/b+G/YZrhC3+M5HpeGGSf5RZNBSCdFqNgXxjV6c7BTYY1Mj79UA==
+  dependencies:
+    erotic "2.0.1"
 
 "@wrote/write@1.0.2":
   version "1.0.2"
@@ -138,14 +160,14 @@
     "@wrote/rm" "1.1.2"
     "@wrote/write" "1.0.2"
 
-"@zoroaster/fork@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@zoroaster/fork/-/fork-1.0.0.tgz#3418d2af1ad498bf9fb2a696591362bb626b54f0"
-  integrity sha512-x/OFTMykPzSesnkrjGJ2wCNu90L3Sin0XfYfWTKjOOhuUCoCNGdvHhyK0c36BH3ZGpnNPy8NK2mcRHnuOmut0g==
+"@zoroaster/fork@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@zoroaster/fork/-/fork-1.1.0.tgz#fd142ac5b13861d2babc9e59446c3f6de4662d4e"
+  integrity sha512-uzZEfm6mKQ0MxxoEJvqVZ9vtNzhArDpgS1dCFZj+uwDGAfFGsTL386p7k1NZTJ0ruC0BKVFbOWxRFLZxlyGZzA==
   dependencies:
     assert-diff "2.0.3"
-    catchment "3.1.1"
-    erte "1.1.4"
+    catchment "3.2.2"
+    erte "1.1.6"
     forkfeed "1.0.0"
     mismatch "1.0.3"
     spawncommand "2.1.0"
@@ -560,6 +582,20 @@ spawncommand@2.1.0:
   integrity sha512-iLQzOn/Ihmiw78iIeT9Xd5VH9RrhBCriMhCKhjD/xLP83koSwlMG5nFnIJewwud+FAO8JqnXXO5eovjNqeU+Mg==
   dependencies:
     catchment "3.1.1"
+
+temp-context@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/temp-context/-/temp-context-2.1.0.tgz#0af3aeae7c7aa3bfb0c01fc11fb9963c2ce2db60"
+  integrity sha512-L45t/JINZ2JxyatJ5S+DUVIqg6wshYgLyf9xAQr8jD30i3YJMI9CUik9VJWiPHHzO1oKoTQLAPwobRuN7M8JFA==
+  dependencies:
+    "@wrote/clone" "1.1.0"
+    "@wrote/ensure-path" "1.0.3"
+    "@wrote/read" "1.0.0"
+    "@wrote/rm" "1.1.0"
+    "@wrote/write" "1.0.0"
+    catchment "3.2.0"
+    makepromise "3.0.1"
+    pedantry "2.2.0"
 
 typal@1.2.0:
   version "1.2.0"

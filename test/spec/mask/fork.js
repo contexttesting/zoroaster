@@ -1,9 +1,10 @@
 import throws from 'assert-throws'
 import Context from '../../context'
+import TempContext from 'temp-context'
 import makeTestSuite from '../../../src/lib/make-test-suite'
 
 
-/** @type {Object.<string, (c: Context, fi: FORK_INPUT)>} */
+/** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
   async 'tests a fork'({ runTest }) {
@@ -72,6 +73,31 @@ const T = {
       args: [ts, 'forks a module'],
       message: /'FAIL' == 'TEST'/,
     })
+  },
+}
+
+/** @type {Object.<string, (c: Context, t: TempContext )>} */
+export const ThisContext = {
+  context: [Context, TempContext],
+  async 'assigns context on getArgs and getOptions'({ runTest }, { write }) {
+    const p = await write('test.js', 'console.log(`stdout: ${process.argv[2]}`); console.error(`stderr: ${process.env.TEST}`)')
+    const ts = makeTestSuite('test/fixture/result/this-context.md', {
+      fork: {
+        module: p,
+        getArgs() {
+          return [this.input]
+        },
+        getOptions() {
+          return {
+            env: {
+              TEST: this.config.proc,
+            },
+          }
+        },
+      },
+      jsonProps: ['config'],
+    })
+    await runTest(ts, '!assigns the input to this.input')
   },
 }
 
