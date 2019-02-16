@@ -1,3 +1,9 @@
+## 16 February 2019
+
+### [3.7.0](https://github.com/artdecocode/zoroaster/compare/v3.6.7...v3.7.0)
+
+- [feature] Pass mask input properties to `getArgs` and `getOptions` for forking.
+
 ## 15 February 2019
 
 ### [3.6.7](https://github.com/artdecocode/zoroaster/compare/v3.6.6...v3.6.7)
