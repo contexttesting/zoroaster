@@ -681,9 +681,9 @@ The following snippet can be used in _VS Code_ when debugging tests.
 
 ## Copyright
 
-(c) [Art Deco][1] 2018
+(c) [Art Deco][1] 2019
 
-[1]: https://artdeco.bz
+[1]: https://artd.eco
 [2]: #assertion-library
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
