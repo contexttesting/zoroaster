@@ -11,4 +11,5 @@
      'duplicate name': [AsyncFunction],
      'incorrect json': [AsyncFunction],
      'empty expected': [AsyncFunction],
-     'empty expected fail': [AsyncFunction] } }
+     'empty expected fail': [AsyncFunction],
+     'test properties': [AsyncFunction] } }

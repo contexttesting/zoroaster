@@ -61,28 +61,29 @@ const assertHasExpected = (expected) => {
 
 /**
  * Create a new test.
- * @param {{ getTransform: () => Transform, getReadable: (input: string) => Readable }} param
+ * @param {{ getTransform: () => Transform, getReadable: (input: string) => Readable, getThrowsConfig: Function }} param
  */
 const makeTest = ({
   input, error, getThrowsConfig, getTransform, getResults, expected,
   assertResults, props, mapActual, getReadable, forkConfig,
 }) => {
   const test = async (...contexts) => {
+    const cntx = { input, ...props }
     let results
     if (error) {
       if (!getThrowsConfig)
         throw new Error('No "getThrowsConfig" function is given.')
-      const throwsConfig = getThrowsConfig(input, ...contexts)
+      const throwsConfig = getThrowsConfig.call(cntx, input, ...contexts)
       await assertError(throwsConfig, error)
       return
     } else if (getTransform) {
       assertHasExpected(expected)
-      const rs = await getTransform(...contexts)
+      const rs = await getTransform.call(cntx, ...contexts)
       rs.end(input)
       results = await collect(rs)
     } else if (getReadable) {
       assertHasExpected(expected)
-      const rs = await getReadable(input, ...contexts)
+      const rs = await getReadable.call(cntx, input, ...contexts)
       results = await collect(rs)
     } else if (forkConfig) {
       if (props.inputs) {
@@ -94,11 +95,11 @@ const makeTest = ({
         props,
         contexts,
       })
-      results = getResults ? await getResults(input, ...contexts) : r
+      results = getResults ? await getResults.call(cntx, input, ...contexts) : r
     } else if (!getResults) {
       throw new Error('Nothing was tested.')
     } else {
-      results = await getResults(input, ...contexts)
+      results = await getResults.call(cntx, input, ...contexts)
     }
 
     if (expected !== undefined) {

@@ -4,6 +4,7 @@ import SnapshotContext from 'snapshot-context'
 import Context from '../../context'
 import makeTestSuite from '../../../src/lib/make-test-suite'
 import { inspect } from 'util'
+import { Readable, Transform } from 'stream'
 
 /** @type {Object.<string, (c: Context)>} */
 const expectedAndError = {
@@ -68,6 +69,42 @@ const expectedAndError = {
       args: [ts, 'empty expected fail'],
       message: /'fail' == ''/,
     })
+  },
+  async 'passes this context to readable'({ TS_MASK_PATH, runTest }) {
+    const ts = makeTestSuite(TS_MASK_PATH, {
+      getReadable() {
+        const { input, ...props } = this
+        return new Readable({
+          read() {
+            this.push(`input: ${input}`)
+            Object.keys(props).forEach((k) => {
+              this.push(`\n${k}: ${JSON.stringify(props[k])}`)
+            })
+            this.push(null)
+          },
+        })
+      },
+      jsonProps: ['prop'],
+    })
+    await runTest(ts, 'test properties')
+  },
+  async 'passes this context to getTransform'({ TS_MASK_PATH, runTest }) {
+    const ts = makeTestSuite(TS_MASK_PATH, {
+      getTransform() {
+        const { input, ...props } = this
+        return new Transform({
+          transform(data, enc, next) {
+            this.push(`input: ${input}`)
+            Object.keys(props).forEach((k) => {
+              this.push(`\n${k}: ${JSON.stringify(props[k])}`)
+            })
+            next()
+          },
+        })
+      },
+      jsonProps: ['prop'],
+    })
+    await runTest(ts, 'test properties')
   },
 }
 

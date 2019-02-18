@@ -58,3 +58,15 @@ fail
 
 /* expected */
 /**/
+
+// test properties
+hello world
+
+/* prop */
+{ "key": "value" }
+/**/
+
+/* expected */
+input: hello world
+prop: {"key":"value"}
+/**/
