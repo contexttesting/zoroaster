@@ -1,3 +1,9 @@
+## 18 February 2019
+
+### [3.7.1](https://github.com/artdecocode/zoroaster/compare/v3.7.0...v3.7.1)
+
+- [feature] Pass mask input properties to all mask properties such as `getResults`, `getReadable`, `getTransform`, _etc_.
+
 ## 16 February 2019
 
 ### [3.7.0](https://github.com/artdecocode/zoroaster/compare/v3.6.7...v3.7.0)
