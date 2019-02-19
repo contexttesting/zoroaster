@@ -1,3 +1,20 @@
+## 19 February 2019
+
+### [3.7.2](https://github.com/artdecocode/zoroaster/compare/v3.7.1...v3.7.2)
+
+- [fix] Ignore the start of the mask result file which does not start with a test heading, e.g.,
+
+```js
+import { TextArea, Select, Form } from '../../src'
+
+// returns the correct output
+(<Form></Form>)
+
+/* expected */
+(<form></form>)
+/**/
+```
+
 ## 18 February 2019
 
 ### [3.7.1](https://github.com/artdecocode/zoroaster/compare/v3.7.0...v3.7.1)
