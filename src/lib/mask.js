@@ -4,14 +4,25 @@ import mismatch from 'mismatch'
 import { readFileSync } from 'fs'
 
 /**
- * A function to construct tests from a mask file.
- * @param {string} path Path to the mask file.
+ * @typedef {Object} Conf
+ * @prop {string} path Path to the mask file.
+ * @prop {RegExp} splitRe The regular expression to split the file by.
  */
-const getTests = ({
-  path, splitRe = /^\/\/ /gm,
-}) => {
+
+/**
+ * A function to construct tests from a mask file.
+ * @param {Conf} conf
+ */
+const getTests = (conf) => {
+  const {
+    path, splitRe = /^\/\/ /gm,
+  } = conf
   const m = `${readFileSync(path)}`
-  const t = m.split(splitRe).filter(a => a)
+  const mi = splitRe.exec(m)
+  if (!mi) throw new Error(`${path} does not contain tests.`)
+  const mm = m.slice(mi.index)
+  splitRe.lastIndex = 0
+  const t = mm.split(splitRe).filter(a => a)
   const tests = t.map((test) => {
     const [name, total] = split(test, '\n')
     const [i, body] = split(total, '\n/*')
