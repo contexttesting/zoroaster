@@ -3,8 +3,8 @@
 
 /* expected */
 test/fixtures/timeouts.js
-ok
-  ✓  a test
+   default.js
+    ✓  this is a test suite test
 
 🦅  Executed 1 test.
 /**/
