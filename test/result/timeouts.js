@@ -4,7 +4,7 @@
 /* expected */
 test/fixtures/timeouts.js
    default.js
-    ✓  this is a test suite test
+    ✓  finishes before the timeout
 
 🦅  Executed 1 test.
 /**/

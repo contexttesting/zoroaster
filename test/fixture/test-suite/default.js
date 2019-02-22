@@ -1,10 +1,4 @@
-export default {
-  'a test in a test suite'() {
-    // ok pass
-  },
-}
-
-// this is a test suite test
+// finishes before the timeout
 the input to the test mask
 
 /* expected */
