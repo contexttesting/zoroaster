@@ -1,4 +1,4 @@
-// timeouts
+// does not timeout
 -a test/fixtures/timeouts.js
 
 /* expected */

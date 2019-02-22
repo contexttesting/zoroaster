@@ -165,6 +165,31 @@ const T = {
       /Error in test "Zoroaster Test Suite Name > test": Evaluate context has timed out after 150ms/
     )
   },
+  async '!destroys the context after its evaluation'(
+    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { test } }
+  ) {
+    // async function c() {
+    //   await new Promise(r => setTimeout(r, 200))
+    // }
+    let destroyed = false
+    class C {
+      async _init() {
+        await new Promise(r => setTimeout(r, 170))
+      }
+      async _destroy() {
+        destroyed = true
+      }
+    }
+    const ts = new TestSuite(TEST_SUITE_NAME, {
+      test,
+    }, null, C, 150)
+    await ts.run()
+    ok(destroyed)
+    // throws(
+    //   () => assertNoErrorsInTestSuite(ts),
+    //   /Error in test "Zoroaster Test Suite Name > test": Evaluate context has timed out after 150ms/
+    // )
+  },
 }
 
 export default T
