@@ -1,3 +1,9 @@
+## 22 February 2019
+
+### [3.7.3](https://github.com/artdecocode/zoroaster/compare/v3.7.2...v3.7.3)
+
+- [fix] Attempt to destroy contexts that started to evaluate.
+
 ## 19 February 2019
 
 ### [3.7.2](https://github.com/artdecocode/zoroaster/compare/v3.7.1...v3.7.2)
