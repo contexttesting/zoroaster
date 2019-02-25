@@ -1,4 +1,4 @@
-import { ok, equal } from 'assert'
+import { ok, equal, deepEqual } from 'assert'
 import throws from 'assert-throws'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'
@@ -26,9 +26,9 @@ const T = {
     const ts = new TestSuite(TEST_SUITE_NAME, {})
     equal(ts.name, TEST_SUITE_NAME)
   },
-  'creates a test suite from an object'({ TEST_SUITE_NAME, testSuite }) {
+  'creates a test suite from an object'({ TEST_SUITE_NAME, testSuite: { context, ...testSuite } }) { // eslint-disable-line
     const ts = new TestSuite(TEST_SUITE_NAME, testSuite)
-    equal(ts.rawTests, testSuite)
+    deepEqual(ts.rawTests, testSuite)
   },
   async 'runs a test suite'({ TEST_SUITE_NAME, tests, assertTestsRun }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {

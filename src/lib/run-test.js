@@ -6,13 +6,15 @@ import { TICK, CROSS, indent, filterStack } from '.'
  * Run the test.
  * @param {function} [notify] - notify function
  */
-async function runTestAndNotify(notify, { name, context, fn, timeout }) {
+async function runTestAndNotify(notify, { name, context, fn, timeout,
+  persistentContext }) {
   if (notify) notify({
     name,
     type: 'test-start',
   })
   const res = await runTest({
     context,
+    persistentContext,
     fn,
     timeout,
   })
