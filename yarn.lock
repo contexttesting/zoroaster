@@ -172,10 +172,10 @@
     mismatch "1.0.3"
     spawncommand "2.1.0"
 
-"@zoroaster/reducer@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.0.1.tgz#18a72283c0b494a65b26f455326e635db8ad1988"
-  integrity sha512-MlNV6Q6LBODFRH2eJ1aZyC4aOvmVyJ820DNdC0QOmpIRyf/YUqz8SxL+mrOh9ZQt5D2W8ITQFD17liNp3GWcSA==
+"@zoroaster/reducer@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.1.0.tgz#745eca1403eb6240f83c6d949c46a3f529f9bd1d"
+  integrity sha512-fm6FTlO6dP+yXyWFmJV8Hr1IpF7ofJhoQZ5EKeR0H3EdXFTXfGH4kVxvMLfbnT0BtLVLhojZVo7CSeGHdiZblw==
   dependencies:
     promto "1.0.1"
 

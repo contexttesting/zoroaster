@@ -73,9 +73,10 @@ const bindContexts = (tests, pc) => {
 }
 
 const evaluatePersistentContext = async (context, timeout = 5000) => {
-  const p = evaluateContext(context)
+  const c = Array.isArray(context) ? context[0] : context
+  const p = evaluateContext(c)
   const res = await promto(p, timeout, `Evaluate persistent context ${
-    context.name ? context.name : ''}`)
+    c.name ? c.name : ''}`)
   return res
   // await p <- time-leak
 }
