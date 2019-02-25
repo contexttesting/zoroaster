@@ -1,18 +1,21 @@
 const { EOL } = require('os');
 let reducer = require('@zoroaster/reducer'); const { runTest } = reducer; if (reducer && reducer.__esModule) reducer = reducer.default;
 const { TICK, CROSS, indent, filterStack } = require('.');
+const { evaluateContext, destroyContexts } = require('@zoroaster/reducer/build/lib');
+let promto = require('promto'); if (promto && promto.__esModule) promto = promto.default;
 
 /**
  * Run the test.
  * @param {function} [notify] - notify function
  */
-async function runTestAndNotify(notify, { name, context, fn, timeout }) {
+async function runTestAndNotify(notify, { name, context, fn, timeout, persistentContext }) {
   if (notify) notify({
     name,
     type: 'test-start',
   })
   const res = await runTest({
     context,
+    persistentContext,
     fn,
     timeout,
   })
@@ -40,12 +43,54 @@ function dumpResult({ error, name }) {
  * Run test suite (wrapper for notify).
  */
        async function runTestSuiteAndNotify(
-  notify, { name, tests }, onlyFocused,
+  notify, { name, tests, persistentContext }, onlyFocused,
 ) {
+  const n = getNames(persistentContext)
+  // console.log('will run a test suite %s', n)
   notify({ type: 'test-suite-start', name })
-  const res = await runInSequence(notify, tests, onlyFocused)
-  notify({ type: 'test-suite-end', name })
+  let pc, res
+  if (persistentContext) {
+    // console.log('will evaluate %s', n)
+    pc = await evaluatePersistentContext(persistentContext)
+    bindContexts(tests, pc)
+  }
+  try {
+    res = await runInSequence(notify, tests, onlyFocused)
+    notify({ type: 'test-suite-end', name })
+  } finally {
+    if (pc) {
+      // console.log('will destroy %s', n)
+      await destroyPersistentContext(pc)
+    }
+  }
   return res
+}
+
+const bindContexts = (tests, pc) => {
+  tests.forEach((t) => {
+    t.persistentContext = pc
+  })
+}
+
+const evaluatePersistentContext = async (context, timeout = 5000) => {
+  const p = evaluateContext(context)
+  const res = await promto(p, timeout, `Evaluate persistent context ${
+    context.name ? context.name : ''}`)
+  return res
+  // await p <- time-leak
+}
+const destroyPersistentContext = async (context, timeout = 5000) => {
+  const p = destroyContexts([context])
+  const res = await promto(p, timeout, `Destroy persistent context ${
+    context.name ? context.name : ''}`)
+  return res
+  // await p <- time-leak
+}
+
+const getNames = persistentContext => {
+  if (!persistentContext) return ''
+  const p = Array.isArray(persistentContext) ? persistentContext : [persistentContext]
+  return p.map(({ name }) => name).join(', ')
 }
 
 /**

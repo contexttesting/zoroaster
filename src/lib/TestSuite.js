@@ -80,6 +80,10 @@ export default class TestSuite {
     return this._timeout
   }
   _assignPersistentContext(context) {
+    if (Array.isArray(context)) {
+      this._persistentContext = context
+      return true
+    }
     const fn = isFunction(context)
     if (fn) {
       this._persistentContext = context
@@ -170,6 +174,12 @@ export default class TestSuite {
       .find(test =>
         test.hasErrors()
       )
+  }
+  /**
+   * The persistent context.
+   */
+  get persistentContext() {
+    return this._persistentContext
   }
 }
 

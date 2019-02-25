@@ -132,6 +132,7 @@ const makeATestSuite = (maskPath, conf) => {
   if (!conf) throw new Error('No configuration is given. A config should at least contain either a "getThrowsConfig", "getResults", "getTransform" or "getReadable" functions.')
   const {
     context,
+    persistentContext,
     getResults,
     getTransform,
     getReadable,
@@ -177,7 +178,10 @@ const makeATestSuite = (maskPath, conf) => {
       }
     }
     return acc
-  }, context ? { context } : {})
+  }, {
+    ...(context ? { context }: {}),
+    ...(persistentContext ? { persistentContext }: {}),
+  })
   return t
 }
 

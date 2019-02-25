@@ -2,6 +2,8 @@ const { EOL } = require('os');
 const { isFunction, indent } = require('.');
 const Test = require('./Test');
 const { runTestSuiteAndNotify } = require('./run-test');
+let promto = require('promto'); if (promto && promto.__esModule) promto = promto.default;
+const { evaluateContext, destroyContexts } = require('@zoroaster/reducer/build/lib');
 
 function hasParent({ parent }) {
   return parent instanceof TestSuite
@@ -77,6 +79,17 @@ const getChildrenNames = (tests) => {
   get timeout() {
     return this._timeout
   }
+  _assignPersistentContext(context) {
+    if (Array.isArray(context)) {
+      this._persistentContext = context
+      return true
+    }
+    const fn = isFunction(context)
+    if (fn) {
+      this._persistentContext = context
+      return true
+    }
+  }
 
   _assignContext(context) {
     if (Array.isArray(context)) {
@@ -105,9 +118,13 @@ const getChildrenNames = (tests) => {
     return this._hasFocused
   }
 
-  _assignTests(tests) {
-    if ('context' in tests) {
-      this._assignContext(tests.context)
+  _assignTests(t) {
+    const { context, persistentContext, ...tests } = t
+    if (context !== undefined) {
+      this._assignContext(context)
+    }
+    if (persistentContext !== undefined) {
+      this._assignPersistentContext(persistentContext)
     }
     this._rawTests = tests
     this._tests = createTests(tests, this)
@@ -132,10 +149,18 @@ const getChildrenNames = (tests) => {
    * @param {boolean} [onlyFocused = false] Run only focused tests.
    */
   async run(notify = () => {}, onlyFocused) {
+    let pc
+    if (this._persistentContext) {
+      pc = await evaluatePersistentContext(this._persistentContext)
+      bindContexts(this.tests, [pc])
+    }
     const res = await runTestSuiteAndNotify(notify, {
       name: this.name,
       tests: this.tests,
     }, onlyFocused)
+    if (pc) {
+      await destroyPersistentContext(pc)
+    }
     return res
   }
   dump() {
@@ -150,6 +175,33 @@ const getChildrenNames = (tests) => {
         test.hasErrors()
       )
   }
+  /**
+   * The persistent context.
+   */
+  get persistentContext() {
+    return this._persistentContext
+  }
+}
+
+const bindContexts = (tests, pc) => {
+  tests.forEach((t) => {
+    t.persistentContext = pc
+  })
+}
+
+const evaluatePersistentContext = async (context, timeout = 5000) => {
+  const p = evaluateContext(context)
+  const res = await promto(p, timeout, `Evaluate persistent context ${
+    context.name ? context.name : ''}`)
+  return res
+  // await p <- time-leak
+}
+const destroyPersistentContext = async (context, timeout = 5000) => {
+  const p = destroyContexts([context])
+  const res = await promto(p, timeout, `Destroy persistent context ${
+    context.name ? context.name : ''}`)
+  return res
+  // await p <- time-leak
 }
 
 const sortTestSuites = ({ name: a }, { name: b }) => {
@@ -179,10 +231,6 @@ function sort(tests) {
   return [...testCases, ...sts]
 }
 
-function filterContextKey(key) {
-  return key != 'context'
-}
-
 /**
  * Map object with test names as keys and test functions as values
  * to an array of tests.
@@ -192,7 +240,6 @@ function filterContextKey(key) {
  */
 function createTests(object, parent) {
   const tests = Object.keys(object)
-    .filter(filterContextKey)
     .map((key) => {
       const v = object[key]
       if (v instanceof TestSuite) return v
