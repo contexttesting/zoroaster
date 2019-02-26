@@ -1,3 +1,9 @@
+## 26 February 2019
+
+### [3.8.0](https://github.com/artdecocode/zoroaster/compare/v3.7.3...v3.8.0)
+
+- [feature] Persistent Contexts.
+
 ## 22 February 2019
 
 ### [3.7.3](https://github.com/artdecocode/zoroaster/compare/v3.7.2...v3.7.3)
