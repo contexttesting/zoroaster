@@ -501,7 +501,9 @@ To be able to run tests from the project directory, it is advised to use `packag
 
 ## Context
 
-A context is unique to each test. When added as a `context` property to a test suite, it can be accessed from test function's first argument. Test suite context cannot be updated from within tests (only its state when using a function).
+A context is unique to each test. When added as a `context` property to a test suite, it can be accessed from test function's first argument. If there are multiple contexts, they can be accessed in subsequent arguments.
+
+
 
 ### Object Context
 
@@ -540,6 +542,17 @@ const T = {
 
 export default T
 ```
+```
+example/Zoroaster/test/spec/object-context.js
+ [32m ✓ [0m sets correct default name
+   innerMeta
+   [32m ✓ [0m accesses parent context
+   [32m ✓ [0m returns correct date of birth
+
+🦅  Executed 3 tests.
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="15"></a></p>
 
 ### Class Context
 
@@ -587,6 +600,8 @@ const T = {
 export default T
 ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
+
 ### Multiple Contexts
 
 It is possible to specify multiple contexts by passing an array to the `context` property.
@@ -617,7 +632,9 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+
+
 
 ## Assertion Library
 
@@ -651,7 +668,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -677,7 +694,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 ## Copyright
 
