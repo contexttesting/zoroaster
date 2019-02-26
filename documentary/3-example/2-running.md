@@ -8,7 +8,7 @@ yarn example/Zoroaster/
 
 ```fs
 yarn run v1.5.1
-$ node src/bin example/Zoroaster/test/spec --babel
+$ node src/bin example/Zoroaster/test/spec --alamode
  example/Zoroaster/test/spec
    async-context
     ✓  returns correct country of origin

@@ -1,4 +1,4 @@
-const SNAPSHOT_DIR = 'test/snapshot'
+const SNAPSHOT_DIR = 'example/Zoroaster/test/snapshot'
 
 export default class Context {
   async _init() {
