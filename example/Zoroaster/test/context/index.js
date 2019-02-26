@@ -1,6 +1,4 @@
-import { resolve } from 'path'
-
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
+const SNAPSHOT_DIR = 'test/snapshot'
 
 export default class Context {
   async _init() {

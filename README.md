@@ -558,8 +558,9 @@ example/Zoroaster/test/spec/object-context.js
 
 Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this`. Getters and setters are not bound.
 
+_With the following simple context:_
 ```js
-import { resolve } from 'path'
+const SNAPSHOT_DIR = 'test/snapshot'
 
 export default class Context {
   async _init() {
@@ -577,19 +578,20 @@ export default class Context {
     await new Promise(r => setTimeout(r, 50))
   }
   get SNAPSHOT_DIR() {
-    return resolve(__dirname, '../snapshot')
+    return SNAPSHOT_DIR
   }
 }
 ```
 
+_The tests can use the context testing API:_
 ```js
 import { equal } from 'assert'
 import Zoroaster from '../../src'
 import Context from '../context'
 
-/** @type {Object.<string, (c: Context)>} */
+/** @type {Object.<string, (ctx: Context)>} */
 const T = {
-  context,
+  context: Context,
   async 'returns correct country of origin'({ getCountry }) {
     const zoroaster = new Zoroaster()
     const expected = await getCountry()
@@ -598,6 +600,13 @@ const T = {
 }
 
 export default T
+```
+
+```
+example/Zoroaster/test/spec/async-context.js
+ [32m ✓ [0m returns correct country of origin
+
+🦅  Executed 1 test.
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
