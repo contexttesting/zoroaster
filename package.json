@@ -1,6 +1,6 @@
 {
   "name": "zoroaster",
-  "version": "3.7.3",
+  "version": "3.8.0",
   "description": "A Modern Testing Framework For Node.js With Support For Test Contexts Which Can Be Reused Across Test Suites And Packages. Zoroaster Improves Developer Productivity And Experience With IDE Hints, And Test Reliability.",
   "main": "build",
   "scripts": {
