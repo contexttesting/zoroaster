@@ -545,10 +545,10 @@ export default T
 ```
 ```
 example/Zoroaster/test/spec/object-context.js
- [32m ✓ [0m sets correct default name
+  ✓  sets correct default name
    innerMeta
-   [32m ✓ [0m accesses parent context
-   [32m ✓ [0m returns correct date of birth
+    ✓  accesses parent context
+    ✓  returns correct date of birth
 
 🦅  Executed 3 tests.
 ```
@@ -605,7 +605,7 @@ export default T
 
 ```
 example/Zoroaster/test/spec/async-context.js
- [32m ✓ [0m returns correct country of origin
+  ✓  returns correct country of origin
 
 🦅  Executed 1 test.
 ```
@@ -710,7 +710,7 @@ export default T
 ```
 example/Zoroaster/test/spec/persistent-context.js
 [RemoteChrome]: Page enabled
- [32m ✓ [0m navigates to the website
+  ✓  navigates to the website
 
 🦅  Executed 1 test.
 ```
