@@ -28,4 +28,4 @@ const T = {
 export default T
 ```
 
-%~%
+%~ width="15"%

@@ -44,6 +44,7 @@ npm i --save-dev zoroaster
   * [Object Context](#object-context)
   * [Class Context](#class-context)
   * [Multiple Contexts](#multiple-contexts)
+  * [Persistent Context](#persistent-context)
 - [Assertion Library](#assertion-library)
   * [throws](#throws)
 - [launch.json](#launchjson)
@@ -641,9 +642,77 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
 
+### Persistent Context
 
+The persistent context is set on the test suite and will start before each test. It by default has 5000ms to start after which the whole test suite will fail. Each persistent context will go first in the list of contexts obtained via test arguments.
+
+_With the following persistent context:_
+```js
+import CDP from 'chrome-remote-interface'
+
+export default class PersistentContext {
+  async _init() {
+    let client
+    client = await CDP({
+      host: '172.31.12.175',
+      port: '9222',
+    })
+    const { Network, Page, Runtime } = client
+    Network.requestWillBeSent(() => {
+      process.stdout.write('.')
+    })
+    await Network.enable()
+    await Page.enable()
+    this._client = client
+    this._Page = Page
+    this.Runtime = Runtime
+    console.log('[%s]: %s', 'RemoteChrome', 'Page enabled')
+  }
+  /**
+   * The page opened in the browser.
+   */
+  get Page() {
+    return this._Page
+  }
+  async _destroy() {
+    if (this._client) {
+      await this._client.close()
+    }
+  }
+}
+```
+
+_The tests can use the context testing API:_
+```js
+import { equal } from 'zoroaster/assert'
+import Zoroaster from '../../src'
+import PersistentContext from '../context/persistent'
+
+/** @type {Object.<string, (ctx: PersistentContext)>} */
+const T = {
+  persistentContext: PersistentContext,
+  async 'navigates to the website'({ Page }) {
+    const zoroaster = new Zoroaster()
+    const expected = await Page.navigate({ url: 'https://adc.sh' })
+    zoroaster.say(expected)
+    equal(expected, 'hello world')
+  },
+}
+
+export default T
+```
+
+```
+example/Zoroaster/test/spec/persistent-context.js
+[RemoteChrome]: Page enabled
+ [32m ✓ [0m navigates to the website
+
+🦅  Executed 1 test.
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -677,7 +746,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -703,7 +772,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
 
 ## Copyright
 
