@@ -18,6 +18,9 @@ export default class PersistentContext {
     this.Runtime = Runtime
     console.log('[%s]: %s', 'RemoteChrome', 'Page enabled')
   }
+  static get _timeout() {
+    return 10000
+  }
   /**
    * The page opened in the browser.
    */

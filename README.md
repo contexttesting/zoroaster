@@ -670,6 +670,9 @@ export default class PersistentContext {
     this.Runtime = Runtime
     console.log('[%s]: %s', 'RemoteChrome', 'Page enabled')
   }
+  static get _timeout() {
+    return 10000
+  }
   /**
    * The page opened in the browser.
    */
@@ -711,6 +714,8 @@ example/Zoroaster/test/spec/persistent-context.js
 
 🦅  Executed 1 test.
 ```
+
+A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 

@@ -75,14 +75,16 @@ const bindContexts = (tests, pc) => {
 const evaluatePersistentContext = async (context, timeout = 5000) => {
   const c = Array.isArray(context) ? context[0] : context
   const p = evaluateContext(c)
-  const res = await promto(p, timeout, `Evaluate persistent context ${
+  const _timeout = c._timeout || timeout
+  const res = await promto(p, _timeout, `Evaluate persistent context ${
     c.name ? c.name : ''}`)
   return res
   // await p <- time-leak
 }
 const destroyPersistentContext = async (context, timeout = 5000) => {
   const p = destroyContexts([context])
-  const res = await promto(p, timeout, `Destroy persistent context ${
+  const _timeout = context._timeout || timeout
+  const res = await promto(p, _timeout, `Destroy persistent context ${
     context.name ? context.name : ''}`)
   return res
   // await p <- time-leak
