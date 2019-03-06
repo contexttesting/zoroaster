@@ -1,3 +1,9 @@
+## 6 March 2019
+
+### [3.8.1](https://github.com/artdecocode/zoroaster/compare/v3.8.0...v3.8.1)
+
+- [fix] Collapse exports of `default.jsx` test suite into the parent test suite for display (same as `default.js` now).
+
 ## 26 February 2019
 
 ### [3.8.0](https://github.com/artdecocode/zoroaster/compare/v3.7.3...v3.8.0)
