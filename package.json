@@ -73,6 +73,7 @@
   "devDependencies": {
     "@a-la/fixture-alamode": "1.0.0",
     "@a-la/fixture-babel": "1.0.0",
+    "@depack/render": "1.1.4",
     "diff": "4.0.1",
     "documentary": "1.21.4",
     "erotic": "2.0.2",

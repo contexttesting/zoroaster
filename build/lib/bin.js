@@ -33,7 +33,7 @@ const TestSuite = require('./TestSuite');
 }
 
 const replaceFilename = (filename) => {
-  return filename.replace(/\.js$/, '')
+  return filename.replace(/\.jsx?$/, '')
 }
 
 /**

@@ -9,6 +9,7 @@ const ts = makeTestSuite('test/result/bin.md', {
     const s = getSnapshot(stdout)
     return s
   },
+  splitRe: /^## /gm,
 })
 
 export default ts

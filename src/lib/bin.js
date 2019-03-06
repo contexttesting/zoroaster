@@ -33,7 +33,7 @@ export const buildRootTestSuite = async (paths, timeout) => {
 }
 
 const replaceFilename = (filename) => {
-  return filename.replace(/\.js$/, '')
+  return filename.replace(/\.jsx?$/, '')
 }
 
 /**
