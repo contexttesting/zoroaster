@@ -1,3 +1,9 @@
+## 11 March 2019
+
+### [3.8.2](https://github.com/artdecocode/zoroaster/compare/v3.8.1...v3.8.2)
+
+- [deps] Update `alamode` to 1.8.4 to enable overriding of the hooks installed by _Zoroaster_.
+
 ## 6 March 2019
 
 ### [3.8.1](https://github.com/artdecocode/zoroaster/compare/v3.8.0...v3.8.1)
