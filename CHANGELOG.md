@@ -1,3 +1,11 @@
+## 14 March 2019
+
+### [3.8.3](https://github.com/artdecocode/zoroaster/compare/v3.8.2...v3.8.3)
+
+- [fix] Restore the new lines highlighting in diffs.
+- [fix] Focus on the correct test in the mask.
+- [fix] Jump to the mask result line with custom test separators.
+
 ## 11 March 2019
 
 ### [3.8.2](https://github.com/artdecocode/zoroaster/compare/v3.8.1...v3.8.2)
