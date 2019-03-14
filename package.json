@@ -63,11 +63,11 @@
     "assert-diff": "2.0.3",
     "assert-throws": "3.1.1",
     "catchment": "3.2.2",
-    "erte": "1.1.6",
+    "erte": "1.1.7",
     "forkfeed": "1.0.0",
     "makepromise": "3.0.2",
     "mismatch": "1.0.3",
-    "spawncommand": "2.1.0",
+    "spawncommand": "2.1.1",
     "usually": "1.1.0"
   },
   "devDependencies": {
@@ -75,7 +75,7 @@
     "@a-la/fixture-babel": "1.0.0",
     "@depack/render": "1.1.4",
     "diff": "4.0.1",
-    "documentary": "1.21.5",
+    "documentary": "1.22.0",
     "erotic": "2.0.2",
     "eslint-config-artdeco": "1.0.1",
     "reloquent": "1.2.4",
