@@ -37,6 +37,16 @@ const T = {
     at a mask with a new line (${MASK_SPLIT_PATH}:1:1)`,
     })
   },
+  async 'correct error lines when tests begin with same symbols'() {
+    const path = 'test/fixture/mask/same-name-start.js'
+    const [,res] = getTests({ path })
+    await throws({
+      fn: res.onError,
+      args: new Error('hola'),
+      stack: `Error: hola
+    at a test (${path}:8:1)`,
+    })
+  },
   async 'can make a mask with a new line'(
     { MASK_NL_PATH }, { test },
   ) {

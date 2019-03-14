@@ -54,7 +54,7 @@ const getTests = (conf) => {
    * @throws {Error} An error with a stack trace pointing at the line in the mask file.
    */
   const onError = (name, error) => {
-    const lineRe = new RegExp(`${splitRe.source}${name}`)
+    const lineRe = new RegExp(`${splitRe.source}${name}\r?$`)
     const lineNumber = lines.reduce((acc, current, index) => {
       if (acc) return acc // found
       if (lineRe.test(current)) return index + 1
