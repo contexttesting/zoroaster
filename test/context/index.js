@@ -1,6 +1,6 @@
 import { ok } from 'assert'
 import erotic from 'erotic'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
@@ -186,7 +186,7 @@ const C = {
   /**
    * Path to a mask fixture where tests are split with custom separator.
    */
-  MASK_SPLIT_PATH: resolve(FIXTURE, 'mask-split.js'),
+  MASK_SPLIT_PATH: join(FIXTURE, 'mask-split.js'),
 
   /**
    * Path to a mask fixture to test the `makeTestSuite` function.

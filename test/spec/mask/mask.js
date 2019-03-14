@@ -1,6 +1,7 @@
 import { deepEqual } from 'assert-diff'
 import SnapshotContext from 'snapshot-context'
 import { ok, equal } from 'assert'
+import throws from 'assert-throws'
 import Context from '../../context'
 import getTests from '../../../src/lib/mask'
 
@@ -24,6 +25,17 @@ const T = {
       return rest
     })
     await test('mask-nl.json', fr)
+  },
+  async 'prints the error lines for custom separators'(
+    { MASK_SPLIT_PATH }
+  ) {
+    const [res] = getTests({ path: MASK_SPLIT_PATH, splitRe: /^\/\/\/ /mg })
+    await throws({
+      fn: res.onError,
+      args: new Error('hola'),
+      stack: `Error: hola
+    at a mask with a new line (${MASK_SPLIT_PATH}:1:1)`,
+    })
   },
   async 'can make a mask with a new line'(
     { MASK_NL_PATH }, { test },
