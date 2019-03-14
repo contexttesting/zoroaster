@@ -91,6 +91,6 @@ test/fixture/test
 🦅  Executed 1 test.
 /**/
 
-/* stderr */
+/* realStderr */
 <div><h1>Hello World</h1>Tested By Depack</div>
 /**/

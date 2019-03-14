@@ -155,9 +155,8 @@ const errors = {
 const assertResults = {
   context: [Context, SnapshotContext],
   async 'can create a test suite from a directory'(
-    { MASK_DIR_PATH, SNAPSHOT_DIR }, { setDir, test },
+    { MASK_DIR_PATH }, { test },
   ) {
-    setDir(SNAPSHOT_DIR)
     const ts = makeTestSuite(MASK_DIR_PATH, {
       getResults(input) {
         return input + ' - ok'

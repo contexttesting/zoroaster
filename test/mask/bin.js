@@ -1,3 +1,4 @@
+import { equal } from 'assert'
 import makeTestSuite from '../../src/lib/make-test-suite'
 import Context from '../context'
 
@@ -8,6 +9,15 @@ const ts = makeTestSuite('test/result/bin.md', {
   mapActual({ stdout }) {
     const s = getSnapshot(stdout)
     return s
+  },
+  assertResults({ stderr }, { realStderr }) {
+    if (!realStderr) return
+    let se = stderr
+    if (stderr.startsWith('Reverting JS')) {
+      const [,,,...rest] = stderr.split('\n')
+      se = rest.join('\n')
+    }
+    equal(se, realStderr)
   },
   splitRe: /^## /gm,
 })

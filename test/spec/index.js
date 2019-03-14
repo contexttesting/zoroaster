@@ -29,7 +29,14 @@ const t = {
     })
     ok(promise instanceof Promise)
     const { stderr, code, stdout } = await promise
-    equal(stderr, '')
+    let se = stderr
+    // if we're loading src zoroaster, alamode will
+    // already be loaded in src/bin/index.js that is spawned, on top of --alamode flag.
+    if (stderr.startsWith('Reverting JS')) {
+      const [,,,...rest] = stderr.split('\n')
+      se = rest.join('\n')
+    }
+    equal(se, '')
     equal(code, 4) // test fixtures not passing with 4 errors
     ok(stdout.length > 100)
   },

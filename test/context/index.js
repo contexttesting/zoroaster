@@ -30,8 +30,6 @@ const totalContext = Object.freeze({
   ...extension,
 })
 
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
-
 const to = async (n = 50) => {
   await new Promise(r => setTimeout(r, n))
 }
@@ -163,7 +161,7 @@ const C = {
   /**
    * Path to an test suite file fixture, i.e. fixtures/test-suite.js.
    */
-  TEST_SUITE_PATH: resolve(__dirname, '../fixtures/test-suite.js'),
+  TEST_SUITE_PATH: 'test/fixtures/test-suite.js',
 
   /**
    * Expected error message in the failing test.
@@ -174,11 +172,6 @@ const C = {
    * Expected message returned by a test.
    */
   TEST_RETURN_MESSAGE,
-
-  /**
-   * Snapshot directory
-   */
-  SNAPSHOT_DIR,
 
   /**
    * Path to a mask fixture.
