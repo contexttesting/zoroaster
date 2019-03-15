@@ -1,6 +1,5 @@
 import { ok } from 'assert'
 import erotic from 'erotic'
-import { resolve, join } from 'path'
 import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
@@ -33,9 +32,6 @@ const totalContext = Object.freeze({
 const to = async (n = 50) => {
   await new Promise(r => setTimeout(r, n))
 }
-
-const FIXTURE = resolve(__dirname, '../fixtures')
-const MASK_PATH = resolve(FIXTURE, 'mask.js')
 
 const ZOROASTER = process.env.ALAMODE_ENV == 'test-build' ? 'build/bin/zoroaster' : 'src/bin'
 
@@ -172,35 +168,6 @@ const C = {
    * Expected message returned by a test.
    */
   TEST_RETURN_MESSAGE,
-
-  /**
-   * Path to a mask fixture.
-   */
-  MASK_PATH,
-  /**
-   * Path to a mask fixture with a new line.
-   */
-  MASK_NL_PATH: resolve(FIXTURE, 'mask-nl.js'),
-  MASK_EMPTY_PATH: 'test/fixture/mask/empty.md',
-  MASK_BLANK_PATH: 'test/fixture/mask/blank.md',
-  /**
-   * Path to a mask fixture where tests are split with custom separator.
-   */
-  MASK_SPLIT_PATH: join(FIXTURE, 'mask-split.js'),
-
-  /**
-   * Path to a mask fixture to test the `makeTestSuite` function.
-   */
-  TS_MASK_PATH: resolve(FIXTURE, 'mask/test-suite.js'),
-  /**
-   * Path to a mask fixture to test the `makeTestSuite` function with custom properties.
-   */
-  TS_CUSTOM_MASK_PATH: resolve(FIXTURE, 'mask/test-suite-custom.js'),
-
-  /**
-   * Path to a directory with masks.
-   */
-  MASK_DIR_PATH: resolve(FIXTURE, 'mask'),
 
   /** Run a test from a test suite. */
   runTest,

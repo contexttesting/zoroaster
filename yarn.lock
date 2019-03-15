@@ -162,18 +162,6 @@
     "@wrote/rm" "1.1.2"
     "@wrote/write" "1.0.2"
 
-"@zoroaster/fork@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@zoroaster/fork/-/fork-1.1.0.tgz#fd142ac5b13861d2babc9e59446c3f6de4662d4e"
-  integrity sha512-uzZEfm6mKQ0MxxoEJvqVZ9vtNzhArDpgS1dCFZj+uwDGAfFGsTL386p7k1NZTJ0ruC0BKVFbOWxRFLZxlyGZzA==
-  dependencies:
-    assert-diff "2.0.3"
-    catchment "3.2.2"
-    erte "1.1.6"
-    forkfeed "1.0.0"
-    mismatch "1.0.3"
-    spawncommand "2.1.0"
-
 "@zoroaster/reducer@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.1.0.tgz#745eca1403eb6240f83c6d949c46a3f529f9bd1d"
@@ -554,13 +542,6 @@ spawncommand@1.1.0:
   integrity sha1-gKVu08Bqs7kWQ88/bO84v1gv2xU=
   dependencies:
     catchment "^1.0.0"
-
-spawncommand@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/spawncommand/-/spawncommand-2.1.0.tgz#a5ef60ae7892e8718a9c717fc52fe5f54521e0de"
-  integrity sha512-iLQzOn/Ihmiw78iIeT9Xd5VH9RrhBCriMhCKhjD/xLP83koSwlMG5nFnIJewwud+FAO8JqnXXO5eovjNqeU+Mg==
-  dependencies:
-    catchment "3.1.1"
 
 spawncommand@2.1.1:
   version "2.1.1"
