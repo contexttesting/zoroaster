@@ -162,6 +162,30 @@
     "@wrote/rm" "1.1.2"
     "@wrote/write" "1.0.2"
 
+"@zoroaster/fork@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@zoroaster/fork/-/fork-1.1.1.tgz#2d61e1ca0d0736e5884e752618a309afab48f7eb"
+  integrity sha512-qw3/K8+7csHQZNiX4xNW04GwGGjWRIlzL88doAs5ayKgbWfQAlX4kbO+sMnZ8m7eyXLXpgGToAOnev/6L0SFqQ==
+  dependencies:
+    assert-diff "2.0.3"
+    catchment "3.2.2"
+    erte "1.1.7"
+    forkfeed "1.0.0"
+    mismatch "1.0.3"
+    spawncommand "2.1.1"
+
+"@zoroaster/mask@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-1.0.1.tgz#c5a8212d272c016ccb7c9ad0dde260c8242203a1"
+  integrity sha512-rjOU9mGeMtL1GlXAwBjpk7ePf1tUqsPOopv/lwv0X41ZvHLS1zUDpQchOC/GLpqrMEINe7TZVYWM7cXVzgwgHw==
+  dependencies:
+    "@zoroaster/fork" "1.1.1"
+    assert-diff "2.0.3"
+    assert-throws "3.1.1"
+    catchment "3.2.2"
+    erte "1.1.7"
+    mismatch "1.0.3"
+
 "@zoroaster/reducer@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.1.0.tgz#745eca1403eb6240f83c6d949c46a3f529f9bd1d"
