@@ -174,10 +174,10 @@
     mismatch "1.0.3"
     spawncommand "2.1.1"
 
-"@zoroaster/mask@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-1.0.2.tgz#048d285bbaa757336df644b3e7485d6aeb75fc47"
-  integrity sha512-ftI+wglPTtfHsAnEBQ3wJy9q6y13jpBQsi5TPGhHL6KBXouYrYkSWqqN6fqag62JCj8pJC5EO2fcUoQLbIf2DA==
+"@zoroaster/mask@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-1.1.0.tgz#d7a5c906da52b53cb58b98ad2d831d7192e06643"
+  integrity sha512-eTeE68bG4Gh6dk5HrfZz22IMKC6t21dJOZVqHVf2ZA03TiS6wAtJ+BgboCdurzhqsz3W+t2Os084AsH5HSCN0Q==
   dependencies:
     "@zoroaster/fork" "1.1.1"
     assert-diff "2.0.3"
