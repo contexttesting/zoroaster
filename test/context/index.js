@@ -4,6 +4,7 @@ import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
 import testSuite from '../fixtures/test-suite'
+import { runTestSuiteAndNotify } from '../../src/lib/run-test'
 
 const { TEST_ERROR_MESSAGE, TEST_RETURN_MESSAGE, ...tests } = _tests
 
@@ -82,7 +83,7 @@ const C = {
    * @param {TestSuite} ts instance of a TestSuite
    * @throws Throws if a test had errors in it.
    */
-  assertNoErrorsInTestSuite: (ts, e = erotic(true)) => {
+  assertNoErrorsInTestSuite(ts, e = erotic(true)) {
     const { name, tests: t } = ts
     t.forEach((test) => {
       if (test instanceof Test) {
@@ -97,6 +98,30 @@ const C = {
         throw e('test is not a test or a test suite') // test the tests
       }
     })
+  },
+  /**
+   * Checks that the notifications do not contain errors.
+   */
+  assertNoNotifyErrors(notifications) {
+    notifications.forEach(({ error }) => {
+      ok(!error)
+    })
+  },
+
+  makeNotify() {
+    const notifications = []
+    return {
+      notifications,
+      notify(r) {
+        notifications.push(r)
+      },
+    }
+  },
+
+  async runTestSuite(ts, assertNoErrors = true) {
+    const { notifications, notify } = this.makeNotify()
+    await runTestSuiteAndNotify(notify, [], '', [], ts)
+    if (assertNoErrors) this.assertNoNotifyErrors(notifications)
   },
 
   /**
@@ -194,5 +219,7 @@ async function runTest(ts, name) {
   const test = ts[name]
   await test(...ic)
 }
+
+C.runTestSuite = C.runTestSuite.bind(C)
 
 export default C

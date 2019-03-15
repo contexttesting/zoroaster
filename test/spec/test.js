@@ -74,14 +74,14 @@ export const runTest = {
     notEqual(test.started, null)
     notEqual(test.finished, null)
   },
-  async 'saves result of a test'({ name }) {
-    const result = 'test_string_result'
-    const test = new Test(name, () => result)
-    const res = test.run()
+  // async 'saves result of a test'({ name }) {
+  //   const result = 'test_string_result'
+  //   const test = new Test(name, () => result)
+  //   const res = test.run()
 
-    await res
-    equal(test.result, result)
-  },
+  //   await res
+  //   equal(test.result, result)
+  // },
   async 'runs a test with an error'({ name, errorMessage }) {
     const test = new Test(name, () => {
       throw new Error(errorMessage)

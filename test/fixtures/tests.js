@@ -1,4 +1,6 @@
 import erotic from 'erotic'
+import { equal } from 'assert'
+
 export const TEST_ERROR_MESSAGE = 'When you are in doubt abstain.'
 export const TEST_RETURN_MESSAGE = 'test result'
 
@@ -31,7 +33,7 @@ export const asyncContextFailingTest = async ({ errorMessage }) => {
 }
 
 export const contextPassingTest = ({ returnMessage }) => {
-  return returnMessage
+  equal(returnMessage, TEST_RETURN_MESSAGE)
 }
 
 export const timeoutFailingTest = async () => {
@@ -41,5 +43,5 @@ export const timeoutFailingTest = async () => {
 }
 
 export const test = () => {
-  return TEST_RETURN_MESSAGE
+  // return TEST_RETURN_MESSAGE
 }

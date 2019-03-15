@@ -14,10 +14,10 @@ const T = {
     const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, context)
     ok(Object.isFrozen(testSuite.context))
   },
-  async 'passes context to child test suites'({ context, TEST_SUITE_NAME, tests: { test } }) {
+  async 'passes context to child test suites'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       test_suite: {
-        test,
+        asyncTest,
       },
     }, null, context)
     await testSuite.run()
@@ -26,9 +26,9 @@ const T = {
       equal(childTestSuite.context, testSuite.context)
     })
   },
-  async 'passes context to tests'({ context, TEST_SUITE_NAME, tests: { test } }) {
+  async 'passes context to tests'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
-      test,
+      asyncTest,
     }, null, context)
     await testSuite.run()
     testSuite.tests.forEach((t) => {
@@ -42,31 +42,31 @@ export default T
 /** @type {Object.<string, (c: Context)>} */
 export const from_tests = {
   context: Context,
-  'adds context from passed object'({ context, TEST_SUITE_NAME, tests: { test } }) {
+  'adds context from passed object'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
       context,
-      test,
+      asyncTest,
     })
     notStrictEqual(ts.context, context)
     deepEqual(ts.context, context)
   },
-  'freezes passed context'({ context, TEST_SUITE_NAME, tests: { test } }) {
+  'freezes passed context'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
     const c = { ...context }
     ok(!Object.isFrozen(c))
     const ts = new TestSuite(TEST_SUITE_NAME, {
       context: c,
-      test,
+      asyncTest,
     })
     ok(Object.isFrozen(ts.context))
   },
-  'does not add context as a test'({ context, TEST_SUITE_NAME, tests: { test } }) {
+  'does not add context as a test'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
     const tests = {
       context,
-      test,
+      asyncTest,
     }
     const ts = new TestSuite(TEST_SUITE_NAME, tests)
     equal(ts.tests.length, 1)
-    equal(ts.tests[0].fn, test)
+    equal(ts.tests[0].fn, asyncTest)
   },
   'extends current context'({ context, extension, totalContext, TEST_SUITE_NAME }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {

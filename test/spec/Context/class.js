@@ -1,13 +1,12 @@
 import { ok } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'
+import { runTestSuiteAndNotify } from '../../../src/lib/run-test'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  async 'evaluates a class constructor'({
-    TEST_SUITE_NAME, assertNoErrorsInTestSuite,
-  }) {
+  async 'evaluates a class constructor'({ TEST_SUITE_NAME, runTestSuite }) {
     class Test {
       async _init() {
         await new Promise(r => setTimeout(r, 100))
@@ -23,10 +22,9 @@ const T = {
         ok(isInit)
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
   },
-  async 'destroys the context'({ TEST_SUITE_NAME, tests: { test } }) {
+  async 'destroys the context'({ TEST_SUITE_NAME, tests: { asyncTest }, runTestSuite }) {
     let destroyed = false
     class Test {
       async _destroy() {
@@ -36,9 +34,9 @@ const T = {
     }
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       context: Test,
-      test,
+      asyncTest,
     })
-    await testSuite.run()
+    await runTestSuite(testSuite)
     ok(destroyed)
   },
 }

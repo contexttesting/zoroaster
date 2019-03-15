@@ -41,18 +41,18 @@ test/fixtures/test-suite.js -a -t 250
 test/fixtures/test-suite.js
   ✗  failingTest
   | Error: When you are in doubt abstain.
-  |     at failingTest (/test/fixtures/tests.js:6:9)
+  |     at failingTest (/test/fixtures/tests.js:8:9)
   ✗  asyncFailingTest
   | Error: When you are in doubt abstain.
-  |     at asyncFailingTest (/test/fixtures/tests.js:10:9)
+  |     at asyncFailingTest (/test/fixtures/tests.js:12:9)
   ✓  asyncTest
   ✗  contextFailingTest
   | Error: When you are in doubt abstain.
-  |     at contextFailingTest (/test/fixtures/tests.js:18:9)
+  |     at contextFailingTest (/test/fixtures/tests.js:20:9)
   ✗  asyncContextFailingTest
   | Error: When you are in doubt abstain.
-  |     at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:26:16)
-  |     at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
+  |     at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:28:16)
+  |     at asyncContextFailingTest (/test/fixtures/tests.js:24:13)
   ✓  contextPassingTest
   ✗  timeoutFailingTest
   | Error: Test has timed out after 250ms
@@ -60,20 +60,20 @@ test/fixtures/test-suite.js
 
 test/fixtures/test-suite.js > failingTest
   Error: When you are in doubt abstain.
-      at failingTest (/test/fixtures/tests.js:6:9)
+      at failingTest (/test/fixtures/tests.js:8:9)
 
 test/fixtures/test-suite.js > asyncFailingTest
   Error: When you are in doubt abstain.
-      at asyncFailingTest (/test/fixtures/tests.js:10:9)
+      at asyncFailingTest (/test/fixtures/tests.js:12:9)
 
 test/fixtures/test-suite.js > contextFailingTest
   Error: When you are in doubt abstain.
-      at contextFailingTest (/test/fixtures/tests.js:18:9)
+      at contextFailingTest (/test/fixtures/tests.js:20:9)
 
 test/fixtures/test-suite.js > asyncContextFailingTest
   Error: When you are in doubt abstain.
-      at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:26:16)
-      at asyncContextFailingTest (/test/fixtures/tests.js:22:13)
+      at Timeout.setTimeout [as _onTimeout] (/test/fixtures/tests.js:28:16)
+      at asyncContextFailingTest (/test/fixtures/tests.js:24:13)
 
 test/fixtures/test-suite.js > timeoutFailingTest
   Error: Test has timed out after 250ms

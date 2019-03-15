@@ -1,5 +1,6 @@
 import cleanStack from '@artdeco/clean-stack'
 import { EOL } from 'os'
+import { c } from 'erte'
 
 export function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
@@ -33,5 +34,9 @@ export function isFunction(fn) {
   return (typeof fn).toLowerCase() == 'function'
 }
 
-export const TICK = '\x1b[32m \u2713 \x1b[0m'
-export const CROSS = '\x1b[31m \u2717 \x1b[0m'
+export const TICK = ' ' + c('\u2713', 'green') + ' '
+export const CROSS = ' ' + c('\u2717', 'red') + ' '
+
+export const replaceFilename = (filename) => {
+  return filename.replace(/\.jsx?$/, '')
+}

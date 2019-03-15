@@ -5,7 +5,7 @@ import Context from '../../context'
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  async 'passes multiple contexts to tests'({ assertNoErrorsInTestSuite }) {
+  async 'passes multiple contexts to tests'({ runTestSuite }) {
     const testSuite = new TestSuite('test', {
       context: [
         'test',
@@ -27,10 +27,9 @@ const T = {
         equal(C, 'C')
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
   },
-  async 'destroys multiple contexts'({ assertNoErrorsInTestSuite, tests: { test } }) {
+  async 'destroys multiple contexts'({ runTestSuite, tests: { asyncTest } }) {
     let calledA
     let calledB
     let calledC
@@ -50,10 +49,9 @@ const T = {
           }
         },
       ],
-      test,
+      asyncTest,
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
     ok(calledA)
     ok(calledB)
     ok(calledC)

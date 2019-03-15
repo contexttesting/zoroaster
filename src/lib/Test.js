@@ -1,3 +1,4 @@
+import { c } from 'erte'
 import runTestAndNotify from './run-test'
 
 export default class Test {
@@ -27,8 +28,8 @@ export default class Test {
     return this._fn
   }
   async run(notify) {
-    console.warn('deprecated method run')
-    const res = await runTestAndNotify(notify, { name: this.name, fn: this.fn, context: this.context, timeout: this.timeout })
+    console.warn(c('Deprecated method Test.run', 'yellow'))
+    const res = await runTestAndNotify(notify, [], '', [], { name: this.name, fn: this.fn, context: this.context, timeout: this.timeout })
     Object.assign(this, res)
     return res
   }

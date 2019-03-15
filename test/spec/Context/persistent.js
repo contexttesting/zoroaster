@@ -29,7 +29,7 @@ const T = {
     await testSuite.run()
     assertNoErrorsInTestSuite(testSuite)
   },
-  async 'destroys the context'({ TEST_SUITE_NAME, tests: { test } }) {
+  async 'destroys the context'({ TEST_SUITE_NAME, tests: { asyncTest } }) {
     let destroyed = false
     class Test {
       async _destroy() {
@@ -39,7 +39,7 @@ const T = {
     }
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       persistentContext: Test,
-      test,
+      asyncTest,
     })
     await testSuite.run()
     ok(destroyed)

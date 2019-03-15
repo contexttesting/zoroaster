@@ -1,11 +1,12 @@
 import { equal } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'
+import { runTestSuiteAndNotify } from '../../../src/lib/run-test'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  async 'binds methods'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
+  async 'binds methods'({ TEST_SUITE_NAME, runTestSuite }) {
     class Test {
       async _init() {
         await new Promise(r => setTimeout(r, 100))
@@ -30,12 +31,9 @@ const T = {
         equal(d, t)
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
   },
-  async 'binds inherited methods'({
-    TEST_SUITE_NAME, assertNoErrorsInTestSuite,
-  }) {
+  async 'binds inherited methods'({ TEST_SUITE_NAME, runTestSuite }) {
     class Test {
       async _init() {
         await new Promise(r => setTimeout(r, 100))
@@ -63,8 +61,7 @@ const T = {
         equal(d, t)
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
   },
 }
 

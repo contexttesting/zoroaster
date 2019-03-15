@@ -4,6 +4,7 @@ import makePromise from 'makepromise'
 import cleanStack from '@artdeco/clean-stack'
 import { c, b } from 'erte'
 import TestSuite from './TestSuite'
+import { replaceFilename } from '.'
 
 /**
  * Remove modules cached by require.
@@ -32,10 +33,6 @@ export const buildRootTestSuite = async (paths, timeout) => {
     'Zoroaster Root Test Suite', tree, null, null, timeout,
   )
   return ts
-}
-
-const replaceFilename = (filename) => {
-  return filename.replace(/\.jsx?$/, '')
 }
 
 /**

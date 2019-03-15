@@ -9,7 +9,6 @@ import {
 import { buildRootTestSuite, clearRequireCache } from './bin'
 import { runInSequence } from './run-test'
 
-
 function watchFiles(files, callback) {
   files.forEach((file) => {
     // console.log(`Watching ${file} for changes...`)
@@ -33,6 +32,8 @@ export default async function run({
   paths,
   watch,
   timeout,
+  snapshot,
+  snapshotRoot,
 }, {
   _currentlyWatching = [],
   exitListener,
@@ -67,8 +68,7 @@ export default async function run({
       }
     }
   }
-
-  await runInSequence(notify, rootTestSuite.tests, rootTestSuite.hasFocused)
+  await runInSequence(notify, [], rootTestSuite.tests, rootTestSuite.hasFocused, snapshot, snapshotRoot)
 
   stack.end()
   const errorsCatchment = await errorsPromise
@@ -98,6 +98,7 @@ export default async function run({
         paths,
         watch,
         timeout,
+        snapshot,
       }, {
         _currentlyWatching: newCurrentlyWatching,
         exitListener: newExitListener,

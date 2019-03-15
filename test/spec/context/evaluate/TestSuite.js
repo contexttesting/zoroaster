@@ -151,22 +151,22 @@ const T = {
     equal(secondContext[propName], testDataAfterPromise)
   },
   async 'times out before context finishes evaluating'(
-    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { test } }
+    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { asyncTest } }
   ) {
     async function c() {
       await new Promise(r => setTimeout(r, 200))
     }
     const ts = new TestSuite(TEST_SUITE_NAME, {
-      test,
+      asyncTest,
     }, null, c, 150)
     await ts.run()
     throws(
       () => assertNoErrorsInTestSuite(ts),
-      /Error in test "Zoroaster Test Suite Name > test": Evaluate context has timed out after 150ms/
+      /Error in test "Zoroaster Test Suite Name > asyncTest": Evaluate context has timed out after 150ms/
     )
   },
   async 'destroys the context after its evaluation'(
-    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { test } }
+    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { asyncTest } }
   ) {
     let destroyed = false
     class C {
@@ -178,12 +178,12 @@ const T = {
       }
     }
     const ts = new TestSuite(TEST_SUITE_NAME, {
-      test,
+      asyncTest,
     }, null, C, 150)
     await ts.run()
     throws(
       () => assertNoErrorsInTestSuite(ts),
-      /Error in test "Zoroaster Test Suite Name > test": Evaluate context has timed out after 150ms/
+      /Error in test "Zoroaster Test Suite Name > asyncTest": Evaluate context has timed out after 150ms/
     )
     await new Promise(r => setTimeout(r, 50))
     ok(destroyed)

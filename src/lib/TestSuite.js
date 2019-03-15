@@ -1,4 +1,5 @@
 import { EOL } from 'os'
+import { c } from 'erte'
 import { isFunction, indent } from '.'
 import Test from './Test'
 import { runTestSuiteAndNotify } from './run-test'
@@ -149,12 +150,14 @@ export default class TestSuite {
    * @param {boolean} [onlyFocused = false] Run only focused tests.
    */
   async run(notify = () => {}, onlyFocused) {
+    // This should be deprecated, tests and test suites are run with `lib/run-test.js`.
+    console.log(c('Deprecated method TestSuite.run', 'red'))
     let pc
     if (this._persistentContext) {
       pc = await evaluatePersistentContext(this._persistentContext)
       bindContexts(this.tests, [pc])
     }
-    const res = await runTestSuiteAndNotify(notify, {
+    const res = await runTestSuiteAndNotify(notify, [], '', [], {
       name: this.name,
       tests: this.tests,
     }, onlyFocused)

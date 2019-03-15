@@ -56,6 +56,7 @@
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
     "@artdeco/clean-stack": "1.0.1",
+    "@wrote/exists": "1.0.1",
     "@zoroaster/mask": "1.1.0",
     "@zoroaster/reducer": "1.1.0",
     "alamode": "1.8.5",
@@ -65,8 +66,10 @@
     "catchment": "3.2.2",
     "erte": "1.1.7",
     "forkfeed": "1.0.0",
+    "frame-of-mind": "1.0.0",
     "makepromise": "3.0.2",
     "mismatch": "1.0.3",
+    "snapshot-context": "2.0.5",
     "spawncommand": "2.1.1",
     "usually": "1.1.0"
   },
@@ -79,7 +82,6 @@
     "erotic": "2.0.2",
     "eslint-config-artdeco": "1.0.1",
     "reloquent": "1.2.4",
-    "snapshot-context": "2.0.5",
     "temp-context": "2.1.0",
     "yarn-s": "1.1.0"
   }
