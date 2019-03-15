@@ -1,3 +1,11 @@
+## 15 March 2019
+
+### [3.8.4](https://github.com/artdecocode/zoroaster/compare/v3.8.3...v3.8.4)
+
+- [deps] Move the mask logic to `@zoroaster/mask` and remove file extensions in nested mask results.
+- [deps] Update `alamode`.
+- [fix] Better error message for a sync error when requiring tests.
+
 ## 14 March 2019
 
 ### [3.8.3](https://github.com/artdecocode/zoroaster/compare/v3.8.2...v3.8.3)

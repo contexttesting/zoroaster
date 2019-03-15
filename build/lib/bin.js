@@ -1,6 +1,8 @@
 const { lstat, readdir } = require('fs');
 const { resolve, join } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
+let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
+const { c, b } = require('erte');
 const TestSuite = require('./TestSuite');
 
 /**
@@ -82,7 +84,9 @@ async function requireTests(path) {
   } catch (err) {
     // file or directory does not exist
     // eslint-disable-next-line
-    console.error(err)
+    console.error(c(`Could not require`, 'red'), b(c(path, 'white'), 'red'))
+    // eslint-disable-next-line
+    console.error(cleanStack(err.stack))
   }
 }
 

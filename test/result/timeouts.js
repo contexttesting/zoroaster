@@ -3,8 +3,7 @@
 
 /* expected */
 test/fixtures/timeouts.js
-   default.js
-    ✓  finishes before the timeout
+  ✓  finishes before the timeout
 
 🦅  Executed 1 test.
 /**/
