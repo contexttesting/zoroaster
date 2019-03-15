@@ -1,5 +1,5 @@
 import { equal } from 'assert'
-import makeTestSuite from '../../src/lib/make-test-suite'
+import makeTestSuite from '@zoroaster/mask'
 import Context from '../context'
 
 const { BIN, getSnapshot } = Context

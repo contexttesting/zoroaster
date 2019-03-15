@@ -1,4 +1,4 @@
-import makeTestSuite from '../../src/lib/make-test-suite'
+import makeTestSuite from '@zoroaster/mask'
 
 class Context {
   async _init() {

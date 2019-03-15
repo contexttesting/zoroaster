@@ -24,8 +24,6 @@ export { default as throws } from 'assert-throws'
 export { default as assert, equal, ok } from 'assert'
 export { deepEqual } from 'assert-diff'
 
-export { default as makeTestSuite } from './lib/make-test-suite'
-
 /* documentary types/make-test-suite.xml */
 /**
  * @typedef {Object} Context A context made with a constructor.
