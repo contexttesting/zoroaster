@@ -89,7 +89,9 @@ function unwatchFiles(files) {
   process.once('beforeExit', newExitListener)
 
   if (watch) {
-    const newCurrentlyWatching = Object.keys(require.cache)
+    const newCurrentlyWatching = Object.keys(require.cache).filter((c) => {
+      return !c.startsWith(`${process.cwd()}/node_modules/`)
+    })
     watchFiles(newCurrentlyWatching, async () => {
       // we can also re-run only changed test suites
       await run({
@@ -104,5 +106,11 @@ function unwatchFiles(files) {
   }
 }
 
+const memory = () => {
+  const used = process.memoryUsage().heapUsed / 1024 / 1024
+  console.log(`Memory usage: ${Math.floor(used*1000)/1000} MB`)
+}
+// memory()
+// setInterval(memory, 1000)
 
 module.exports = run
