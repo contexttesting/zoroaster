@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
+let argufy = require('argufy'); if (argufy && argufy.__esModule) argufy = argufy.default;
 const { resolve } = require('path');
 const run = require('../lib/run');
-let argufy = require('argufy'); if (argufy && argufy.__esModule) argufy = argufy.default;
 const getUsage = require('./usage');
 const { version } = require('../../package.json');
 
@@ -13,6 +14,8 @@ const {
   help: _help,
   paths: _paths = [],
   timeout: _timeout = 2000,
+  snapshot = 'test/snapshot',
+  snapshotRoot = 'test/spec,test/mask',
   _argv,
 } = argufy({
   paths: { command: true, multiple: true },
@@ -22,6 +25,8 @@ const {
   version: { short: 'v', boolean: true },
   help: { short: 'h', boolean: true },
   timeout: { short: 't', number: true },
+  snapshot: { short: 's' },
+  snapshotRoot: { short: 'r' },
 })
 
 if (_version) {
@@ -53,10 +58,11 @@ if (alamode) {
       paths: [..._paths, ..._argv],
       watch: _watch,
       timeout: _timeout,
+      snapshot,
+      snapshotRoot: snapshotRoot.split(','),
     })
-  } catch ({ message, stack }) {
-    if (process.env.DEBUG) console.log(stack) // eslint-disable-line no-console
-    console.error(message) // eslint-disable-line no-console
+  } catch ({ stack }) {
+    console.log(cleanStack(stack)) // eslint-disable-line no-console
     process.exit(1)
   }
 })()

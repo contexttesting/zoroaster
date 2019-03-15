@@ -9,7 +9,6 @@ const {
 const { buildRootTestSuite, clearRequireCache } = require('./bin');
 const { runInSequence } = require('./run-test');
 
-
 function watchFiles(files, callback) {
   files.forEach((file) => {
     // console.log(`Watching ${file} for changes...`)
@@ -33,6 +32,8 @@ function unwatchFiles(files) {
   paths,
   watch,
   timeout,
+  snapshot,
+  snapshotRoot,
 }, {
   _currentlyWatching = [],
   exitListener,
@@ -67,8 +68,7 @@ function unwatchFiles(files) {
       }
     }
   }
-
-  await runInSequence(notify, rootTestSuite.tests, rootTestSuite.hasFocused)
+  await runInSequence(notify, [], rootTestSuite.tests, rootTestSuite.hasFocused, snapshot, snapshotRoot)
 
   stack.end()
   const errorsCatchment = await errorsPromise
@@ -98,6 +98,7 @@ function unwatchFiles(files) {
         paths,
         watch,
         timeout,
+        snapshot,
       }, {
         _currentlyWatching: newCurrentlyWatching,
         exitListener: newExitListener,

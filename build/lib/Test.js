@@ -1,3 +1,4 @@
+const { c } = require('erte');
 const runTestAndNotify = require('./run-test');
 
                class Test {
@@ -27,8 +28,8 @@ const runTestAndNotify = require('./run-test');
     return this._fn
   }
   async run(notify) {
-    console.warn('deprecated method run')
-    const res = await runTestAndNotify(notify, { name: this.name, fn: this.fn, context: this.context, timeout: this.timeout })
+    console.warn(c('Deprecated method Test.run', 'yellow'))
+    const res = await runTestAndNotify(notify, [], '', [], { name: this.name, fn: this.fn, context: this.context, timeout: this.timeout })
     Object.assign(this, res)
     return res
   }

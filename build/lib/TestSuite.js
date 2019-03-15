@@ -1,4 +1,5 @@
 const { EOL } = require('os');
+const { c } = require('erte');
 const { isFunction, indent } = require('.');
 const Test = require('./Test');
 const { runTestSuiteAndNotify } = require('./run-test');
@@ -149,12 +150,14 @@ const getChildrenNames = (tests) => {
    * @param {boolean} [onlyFocused = false] Run only focused tests.
    */
   async run(notify = () => {}, onlyFocused) {
+    // This should be deprecated, tests and test suites are run with `lib/run-test.js`.
+    console.log(c('Deprecated method TestSuite.run', 'red'))
     let pc
     if (this._persistentContext) {
       pc = await evaluatePersistentContext(this._persistentContext)
       bindContexts(this.tests, [pc])
     }
-    const res = await runTestSuiteAndNotify(notify, {
+    const res = await runTestSuiteAndNotify(notify, [], '', [], {
       name: this.name,
       tests: this.tests,
     }, onlyFocused)

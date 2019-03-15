@@ -1,5 +1,6 @@
 let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
 const { EOL } = require('os');
+const { c } = require('erte');
 
        function indent(str, padding) {
   return str.replace(/^(?!\s*$)/mg, padding)
@@ -33,9 +34,12 @@ const { EOL } = require('os');
   return (typeof fn).toLowerCase() == 'function'
 }
 
-       const TICK = '\x1b[32m \u2713 \x1b[0m'
-       const CROSS = '\x1b[31m \u2717 \x1b[0m'
+       const TICK = ' ' + c('\u2713', 'green') + ' '
+       const CROSS = ' ' + c('\u2717', 'red') + ' '
 
+       const replaceFilename = (filename) => {
+  return filename.replace(/\.jsx?$/, '')
+}
 
 module.exports.indent = indent
 module.exports.getPadding = getPadding
@@ -43,3 +47,4 @@ module.exports.filterStack = filterStack
 module.exports.isFunction = isFunction
 module.exports.TICK = TICK
 module.exports.CROSS = CROSS
+module.exports.replaceFilename = replaceFilename

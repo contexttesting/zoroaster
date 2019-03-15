@@ -4,6 +4,7 @@ let makePromise = require('makepromise'); if (makePromise && makePromise.__esMod
 let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
 const { c, b } = require('erte');
 const TestSuite = require('./TestSuite');
+const { replaceFilename } = require('.');
 
 /**
  * Remove modules cached by require.
@@ -32,10 +33,6 @@ const TestSuite = require('./TestSuite');
     'Zoroaster Root Test Suite', tree, null, null, timeout,
   )
   return ts
-}
-
-const replaceFilename = (filename) => {
-  return filename.replace(/\.jsx?$/, '')
 }
 
 /**
