@@ -1,5 +1,9 @@
 ## 15 March 2019
 
+### [3.8.5](https://github.com/artdecocode/zoroaster/compare/v3.8.4...v3.8.5)
+
+- [deps] Up `@zoroaster/mask` to automatically resolve result paths extensions.
+
 ### [3.8.4](https://github.com/artdecocode/zoroaster/compare/v3.8.3...v3.8.4)
 
 - [deps] Move the mask logic to `@zoroaster/mask` and remove file extensions in nested mask results.
