@@ -1,6 +1,8 @@
 import { lstat, readdir } from 'fs'
 import { resolve, join } from 'path'
 import makePromise from 'makepromise'
+import cleanStack from '@artdeco/clean-stack'
+import { c, b } from 'erte'
 import TestSuite from './TestSuite'
 
 /**
@@ -82,6 +84,8 @@ async function requireTests(path) {
   } catch (err) {
     // file or directory does not exist
     // eslint-disable-next-line
-    console.error(err)
+    console.error(c(`Could not require`, 'red'), b(c(path, 'white'), 'red'))
+    // eslint-disable-next-line
+    console.error(cleanStack(err.stack))
   }
 }
