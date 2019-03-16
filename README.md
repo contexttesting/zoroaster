@@ -574,6 +574,8 @@ export default TestSuite
 
 ![Zoroaster Snapshot Example][doc/snapshot.gif]
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+
 ## Context
 
 A context is unique to each test. When added as a `context` property to a test suite, it can be accessed from test function's first argument. If there are multiple contexts, they can be accessed in subsequent arguments.
@@ -627,7 +629,7 @@ example/Zoroaster/test/spec/object-context.js
 🦅  Executed 3 tests.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
 
 ### Class Context
 
@@ -684,7 +686,7 @@ example/Zoroaster/test/spec/async-context.js
 🦅  Executed 1 test.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
 
 ### Multiple Contexts
 
@@ -716,7 +718,7 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="15"></a></p>
 
 ### Persistent Context
 
@@ -791,7 +793,7 @@ example/Zoroaster/test/spec/persistent-context.js
 
 A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -825,7 +827,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -851,7 +853,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
 
 ## Copyright
 
