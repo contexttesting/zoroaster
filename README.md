@@ -76,11 +76,28 @@ export const asyncSoftware = async (type) => {
 }
 ```
 
+The _Context_ can be used as an alternative for in-test suite set-up and tear-down routines. Anything returned by tests will be compared against snapshots that will be created upon the first run of the test.
+
 ```js
 import { ok, equal } from 'assert'
 import { software, asyncSoftware } from './src'
 
-export default {
+class Context {
+  async _init() {
+    await new Promise(r => setTimeout(r, 100))
+    this._data = 'hello world;'
+  }
+  /** Returns the testing data */
+  get data() {
+    return this._data
+  }
+}
+
+/**
+ * @type {Object.<string, (c:Context)>}
+ */
+const TestSuite = {
+  context: Context,
   'runs a test'() {
     const res = software('boolean')
     ok(res)
@@ -89,10 +106,16 @@ export default {
     const res = await asyncSoftware('string')
     equal(res, 'string')
   },
+  async 'supports snapshots'({ data }) {
+    const res = await asyncSoftware('string')
+    return `${res} :: ${data}`
+  },
 }
+
+export default TestSuite
 ```
 
-![tests results](doc/tests.png)
+![Zoroaster Example Test Results](doc/zoroaster.png)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
