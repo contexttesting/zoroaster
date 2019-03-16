@@ -1,5 +1,5 @@
 const T = {
-  '!compares the test result against snapshot'() {
+  'compares the test result against snapshot'() {
     return 'ok'
   },
 }

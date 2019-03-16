@@ -9,7 +9,10 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => 
   const ext = typeof result == 'string' ? 'txt' : 'json'
   const snapshotFilename = `${n}.${ext}`
   let pp = join(...path)
-  const root = snapshotRoot.find(r => pp.startsWith(r))
+  const root = snapshotRoot.find(r => {
+    const rr = join(...r.split('/'))
+    return pp.startsWith(rr)
+  })
   if (root) pp = pp.slice(root.length)
   let p = join(snapshotDir, pp)
 
@@ -24,7 +27,6 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => 
     const e = await exists(join(p, otherSnapshot))
     if (e)
       throw new Error(`Snapshot of another type exists: ${otherSnapshot}`)
-    console.log(p, snapshotFilename)
     await sc.test(snapshotFilename, result, c(nn, 'yellow'))
   } else {
     let snapshotPath = join(p, snapshotFilename)
