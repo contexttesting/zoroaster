@@ -121,9 +121,9 @@ const C = {
   /**
    * Runs the test suite using the lib's `runTestSuiteAndNotify`.
    */
-  async runTestSuite(ts, assertNoErrors = true) {
+  async runTestSuite(ts, assertNoErrors = true, onlyFocused) {
     const { notifications, notify } = this.makeNotify()
-    await runTestSuiteAndNotify(notify, [], '', [], ts)
+    await runTestSuiteAndNotify(notify, [], '', [], ts, onlyFocused)
     if (assertNoErrors) this.assertNoNotifyErrors(notifications)
     return notifications
   },

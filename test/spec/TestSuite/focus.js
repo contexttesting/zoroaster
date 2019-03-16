@@ -5,7 +5,7 @@ import Context from '../../context'
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  async 'runs focused tests across test suites'({ TEST_SUITE_NAME }) {
+  async 'runs focused tests across test suites'({ TEST_SUITE_NAME, runTestSuite }) {
     const run = []
     const ts = new TestSuite(TEST_SUITE_NAME, {
       testSuiteA: {
@@ -31,10 +31,10 @@ const T = {
         },
       },
     })
-    await ts.run(undefined, ts.hasFocused)
+    await runTestSuite(ts, true, ts.hasFocused)
     deepEqual(run, ['!testAB', '!testBB'])
   },
-  async 'runs all tests inside focused test suite'({ TEST_SUITE_NAME }) {
+  async 'runs all tests inside focused test suite'({ TEST_SUITE_NAME, runTestSuite }) {
     const run = []
     const ts = new TestSuite(TEST_SUITE_NAME, {
       '!testSuiteA': {
@@ -60,12 +60,10 @@ const T = {
         },
       },
     })
-    await ts.run(undefined, ts.hasFocused)
+    await runTestSuite(ts, true, ts.hasFocused)
     deepEqual(run, ['testAA', 'testAB', 'testAC'])
   },
-  async 'runs all tests inside a focused test suite and other tests'({
-    TEST_SUITE_NAME,
-  }) {
+  async 'runs all tests inside a focused test suite and other tests'({ TEST_SUITE_NAME, runTestSuite }) {
     const run = []
     const ts = new TestSuite(TEST_SUITE_NAME, {
       '!testSuiteA': {
@@ -91,7 +89,7 @@ const T = {
         },
       },
     })
-    await ts.run(undefined, ts.hasFocused)
+    await runTestSuite(ts, true, ts.hasFocused)
     deepEqual(run, ['testAA', 'testAB', 'testAC', '!testBB'])
   },
 }

@@ -24,8 +24,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   try {
     await handleSnapshot(result, name, path, snapshot, snapshotRoot)
   } catch (err) {
-    error = new Error(err.message)
-    error.stack = error.message
+    error = err
   }
 
   if (notify) notify({
@@ -50,6 +49,8 @@ function dumpResult({ error, name }) {
  * Run test suite (wrapper for notify).
  * @param {function} notify The function to call for notifications.
  * @param {string[]} path The path to the test suite.
+ * @param {string} snapshot The path to the snapshot dir.
+ * @param {string[]} snapshotRoot Parts to ignore in the beginning of snapshot paths.
  */
 export async function runTestSuiteAndNotify(
   notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused,
@@ -117,11 +118,11 @@ const getNames = persistentContext => {
 export async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot) {
   const res = await reducer(tests, {
     onlyFocused,
-    runTest(...args) {
-      return runTestAndNotify(notify, path, snapshot, snapshotRoot, ...args)
+    runTest(test) {
+      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test)
     },
-    runTestSuite(...args) {
-      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, ...args)
+    runTestSuite(testSuite, hasFocused) {
+      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false)
     },
   })
   return res

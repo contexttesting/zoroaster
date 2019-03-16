@@ -164,7 +164,7 @@ const T = {
     equal(err.error.message, 'Evaluate context has timed out after 150ms')
   },
   async 'destroys the context after its evaluation'(
-    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { asyncTest } }
+    { TEST_SUITE_NAME, runTestSuite, tests: { asyncTest } }
   ) {
     let destroyed = false
     class C {
@@ -178,11 +178,13 @@ const T = {
     const ts = new TestSuite(TEST_SUITE_NAME, {
       asyncTest,
     }, null, C, 150)
-    await ts.run()
-    throws(
-      () => assertNoErrorsInTestSuite(ts),
-      /Error in test "Zoroaster Test Suite Name > asyncTest": Evaluate context has timed out after 150ms/
-    )
+    const nots = await runTestSuite(ts, false)
+    const err = nots.find(({ error }) => {
+      return error
+    })
+    ok(err)
+    equal(err.error.message, 'Evaluate context has timed out after 150ms')
+
     await new Promise(r => setTimeout(r, 50))
     ok(destroyed)
   },

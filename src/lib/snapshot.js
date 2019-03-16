@@ -24,10 +24,16 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => 
         if (m == 'txt') return 'json'
         return 'txt'
       })
-    const e = await exists(join(p, otherSnapshot))
+    const op = join(p, otherSnapshot)
+    const e = await exists(op)
     if (e)
-      throw new Error(`Snapshot of another type exists: ${otherSnapshot}`)
-    await sc.test(snapshotFilename, result, c(nn, 'yellow'))
+      blankError(`Snapshot of another type exists: ${op}`)
+
+    try {
+      await sc.test(snapshotFilename, result, c(nn, 'yellow'))
+    } catch (err) {
+      blankError(err)
+    }
   } else {
     let snapshotPath = join(p, snapshotFilename)
     let e = await exists(snapshotPath)
@@ -36,9 +42,15 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => 
       e = await exists(snapshotPath)
     }
     if (e) {
-      throw new Error(`Snapshot ${snapshotPath} exists, but the test did not return anything.`)
+      blankError(`Snapshot ${snapshotPath} exists, but the test did not return anything.`)
     }
   }
+}
+
+const blankError = (message) => {
+  const err = new Error(message)
+  err.stack = err.message
+  throw err
 }
 
 export default handleSnapshot

@@ -75,7 +75,7 @@ export const from_tests = {
     deepEqual(ts.context, totalContext)
   },
   async 'passes context to tests'({
-    context, extension, totalContext, TEST_SUITE_NAME, assertNoErrorsInTestSuite,
+    context, extension, totalContext, TEST_SUITE_NAME, runTestSuite,
   }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
       context,
@@ -89,10 +89,9 @@ export const from_tests = {
         },
       },
     })
-    await ts.run()
-    assertNoErrorsInTestSuite(ts)
+    await runTestSuite(ts)
   },
-  async 'cannot update context from tests'({ context, TEST_SUITE_NAME }) {
+  async 'cannot update context from tests'({ context, TEST_SUITE_NAME, runTestSuite }) {
     const expected = { ...context }
     const ts = new TestSuite(TEST_SUITE_NAME, {
       context,
@@ -101,7 +100,7 @@ export const from_tests = {
         delete c.died
       },
     })
-    await ts.run()
+    await runTestSuite(ts)
     deepEqual(context, expected)
   },
 }

@@ -99,6 +99,7 @@ export default async function run({
         watch,
         timeout,
         snapshot,
+        snapshotRoot,
       }, {
         _currentlyWatching: newCurrentlyWatching,
         exitListener: newExitListener,
