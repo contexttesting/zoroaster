@@ -59,6 +59,7 @@ All _Zoroaster_ tests are written in spec files and exported as tests suites whi
 For example, tests can be run against sync and async methods.
 
 ```js
+// example program source code
 export const software = (type) => {
   switch (type) {
   case 'boolean':
@@ -79,6 +80,7 @@ export const asyncSoftware = async (type) => {
 The _Context_ can be used as an alternative for in-test suite set-up and tear-down routines. Anything returned by tests will be compared against snapshots that will be created upon the first run of the test.
 
 ```js
+// Zoroaster test suite
 import { ok, equal } from 'assert'
 import { software, asyncSoftware } from './src'
 
@@ -115,7 +117,7 @@ const TestSuite = {
 export default TestSuite
 ```
 
-![Zoroaster Example Test Results](doc/zoroaster.png)
+![Zoroaster Example Test Results](doc/zoroaster.gif)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 

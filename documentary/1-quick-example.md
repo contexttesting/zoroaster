@@ -10,6 +10,6 @@ The _Context_ can be used as an alternative for in-test suite set-up and tear-do
 
 %EXAMPLE: example/simple.js%
 
-![Zoroaster Example Test Results](doc/zoroaster.png)
+![Zoroaster Example Test Results](doc/zoroaster.gif)
 
 %~%

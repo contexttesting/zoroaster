@@ -1,3 +1,4 @@
+// Zoroaster test suite
 import { ok, equal } from 'assert'
 import { software, asyncSoftware } from './src'
 

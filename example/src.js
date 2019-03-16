@@ -1,3 +1,4 @@
+// example program source code
 export const software = (type) => {
   switch (type) {
   case 'boolean':
