@@ -231,28 +231,34 @@ A context can and mostly will be asynchronous, but it doesn't have to be. The bo
 
 ```js
 // test/context/index.js
-async function Context() {
-  this.connections = await makeConnections() // create some connections
-  this._destroy = () => {
-    this.connections.close() // ensure destruction
+export default class Context {
+  async _init() {
+    this._connections = await makeConnections() // create some connections
   }
-
+  async _destroy() {
+    await this._connections.close() // ensure destruction
+  }
+  /**
+   * The set of connections to be used by tests.
+   */
+  get connections() {
+    return this._connections
+  }
 }
 ```
 
-Context is specified as a property of a test suite, and is passed as an argument to the test case functions when it's their time to execute. Context can be reused across multiple packages, for example, `temp-context` makes it super easy to create temp directories for testing, and remove them, and `snapshot-context` provides API to create and assert against snapshots.
+A context is specified as a property of a test suite, and is passed as an argument to the test case functions when it's their time to execute. The context can be reused across multiple packages, for example, `temp-context` makes it super easy to create temp directories for testing, and remove them.
 
 ```js
 // test/spec/light/night
-import { context } from '../context'
+import Context from '../context'
 
 const nightTestSuite = {
-  context,
+  context: Context,
   'has no light at night'(ctx) {
-    ctx.connections.open()
+    await ctx.connections.open()
     // night at 0
     ctx.connections.sendTime(0)
-    ctx.connections.close()
   }
 }
 ```
@@ -261,15 +267,14 @@ A cool thing is that you can destructure the context argument and declare only t
 
 ```js
 // test/spec/light/day
-import { context } from '../context'
+import Context from '../context'
 
 const dayTestSuite = {
-  context,
+  context: Context,
   'is light at day'({ connections }) {
     // day at 12
-    connections.open()
+    await connections.open()
     connections.sendTime(12)
-    connections.close()
   }
 }
 ```
