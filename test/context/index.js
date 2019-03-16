@@ -41,12 +41,10 @@ const winRe = new RegExp(process.cwd().replace(/\\/g, '/'), 'g')
 
 function getSnapshot(s) {
   return s
-    .replace(/\033\[.*?m/g, '')
     .replace(re, '')
     .replace(winRe, '')
     .replace(/\\/g, '/')
     .replace(/\r?\n/g, '\n')
-    .trim()
 }
 
 const C = {

@@ -1,8 +1,8 @@
 ## alamode: runs a test for source compiled with alamode
 -a test/fixture/alamode.js
 
-/* expected */
-test/fixture/alamode.js
+/* stdout */
+ test/fixture/alamode.js
   ✓  runs erte
   ✓  runs c
   ✗  runs b
@@ -19,8 +19,8 @@ test/fixture/alamode.js > runs b
 ## alamode: runs a test for code compiled with babel
 -a test/fixture/babel.js
 
-/* expected */
-test/fixture/babel.js
+/* stdout */
+ test/fixture/babel.js
   ✓  runs erte
   ✓  runs c
   ✗  runs b
@@ -37,8 +37,8 @@ test/fixture/babel.js > runs b
 ## runs a test suite
 test/fixtures/test-suite.js -a -t 250
 
-/* expected */
-test/fixtures/test-suite.js
+/* stdout */
+ test/fixtures/test-suite.js
   ✗  failingTest
   | Error: When you are in doubt abstain.
   |     at failingTest (/test/fixtures/tests.js:8:9)
@@ -84,13 +84,13 @@ test/fixtures/test-suite.js > timeoutFailingTest
 ## runs a jsx test suite
 test/fixture/test -a
 
-/* expected */
-test/fixture/test
+/* stdout */
+ test/fixture/test
   ✓  asyncTest
 
 🦅  Executed 1 test.
 /**/
 
-/* realStderr */
+/* stderr */
 <div><h1>Hello World</h1>Tested By Depack</div>
 /**/

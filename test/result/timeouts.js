@@ -1,8 +1,8 @@
 // does not timeout
 -a test/fixtures/timeouts.js
 
-/* expected */
-test/fixtures/timeouts.js
+/* stdout */
+ test/fixtures/timeouts.js
   ✓  finishes before the timeout
 
 🦅  Executed 1 test.
@@ -11,8 +11,8 @@ test/fixtures/timeouts.js
 // has persistent context
 -a test/fixture/persistent-context.js
 
-/* expected */
-test/fixture/persistent-context.js
+/* stdout */
+ test/fixture/persistent-context.js
 The Persistent Context Is pc
   ✓  test
   ✓  test2
