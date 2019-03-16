@@ -32,8 +32,7 @@ const {
 if (_version) {
   console.log(version)
   process.exit()
-}
-if (_help) {
+} else if (_help) {
   const usage = getUsage()
   console.log(usage)
   process.exit()

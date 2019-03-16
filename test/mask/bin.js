@@ -16,6 +16,7 @@ export default makeTestSuite('test/result/bin', {
           const se = rest.join('\n')
           return se
         }
+        return stderr
       },
     },
   },
