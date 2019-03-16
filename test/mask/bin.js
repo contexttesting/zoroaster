@@ -35,6 +35,9 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
     inputs: [
       [/Save snapshot?/, 'y'],
     ],
+    preprocess: {
+      stdout: getSnapshot,
+    },
   },
   /**
    * @param {string}
