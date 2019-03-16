@@ -2,46 +2,8 @@ const { EOL } = require('os');
 let reducer = require('@zoroaster/reducer'); const { runTest } = reducer; if (reducer && reducer.__esModule) reducer = reducer.default;
 const { evaluateContext, destroyContexts } = require('@zoroaster/reducer/build/lib');
 let promto = require('promto'); if (promto && promto.__esModule) promto = promto.default;
-const { join } = require('path');
-let SnapshotContext = require('snapshot-context'); if (SnapshotContext && SnapshotContext.__esModule) SnapshotContext = SnapshotContext.default;
-let exists = require('@wrote/exists'); if (exists && exists.__esModule) exists = exists.default;
-const { c } = require('erte');
 const { TICK, CROSS, indent, filterStack, replaceFilename } = require('.');
-
-const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => {
-  const nn = name.replace(/^!/, '')
-  const n = nn.replace(/ /g, '-')
-  const ext = typeof result == 'string' ? 'txt' : 'json'
-  const snapshotFilename = `${n}.${ext}`
-  let pp = join(...path)
-  const root = snapshotRoot.find(r => pp.startsWith(r))
-  if (root) pp = pp.slice(root.length)
-  let p = join(snapshotDir, pp)
-
-  if (result) {
-    const sc = new SnapshotContext()
-    sc.setDir(p)
-    const otherSnapshot = snapshotFilename
-      .replace(/(json|txt)$/, (m) => {
-        if (m == 'txt') return 'json'
-        return 'txt'
-      })
-    const e = await exists(join(p, otherSnapshot))
-    if (e)
-      throw new Error(`Snapshot of another type exists: ${otherSnapshot}`)
-    await sc.test(snapshotFilename, result, c(nn, 'yellow'))
-  } else {
-    let snapshotPath = join(p, snapshotFilename)
-    let e = await exists(snapshotPath)
-    if (!e) {
-      snapshotPath = snapshotPath.replace(/json$/, 'txt')
-      e = await exists(snapshotPath)
-    }
-    if (e) {
-      throw new Error(`Snapshot ${snapshotPath} exists, but the test did not return anything.`)
-    }
-  }
-}
+const handleSnapshot = require('./snapshot');
 
 /**
  * Run the test.
@@ -62,8 +24,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   try {
     await handleSnapshot(result, name, path, snapshot, snapshotRoot)
   } catch (err) {
-    error = new Error(err.message)
-    error.stack = error.message
+    error = err
   }
 
   if (notify) notify({
@@ -88,6 +49,8 @@ function dumpResult({ error, name }) {
  * Run test suite (wrapper for notify).
  * @param {function} notify The function to call for notifications.
  * @param {string[]} path The path to the test suite.
+ * @param {string} snapshot The path to the snapshot dir.
+ * @param {string[]} snapshotRoot Parts to ignore in the beginning of snapshot paths.
  */
        async function runTestSuiteAndNotify(
   notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused,
@@ -155,11 +118,11 @@ const getNames = persistentContext => {
        async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot) {
   const res = await reducer(tests, {
     onlyFocused,
-    runTest(...args) {
-      return runTestAndNotify(notify, path, snapshot, snapshotRoot, ...args)
+    runTest(test) {
+      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test)
     },
-    runTestSuite(...args) {
-      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, ...args)
+    runTestSuite(testSuite, hasFocused) {
+      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false)
     },
   })
   return res

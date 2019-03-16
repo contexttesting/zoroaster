@@ -99,6 +99,7 @@ function unwatchFiles(files) {
         watch,
         timeout,
         snapshot,
+        snapshotRoot,
       }, {
         _currentlyWatching: newCurrentlyWatching,
         exitListener: newExitListener,
