@@ -5,9 +5,7 @@ import Context from '../../context'
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  async 'creates an instance of a class'({
-    TEST_SUITE_NAME, assertNoErrorsInTestSuite,
-  }) {
+  async 'creates an instance of a class'({ TEST_SUITE_NAME, runTestSuite }) {
     class Test {
       async _init() {
         await new Promise(r => setTimeout(r, 100))
@@ -26,10 +24,9 @@ const T = {
         ok(isInit)
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
   },
-  async 'destroys the context'({ TEST_SUITE_NAME, tests: { asyncTest } }) {
+  async 'destroys the context'({ TEST_SUITE_NAME, tests: { asyncTest }, runTestSuite }) {
     let destroyed = false
     class Test {
       async _destroy() {
@@ -41,7 +38,7 @@ const T = {
       persistentContext: Test,
       asyncTest,
     })
-    await testSuite.run()
+    await runTestSuite(testSuite)
     ok(destroyed)
   },
 }

@@ -5,7 +5,7 @@ import Context from '../../../context'
 /** @type {Object.<string, (c: Context)>} */
 const T = {
   context: Context,
-  async 'evaluates context for each test'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
+  async 'evaluates context for each test'({ TEST_SUITE_NAME, runTestSuite }) {
     const testData = 'some-test-data'
     const newTestData = 'some-new-test-data'
     const propName = 'testData'
@@ -49,13 +49,12 @@ const T = {
         secondContext = ctx
       },
     }, null, c)
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
     notStrictEqual(firstContext, secondContext)
     equal(firstContext[propName], newTestData)
     equal(secondContext[propName], testData)
   },
-  async 'evaluates context for each test (as prop)'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
+  async 'evaluates context for each test (as prop)'({ TEST_SUITE_NAME, runTestSuite }) {
     const testData = 'some-test-data'
     const newTestData = 'some-new-test-data'
     const propName = 'testData'
@@ -100,13 +99,12 @@ const T = {
         secondContext = ctx
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
     notStrictEqual(firstContext, secondContext)
     equal(firstContext[propName], newTestData)
     equal(secondContext[propName], testData)
   },
-  async 'waits until promise returned by context is resolved'({ TEST_SUITE_NAME, assertNoErrorsInTestSuite }) {
+  async 'waits until promise returned by context is resolved'({ TEST_SUITE_NAME, runTestSuite }) {
     const testData = 'some-test-data'
     const testDataAfterPromise = 'test-data-after-promise'
     const newTestData = 'some-new-test-data'
@@ -144,14 +142,13 @@ const T = {
         secondContext = ctx
       },
     })
-    await testSuite.run()
-    assertNoErrorsInTestSuite(testSuite)
+    await runTestSuite(testSuite)
     notStrictEqual(firstContext, secondContext)
     equal(firstContext[propName], newTestData)
     equal(secondContext[propName], testDataAfterPromise)
   },
   async 'times out before context finishes evaluating'(
-    { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { asyncTest } }
+    { TEST_SUITE_NAME, tests: { asyncTest }, runTestSuite }
   ) {
     async function c() {
       await new Promise(r => setTimeout(r, 200))
@@ -159,11 +156,12 @@ const T = {
     const ts = new TestSuite(TEST_SUITE_NAME, {
       asyncTest,
     }, null, c, 150)
-    await ts.run()
-    throws(
-      () => assertNoErrorsInTestSuite(ts),
-      /Error in test "Zoroaster Test Suite Name > asyncTest": Evaluate context has timed out after 150ms/
-    )
+    const nots = await runTestSuite(ts, false)
+    const err = nots.find(({ error }) => {
+      return error
+    })
+    ok(err)
+    equal(err.error.message, 'Evaluate context has timed out after 150ms')
   },
   async 'destroys the context after its evaluation'(
     { TEST_SUITE_NAME, assertNoErrorsInTestSuite, tests: { asyncTest } }

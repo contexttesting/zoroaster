@@ -14,23 +14,23 @@ const T = {
     const testSuite = new TestSuite(TEST_SUITE_NAME, {}, null, context)
     ok(Object.isFrozen(testSuite.context))
   },
-  async 'passes context to child test suites'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
+  async 'passes context to child test suites'({ context, TEST_SUITE_NAME, tests: { asyncTest }, runTestSuite }) {
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       test_suite: {
         asyncTest,
       },
     }, null, context)
-    await testSuite.run()
+    await runTestSuite(testSuite)
     testSuite.tests.forEach((childTestSuite) => {
       ok(childTestSuite instanceof TestSuite)
       equal(childTestSuite.context, testSuite.context)
     })
   },
-  async 'passes context to tests'({ context, TEST_SUITE_NAME, tests: { asyncTest } }) {
+  async 'passes context to tests'({ context, TEST_SUITE_NAME, tests: { asyncTest }, runTestSuite }) {
     const testSuite = new TestSuite(TEST_SUITE_NAME, {
       asyncTest,
     }, null, context)
-    await testSuite.run()
+    await runTestSuite(testSuite)
     testSuite.tests.forEach((t) => {
       equal(t.context, testSuite.context)
     })
