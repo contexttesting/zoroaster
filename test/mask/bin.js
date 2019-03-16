@@ -45,7 +45,7 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
    */
   async getResults(_, { snapshot: s }) {
     try {
-      return await s('snapshot')
+      return (await s('snapshot')).replace(/\\/g, '/')
     } catch (err) {
       return '\n'
     }
