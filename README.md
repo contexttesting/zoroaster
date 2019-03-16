@@ -572,7 +572,7 @@ const TestSuite = {
 export default TestSuite
 ```
 
-![Zoroaster Snapshot Example][doc/snapshot.gif]
+![Zoroaster Snapshot Example](doc/snapshot.gif)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
