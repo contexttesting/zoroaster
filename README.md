@@ -39,7 +39,10 @@ npm i --save-dev zoroaster
   * [`--alamode`, `-a`: `require('alamode)()`](#--alamode--a-requirealamode)
     * [`.alamoderc.json`](#alamodercjson)
   * [`--babel`, `-b`: `require(@babel/register)`](#--babel--b-requirebabelregister)
+  * [`--snapshot`, `-s`](#--snapshot--s)
+  * [`--snapshotRoot`, `-r`](#--snapshotroot--r)
   * [package.json](#packagejson)
+- [Snapshots](#snapshots)
 - [Context](#context)
   * [Object Context](#object-context)
   * [Class Context](#class-context)
@@ -504,6 +507,16 @@ However, the above set-up can be easily achieved with `alamode` which has much l
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
 
+### `--snapshot`, `-s`
+
+Sets the root snapshot directory, with `test/snapshot` as the default. For example, if the test from `test/spec/test-suite.js` returned some data, the snapshot would be saved in `test/snapshot/test/spec/test-suite/the-name-of-the-test.txt` file (see snapshot root below).
+
+### `--snapshotRoot`, `-r`
+
+When generating snapshots, ignores the initial part of the path that matched the root. The default value is `test/spec,test/mask`, so that the snapshot from the example above would actually be saved at `test/snapshot/test-suite/the-name-of-the-test.txt`.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="15"></a></p>
+
 ### package.json
 
 To be able to run tests from the project directory, it is advised to use `package.json` scripts. There is the main `test` script, and additional shorter scripts for `yarn` and `npm` which makes it easy to run tests.
@@ -528,7 +541,38 @@ To be able to run tests from the project directory, it is advised to use `packag
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+
+## Snapshots
+
+If a test returned some data, it will be saved in snapshots' directory in a file that corresponds to the name of the test for which it was taken. The default location of snapshots is `test/snapshot/...`, and `test/spec` with `test/mask` do not participate in the path formation.
+
+```js
+import { asyncSoftware } from './src'
+
+const TestSuite = {
+  async 'supports snapshots'() {
+    const res = await asyncSoftware('string')
+    return res
+  },
+  async 'fails if snapshot is different'() {
+    const res = await asyncSoftware('string')
+    return res
+  },
+  async 'fails if snapshot exists'() {
+    await asyncSoftware('string')
+    return undefined
+  },
+  async 'fails if snapshot is of different type'() {
+    await asyncSoftware('string')
+    return { hello: 'world' }
+  },
+}
+
+export default TestSuite
+```
+
+![Zoroaster Snapshot Example][doc/snapshot.gif]
 
 ## Context
 
@@ -583,7 +627,7 @@ example/Zoroaster/test/spec/object-context.js
 🦅  Executed 3 tests.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
 
 ### Class Context
 
@@ -640,7 +684,7 @@ example/Zoroaster/test/spec/async-context.js
 🦅  Executed 1 test.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
 
 ### Multiple Contexts
 
@@ -672,7 +716,7 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
 
 ### Persistent Context
 
@@ -747,7 +791,7 @@ example/Zoroaster/test/spec/persistent-context.js
 
 A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -781,7 +825,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -807,7 +851,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
 
 ## Copyright
 

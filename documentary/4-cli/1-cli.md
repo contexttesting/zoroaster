@@ -78,6 +78,16 @@ However, the above set-up can be easily achieved with `alamode` which has much l
 
 %~ width="15"%
 
+### `--snapshot`, `-s`
+
+Sets the root snapshot directory, with `test/snapshot` as the default. For example, if the test from `test/spec/test-suite.js` returned some data, the snapshot would be saved in `test/snapshot/test/spec/test-suite/the-name-of-the-test.txt` file (see snapshot root below).
+
+### `--snapshotRoot`, `-r`
+
+When generating snapshots, ignores the initial part of the path that matched the root. The default value is `test/spec,test/mask`, so that the snapshot from the example above would actually be saved at `test/snapshot/test-suite/the-name-of-the-test.txt`.
+
+%~ width="15"%
+
 ### package.json
 
 To be able to run tests from the project directory, it is advised to use `package.json` scripts. There is the main `test` script, and additional shorter scripts for `yarn` and `npm` which makes it easy to run tests.
