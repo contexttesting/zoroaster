@@ -1,3 +1,10 @@
+## 17 March 2019
+
+### [3.9.0](https://github.com/artdecocode/zoroaster/compare/v3.8.5...v3.9.0)
+
+- [feature] Support context-testing out of the box.
+- [deps] Update the fork to remove ANSI and add the `preprocess` option.
+
 ## 15 March 2019
 
 ### [3.8.5](https://github.com/artdecocode/zoroaster/compare/v3.8.4...v3.8.5)
