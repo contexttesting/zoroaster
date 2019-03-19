@@ -1,3 +1,9 @@
+## 20 March 2019
+
+### [3.9.1](https://github.com/contexttesting/zoroaster/compare/v3.9.0...v3.9.1)
+
+- [fix] Evaluate multiple persistent contexts.
+
 ## 17 March 2019
 
 ### [3.9.0](https://github.com/contexttesting/zoroaster/compare/v3.8.5...v3.9.0)
@@ -340,3 +346,5 @@ import { TextArea, Select, Form } from '../../src'
 - [feature] Implement test and test suite context.
 - [bugfix] Show output with errors correctly.
 - [repo] Add changelog.
+
+
