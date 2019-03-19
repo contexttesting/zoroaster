@@ -791,7 +791,7 @@ example/Zoroaster/test/spec/persistent-context.js
 🦅  Executed 1 test.
 ```
 
-A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up.
+A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up. Otherwise, the `_init` and `_destroy` have 5000 seconds to complete.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
 

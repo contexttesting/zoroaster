@@ -10,6 +10,6 @@ _The tests can use the context testing API:_
 
 %FORK src/bin example/Zoroaster/test/spec/persistent-context.js%
 
-A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up.
+A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up. Otherwise, the `_init` and `_destroy` have 5000 seconds to complete.
 
 %~%
