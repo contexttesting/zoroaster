@@ -1,10 +1,14 @@
 import { write, read } from '@wrote/wrote'
 import { askSingle } from 'reloquent'
-import { version } from '../package.json'
 
 const PATH = 'CHANGELOG.md'
 
 ;(async () => {
+  const r = await read('package.json')
+  const { version, repository } = JSON.parse(r)
+  let { url: git } = repository
+  git = git.replace(/^git:\/\//, 'https://').replace(/\.git$/, '')
+
   const next = await askSingle(`What is the next version after ${version}?`)
   const current = await read(PATH)
   const d = new Date()
@@ -12,10 +16,9 @@ const PATH = 'CHANGELOG.md'
   const dd = `${d.getDate()} ${m} ${d.getFullYear()}`
   const t = `## ${dd}
 
-### [${next}](https://github.com/contexttesting/zoroaster/compare/v${version}...v${next})
+### [${next}](${git}/compare/v${version}...v${next})
 
-${current}
-  `
+${current}`
   await write(PATH, t)
 })()
 
