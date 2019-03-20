@@ -12,6 +12,6 @@ _The tests can use the context testing API:_
 
 A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up. Otherwise, the `_init` and `_destroy` have 5000 seconds to complete.
 
-For an example, see how `exif2css` uses persistent contexts to [setup a web-server](https://github.com/demimonde/exif2css/blob/master/test/context/index.jsx) to serve images with different EXIF orientations under different routes, and [communicates](https://github.com/demimonde/exif2css/blob/master/test/context/RemoteChrome.js) with a headless Chrome to take screenshots: https://github.com/demimonde/exif2css/blob/master/test/mask/default.js#L49.
+For an example, see how `exif2css` uses persistent contexts to [setup a web-server](https://github.com/demimonde/exif2css/blob/master/test/context/index.jsx) to serve images with different EXIF orientations under different routes, and [communicates](https://github.com/dpck/chrome/blob/master/src/index.js#L72) with a headless Chrome via [Chrome Context](https://github.com/dpck/chrome) to take screenshots: https://github.com/demimonde/exif2css/blob/master/test/mask/default.js#L49.
 
 %~%
