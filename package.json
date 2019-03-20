@@ -57,7 +57,7 @@
   "dependencies": {
     "@artdeco/clean-stack": "1.0.1",
     "@wrote/exists": "1.0.1",
-    "@wrote/rm": "wrote/rm",
+    "@wrote/rm": "1.1.2",
     "@zoroaster/mask": "1.2.1",
     "@zoroaster/reducer": "1.1.0",
     "alamode": "1.8.6",

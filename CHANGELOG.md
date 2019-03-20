@@ -1,3 +1,9 @@
+## 21 March 2019
+
+### [3.10.0](https://github.com/contexttesting/zoroaster/compare/v3.9.1...v3.10.0)
+
+- [feature] Interactive update of snapshots.
+
 ## 20 March 2019
 
 ### [3.9.1](https://github.com/contexttesting/zoroaster/compare/v3.9.0...v3.9.1)

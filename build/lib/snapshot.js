@@ -2,7 +2,7 @@ const { join } = require('path');
 let SnapshotContext = require('snapshot-context'); if (SnapshotContext && SnapshotContext.__esModule) SnapshotContext = SnapshotContext.default;
 let exists = require('@wrote/exists'); if (exists && exists.__esModule) exists = exists.default;
 let rm = require('@wrote/rm'); if (rm && rm.__esModule) rm = rm.default;
-const { c, b } = require('erte');
+const { c } = require('erte');
 const { confirm } = require('reloquent');
 const { inspect } = require('util');
 
@@ -34,7 +34,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
       if (!interactive) {
         throwError(m)
       }
-      console.log('%s. \nNew data:', m)
+      console.log('%s.\nNew data:', m)
       console.log(typeof result == 'string' ? result : inspect(result, { colors: true }))
       const upd = await confirm(`Update snapshot ${c(op, 'yellow')} to a new type?`)
       if (!upd)

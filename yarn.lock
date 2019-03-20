@@ -144,13 +144,6 @@
     "@wrote/read-dir-structure" "1.0.2"
     makepromise "3.0.2"
 
-"@wrote/rm@wrote/rm":
-  version "1.1.2"
-  resolved "https://codeload.github.com/wrote/rm/tar.gz/6650bcb71a95c3aef948859a30e6cb7499dc7126"
-  dependencies:
-    "@wrote/read-dir-structure" "1.0.2"
-    makepromise "3.0.2"
-
 "@wrote/write@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@wrote/write/-/write-1.0.0.tgz#4f8d5339d0bd46d71f2f5997ed786a6e9ed88941"
