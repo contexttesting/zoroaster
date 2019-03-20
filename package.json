@@ -65,8 +65,6 @@
     "assert-throws": "3.1.1",
     "catchment": "3.2.2",
     "erte": "1.1.7",
-    "forkfeed": "1.0.0",
-    "frame-of-mind": "1.0.0",
     "makepromise": "3.0.2",
     "mismatch": "1.0.3",
     "snapshot-context": "2.1.1",
