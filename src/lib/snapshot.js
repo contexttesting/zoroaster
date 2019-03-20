@@ -1,7 +1,10 @@
 import { join } from 'path'
 import SnapshotContext from 'snapshot-context'
 import exists from '@wrote/exists'
+import rm from '@wrote/rm'
 import { c } from 'erte'
+import { confirm } from 'reloquent'
+import { inspect } from 'util'
 
 const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive) => {
   const nn = name.replace(/^!/, '')
@@ -26,13 +29,25 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
       })
     const op = join(p, otherSnapshot)
     const e = await exists(op)
-    if (e)
-      blankError(`Snapshot of another type exists: ${op}`)
+    if (e) {
+      const m = `Snapshot of another type exists: ${c(op, 'red')}`
+      if (!interactive) {
+        throwError(m)
+      }
+      console.log('%s. \nNew data:', m)
+      console.log(typeof result == 'string' ? result : inspect(result, { colors: true }))
+      const upd = await confirm(`Update snapshot ${c(op, 'yellow')} to a new type?`)
+      if (!upd)
+        throwError(m)
+      await sc.save(snapshotFilename, result)
+      await rm(op)
+      return
+    }
 
     try {
       await sc.test(snapshotFilename, result, c(nn, 'yellow'), interactive)
     } catch (err) {
-      blankError(err)
+      throwError(err)
     }
   } else {
     let snapshotPath = join(p, snapshotFilename)
@@ -42,12 +57,12 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
       e = await exists(snapshotPath)
     }
     if (e) {
-      blankError(`Snapshot ${snapshotPath} exists, but the test did not return anything.`)
+      throwError(`Snapshot ${snapshotPath} exists, but the test did not return anything.`)
     }
   }
 }
 
-const blankError = (message) => {
+const throwError = (message) => {
   const err = new Error(message)
   err.stack = err.message
   throw err

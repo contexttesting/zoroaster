@@ -57,6 +57,7 @@
   "dependencies": {
     "@artdeco/clean-stack": "1.0.1",
     "@wrote/exists": "1.0.1",
+    "@wrote/rm": "wrote/rm",
     "@zoroaster/mask": "1.2.1",
     "@zoroaster/reducer": "1.1.0",
     "alamode": "1.8.6",
@@ -67,6 +68,7 @@
     "erte": "1.1.7",
     "makepromise": "3.0.2",
     "mismatch": "1.0.3",
+    "reloquent": "1.2.4",
     "snapshot-context": "2.2.0",
     "spawncommand": "2.1.1",
     "usually": "1.1.0"
@@ -79,7 +81,6 @@
     "documentary": "1.22.0",
     "erotic": "2.0.2",
     "eslint-config-artdeco": "1.0.1",
-    "reloquent": "1.2.4",
     "temp-context": "2.1.0",
     "yarn-s": "1.1.0"
   }
