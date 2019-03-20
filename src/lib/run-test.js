@@ -9,7 +9,7 @@ import handleSnapshot from './snapshot'
  * Run the test.
  * @param {function} [notify] - notify function
  */
-async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }) {
+async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive) {
   if (notify) notify({
     name,
     type: 'test-start',
@@ -22,7 +22,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   })
   let { error, result } = res
   try {
-    await handleSnapshot(result, name, path, snapshot, snapshotRoot)
+    await handleSnapshot(result, name, path, snapshot, snapshotRoot, interactive)
   } catch (err) {
     error = err
   }
@@ -53,7 +53,7 @@ function dumpResult({ error, name }) {
  * @param {string[]} snapshotRoot Parts to ignore in the beginning of snapshot paths.
  */
 export async function runTestSuiteAndNotify(
-  notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused,
+  notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive,
 ) {
   const n = getNames(persistentContext)
   // console.log('will run a test suite %s', n)
@@ -66,7 +66,7 @@ export async function runTestSuiteAndNotify(
   }
   try {
     const newPath = [...path, replaceFilename(name)]
-    res = await runInSequence(notify, newPath, tests, onlyFocused, snapshot, snapshotRoot)
+    res = await runInSequence(notify, newPath, tests, onlyFocused, snapshot, snapshotRoot, interactive)
     notify({ type: 'test-suite-end', name })
   } finally {
     if (pc) {
@@ -126,14 +126,14 @@ const getNames = persistentContext => {
  * @param {boolean} [onlyFocused=false] Run only focused tests.
  * @param {string} snapshot The path to the snapshot file.
  */
-export async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot) {
+export async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot, interactive) {
   const res = await reducer(tests, {
     onlyFocused,
     runTest(test) {
-      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test)
+      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test, interactive)
     },
     runTestSuite(testSuite, hasFocused) {
-      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false)
+      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false, interactive)
     },
   })
   return res

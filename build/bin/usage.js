@@ -8,6 +8,7 @@ module.exports=() => {
       '-a, --alamode': 'Require ÀLaMode to enable import/export & JSX.',
       '-b, --babel': 'Require babel/register.',
       '-s, --snapshot': 'The path to the snapshot dir.\nDefault test/snapshot.',
+      '-i, --interactive': 'Enable prompts to update snapshots.',
       '-r, --snapshotRoot': 'Comma-separated snapshot roots.\nDefault test/spec,test/mask.',
       '-v, --version': 'Print version number and exit.',
       '-h, --help': 'Display this usage information.',

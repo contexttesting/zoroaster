@@ -34,6 +34,7 @@ function unwatchFiles(files) {
   timeout,
   snapshot,
   snapshotRoot,
+  interactive,
 }, {
   _currentlyWatching = [],
   exitListener,
@@ -68,7 +69,7 @@ function unwatchFiles(files) {
       }
     }
   }
-  await runInSequence(notify, [], rootTestSuite.tests, rootTestSuite.hasFocused, snapshot, snapshotRoot)
+  await runInSequence(notify, [], rootTestSuite.tests, rootTestSuite.hasFocused, snapshot, snapshotRoot, interactive)
 
   stack.end()
   const errorsCatchment = await errorsPromise
@@ -100,6 +101,7 @@ function unwatchFiles(files) {
         timeout,
         snapshot,
         snapshotRoot,
+        interactive,
       }, {
         _currentlyWatching: newCurrentlyWatching,
         exitListener: newExitListener,

@@ -3,7 +3,7 @@ let SnapshotContext = require('snapshot-context'); if (SnapshotContext && Snapsh
 let exists = require('@wrote/exists'); if (exists && exists.__esModule) exists = exists.default;
 const { c } = require('erte');
 
-const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => {
+const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive) => {
   const nn = name.replace(/^!/, '')
   const n = nn.replace(/ /g, '-')
   const ext = typeof result == 'string' ? 'txt' : 'json'
@@ -30,7 +30,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => 
       blankError(`Snapshot of another type exists: ${op}`)
 
     try {
-      await sc.test(snapshotFilename, result, c(nn, 'yellow'))
+      await sc.test(snapshotFilename, result, c(nn, 'yellow'), interactive)
     } catch (err) {
       blankError(err)
     }

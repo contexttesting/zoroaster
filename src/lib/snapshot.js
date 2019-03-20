@@ -3,7 +3,7 @@ import SnapshotContext from 'snapshot-context'
 import exists from '@wrote/exists'
 import { c } from 'erte'
 
-const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => {
+const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive) => {
   const nn = name.replace(/^!/, '')
   const n = nn.replace(/ /g, '-')
   const ext = typeof result == 'string' ? 'txt' : 'json'
@@ -30,7 +30,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot) => 
       blankError(`Snapshot of another type exists: ${op}`)
 
     try {
-      await sc.test(snapshotFilename, result, c(nn, 'yellow'))
+      await sc.test(snapshotFilename, result, c(nn, 'yellow'), interactive)
     } catch (err) {
       blankError(err)
     }

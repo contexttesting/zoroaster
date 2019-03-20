@@ -16,6 +16,7 @@ const {
   timeout: _timeout = 2000,
   snapshot = 'test/snapshot',
   snapshotRoot = 'test/spec,test/mask',
+  interactive = false,
   _argv,
 } = argufy({
   paths: { command: true, multiple: true },
@@ -27,6 +28,7 @@ const {
   timeout: { short: 't', number: true },
   snapshot: { short: 's' },
   snapshotRoot: { short: 'r' },
+  interactive: { short: 'i', boolean: true },
 })
 
 if (_version) {
@@ -59,6 +61,7 @@ if (alamode) {
       timeout: _timeout,
       snapshot,
       snapshotRoot: snapshotRoot.split(','),
+      interactive,
     })
   } catch ({ stack }) {
     console.log(cleanStack(stack)) // eslint-disable-line no-console
