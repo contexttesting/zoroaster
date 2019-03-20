@@ -34,7 +34,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
       if (!interactive) {
         throwError(m)
       }
-      console.log('%s. \nNew data:', m)
+      console.log('%s.\nNew data:', m)
       console.log(typeof result == 'string' ? result : inspect(result, { colors: true }))
       const upd = await confirm(`Update snapshot ${c(op, 'yellow')} to a new type?`)
       if (!upd)
