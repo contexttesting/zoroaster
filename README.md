@@ -43,6 +43,7 @@ npm i --save-dev zoroaster
   * [`--snapshotRoot`, `-r`](#--snapshotroot--r)
   * [package.json](#packagejson)
 - [Snapshots](#snapshots)
+  * [Serialisation](#serialisation)
 - [Context](#context)
   * [Object Context](#object-context)
   * [Class Context](#class-context)
@@ -574,7 +575,44 @@ export default TestSuite
 
 ![Zoroaster Snapshot Example](doc/snapshot.gif)
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
+
+### Serialisation
+
+Whenever the snapshot does not match the output of the test, or its type (strings are saved as `txt` files and objects as `json` files), an error will be thrown. To enable updating snapshots during the test run, the `-i` or `--interactive` option can be passed to _Zoroaster_ test runner. Currently, only JSON serialisation is supported, therefore there might be errors due to the `JSON.stringify` method omitting undefined properties and dates. Sometimes, it could be fixed by doing the JSON conversion first, however that could lead to some properties not tested:
+
+```js
+export default {
+  async '!handles a JPG file'({ photo }) {
+    const res = handleBinaryFile(photo)
+    return JSON.parse(JSON.stringify(res))
+  },
+  // ...
+}
+```
+
+You can therefore implement your own serialisation (but a better serialisation is in plan for _Zoroaster_):
+
+```js
+  // ...
+  async '!parses dates'({ photo }) {
+    const { data: {
+      DateTime,
+      DateTimeOriginal,
+      DateTimeDigitized,
+    } } = handleBinaryFile(photo, {
+      parseDates: true,
+    })
+    return {
+      DateTime: DateTime.toISOString(),
+      DateTimeOriginal: DateTimeOriginal.toISOString(),
+      DateTimeDigitized: DateTimeDigitized.toISOString(),
+    }
+  },
+  // ...
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Context
 
@@ -629,7 +667,7 @@ example/Zoroaster/test/spec/object-context.js
 🦅  Executed 3 tests.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
 
 ### Class Context
 
@@ -686,7 +724,7 @@ example/Zoroaster/test/spec/async-context.js
 🦅  Executed 1 test.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="15"></a></p>
 
 ### Multiple Contexts
 
@@ -718,7 +756,7 @@ const T = {
 export default T
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="15"></a></p>
 
 ### Persistent Context
 
@@ -795,7 +833,7 @@ A persistent context can implement the static getter `_timeout` to specify how m
 
 For an example, see how `exif2css` uses persistent contexts to [setup a web-server](https://github.com/demimonde/exif2css/blob/master/test/context/index.jsx) to serve images with different EXIF orientations under different routes, and [communicates](https://github.com/demimonde/exif2css/blob/master/test/context/RemoteChrome.js) with a headless Chrome to take screenshots: https://github.com/demimonde/exif2css/blob/master/test/mask/default.js#L49.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -829,7 +867,7 @@ import { throws } from 'zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -855,7 +893,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true"></a></p>
 
 ## Copyright
 
