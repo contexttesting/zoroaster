@@ -1,6 +1,7 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 import { join } from 'path'
+import { ensurePath } from '@wrote/wrote'
 import Context from '../context'
 
 const { BIN, getSnapshot } = Context
@@ -35,6 +36,42 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
     },
     inputs: [
       [/Save snapshot?/, 'y'],
+    ],
+    preprocess: {
+      stdout: getSnapshot,
+    },
+  },
+  /**
+   * @param {string}
+   * @param {TempContext} t
+   */
+  async getResults(_, { snapshot: s }) {
+    try {
+      return (await s('snapshot')).replace(/\\/g, '/')
+    } catch (err) {
+      return '\n'
+    }
+  },
+})
+
+export const updateSnapshot = makeTestSuite('test/result/update-snapshot', {
+  context: TempContext,
+  fork: {
+    module: BIN,
+    /**
+     * @param {string[]}
+     * @param {TempContext} t
+     */
+    async getArgs(args, { TEMP, write }) {
+      const p = 'snapshot/snapshot-ts-update/updates-current-snapshot-and-passes.txt'
+      await ensurePath(join(TEMP, p))
+      await write(p, 'fine')
+      await write('snapshot/snapshot-ts-update/does-not-update-current-snapshot-and-fails.txt', 'fine')
+      return [...args, '-s', join(TEMP, 'snapshot')]
+    },
+    inputs: [ // getInputs in the mask would be nice
+      [/Update snapshot/, 'y'],
+      [/Update snapshot/, 'n'],
     ],
     preprocess: {
       stdout: getSnapshot,
