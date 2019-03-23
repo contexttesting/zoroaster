@@ -14,15 +14,27 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
     name,
     type: 'test-start',
   })
+  let ext
+  const testContext = [
+    ...(Array.isArray(context) ? context : [context]),
+  ].map((c) => {
+    try {
+      if (c.name === '_ZoroasterServiceContext')
+        return { snapshotExtension(e) { ext = e } }
+      return c
+    } catch (err) {
+      return c
+    }
+  })
   const res = await runTest({
-    context,
+    context: testContext,
     persistentContext,
     fn,
     timeout,
   })
   let { error, result } = res
   try {
-    await handleSnapshot(result, name, path, snapshot, snapshotRoot, interactive)
+    await handleSnapshot(result, name, path, snapshot, snapshotRoot, interactive, ext)
   } catch (err) {
     error = err
   }
@@ -55,7 +67,7 @@ function dumpResult({ error, name }) {
 export async function runTestSuiteAndNotify(
   notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive,
 ) {
-  const n = getNames(persistentContext)
+  // const n = getNames(persistentContext)
   // console.log('will run a test suite %s', n)
   notify({ type: 'test-suite-start', name })
   let pc, res

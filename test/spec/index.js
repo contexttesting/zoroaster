@@ -1,6 +1,6 @@
 import { ok, equal } from 'assert'
 import { ChildProcess } from 'child_process'
-import zoroaster from '../../src'
+import { run as zoroaster } from '../../src'
 import Context from '../context'
 
 /** @type {Object.<string, (c: Context)>} */

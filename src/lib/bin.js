@@ -1,5 +1,5 @@
 import { lstat, readdir } from 'fs'
-import { resolve, join } from 'path'
+import { resolve, join, relative } from 'path'
 import makePromise from 'makepromise'
 import cleanStack from '@artdeco/clean-stack'
 import { c, b } from 'erte'
@@ -11,7 +11,10 @@ import { replaceFilename } from '.'
  */
 export function clearRequireCache() {
   Object.keys(require.cache).forEach((key) => {
-    delete require.cache[key]
+    const p = relative('', key)
+    if (!p.startsWith('node_modules')) {
+      delete require.cache[key]
+    }
   })
 }
 
@@ -30,7 +33,7 @@ export const buildRootTestSuite = async (paths, timeout) => {
     }
   }, {})
   const ts = new TestSuite(
-    'Zoroaster Root Test Suite', tree, null, null, timeout,
+    'Zoroaster Root Test Suite', tree, null, undefined, timeout,
   )
   return ts
 }

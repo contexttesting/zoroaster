@@ -6,10 +6,11 @@ import { c } from 'erte'
 import { confirm } from 'reloquent'
 import { inspect } from 'util'
 
-const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive) => {
+const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive, extension = 'txt') => {
   const nn = name.replace(/^!/, '')
   const n = nn.replace(/ /g, '-')
-  const ext = typeof result == 'string' ? 'txt' : 'json'
+  const isString = typeof result == 'string'
+  const ext = isString ? extension : 'json'
   const snapshotFilename = `${n}.${ext}`
   let pp = join(...path)
   const root = snapshotRoot.find(r => {
@@ -22,11 +23,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
   if (result) {
     const sc = new SnapshotContext()
     sc.setDir(p)
-    const otherSnapshot = snapshotFilename
-      .replace(/(json|txt)$/, (m) => {
-        if (m == 'txt') return 'json'
-        return 'txt'
-      })
+    const otherSnapshot = `${n}.${isString ? 'json' : stringExtension}`
     const op = join(p, otherSnapshot)
     const e = await exists(op)
     if (e) {
@@ -35,7 +32,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
         throwError(m)
       }
       console.log('%s.\nNew data:', m)
-      console.log(typeof result == 'string' ? result : inspect(result, { colors: true }))
+      console.log(isString ? result : inspect(result, { colors: true }))
       const upd = await confirm(`Update snapshot ${c(op, 'yellow')} to a new type?`)
       if (!upd)
         throwError(m)
@@ -53,7 +50,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
     let snapshotPath = join(p, snapshotFilename)
     let e = await exists(snapshotPath)
     if (!e) {
-      snapshotPath = snapshotPath.replace(/json$/, 'txt')
+      snapshotPath = snapshotPath.replace(/json$/, extension)
       e = await exists(snapshotPath)
     }
     if (e) {

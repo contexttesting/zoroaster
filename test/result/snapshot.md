@@ -16,6 +16,24 @@ Save snapshot for compares the test result against snapshot (y/n)? [y] y
 ok
 /**/
 
+## allows to set extensions on snapshots
+-a test/fixture/snapshot-ts-extension.js
+
+/* stdout */
+ test/fixture/snapshot-ts-extension.js
+[å®† ∂éçø](https://artd.eco)
+Save snapshot for test (y/n)? [y] y
+  ✓  test
+
+🦅  Executed 1 test.
+/**/
+
+/* expected */
+# test/fixture/snapshot-ts-extension/test.md
+
+[å®† ∂éçø](https://artd.eco)
+/**/
+
 ## handles snapshots with root
 -a test/fixture/snapshot-ts.js -r test/fixture
 
