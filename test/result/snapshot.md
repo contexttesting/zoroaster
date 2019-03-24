@@ -16,20 +16,21 @@ Save snapshot for compares the test result against snapshot (y/n)? [y] y
 ok
 /**/
 
-## allows to set extensions on snapshots
--a test/fixture/snapshot-ts-extension.js
+## allows to set extension and source on snapshots
+-a test/fixture/snapshot/extension.js
 
 /* stdout */
- test/fixture/snapshot-ts-extension.js
+ test/fixture/snapshot/extension.js
 [å®† ∂éçø](https://artd.eco)
 Save snapshot for test (y/n)? [y] y
   ✓  test
+  ✓  test2
 
-🦅  Executed 1 test.
+🦅  Executed 2 tests.
 /**/
 
 /* expected */
-# test/fixture/snapshot-ts-extension/test.md
+# test/fixture/snapshot/extension/test.md
 
 [å®† ∂éçø](https://artd.eco)
 /**/
@@ -84,4 +85,17 @@ test/fixture/snapshot-ts.js > compares the test result against snapshot
   Snapshot of another type exists: test/fixture/snapshot/types/snapshot-ts/compares-the-test-result-against-snapshot.json
 
 🦅  Executed 1 test: 1 error.
+/**/
+
+## sets extensions via service snapshot
+-a test/fixture/snapshot/service.js
+
+/* expected */
+# test/fixture/snapshot/service/test.js
+
+console.log(`hello world`)
+
+# test/fixture/snapshot/service/test2.js
+
+console.log(`hello world2`)
 /**/

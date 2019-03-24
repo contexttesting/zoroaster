@@ -4,10 +4,16 @@ import { evaluateContext, destroyContexts } from '@zoroaster/reducer/build/lib'
 import promto from 'promto'
 import { TICK, CROSS, indent, filterStack, replaceFilename } from '.'
 import handleSnapshot from './snapshot'
+import Zoroaster from '../_ZoroasterServiceContext'
 
 /**
  * Run the test.
  * @param {function} [notify] - notify function
+ * @param {Array<string>} path Abstract path to the test consisting of parent test-suites' names.
+ * @param {string} snapshot The path to the snapshot dir.
+ * @param {Array<string>} snapshotRoot
+ * @param {import('../lib/Test').default} test The test.
+ * @param {boolean} interactive Whether to allow interactions.
  */
 async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive) {
   if (notify) notify({
@@ -15,12 +21,20 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
     type: 'test-start',
   })
   let ext
+  let snapshotSource
   const testContext = [
     ...(Array.isArray(context) ? context : [context]),
   ].map((c) => {
     try {
-      if (c.name === '_ZoroasterServiceContext')
-        return { snapshotExtension(e) { ext = e } }
+      if (c === Zoroaster)
+        return {
+          snapshotExtension(e) { ext = e },
+          snapshotSource(t, e) { snapshotSource = t, ext = e },
+        }
+      if (c.prototype instanceof Zoroaster) {
+        ext = c.snapshotExtension
+        return c
+      }
       return c
     } catch (err) {
       return c
@@ -34,7 +48,9 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   })
   let { error, result } = res
   try {
-    await handleSnapshot(result, name, path, snapshot, snapshotRoot, interactive, ext)
+    await handleSnapshot(result,
+      snapshotSource || name,
+      path, snapshot, snapshotRoot, interactive, ext)
   } catch (err) {
     error = err
   }

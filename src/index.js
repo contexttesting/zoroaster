@@ -28,14 +28,4 @@ export const makeTestSuite = () => {
   throw new Error('Please use @zoroaster/mask for mask testing.')
 }
 
-/**
- * Service context.
- */
-export default class _ZoroasterServiceContext {
-  /**
-   * Changes the extension with which the snapshot is saved. Only applies to the string results, objects will be saved in `.json`.
-   */
-  snapshotExtension(extension) {
-    this.extension = extension
-  }
-}
+export { default } from './_ZoroasterServiceContext'

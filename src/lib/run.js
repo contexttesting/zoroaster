@@ -42,7 +42,6 @@ export default async function run({
   unwatchFiles(_currentlyWatching)
   if (exitListener) process.removeListener('beforeExit', exitListener)
 
-  clearRequireCache()
   const rootTestSuite = await buildRootTestSuite(paths, timeout)
 
   const stack = createTestSuiteStackStream()
@@ -94,6 +93,7 @@ export default async function run({
       return !c.startsWith(`${process.cwd()}/node_modules/`)
     })
     watchFiles(newCurrentlyWatching, async () => {
+      clearRequireCache()
       // we can also re-run only changed test suites
       await run({
         paths,

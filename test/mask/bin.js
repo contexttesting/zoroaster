@@ -48,7 +48,13 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
     },
     inputs: [
       [/Save snapshot?/, 'y'],
+      [/Save snapshot?/, 'y'],
     ],
+    options: {
+      env: {
+        ALAMODE_ENV: process.env.ALAMODE_ENV,
+      },
+    },
     preprocess: {
       stdout: getSnapshot,
     },

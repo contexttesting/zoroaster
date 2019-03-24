@@ -23,7 +23,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
   if (result) {
     const sc = new SnapshotContext()
     sc.setDir(p)
-    const otherSnapshot = `${n}.${isString ? 'json' : stringExtension}`
+    const otherSnapshot = `${n}.${isString ? 'json' : extension}`
     const op = join(p, otherSnapshot)
     const e = await exists(op)
     if (e) {

@@ -12,7 +12,8 @@ import { replaceFilename } from '.'
 export function clearRequireCache() {
   Object.keys(require.cache).forEach((key) => {
     const p = relative('', key)
-    if (!p.startsWith('node_modules')) {
+    if (!p.startsWith('node_modules') &&
+        !p.endsWith('_ZoroasterServiceContext.js')) {
       delete require.cache[key]
     }
   })
