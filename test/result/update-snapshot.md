@@ -16,10 +16,10 @@ Update snapshot for updates current snapshot and passes (y/n)? [y] y
 fineok
 Update snapshot for does not update current snapshot and fails (y/n)? [y] n
   ✗  does not update current snapshot and fails
-  | Error: The string didn't match the snapshot.
+  | Error: The string didn't match the snapshot test/temp/snapshot/snapshot-ts-update/does-not-update-current-snapshot-and-fails.txt
 
 test/fixture/snapshot-ts-update.js > does not update current snapshot and fails
-  Error: The string didn't match the snapshot.
+  Error: The string didn't match the snapshot test/temp/snapshot/snapshot-ts-update/does-not-update-current-snapshot-and-fails.txt
 
 🦅  Executed 2 tests: 1 error.
 /**/

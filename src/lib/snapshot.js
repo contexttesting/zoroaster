@@ -5,10 +5,15 @@ import rm from '@wrote/rm'
 import { c } from 'erte'
 import { confirm } from 'reloquent'
 import { inspect } from 'util'
+import Stream from 'stream'
+import { collect } from 'catchment'
 
 const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive, extension = 'txt') => {
   const nn = name.replace(/^!/, '')
   const n = nn.replace(/ /g, '-')
+  if (result instanceof Stream) {
+    result = await collect(result)
+  }
   const isString = typeof result == 'string'
   const ext = isString ? extension : 'json'
   const snapshotFilename = `${n}.${ext}`
@@ -18,7 +23,8 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
     return pp.startsWith(rr)
   })
   if (root) pp = pp.slice(root.length)
-  let p = join(snapshotDir, pp)
+  const p = join(snapshotDir, pp)
+  let snapshotPath = join(p, snapshotFilename)
 
   if (result) {
     const sc = new SnapshotContext()
@@ -44,10 +50,12 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
     try {
       await sc.test(snapshotFilename, result, c(nn, 'yellow'), interactive)
     } catch (err) {
+      if (err.message == 'The string didn\'t match the snapshot.') {
+        err.message = `The string didn't match the snapshot ${c(snapshotPath, 'yellow')}`
+      }
       throwError(err)
     }
   } else {
-    let snapshotPath = join(p, snapshotFilename)
     let e = await exists(snapshotPath)
     if (!e) {
       snapshotPath = snapshotPath.replace(/json$/, extension)

@@ -26,15 +26,14 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
     ...(Array.isArray(context) ? context : [context]),
   ].map((c) => {
     try {
-      if (c === Zoroaster)
-        return {
-          snapshotExtension(e) { ext = e },
-          snapshotSource(t, e) { snapshotSource = t, ext = e },
-        }
       if (c.prototype instanceof Zoroaster) {
         ext = c.snapshotExtension
-        return c
       }
+      if (c === Zoroaster || c.prototype instanceof Zoroaster)
+        return {
+          snapshotExtension(e) { ext = e },
+          snapshotSource(t, e) { snapshotSource = t; if (e) ext = e },
+        }
       return c
     } catch (err) {
       return c

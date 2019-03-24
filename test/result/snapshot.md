@@ -65,10 +65,10 @@ ok
  test/fixture/snapshot-ts.js
 incorrectk
   ✗  compares the test result against snapshot
-  | Error: The string didn't match the snapshot.
+  | Error: The string didn't match the snapshot test/fixture/snapshot/incorrect/snapshot-ts/compares-the-test-result-against-snapshot.txt
 
 test/fixture/snapshot-ts.js > compares the test result against snapshot
-  Error: The string didn't match the snapshot.
+  Error: The string didn't match the snapshot test/fixture/snapshot/incorrect/snapshot-ts/compares-the-test-result-against-snapshot.txt
 
 🦅  Executed 1 test: 1 error.
 /**/
