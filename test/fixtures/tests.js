@@ -12,7 +12,7 @@ export const asyncFailingTest = async () => {
   throw new Error(TEST_ERROR_MESSAGE)
 }
 
-export const asyncTest = async () => {
+export const asyncTest = async (A, B, C, D) => {
   await new Promise(r => setTimeout(r, 100))
 }
 

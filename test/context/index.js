@@ -102,7 +102,10 @@ const C = {
    */
   assertNoNotifyErrors(notifications) {
     notifications.forEach(({ error }) => {
-      ok(!error)
+      try { ok(!error) } catch (err) {
+        error.message = `A test container error in notification: ${error.message}\n${error.stack.replace(/^[\s\S]+?\n/, '')}`
+        throw error
+      }
     })
   },
 
@@ -120,10 +123,16 @@ const C = {
    * Runs the test suite using the lib's `runTestSuiteAndNotify`.
    */
   async runTestSuite(ts, assertNoErrors = true, onlyFocused) {
-    const { notifications, notify } = this.makeNotify()
-    await runTestSuiteAndNotify(notify, [], '', [], ts, onlyFocused)
-    if (assertNoErrors) this.assertNoNotifyErrors(notifications)
-    return notifications
+    const e = erotic(true)
+    try {
+      const { notifications, notify } = this.makeNotify()
+      await runTestSuiteAndNotify(notify, [], '', [], ts, onlyFocused)
+      if (assertNoErrors) this.assertNoNotifyErrors(notifications)
+      return notifications
+    } catch (err) {
+      const er = e(err)
+      throw er
+    }
   },
 
   /**

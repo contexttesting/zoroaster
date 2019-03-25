@@ -28,4 +28,4 @@ export const makeTestSuite = () => {
   throw new Error('Please use @zoroaster/mask for mask testing.')
 }
 
-export { default } from './_ZoroasterServiceContext'
+export { default } from './Zoroaster'

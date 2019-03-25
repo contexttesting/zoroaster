@@ -4,7 +4,7 @@ import { evaluateContext, destroyContexts } from '@zoroaster/reducer/build/lib'
 import promto from 'promto'
 import { TICK, CROSS, indent, filterStack, replaceFilename } from '.'
 import handleSnapshot from './snapshot'
-import Zoroaster from '../_ZoroasterServiceContext'
+import Zoroaster from '../Zoroaster'
 
 /**
  * Run the test.
@@ -22,13 +22,16 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   })
   let ext
   let snapshotSource
-  const testContext = [
-    ...(Array.isArray(context) ? context : [context]),
-  ].map((c) => {
+  const tc = Array.isArray(context) ? context : [context]
+  tc.forEach((c) => {
+    if (c.prototype instanceof Zoroaster) {
+      ext = c.snapshotExtension
+    }
+  })
+  // only tests in masks won't have a name
+  const ttc = fn.name ? tc.slice(0, fn.length) : tc
+  const testContext = ttc.map((c) => {
     try {
-      if (c.prototype instanceof Zoroaster) {
-        ext = c.snapshotExtension
-      }
       if (c === Zoroaster || c.prototype instanceof Zoroaster)
         return {
           snapshotExtension(e) { ext = e },

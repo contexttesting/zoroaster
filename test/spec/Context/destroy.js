@@ -103,7 +103,7 @@ export const FunctionContext = {
       }
     }
     const ts = new TestSuite(TEST_SUITE_NAME, {
-      async 'should timeout'() {
+      async 'should timeout'(A) {
         await new Promise(r => setTimeout(r, 500))
       },
     }, null, c, 250)
@@ -121,7 +121,7 @@ export const FunctionContext = {
       this._destroy = () => destroyReturnValue
     }
     const ts = new TestSuite(TEST_SUITE_NAME, {
-      'should pass'() {},
+      'should pass'(A) {},
     }, null, c)
     await runTestSuite(ts)
     equal(ts.tests[0].destroyResult, destroyReturnValue)

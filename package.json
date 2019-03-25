@@ -6,6 +6,7 @@
   "scripts": {
     "t": "node src/bin",
     "test": "yarn t test/spec test/mask -t 10000",
+    "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "test-all": "yarn-s test test-build",

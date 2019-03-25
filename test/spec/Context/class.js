@@ -1,7 +1,6 @@
 import { ok } from 'assert'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'
-import { runTestSuiteAndNotify } from '../../../src/lib/run-test'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
@@ -37,7 +36,7 @@ const T = {
       asyncTest,
     })
     await runTestSuite(testSuite)
-    ok(destroyed)
+    ok(destroyed, 'The context was not destroyed.')
   },
 }
 
