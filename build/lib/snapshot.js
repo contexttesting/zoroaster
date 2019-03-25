@@ -5,11 +5,17 @@ let rm = require('@wrote/rm'); if (rm && rm.__esModule) rm = rm.default;
 const { c } = require('erte');
 const { confirm } = require('reloquent');
 const { inspect } = require('util');
+let Stream = require('stream'); if (Stream && Stream.__esModule) Stream = Stream.default;
+const { collect } = require('catchment');
 
-const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive) => {
+const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive, extension = 'txt') => {
   const nn = name.replace(/^!/, '')
   const n = nn.replace(/ /g, '-')
-  const ext = typeof result == 'string' ? 'txt' : 'json'
+  if (result instanceof Stream) {
+    result = await collect(result)
+  }
+  const isString = typeof result == 'string'
+  const ext = isString ? extension : 'json'
   const snapshotFilename = `${n}.${ext}`
   let pp = join(...path)
   const root = snapshotRoot.find(r => {
@@ -17,16 +23,13 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
     return pp.startsWith(rr)
   })
   if (root) pp = pp.slice(root.length)
-  let p = join(snapshotDir, pp)
+  const p = join(snapshotDir, pp)
+  let snapshotPath = join(p, snapshotFilename)
 
   if (result) {
     const sc = new SnapshotContext()
     sc.setDir(p)
-    const otherSnapshot = snapshotFilename
-      .replace(/(json|txt)$/, (m) => {
-        if (m == 'txt') return 'json'
-        return 'txt'
-      })
+    const otherSnapshot = `${n}.${isString ? 'json' : extension}`
     const op = join(p, otherSnapshot)
     const e = await exists(op)
     if (e) {
@@ -35,7 +38,7 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
         throwError(m)
       }
       console.log('%s.\nNew data:', m)
-      console.log(typeof result == 'string' ? result : inspect(result, { colors: true }))
+      console.log(isString ? result : inspect(result, { colors: true }))
       const upd = await confirm(`Update snapshot ${c(op, 'yellow')} to a new type?`)
       if (!upd)
         throwError(m)
@@ -47,13 +50,15 @@ const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, int
     try {
       await sc.test(snapshotFilename, result, c(nn, 'yellow'), interactive)
     } catch (err) {
+      if (err.message == 'The string didn\'t match the snapshot.') {
+        err.message = `The string didn't match the snapshot ${c(snapshotPath, 'yellow')}`
+      }
       throwError(err)
     }
   } else {
-    let snapshotPath = join(p, snapshotFilename)
     let e = await exists(snapshotPath)
     if (!e) {
-      snapshotPath = snapshotPath.replace(/json$/, 'txt')
+      snapshotPath = snapshotPath.replace(/json$/, extension)
       e = await exists(snapshotPath)
     }
     if (e) {

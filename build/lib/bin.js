@@ -1,5 +1,5 @@
 const { lstat, readdir } = require('fs');
-const { resolve, join } = require('path');
+const { resolve, join, relative } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
 let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
 const { c, b } = require('erte');
@@ -11,7 +11,11 @@ const { replaceFilename } = require('.');
  */
        function clearRequireCache() {
   Object.keys(require.cache).forEach((key) => {
-    delete require.cache[key]
+    const p = relative('', key)
+    if (!p.startsWith('node_modules') &&
+        !p.endsWith('_ZoroasterServiceContext.js')) {
+      delete require.cache[key]
+    }
   })
 }
 
@@ -30,7 +34,7 @@ const { replaceFilename } = require('.');
     }
   }, {})
   const ts = new TestSuite(
-    'Zoroaster Root Test Suite', tree, null, null, timeout,
+    'Zoroaster Root Test Suite', tree, null, undefined, timeout,
   )
   return ts
 }

@@ -4,25 +4,55 @@ const { evaluateContext, destroyContexts } = require('@zoroaster/reducer/build/l
 let promto = require('promto'); if (promto && promto.__esModule) promto = promto.default;
 const { TICK, CROSS, indent, filterStack, replaceFilename } = require('.');
 const handleSnapshot = require('./snapshot');
+const Zoroaster = require('../Zoroaster');
 
 /**
  * Run the test.
  * @param {function} [notify] - notify function
+ * @param {Array<string>} path Abstract path to the test consisting of parent test-suites' names.
+ * @param {string} snapshot The path to the snapshot dir.
+ * @param {Array<string>} snapshotRoot
+ * @param {import('../lib/Test').default} test The test.
+ * @param {boolean} interactive Whether to allow interactions.
  */
 async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive) {
   if (notify) notify({
     name,
     type: 'test-start',
   })
+  let ext
+  let snapshotSource
+  const tc = Array.isArray(context) ? context : [context]
+  tc.forEach((c) => {
+    if (c.prototype instanceof Zoroaster) {
+      ext = c.snapshotExtension
+    }
+  })
+  // only tests in masks won't have a name
+  const ttc = fn.name ? tc.slice(0, fn.length) : tc
+  const testContext = ttc.map((c) => {
+    try {
+      if (c === Zoroaster || c.prototype instanceof Zoroaster)
+        return {
+          snapshotExtension(e) { ext = e },
+          snapshotSource(t, e) { snapshotSource = t; if (e) ext = e },
+        }
+      return c
+    } catch (err) {
+      return c
+    }
+  })
   const res = await runTest({
-    context,
+    context: testContext,
     persistentContext,
     fn,
     timeout,
   })
   let { error, result } = res
   try {
-    await handleSnapshot(result, name, path, snapshot, snapshotRoot, interactive)
+    await handleSnapshot(result,
+      snapshotSource || name,
+      path, snapshot, snapshotRoot, interactive, ext)
   } catch (err) {
     error = err
   }
@@ -55,7 +85,7 @@ function dumpResult({ error, name }) {
        async function runTestSuiteAndNotify(
   notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive,
 ) {
-  const n = getNames(persistentContext)
+  // const n = getNames(persistentContext)
   // console.log('will run a test suite %s', n)
   notify({ type: 'test-suite-start', name })
   let pc, res

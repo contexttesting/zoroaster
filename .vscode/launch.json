@@ -15,7 +15,7 @@
       },
       "args": [
         "test/spec",
-        // "test/spec/snapshot.js",
+        // "test/fixture/snapshot/service.js",
         "test/mask",
         "-a",
         "-w",
