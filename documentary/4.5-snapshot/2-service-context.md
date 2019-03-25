@@ -2,8 +2,6 @@
 
 The _Service Context_ is a special type of context that allows to access APIs to control how snapshots are saved.
 
-%~ width="5"%
-
 #### Snapshot Extension
 
 It is possible to change the file type with which the snapshot will be saved. This can be useful for visual inspection of the snapshot, for example if a program under test produces XML output, it should be saved with `xml` file extension so that it is easy to see its structure when opening the file in the IDE. To achieve that, a service context is used.
@@ -14,14 +12,12 @@ The service context can be used in 2 ways, however they both require the test su
 import Zoroaster from 'zoroaster'
 ```
 
-1. The extension of the whole test suite can be set by specifying a contexts which *extends* _Zoroaster_ service context, and implements the `get snapshotExtension` getter:
+1. The extension of the whole test suite can be set by specifying a contexts which **extends** _Zoroaster_ service context, and implements the `get snapshotExtension` getter. Then it can be attached to the test suite in the same way as other contexts, that is by specifying it in the `context` property:
     ```js
     class XmlSnapshot extends Zoroaster {
       static get snapshotExtension() { return 'xml' }
     }
-    ```
-Now, it can be attached to the test suite in the same way as other contexts, that is by specifying it in the `context` property:
-    ```js
+
     /** @type {Object.<string, (c: Context)>} */
     const T = {
       context: [Context, XmlSnapshot],
@@ -31,9 +27,10 @@ Now, it can be attached to the test suite in the same way as other contexts, tha
       },
     }
     ```
+
 2. The second way to use the service context is for individual tests, but the _Zoroaster_ context does not have to be extended. It works by accessing the `snapshotExtension` method from the test itself:
     ```js
-    /** @type {Object.<string, (c: Context)>} */
+    /** @type {Object.<string, (c: Context, z: Zoroaster)>} */
     const T = {
       context: [Context, Zoroaster],
       async 'generates XML from the JS file'({ path }, { snapshotExtension }) {
@@ -43,8 +40,6 @@ Now, it can be attached to the test suite in the same way as other contexts, tha
       },
     }
     ```
-
-%~ width="5"%
 
 #### Snapshot Source
 
