@@ -977,6 +977,6 @@ The following snippet can be used in _VS Code_ when debugging tests.
 [2]: #assertion-library
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
-[5]: https://npmjs.org/packages/assert-throws
+[5]: https://npmjs.org/package/assert-throws
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>

@@ -41,6 +41,6 @@
 [2]: #assertion-library
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
-[5]: https://npmjs.org/packages/assert-throws
+[5]: https://npmjs.org/package/assert-throws
 
 %~ -1%
