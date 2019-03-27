@@ -70,7 +70,7 @@
     "makepromise": "3.0.2",
     "mismatch": "1.0.3",
     "reloquent": "1.2.4",
-    "snapshot-context": "2.2.0",
+    "snapshot-context": "2.2.1",
     "spawncommand": "2.1.1",
     "usually": "1.1.0"
   },
@@ -78,7 +78,6 @@
     "@a-la/fixture-alamode": "1.0.0",
     "@a-la/fixture-babel": "1.0.0",
     "@depack/render": "1.1.4",
-    "diff": "4.0.1",
     "documentary": "1.22.0",
     "erotic": "2.0.2",
     "eslint-config-artdeco": "1.0.1",
