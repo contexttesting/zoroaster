@@ -3,6 +3,7 @@
 ### [3.11.1](https://github.com/contexttesting/zoroaster/compare/v3.11.0...v3.11.1)
 
 - [fix] Merge test suites when a file has the same name as a directory.
+- [fix] Remove `trim` from _SnapshotContext_.
 - [doc] Document reporting and `default` meaning, some fixes 4 persistent context.
 
 ## 27 March 2019
