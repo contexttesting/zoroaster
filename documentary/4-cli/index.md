@@ -30,7 +30,7 @@ _For example, with the following directory structure:_
 
 _And the test suites exported in the way shown below:_
 
-%FORK-md example/reporting-snapshot%
+%FORK-markdown example/reporting-snapshot%
 
 _The reporter will produce the following output:_
 

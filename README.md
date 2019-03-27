@@ -454,7 +454,7 @@ example/reporting
 
 _And the test suites exported in the way shown below:_
 
-```md
+```markdown
 # default.js
 
 export default {
