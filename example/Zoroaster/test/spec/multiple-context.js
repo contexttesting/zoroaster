@@ -1,19 +1,24 @@
+import { equal } from 'zoroaster/assert'
+import TempContext from 'temp-context'
 import Zoroaster from '../../src'
 import Context from '../context'
-import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line no-unused-vars
 
-/** @type {Object.<string, (ctx: Context, snapshotCtx: SnapshotContext)>} */
+/** @type {Object.<string, (c: Context, t: TempContext)>} */
 const T = {
-  context: [
-    Context,
-    snapshotContext,
-  ],
-  async 'returns correct country of origin'({ getCountry, SNAPSHOT_DIR }, { test, setDir }) {
-    setDir(SNAPSHOT_DIR)
+  context: [Context, TempContext],
+  async 'translates and saves a passage'(
+    { fixture }, { resolve, read }
+  ) {
+    const output = resolve('output.txt')
     const zoroaster = new Zoroaster()
-    const expected = await getCountry()
-    const actual = zoroaster.countryOfOrigin
-    await test(actual, expected)
+    const path = fixture`manthra-spenta.txt`
+    await zoroaster.translateAndSave(path, output)
+    const res = await read(output)
+    equal(res, `
+Do Thou strengthen my body (O! Hormazd)
+through good thoughts, righteousness, strength (or power)
+and prosperity.`
+      .trim())
   },
 }
 

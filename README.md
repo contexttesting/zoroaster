@@ -21,6 +21,8 @@ yarn add -DE zoroaster
 npm i --save-dev zoroaster
 ```
 
+![Zoroaster Example](doc/z.gif)
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
 
 ## Table Of Contents
@@ -690,8 +692,6 @@ const T = {
 
 A context is unique to each test. When added as the `context` property to a test suite, it can be accessed from the test function's first argument. If there are multiple contexts, they can be accessed in subsequent arguments.
 
-> **Only contexts** specified in the test functions' arguments will be evaluated. For example, if the test suite contains 2 contexts, `A` and `B`, the test `test caseA(A, B)` will have both contexts evaluated and available to it, `testCaseB(A)` will only have context `A` evaluated, and `testCase()` will not lead to evaluation of any contexts. This means that functions with variable lengths like `test(...contexts)` will not have any contexts evaluated for them. This is done to avoid unnecessary work when some tests in a test suite might need access to all contexts, whereas others don't.
-
 
 
 ### Object Context
@@ -749,12 +749,21 @@ Context can be a class, and to initialise it, `_init` function will be called if
 
 _With the following simple context:_
 ```js
-const SNAPSHOT_DIR = 'example/Zoroaster/test/snapshot'
+import { join } from 'path'
 
 export default class Context {
   async _init() {
     // an async set-up
     await new Promise(r => setTimeout(r, 50))
+  }
+  /**
+   * A tagged template that returns the relative path to the fixture.
+   * @param {string} file
+   * @example
+   * fixture`input.txt` // -> test/fixture/input.txt
+   */
+  fixture(file) {
+    return join('test/fixture', file)
   }
   /**
    * Returns country of origin.
@@ -765,9 +774,6 @@ export default class Context {
   async _destroy() {
     // an async tear-down
     await new Promise(r => setTimeout(r, 50))
-  }
-  get SNAPSHOT_DIR() {
-    return SNAPSHOT_DIR
   }
 }
 ```
@@ -802,33 +808,37 @@ example/Zoroaster/test/spec/async-context.js
 
 ### Multiple Contexts
 
-It is possible to specify multiple contexts by passing an array to the `context` property.
+It is possible to specify multiple contexts by passing an array to the `context` property. Oftentimes, the package's main context will contain references to fixtures, or provide methods to resolve paths to fixtures, so that it is easy to access them across tests. Next, another context can be added in the array to enrich the testing API. In the following example, the first context is used to get the path of a fixture file, and the second, _TempContext_ is used to get the location of the temporary output, as well as to read that output later.
 
 ```js
+import { equal } from 'zoroaster/assert'
+import TempContext from 'temp-context'
 import Zoroaster from '../../src'
 import Context from '../context'
-import SnapshotContext from 'snapshot-context'
-import { resolve } from 'path'
 
-const SNAPSHOT_DIR = resolve(__dirname, '../snapshot')
-
-/** @type {Object.<string, (c: Context, s: SnapshotContext)>} */
+/** @type {Object.<string, (c: Context, t: TempContext)>} */
 const T = {
-  context: [
-    context,
-    snapshotContext,
-  ],
-  async 'returns correct country of origin'({ getCountry }, { test, setDir }) {
-    setDir(SNAPSHOT_DIR)
+  context: [Context, TempContext],
+  async 'translates and saves a passage'(
+    { fixture }, { resolve, read }
+  ) {
+    const output = resolve('output.txt')
     const zoroaster = new Zoroaster()
-    const expected = await getCountry()
-    const actual = zoroaster.countryOfOrigin
-    await test(actual, expected)
+    const path = fixture`manthra-spenta.txt`
+    await zoroaster.translateAndSave(path, output)
+    const res = await read(output)
+    equal(res, `
+Do Thou strengthen my body (O! Hormazd)
+through good thoughts, righteousness, strength (or power)
+and prosperity.`
+      .trim())
   },
 }
 
 export default T
 ```
+
+> **Only contexts** specified in the test functions' arguments will be evaluated. For example, if the test suite contains 2 contexts, `A` and `B`, the test `test caseA(A, B)` will have both contexts evaluated and available to it, `testCaseB(A)` will only have context `A` evaluated, and `testCase()` will not lead to evaluation of any contexts. This means that functions with variable lengths like `test(...contexts)` will not have any contexts evaluated for them. This is done to avoid unnecessary work when some tests in a test suite might need access to all contexts, whereas others don't.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="15"></a></p>
 
@@ -978,5 +988,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
 [5]: https://npmjs.org/package/assert-throws
+
+![The End](doc/end.jpg)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>

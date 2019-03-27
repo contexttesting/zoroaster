@@ -21,6 +21,8 @@ yarn add -DE zoroaster
 npm i --save-dev zoroaster
 ```
 
+![Zoroaster Example](doc/z.gif)
+
 %~%
 
 ## Table Of Contents
