@@ -21,7 +21,9 @@ yarn add -DE zoroaster
 npm i --save-dev zoroaster
 ```
 
-![Zoroaster Example](doc/z.gif)
+<p align="center">
+  <img src="doc/z.gif" alt="Zoroaster Test Example With JSDoc Context API">
+</p>
 
 %~%
 
