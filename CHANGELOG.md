@@ -1,5 +1,12 @@
 ## 27 March 2019
 
+### [3.11.1](https://github.com/contexttesting/zoroaster/compare/v3.11.0...v3.11.1)
+
+- [fix] Merge test suites when a file has the same name as a directory.
+- [doc] Document reporting and `default` meaning, some fixes 4 persistent context.
+
+## 27 March 2019
+
 ### [3.11.0](https://github.com/contexttesting/zoroaster/compare/v3.10.0...v3.11.0)
 
 - [feature] Focus on masks.
