@@ -444,6 +444,8 @@ zoroaster test/spec --watch
 zoroaster test/spec -w
 ```
 
+After a change to a file happens, _Zoroaster_ will clear all dependencies and run tests again. It will not, however, clear the `node_modules` dependencies, so that if another package that was used in the project previously was updated to a newer version, the test runner will have to be restarted.
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
 
 ### `--timeout`, `-t`: Timeout
@@ -462,7 +464,7 @@ zoroaster test/spec -a
 
 #### `.alamoderc.json`
 
-One of the advantages of using `alamode` is that it can substitute a path to the imported module according to the configuration found in the `.alamoderc.json` file in the project directory. For example, if it is required to test the `build` directory instead of the `src` directory, the following configuration can be used:
+One of the advantages of using _ÀLaMode_ is that it can substitute paths to imported modules according to the configuration found in the `.alamoderc.json` file in the project directory. For example, if it is required to test the `build` directory instead of the `src` directory, the following configuration can be used:
 
 ```json5
 {
@@ -479,7 +481,7 @@ One of the advantages of using `alamode` is that it can substitute a path to the
 }
 ```
 
-This will make _Zoroaster_ import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that).
+This will make _Zoroaster_ import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that). This is extremely useful to check that the code transpiled for publishing passes same tests as the source code.
 
 ### `--babel`, `-b`: `require(@babel/register)`
 
@@ -511,7 +513,7 @@ yarn add -E -D \
 @babel/plugin-transform-modules-commonjs \
 ```
 
-However, the above set-up can be easily achieved with `alamode` which has much less dependencies than `Babel`. This option therefore should be used for cases when more advanced transforms need to be added.
+However, the above set-up can be easily achieved with _ÀLaMode_ which has much less dependencies than `Babel` and is faster. This option therefore should be used for cases when more advanced transforms need to be added.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
 
@@ -527,7 +529,7 @@ When generating snapshots, ignores the initial part of the path that matched the
 
 ### package.json
 
-To be able to run tests from the project directory, it is advised to use `package.json` scripts. There is the main `test` script, and additional shorter scripts for `yarn` and `npm` which makes it easy to run tests.
+To be able to run tests from the project directory, it is advised to use `package.json` scripts. There is the main `test` script, and additional shorter scripts for `yarn` and `npm` that make it easy to run tests.
 
 |  Command   |                                                                                                           Meaning                                                                                                           |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
