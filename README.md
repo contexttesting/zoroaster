@@ -38,6 +38,7 @@ npm i --save-dev zoroaster
   * [async functions](#async-functions)
   * [Running Example](#running-example)
 - [CLI](#cli)
+  * [Reporter & `default`](#reporter--default)
   * [`--watch`, `-w`: Watch Files for Changes](#--watch--w-watch-files-for-changes)
   * [`--timeout`, `-t`: Timeout](#--timeout--t-timeout)
   * [`--alamode`, `-a`: `require('alamode)()`](#--alamode--a-requirealamode)
@@ -433,6 +434,87 @@ zoroaster test/spec/lib.js
 yarn t test/spec/lib.js test/mask/lib.js
 ```
 
+### Reporter & `default`
+
+The reporter will print names of each test, however there are some specifics to how test suite names are printed:
+
+- Whenever a file export the default test suite, the name of the test suite will be displayed as the name of the file. The names of files are printed without the `.js` or `.jsx` extensions. Any named exports will appear under the name of the file.
+- If a file is called `default.js` in a directory, the name of the test suite will be the name of the directory, and not `default`. This means that any test suite that is named `default` will have its tests reported under its parent name.
+- If there is a directory which contains a `default.js`, and a file with the same name as the directory (but with an extension), the tests in both will be merged under the same test suite.
+
+_For example, with the following directory structure:_
+
+```m
+example/reporting
+├── default.js
+├── methods
+│   └── default.js
+└── methods.js
+```
+
+_And the test suites exported in the way shown below:_
+
+```md
+# default.js
+
+export default {
+  'testA'() {},
+  'testB'() {},
+}
+export const functions = {
+  'testC'() {},
+  'testD'() {},
+}
+
+# methods/default.js
+
+export default {
+  'dir testA'() {},
+  'dir testB'() {},
+}
+
+export const extra = {
+  'extra testA'() {},
+  'extra testB'() {},
+}
+
+# methods.js
+
+export default {
+  'file testA'() {},
+  'file testB'() {},
+}
+
+export const additional = {
+  'additional testC'() {},
+  'additional testD'() {},
+}
+```
+
+_The reporter will produce the following output:_
+
+```fs
+example/reporting
+  ✓  testA
+  ✓  testB
+   functions
+    ✓  testC
+    ✓  testD
+   methods
+    ✓  file testA
+    ✓  file testB
+    ✓  dir testA
+    ✓  dir testB
+     extra
+      ✓  extra testA
+      ✓  extra testB
+     additional
+      ✓  additional testC
+      ✓  additional testD
+
+🦅  Executed 12 tests.
+```
+
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
 
 ### `--watch`, `-w`: Watch Files for Changes
@@ -536,7 +618,7 @@ To be able to run tests from the project directory, it is advised to use `packag
 | t          | Command which could be used to point to the exact file, e.g., `yarn t test/spec/lib.js`.                                                                                                                      |
 | test       | Run all tests found in the `spec` and `mask` directories.                                                                                                 |
 | mask       | Run just `mask` tests.                                                                                                                                                                     |
-| spec       | Run only `spec` tests.                                                                                                                                                                     |
+| spec       | Run only `spec` tests.                                                                                                                                                                    |
 | test-build | When a project is build into `build`, and `ALAMODE_ENV` is configured in [`.alamoderc.json`](#alamodercjson), this allows to substitute all paths to source files in the `src` directory to paths in the `build` directory. |
 
 ```json5

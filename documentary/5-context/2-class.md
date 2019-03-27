@@ -8,6 +8,6 @@ _With the following simple context:_
 _The tests can use the context testing API:_
 %EXAMPLE: example/Zoroaster/test/spec/async-context.js%
 
-%FORK src/bin example/Zoroaster/test/spec/async-context.js%
+%!FORK src/bin/zoroaster example/Zoroaster/test/spec/async-context.js%
 
 %~ width="15"%

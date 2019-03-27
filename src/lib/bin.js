@@ -63,8 +63,8 @@ export async function buildDirectory(dir) {
       // to avoid that, could keep the filenames here,
       // but don't print them in the reporter
       console.warn('Merging %s with %s in %s', name, node, dir)
-      const merged = safeMerge(accRes[name], r)
-      return merged
+      accRes[name] = safeMerge(accRes[name], r)
+      return accRes
     } else {
       return {
         ...accRes,

@@ -8,7 +8,7 @@ _With the following persistent context:_
 _The tests can use the context testing API:_
 %EXAMPLE: example/Zoroaster/test/spec/persistent-context.js, ../../../../assert => zoroaster/assert%
 
-%FORK src/bin example/Zoroaster/test/spec/persistent-context.js%
+%!FORK src/bin/zoroaster example/Zoroaster/test/spec/persistent-context.js%
 
 A persistent context can implement the static getter `_timeout` to specify how much time it has to start-up. Otherwise, the `_init` and `_destroy` have 5000 seconds to complete.
 
