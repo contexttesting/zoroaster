@@ -43,6 +43,6 @@
 [4]: https://zoroaster.co.uk/playground
 [5]: https://npmjs.org/package/assert-throws
 
-![The End](doc/end.jpg)
+<p align="right"><img width="100" src="doc/end.jpg" alt="The End"></p>
 
 %~ -1%

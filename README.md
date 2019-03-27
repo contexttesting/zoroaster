@@ -749,7 +749,7 @@ example/Zoroaster/test/spec/object-context.js
 
 ### Class Context
 
-Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this`. Getters are also bound to the context and the variables initialised using the destructuring of the context will take their value from its initial state.
+A context can and most often will be a class, and to initialise it, the _`_init`_ function will be called by the test runner if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this` and thus the state of the context. **Getters** are also bound to the context and the variables initialised using the destructuring of the context will take their value from its initial state. Finally, the _`_destroy`_ method will ensure the tear-down of the testing context at the end of the test.
 
 _With the following simple context:_
 ```js
@@ -759,6 +759,7 @@ export default class Context {
   async _init() {
     // an async set-up
     await new Promise(r => setTimeout(r, 50))
+    this._country = 'Persia'
   }
   /**
    * A tagged template that returns the relative path to the fixture.
@@ -773,7 +774,7 @@ export default class Context {
    * Returns country of origin.
    */
   get country() {
-    return 'Persia'
+    return this._country
   }
   async _destroy() {
     // an async tear-down
@@ -994,6 +995,6 @@ The following snippet can be used in _VS Code_ when debugging tests.
 [4]: https://zoroaster.co.uk/playground
 [5]: https://npmjs.org/package/assert-throws
 
-![The End](doc/end.jpg)
+<p align="right"><img width="100" src="doc/end.jpg" alt="The End"></p>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>
