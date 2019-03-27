@@ -1,10 +1,11 @@
-## 26 March 2019
+## 27 March 2019
 
 ### [3.11.0](https://github.com/contexttesting/zoroaster/compare/v3.10.0...v3.11.0)
 
 - [feature] Focus on masks.
 - [feature] Service Context for better control of snapshots.
 - [feature] Evaluate only contexts required for the test.
+- [doc] Documentation improvements and fixes.
 
 ## 21 March 2019
 
