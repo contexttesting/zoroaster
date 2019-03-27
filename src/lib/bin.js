@@ -43,7 +43,7 @@ export const buildRootTestSuite = async (paths, timeout) => {
  * Recursively construct Test Suites tree from a directory path.
  * @param {string} dir Path to the directory.
  */
-async function buildDirectory(dir) {
+export async function buildDirectory(dir) {
   const content = await makePromise(readdir, dir)
   const res = content.reduce(async (acc, node) => {
     const accRes = await acc
@@ -59,11 +59,32 @@ async function buildDirectory(dir) {
       r = await buildDirectory(path)
       name = node
     }
-    return {
-      ...accRes,
-      [name]: r,
+    if (accRes[name]) {
+      // to avoid that, could keep the filenames here,
+      // but don't print them in the reporter
+      console.warn('Merging %s with %s in %s', name, node, dir)
+      const merged = safeMerge(accRes[name], r)
+      return merged
+    } else {
+      return {
+        ...accRes,
+        [name]: r,
+      }
     }
   }, {})
+  return res
+}
+
+const safeMerge = (one, two) => {
+  Object.keys(two).forEach((key) => {
+    if (one[key]) {
+      throw new Error(`Duplicate key ${key}`)
+    }
+  })
+  const res = {
+    ...one,
+    ...two,
+  }
   return res
 }
 
