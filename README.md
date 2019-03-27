@@ -749,7 +749,7 @@ example/Zoroaster/test/spec/object-context.js
 
 ### Class Context
 
-Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this`. Getters and setters are not bound.
+Context can be a class, and to initialise it, `_init` function will be called if present. All methods in the context **will be bound** to the instance of a context for each tests, therefore it's possible to use destructuring and still have methods having access to `this`. Getters are also bound to the context and the variables initialised using the destructuring of the context will take their value from its initial state.
 
 _With the following simple context:_
 ```js
@@ -772,8 +772,8 @@ export default class Context {
   /**
    * Returns country of origin.
    */
-  async getCountry() {
-    return 'Iran'
+  get country() {
+    return 'Persia'
   }
   async _destroy() {
     // an async tear-down
@@ -791,10 +791,11 @@ import Context from '../context'
 /** @type {Object.<string, (ctx: Context)>} */
 const T = {
   context: Context,
-  async 'returns correct country of origin'({ getCountry }) {
+  async 'returns correct country of origin'({
+    country: expectedOrigin,
+  }) {
     const zoroaster = new Zoroaster()
-    const expected = await getCountry()
-    equal(zoroaster.countryOfOrigin, expected)
+    equal(zoroaster.countryOfOrigin, expectedOrigin)
   },
 }
 

@@ -17,8 +17,8 @@ export default class Context {
   /**
    * Returns country of origin.
    */
-  async getCountry() {
-    return 'Iran'
+  get country() {
+    return 'Persia'
   }
   async _destroy() {
     // an async tear-down

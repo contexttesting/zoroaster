@@ -46,7 +46,7 @@ and prosperity.`
     return this.balance == 1000
   }
   get countryOfOrigin() {
-    return 'Iran'
+    return 'Persia'
   }
   get dateOfBirth() {
     return -628
