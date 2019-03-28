@@ -1,4 +1,4 @@
-// catches global error
+// handles global errors and rejections
 import { Readable } from 'stream'
 export default {
   'global error'() {
@@ -9,6 +9,12 @@ export default {
     })
     rs.pipe(process.stdout)
   },
+  async 'global rejection'() {
+    setTimeout(async () => {
+      throw new Error('Promise Error')
+    }, 1)
+    await new Promise(r => setTimeout(r, 100))
+  },
 }
 
 /* stdout */
@@ -16,12 +22,19 @@ export default {
   ✗  global error
   | Error: Global Error
   |     at Readable.read [as _read] (/test/temp/test.js:6:15)
+  ✗  global rejection
+  | Error: Promise Error
+  |     at Timeout.setTimeout [as _onTimeout] (/test/temp/test.js:13:13)
 
 test/temp/test.js > global error
   Error: Global Error
       at Readable.read [as _read] (/test/temp/test.js:6:15)
 
-🦅  Executed 1 test: 1 error.
+test/temp/test.js > global rejection
+  Error: Promise Error
+      at Timeout.setTimeout [as _onTimeout] (/test/temp/test.js:13:13)
+
+🦅  Executed 2 tests: 2 errors.
 /**/
 
 // catches persistent context errors

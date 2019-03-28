@@ -48,6 +48,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   }
   if (!error) {
     process.once('uncaughtException', h)
+    process.once('unhandledRejection', h)
     try {
       res = await runTest({
         context: testContext,
@@ -55,7 +56,10 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
         fn,
         timeout,
       })
-      let { result } = res; ({ error } = res)
+      let { result, error: testError } = res
+      if (!error) {
+        error = testError
+      }
       try {
         await handleSnapshot(result,
           snapshotSource || name,
@@ -65,6 +69,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
       }
     } finally {
       process.removeListener('uncaughtException', h)
+      process.removeListener('unhandledRejection', h)
     }
   }
 
