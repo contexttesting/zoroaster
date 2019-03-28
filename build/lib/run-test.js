@@ -2,7 +2,8 @@ const { EOL } = require('os');
 let reducer = require('@zoroaster/reducer'); const { runTest } = reducer; if (reducer && reducer.__esModule) reducer = reducer.default;
 const { evaluateContext, destroyContexts } = require('@zoroaster/reducer/build/lib');
 let promto = require('promto'); if (promto && promto.__esModule) promto = promto.default;
-const { TICK, CROSS, indent, filterStack, replaceFilename } = require('.');
+const { TICK, CROSS, indent, filterStack, replaceFilename } = require('./');
+const { c: color } = require('erte');
 const handleSnapshot = require('./snapshot');
 const Zoroaster = require('../Zoroaster');
 
@@ -15,7 +16,7 @@ const Zoroaster = require('../Zoroaster');
  * @param {import('../lib/Test').default} test The test.
  * @param {boolean} interactive Whether to allow interactions.
  */
-async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive) {
+async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive, error) {
   if (notify) notify({
     name,
     type: 'test-start',
@@ -42,27 +43,29 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
       return c
     }
   })
-  let res, error; const h = (err) => {
+  let res; const h = (err) => {
     error = err
   }
-  process.once('error', h)
-  try {
-    res = await runTest({
-      context: testContext,
-      persistentContext,
-      fn,
-      timeout,
-    })
-    let { result } = res; ({ error } = res)
+  if (!error) {
+    process.once('uncaughtException', h)
     try {
-      await handleSnapshot(result,
-        snapshotSource || name,
-        path, snapshot, snapshotRoot, interactive, ext)
-    } catch (err) {
-      error = err
+      res = await runTest({
+        context: testContext,
+        persistentContext,
+        fn,
+        timeout,
+      })
+      let { result } = res; ({ error } = res)
+      try {
+        await handleSnapshot(result,
+          snapshotSource || name,
+          path, snapshot, snapshotRoot, interactive, ext)
+      } catch (err) {
+        error = err
+      }
+    } finally {
+      process.removeListener('uncaughtException', h)
     }
-  } finally {
-    process.removeListener('error', h)
   }
 
   if (notify) notify({
@@ -91,25 +94,51 @@ function dumpResult({ error, name }) {
  * @param {string[]} snapshotRoot Parts to ignore in the beginning of snapshot paths.
  */
        async function runTestSuiteAndNotify(
-  notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive,
+  notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive, error,
 ) {
   // const n = getNames(persistentContext)
   // console.log('will run a test suite %s', n)
   notify({ type: 'test-suite-start', name })
   let pc, res
-  if (persistentContext) {
+  if (persistentContext && !error) {
     // console.log('will evaluate %s', n)
-    pc = await evaluatePersistentContext(persistentContext)
-    bindContexts(tests, pc)
+    try {
+      pc = await evaluatePersistentContext(persistentContext)
+      bindContexts(tests, pc)
+    } catch (err) {
+      // maybe make test-suite-error notify event rather than failing each test
+      err.message = `Persistent context failed to evaluate: ${err.message}`
+      /** @type {string[]} */
+      const s = err.stack.split('\n')
+      const i = s.findIndex(st => {
+        return / at evaluateContext.+?@zoroaster\/reducer/.test(st)
+      })
+      if (i != -1) { // wat
+        err.stack = s.slice(0, i).join('\n')
+      }
+      error = err
+    }
   }
   try {
     const newPath = [...path, replaceFilename(name)]
-    res = await runInSequence(notify, newPath, tests, onlyFocused, snapshot, snapshotRoot, interactive)
+    res = await runInSequence(notify, newPath, tests, onlyFocused, snapshot, snapshotRoot, interactive, error)
     notify({ type: 'test-suite-end', name })
   } finally {
     if (pc) {
       // console.log('will destroy %s', n)
-      await destroyPersistentContext(pc)
+      try {
+        await destroyPersistentContext(pc)
+      } catch (err) {
+        /** @type {string[]} */
+        const s = err.stack.split('\n')
+        const i = s.findIndex(st => {
+          return / at contexts\.map.+?@zoroaster\/reducer/.test(st)
+        })
+        if (i != -1) { // wat
+          err.stack = s.slice(0, i).join('\n')
+        }
+        console.log(color(err.stack, 'red'))
+      }
     }
   }
   return res
@@ -164,14 +193,14 @@ const getNames = persistentContext => {
  * @param {boolean} [onlyFocused=false] Run only focused tests.
  * @param {string} snapshot The path to the snapshot file.
  */
-       async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot, interactive) {
+       async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot, interactive, error) {
   const res = await reducer(tests, {
     onlyFocused,
     runTest(test) {
-      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test, interactive)
+      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test, interactive, error)
     },
     runTestSuite(testSuite, hasFocused) {
-      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false, interactive)
+      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false, interactive, error)
     },
   })
   return res
