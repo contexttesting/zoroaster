@@ -48,6 +48,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
   }
   if (!error) {
     process.once('uncaughtException', h)
+    process.once('unhandledRejection', h)
     try {
       res = await runTest({
         context: testContext,
@@ -55,7 +56,10 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
         fn,
         timeout,
       })
-      let { result } = res; ({ error } = res)
+      let { result, error: testError } = res
+      if (!error) {
+        error = testError
+      }
       try {
         await handleSnapshot(result,
           snapshotSource || name,
@@ -65,6 +69,7 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
       }
     } finally {
       process.removeListener('uncaughtException', h)
+      process.removeListener('unhandledRejection', h)
     }
   }
 
@@ -111,7 +116,7 @@ function dumpResult({ error, name }) {
       /** @type {string[]} */
       const s = err.stack.split('\n')
       const i = s.findIndex(st => {
-        return / at evaluateContext.+?@zoroaster\/reducer/.test(st)
+        return / at evaluateContext.+?@zoroaster/.test(st)
       })
       if (i != -1) { // wat
         err.stack = s.slice(0, i).join('\n')
@@ -132,7 +137,7 @@ function dumpResult({ error, name }) {
         /** @type {string[]} */
         const s = err.stack.split('\n')
         const i = s.findIndex(st => {
-          return / at contexts\.map.+?@zoroaster\/reducer/.test(st)
+          return / at contexts\.map.+?@zoroaster/.test(st)
         })
         if (i != -1) { // wat
           err.stack = s.slice(0, i).join('\n')

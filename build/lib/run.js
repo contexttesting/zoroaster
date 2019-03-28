@@ -1,6 +1,8 @@
 const { watchFile, unwatchFile } = require('fs');
 let Catchment = require('catchment'); if (Catchment && Catchment.__esModule) Catchment = Catchment.default;
 const { EOL } = require('os');
+const { resolve } = require('path');
+const { c } = require('erte');
 const {
   createErrorTransformStream,
   createProgressTransformStream,
@@ -12,7 +14,9 @@ const { runInSequence } = require('./run-test');
 function watchFiles(files, callback) {
   files.forEach((file) => {
     // console.log(`Watching ${file} for changes...`)
-    watchFile(file, callback)
+    watchFile(file, (...args) => {
+      callback(file, ...args)
+    })
   })
 }
 function unwatchFiles(files) {
@@ -92,11 +96,19 @@ function unwatchFiles(files) {
     const newCurrentlyWatching = Object.keys(require.cache).filter((c) => {
       return !c.startsWith(`${process.cwd()}/node_modules/`)
     })
-    watchFiles(newCurrentlyWatching, async () => {
+    watchFiles(newCurrentlyWatching, async (file, stats) => {
+      const pp = paths.filter((p) => {
+        const P = resolve(p)
+        if (P == file && !stats.mtime.getTime()) {
+          console.warn('Test suite file %s was deleted.', c(p, 'yellow'))
+          return false
+        }
+        return true
+      })
       clearRequireCache()
       // we can also re-run only changed test suites
       await run({
-        paths,
+        paths: pp,
         watch,
         timeout,
         snapshot,
