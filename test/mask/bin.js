@@ -11,14 +11,7 @@ export default makeTestSuite('test/result/bin', {
     module: BIN,
     preprocess: {
       stdout: getSnapshot,
-      stderr(stderr) {
-        if (stderr.startsWith('Reverting JS')) {
-          const [,,,...rest] = stderr.split('\n')
-          const se = rest.join('\n')
-          return se
-        }
-        return stderr
-      },
+      stderr: Context.preprocessStderr,
     },
   },
 })

@@ -208,6 +208,14 @@ const C = {
   /** Run a test from a test suite. */
   runTest,
   BIN: ZOROASTER,
+  preprocessStderr(stderr) {
+    if (stderr.startsWith('Reverting JS')) {
+      const [,,,...rest] = stderr.split('\n')
+      const se = rest.join('\n')
+      return se
+    }
+    return stderr
+  },
 }
 
 /**

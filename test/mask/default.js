@@ -28,3 +28,38 @@ export const errors = makeTestSuite('test/result/errors', {
     },
   },
 })
+
+export const watch = makeTestSuite('test/result/watch', {
+  context: TempContext,
+  fork: {
+    module: BIN,
+    /**
+     * @param {Array<string>}
+     * @param {TempContext}
+     */
+    async getArgs(args, { write }) {
+      const path = await write('test.js', this.input)
+      const support = await write('support.js', this.support)
+      return [path, support, '-a', '-w']
+    },
+    /**
+     * @param {TempContext}
+     */
+    getOptions({ resolve }) {
+      return {
+        env: {
+          TEST_SUITE_PATH: resolve('test.js'),
+        },
+      }
+    },
+    inputs: [
+      [/Delete/, 'y'],
+      [/Exit/, 'n'],
+      [/Exit/, 'y'],
+    ],
+    preprocess: {
+      stdout: getSnapshot,
+      stderr: Context.preprocessStderr,
+    },
+  },
+})
