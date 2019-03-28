@@ -2,7 +2,8 @@ import { EOL } from 'os'
 import reducer, { runTest } from '@zoroaster/reducer'
 import { evaluateContext, destroyContexts } from '@zoroaster/reducer/build/lib'
 import promto from 'promto'
-import { TICK, CROSS, indent, filterStack, replaceFilename } from '.'
+import { TICK, CROSS, indent, filterStack, replaceFilename } from './'
+import { c as color } from 'erte'
 import handleSnapshot from './snapshot'
 import Zoroaster from '../Zoroaster'
 
@@ -125,7 +126,19 @@ export async function runTestSuiteAndNotify(
   } finally {
     if (pc) {
       // console.log('will destroy %s', n)
-      await destroyPersistentContext(pc)
+      try {
+        await destroyPersistentContext(pc)
+      } catch (err) {
+        /** @type {string[]} */
+        const s = err.stack.split('\n')
+        const i = s.findIndex(st => {
+          return / at contexts\.map.+?@zoroaster\/reducer/.test(st)
+        })
+        if (i != -1) { // wat
+          err.stack = s.slice(0, i).join('\n')
+        }
+        console.log(color(err.stack, 'red'))
+      }
     }
   }
   return res
