@@ -15,7 +15,7 @@ import Zoroaster from '../Zoroaster'
  * @param {import('../lib/Test').default} test The test.
  * @param {boolean} interactive Whether to allow interactions.
  */
-async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive) {
+async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive, error) {
   if (notify) notify({
     name,
     type: 'test-start',
@@ -42,19 +42,29 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
       return c
     }
   })
-  const res = await runTest({
-    context: testContext,
-    persistentContext,
-    fn,
-    timeout,
-  })
-  let { error, result } = res
-  try {
-    await handleSnapshot(result,
-      snapshotSource || name,
-      path, snapshot, snapshotRoot, interactive, ext)
-  } catch (err) {
+  let res; const h = (err) => {
     error = err
+  }
+  if (!error) {
+    process.once('uncaughtException', h)
+    try {
+      res = await runTest({
+        context: testContext,
+        persistentContext,
+        fn,
+        timeout,
+      })
+      let { result } = res; ({ error } = res)
+      try {
+        await handleSnapshot(result,
+          snapshotSource || name,
+          path, snapshot, snapshotRoot, interactive, ext)
+      } catch (err) {
+        error = err
+      }
+    } finally {
+      process.removeListener('uncaughtException', h)
+    }
   }
 
   if (notify) notify({
@@ -83,20 +93,34 @@ function dumpResult({ error, name }) {
  * @param {string[]} snapshotRoot Parts to ignore in the beginning of snapshot paths.
  */
 export async function runTestSuiteAndNotify(
-  notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive,
+  notify, path, snapshot, snapshotRoot, { name, tests, persistentContext }, onlyFocused, interactive, error,
 ) {
   // const n = getNames(persistentContext)
   // console.log('will run a test suite %s', n)
   notify({ type: 'test-suite-start', name })
   let pc, res
-  if (persistentContext) {
+  if (persistentContext && !error) {
     // console.log('will evaluate %s', n)
-    pc = await evaluatePersistentContext(persistentContext)
-    bindContexts(tests, pc)
+    try {
+      pc = await evaluatePersistentContext(persistentContext)
+      bindContexts(tests, pc)
+    } catch (err) {
+      // maybe make test-suite-error notify event rather than failing each test
+      err.message = `Persistent context failed to evaluate: ${err.message}`
+      /** @type {string[]} */
+      const s = err.stack.split('\n')
+      const i = s.findIndex(st => {
+        return / at evaluateContext.+?@zoroaster\/reducer/.test(st)
+      })
+      if (i != -1) { // wat
+        err.stack = s.slice(0, i).join('\n')
+      }
+      error = err
+    }
   }
   try {
     const newPath = [...path, replaceFilename(name)]
-    res = await runInSequence(notify, newPath, tests, onlyFocused, snapshot, snapshotRoot, interactive)
+    res = await runInSequence(notify, newPath, tests, onlyFocused, snapshot, snapshotRoot, interactive, error)
     notify({ type: 'test-suite-end', name })
   } finally {
     if (pc) {
@@ -156,14 +180,14 @@ const getNames = persistentContext => {
  * @param {boolean} [onlyFocused=false] Run only focused tests.
  * @param {string} snapshot The path to the snapshot file.
  */
-export async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot, interactive) {
+export async function runInSequence(notify = () => {}, path, tests, onlyFocused, snapshot, snapshotRoot, interactive, error) {
   const res = await reducer(tests, {
     onlyFocused,
     runTest(test) {
-      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test, interactive)
+      return runTestAndNotify(notify, path, snapshot, snapshotRoot, test, interactive, error)
     },
     runTestSuite(testSuite, hasFocused) {
-      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false, interactive)
+      return runTestSuiteAndNotify(notify, path, snapshot, snapshotRoot, testSuite, onlyFocused ? hasFocused : false, interactive, error)
     },
   })
   return res

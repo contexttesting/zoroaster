@@ -42,19 +42,27 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
       return c
     }
   })
-  const res = await runTest({
-    context: testContext,
-    persistentContext,
-    fn,
-    timeout,
-  })
-  let { error, result } = res
-  try {
-    await handleSnapshot(result,
-      snapshotSource || name,
-      path, snapshot, snapshotRoot, interactive, ext)
-  } catch (err) {
+  let res, error; const h = (err) => {
     error = err
+  }
+  process.once('error', h)
+  try {
+    res = await runTest({
+      context: testContext,
+      persistentContext,
+      fn,
+      timeout,
+    })
+    let { result } = res; ({ error } = res)
+    try {
+      await handleSnapshot(result,
+        snapshotSource || name,
+        path, snapshot, snapshotRoot, interactive, ext)
+    } catch (err) {
+      error = err
+    }
+  } finally {
+    process.removeListener('error', h)
   }
 
   if (notify) notify({
