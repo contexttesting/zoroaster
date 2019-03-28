@@ -59,7 +59,11 @@ export const watch = makeTestSuite('test/result/watch', {
     ],
     preprocess: {
       stdout: getSnapshot,
-      stderr: Context.preprocessStderr,
+      stderr(stderr) {
+        let s = Context.preprocessStderr(stderr)
+        s = Context.getSnapshot(s)
+        return s
+      },
     },
   },
 })

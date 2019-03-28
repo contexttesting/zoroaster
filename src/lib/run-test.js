@@ -116,7 +116,7 @@ export async function runTestSuiteAndNotify(
       /** @type {string[]} */
       const s = err.stack.split('\n')
       const i = s.findIndex(st => {
-        return / at evaluateContext.+?@zoroaster\/reducer/.test(st)
+        return / at evaluateContext.+?@zoroaster/.test(st)
       })
       if (i != -1) { // wat
         err.stack = s.slice(0, i).join('\n')
@@ -137,7 +137,7 @@ export async function runTestSuiteAndNotify(
         /** @type {string[]} */
         const s = err.stack.split('\n')
         const i = s.findIndex(st => {
-          return / at contexts\.map.+?@zoroaster\/reducer/.test(st)
+          return / at contexts\.map.+?@zoroaster/.test(st)
         })
         if (i != -1) { // wat
           err.stack = s.slice(0, i).join('\n')
