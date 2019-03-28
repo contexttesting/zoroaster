@@ -14,11 +14,12 @@ const PATH = 'CHANGELOG.md'
   const d = new Date()
   const m = d.toLocaleString('en-GB', { month: 'long' })
   const dd = `${d.getDate()} ${m} ${d.getFullYear()}`
-  const t = `## ${dd}
+  const heading = `## ${dd}`
+  const t = `${heading}
 
 ### [${next}](${git}/compare/v${version}...v${next})
 
-${current}`
+${current.startsWith(heading) ? current.replace(`${heading}\n\n`, '') : current}`
   await write(PATH, t)
 })()
 
