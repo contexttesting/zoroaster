@@ -51,6 +51,22 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Doc",
+      "program": "${workspaceFolder}/node_modules/.bin/doc",
+      "env": {
+        "NODE_DEBUG": "doc",
+      },
+      "args": [
+        "documentary",
+      ],
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Zoroaster Build",
       "program": "${workspaceFolder}/build/bin/index.js",
       "args": [

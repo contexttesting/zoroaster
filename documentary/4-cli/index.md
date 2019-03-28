@@ -34,6 +34,6 @@ _And the test suites exported in the way shown below:_
 
 _The reporter will produce the following output:_
 
-%!FORK-fs src/bin/zoroaster example/reporting -a%
+%FORK-fs src/bin/zoroaster example/reporting -a%
 
 %~ width="15"%
