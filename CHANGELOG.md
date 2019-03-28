@@ -1,3 +1,9 @@
+## 28 March 2019
+
+### [3.11.2](https://github.com/contexttesting/zoroaster/compare/v3.11.1...v3.11.2)
+
+- [fix] Catch global errors, errors in persistent context evaluation and notify of errors in persistent context destroy.
+
 ## 27 March 2019
 
 ### [3.11.1](https://github.com/contexttesting/zoroaster/compare/v3.11.0...v3.11.1)
