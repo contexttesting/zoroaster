@@ -1,3 +1,9 @@
+## 3 April 2019
+
+### [3.11.3](https://github.com/contexttesting/zoroaster/compare/v3.11.2...v3.11.3)
+
+- [deps] Update deps.
+
 ## 28 March 2019
 
 ### [3.11.2](https://github.com/contexttesting/zoroaster/compare/v3.11.1...v3.11.2)
