@@ -1,3 +1,10 @@
+## 11 April 2019
+
+### [3.11.5](https://github.com/contexttesting/zoroaster/compare/v3.11.4...v3.11.5)
+
+- [feature] Implement `propsStartRe` and `propEndRe` in masks.
+- [deps] Update deps (remove old `wrote` from _SnapshotContext_).
+
 ## 3 April 2019
 
 ### [3.11.4](https://github.com/contexttesting/zoroaster/compare/v3.11.3...v3.11.4)
