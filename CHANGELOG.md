@@ -1,3 +1,9 @@
+## 18 April 2019
+
+### [3.11.6](https://github.com/contexttesting/zoroaster/compare/v3.11.5...v3.11.6)
+
+- [feature] Add `preamble` in masks.
+
 ## 11 April 2019
 
 ### [3.11.5](https://github.com/contexttesting/zoroaster/compare/v3.11.4...v3.11.5)
