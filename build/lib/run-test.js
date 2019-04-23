@@ -15,6 +15,7 @@ const Zoroaster = require('../Zoroaster');
  * @param {Array<string>} snapshotRoot
  * @param {import('../lib/Test').default} test The test.
  * @param {boolean} interactive Whether to allow interactions.
+ * @param {Error} error A test suite error that is set on each test.
  */
 async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, context, fn, timeout, persistentContext }, interactive, error) {
   if (notify) notify({
@@ -57,15 +58,24 @@ async function runTestAndNotify(notify, path, snapshot, snapshotRoot, { name, co
         timeout,
       })
       let { result, error: testError } = res
-      if (!error) {
-        error = testError
-      }
+      // if wasn't an unhandled one
+      if (!error) error = testError
       try {
         await handleSnapshot(result,
           snapshotSource || name,
           path, snapshot, snapshotRoot, interactive, ext)
       } catch (err) {
         error = err
+      }
+      // used in masks to update the result file
+      if (interactive && testError && testError.handleUpdate) {
+        try {
+          const updated = await testError.handleUpdate()
+          if (updated) error = null
+        } catch (err) {
+          // in case there's an error in the handle logic
+          error = err
+        }
       }
     } finally {
       process.removeListener('uncaughtException', h)
