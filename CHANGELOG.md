@@ -1,3 +1,9 @@
+## 23 April 2019
+
+### [3.12.0](https://github.com/contexttesting/zoroaster/compare/v3.11.6...v3.12.0)
+
+- [feature] Update masks' results in interactive mode.
+
 ## 18 April 2019
 
 ### [3.11.6](https://github.com/contexttesting/zoroaster/compare/v3.11.5...v3.11.6)

@@ -11,7 +11,7 @@
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "test-all": "yarn-s test test-build",
     "b": "alamode src -o build -i bin/index.js -s",
-    "doc": "NODE_DEBUG=doc doc documentary -o README.md",
+    "doc": "NODE_DEBUG=doc doc -o README.md",
     "build": "yarn-s d b doc",
     "d1": "NODE_DEBUG=doc doc src/lib/make-test-suite.js -g",
     "d": "yarn-s d1",
