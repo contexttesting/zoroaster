@@ -1,3 +1,9 @@
+## 24 April 2019
+
+### [3.13.0](https://github.com/contexttesting/zoroaster/compare/v3.12.0...v3.13.0)
+
+- [deps] Install _ÀLaMode@v2_; use _Argufy_ to create arguments list.
+
 ## 23 April 2019
 
 ### [3.12.0](https://github.com/contexttesting/zoroaster/compare/v3.11.6...v3.12.0)

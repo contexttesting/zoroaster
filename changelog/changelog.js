@@ -1,4 +1,5 @@
-import { write, read } from '@wrote/wrote'
+import write from '@wrote/write'
+import read from '@wrote/read'
 import { askSingle } from 'reloquent'
 
 const PATH = 'CHANGELOG.md'
