@@ -17,6 +17,7 @@
     "d": "yarn-s d1",
     "dev": "node src/bin",
     "lint": "eslint .",
+    "args": "argufy -o src/bin/get-args.js",
     "example/simple.js": "node src/bin example/simple.js -b",
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
   },

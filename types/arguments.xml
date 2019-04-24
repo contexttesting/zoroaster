@@ -1,0 +1,34 @@
+<arguments>
+  <arg command multiple name="tests">
+    The location of the test suite directory or file.
+  </arg>
+  <arg boolean name="alamode" short="a">
+    Enable import/export transpilation with ÀLaMode.
+  </arg>
+  <arg boolean name="babel" short="b">
+    Require `@babel/register` (needs to be installed).
+  </arg>
+  <arg boolean name="watch" short="w">
+    Start the runner in _watch_ mode (rerun on changes).
+  </arg>
+  <arg number name="timeout" short="t" default="2000">
+    Timeout for tests in ms.
+  </arg>
+  <arg name="snapshot" short="s" default="test/snapshot">
+    The location of the snapshot dir.
+  </arg>
+  <arg name="snapshotRoot" short="r"
+    default="test/spec,test/mask">
+    The list of folders that will be roots in the snapshot dir.
+  </arg>
+  <arg boolean name="interactive" short="i" >
+    Run in interactive mode, allowing to update snapshots
+    and mask results when they don't match currently expected.
+  </arg>
+  <arg boolean name="version" short="v">
+    Show the current version.
+  </arg>
+  <arg boolean name="help" short="h">
+    Display help information.
+  </arg>
+</arguments>
