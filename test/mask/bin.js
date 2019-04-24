@@ -1,7 +1,6 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 import { join } from 'path'
-import { ensurePath } from '@wrote/wrote'
 import Context from '../context'
 
 const { BIN, getSnapshot } = Context
@@ -65,7 +64,6 @@ export const updateSnapshot = makeTestSuite('test/result/update-snapshot', {
      */
     async getArgs(args, { TEMP, write }) {
       const p = `snapshot/snapshot-ts-update/updates-current-snapshot-and-passes.${this.existingType}`
-      await ensurePath(join(TEMP, p))
       await write(p, this.existingData)
       await write(`snapshot/snapshot-ts-update/does-not-update-current-snapshot-and-fails.${this.existingType}`, this.existingData)
       return [...args, '-s', join(TEMP, 'snapshot')]
