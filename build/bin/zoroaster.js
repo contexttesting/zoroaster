@@ -1,46 +1,22 @@
 #!/usr/bin/env node
 let cleanStack = require('@artdeco/clean-stack'); if (cleanStack && cleanStack.__esModule) cleanStack = cleanStack.default;
-let argufy = require('argufy'); if (argufy && argufy.__esModule) argufy = argufy.default;
+const { _version, _help, _alamode, _babel, _tests, _argv, _watch, _timeout, _snapshot, _snapshotRoot, _interactive, argsConfig } = require('./get-args');
+const { reduceUsage } = require('argufy');
 const { resolve } = require('path');
 const run = require('../lib/run');
 const getUsage = require('./usage');
 const { version } = require('../../package.json');
 
-const {
-  babel,
-  alamode,
-  watch: _watch,
-  version: _version,
-  help: _help,
-  paths: _paths = [],
-  timeout: _timeout = 2000,
-  snapshot = 'test/snapshot',
-  snapshotRoot = 'test/spec,test/mask',
-  interactive = false,
-  _argv,
-} = argufy({
-  paths: { command: true, multiple: true },
-  babel: { short: 'b', boolean: true },
-  alamode: { short: 'a', boolean: true },
-  watch: { short: 'w', boolean: true },
-  version: { short: 'v', boolean: true },
-  help: { short: 'h', boolean: true },
-  timeout: { short: 't', number: true },
-  snapshot: { short: 's' },
-  snapshotRoot: { short: 'r' },
-  interactive: { short: 'i', boolean: true },
-})
-
 if (_version) {
   console.log(version)
   process.exit()
 } else if (_help) {
-  const usage = getUsage()
+  const usage = getUsage(reduceUsage(argsConfig))
   console.log(usage)
   process.exit()
 }
 
-if (babel) {
+if (_babel) {
   try {
     require('@babel/register')
   } catch (err) {
@@ -49,22 +25,22 @@ if (babel) {
   }
 }
 
-if (alamode) {
+if (_alamode) {
   require('alamode')()
 }
 
 (async () => {
   try {
     await run({
-      paths: [..._paths, ..._argv],
+      paths: [..._tests || [], ..._argv],
       watch: _watch,
       timeout: _timeout,
-      snapshot,
-      snapshotRoot: snapshotRoot.split(','),
-      interactive,
+      snapshot: _snapshot,
+      snapshotRoot: _snapshotRoot.split(','),
+      interactive: _interactive,
     })
-  } catch ({ stack }) {
-    console.log(cleanStack(stack)) // eslint-disable-line no-console
+  } catch (error) {
+    console.log(cleanStack(error.stack)) // eslint-disable-line no-console
     process.exit(1)
   }
 })()
