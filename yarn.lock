@@ -142,6 +142,11 @@ argufy@^1.5.0:
   resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.5.0.tgz#a2a6a78d86c8676f24f282aca918f1ccab42dac2"
   integrity sha512-7XUzQd2HTFhGu6lvvKsw3CD2bOkbzeMqg82dZJpGSMOCq7vxRRQzgNogM5zpU0zWK7GrvDL1+UfWlanPaiwovg==
 
+argufy@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.6.3.tgz#d1d322730ac898efd6ad176c679e6ea16ddee8fc"
+  integrity sha512-GGEgTFiW/YxUs1V6pTXp4M9QXh4JsOhH6NcpN1HZ7VyPHJfZpGDrDctHoAdZNF/22z5hpJgNYM8otApn/GUuJA==
+
 assert-diff@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/assert-diff/-/assert-diff-2.0.3.tgz#f7a5ab51f8da1bf2dbc9afd3f0b9ea6919808a74"

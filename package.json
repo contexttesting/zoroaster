@@ -63,7 +63,7 @@
     "@zoroaster/mask": "^1.6.0",
     "@zoroaster/reducer": "1.1.0",
     "alamode": "^2.0.0",
-    "argufy": "^1.5.0",
+    "argufy": "^1.6.3",
     "assert-diff": "2.0.3",
     "assert-throws": "3.1.1",
     "catchment": "^3.3.0",
