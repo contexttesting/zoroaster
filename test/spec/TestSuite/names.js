@@ -1,5 +1,4 @@
 import deepEqual from '@zoroaster/deep-equal'
-// import throws from 'assert-throws'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'
 

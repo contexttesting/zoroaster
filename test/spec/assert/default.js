@@ -18,8 +18,8 @@ const T = {
       throw new Error('should have thrown')
     } catch (error) {
       const message = error.message
-      ok(/\+ {2}test: "string"/.test(message))
-      ok(/- {2}test: "string-2"/.test(message))
+      ok(/\+ string/.test(message))
+      ok(/- string-2/.test(message))
     }
   },
   'throws if not true'() {
