@@ -16,10 +16,9 @@ export default makeTestSuite('test/result/bin', {
 })
 
 /**
- * @param {string}
  * @param {TempContext} t
  */
-const getResults = async (_, { snapshot: s }) => {
+const getResults = async ({ snapshot: s }) => {
   try {
     return (await s('snapshot')).replace(/\\/g, '/')
   } catch (err) {
@@ -32,7 +31,7 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
   fork: {
     module: BIN,
     /**
-     * @param {string[]}
+     * @param {string[]} args
      * @param {TempContext} t
      */
     async getArgs(args, { TEMP }) {

@@ -12,8 +12,8 @@ class Context {
 }
 
 export default makeTestSuite('test/fixture/test-suite', {
-  getResults(input) {
-    return input.replace('input', 'output').replace('to', 'of')
+  getResults() {
+    return this.input.replace('input', 'output').replace('to', 'of')
   },
   context: Context,
 })

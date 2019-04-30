@@ -22,7 +22,7 @@ function run(args, options = {}) {
 
 const $assert_throws = require('assert-throws');
 const $assert = require('assert');
-const $assert_diff = require('assert-diff');
+const $zoroaster_deep_equal = require('@zoroaster/deep-equal');
 
        const makeTestSuite = () => {
   throw new Error('Please use @zoroaster/mask for mask testing.')
@@ -36,5 +36,5 @@ module.exports.throws = $assert_throws
 module.exports.assert = $assert
 module.exports.equal = $assert.equal
 module.exports.ok = $assert.ok
-module.exports.deepEqual = $assert_diff.deepEqual
+module.exports.deepEqual = $zoroaster_deep_equal
 module.exports.run = run

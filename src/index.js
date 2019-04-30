@@ -22,7 +22,7 @@ export { run }
 
 export { default as throws } from 'assert-throws'
 export { default as assert, equal, ok } from 'assert'
-export { deepEqual } from 'assert-diff'
+export { default as deepEqual } from '@zoroaster/deep-equal'
 
 export const makeTestSuite = () => {
   throw new Error('Please use @zoroaster/mask for mask testing.')
