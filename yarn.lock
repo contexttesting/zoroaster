@@ -108,10 +108,10 @@
   dependencies:
     differently "^1.0.0"
 
-"@zoroaster/mask@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.0.3.tgz#cfdaf00da3ec99b4232f98fe6ee27ba8ea53eaab"
-  integrity sha512-Fm8obP1jLtl59N6KrqurTWmITHcVAD5XeFVDhyscKsgjn+SDP+50YJ4pF02g0JRJ0kyufZbW6o+frLYjLwpojQ==
+"@zoroaster/mask@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.0.4.tgz#b3f9dc73bd16aa1ed01f94f4ca0d22acc9b68a01"
+  integrity sha512-/+vTebr3pf7+2iSYZg2PClxgyHRxBGI9NH/8vnML0gEJcMWkRMR/K7mXIqVd6NT+Ew+PXxuOt4V8iJSSU1JQEg==
 
 "@zoroaster/reducer@1.1.0":
   version "1.1.0"
@@ -172,10 +172,10 @@ differently@^1.0.0:
   dependencies:
     erte "^1.2.0"
 
-documentary@^1.26.4:
-  version "1.26.4"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.26.4.tgz#8d8aeb678f8a66095789390b59738465b8cf41e0"
-  integrity sha512-8tILDxRGrijco8ZSnoy1xliN2HW4ICmTRMFxFwCxqkeNsnw2psrWD/KgqnwSfQyCSMoJHa99Trd5cfnMzOaAPw==
+documentary@^1.26.5:
+  version "1.26.5"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.26.5.tgz#21ba2f56b96384daa98ca6351cab8e6112e5a6f9"
+  integrity sha512-spZJ6XiXMXu+kq881xQjJs2K4U+QmXXiOmRoIAvMrJFqBfdVx/vRAIQDTzm+6VLyGOv+H0+2pAgLZl8SlZdXlg==
   dependencies:
     "@depack/cache" "^1.0.0"
     "@depack/render" "^1.1.4"
@@ -197,7 +197,7 @@ documentary@^1.26.4:
     rexml "^1.4.0"
     spawncommand "^2.2.0"
     static-analysis "^1.7.1"
-    typal "^1.9.2"
+    typal "^1.11.0"
     usually "^1.2.0"
     which-stream "^1.1.0"
 
@@ -355,10 +355,10 @@ temp-context@^2.1.3:
     makepromise "^3.0.3"
     pedantry "^2.3.1"
 
-typal@^1.9.2:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/typal/-/typal-1.10.0.tgz#b97370f4a89bc7379ecec73b25c893a140022ba9"
-  integrity sha512-p05oREvULStsDKo3yuPjqRE/7PRebuKZsJlTWrixR1SPVn1iFGF+LNmBOnDbiZYOgwrg2fnZaqpF1SwZC23qCw==
+typal@^1.11.0:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/typal/-/typal-1.11.1.tgz#61dcd08592c7eaed3b1a80181d9793190366f6d9"
+  integrity sha512-WcqpvsfoFe7j/56k+5/nTo9EvdBguhjLHZEobDylIlByEXMfCmWrLVpGxwt5xrUAj/H9oJoDOL/v39GFVWySvA==
   dependencies:
     "@typedefs/parser" "^1.3.0"
     mismatch "^1.2.0"
