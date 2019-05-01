@@ -93,7 +93,7 @@ default:"test/snapshot", short:"s"}, snapshotRoot:{description:"The list of fold
   }, {c:b});
 }(y), fa = z.tests, ha = z.alamode, ia = z.babel, ja = z.watch, ka = z.timeout || 2000, la = z.snapshot || "test/snapshot", ma = z.snapshotRoot || "test/spec,test/mask", na = z.interactive, oa = z.version, pa = z.help, qa = z.c;
 const {dirname:A, join:B, relative:ra, resolve:C} = path;
-const {createReadStream:sa, createWriteStream:ta, lstat:D, mkdir:ua, readdir:F, rmdir:va, unlink:xa, unwatchFile:ya, watchFile:za} = fs;
+const {createReadStream:sa, createWriteStream:ta, lstat:D, mkdir:ua, readdir:E, rmdir:wa, unlink:xa, unwatchFile:ya, watchFile:za} = fs;
 var Aa = stream;
 const {Transform:G, Writable:Ba} = stream;
 const H = (a, b = 0, c = !1) => {
@@ -102,37 +102,37 @@ const H = (a, b = 0, c = !1) => {
   }
   a = a.split("\n", c ? b + 1 : void 0);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, Ca = (a, b = !1) => H(a, 2 + (b ? 1 : 0)), Da = a => {
+}, Ca = (a, b = !1) => H(a, 2 + (b ? 1 : 0)), I = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
-function Ea(a, b, c = !1) {
+function Da(a, b, c = !1) {
   return function(d) {
-    var e = Da(arguments), {stack:h} = Error();
+    var e = I(arguments), {stack:h} = Error();
     const f = H(h, 2, !0), g = (h = d instanceof Error) ? d.message : d;
     e = [`Error: ${g}`, ...null !== e && a === e || c ? [b] : [f, b]].join("\n");
     e = w(e);
     return Object.assign(h ? d : Error(), {message:g, stack:e});
   };
 }
-;function I(a) {
+;function J(a) {
   var {stack:b} = Error();
-  const c = Da(arguments);
+  const c = I(arguments);
   b = Ca(b, a);
-  return Ea(c, b, a);
+  return Da(c, b, a);
 }
-;const Fa = (a, b) => {
+;const Ea = (a, b) => {
   b.once("error", c => {
     a.emit("error", c);
   });
   return b;
 };
-class Ga extends Ba {
+class Fa extends Ba {
   constructor(a) {
     var b = a || {}, c = Object.assign({}, b);
     const d = void 0 === b.binary ? !1 : b.binary, e = void 0 === b.rs ? null : b.rs;
     b = (delete c.binary, delete c.rs, c);
-    const {F:h = I(!0), proxyError:f} = a || {}, g = (k, m) => h(m);
+    const {F:h = J(!0), proxyError:f} = a || {}, g = (k, m) => h(m);
     super(b);
     this.a = [];
     this.D = new Promise((k, m) => {
@@ -152,20 +152,20 @@ class Ga extends Ba {
         }
         m(l);
       });
-      e && Fa(this, e).pipe(this);
+      e && Ea(this, e).pipe(this);
     });
   }
   _write(a, b, c) {
     this.a.push(a);
     c();
   }
-  get i() {
+  get l() {
     return this.D;
   }
 }
-const Ha = async a => {
+const Ga = async a => {
   var b = void 0 === b ? {} : b;
-  ({i:a} = new Ga(Object.assign({}, {rs:a}, b, {F:I(!0)})));
+  ({l:a} = new Fa(Object.assign({}, {rs:a}, b, {F:J(!0)})));
   return await a;
 };
 /*
@@ -173,11 +173,11 @@ const Ha = async a => {
  BSD License
  Copyright (c) 2009-2015, Kevin Decker <kpdecker@gmail.com>
 */
-function Ia(a, b, c) {
+function Ha(a, b, c) {
   let d = a[a.length - 1];
-  d && d.f === b && d.l === c ? a[a.length - 1] = {count:d.count + 1, f:b, l:c} : a.push({count:1, f:b, l:c});
+  d && d.f === b && d.j === c ? a[a.length - 1] = {count:d.count + 1, f:b, j:c} : a.push({count:1, f:b, j:c});
 }
-function Ja(a, b, c, d, e) {
+function Ia(a, b, c, d, e) {
   let h = c.length, f = d.length, g = b.b;
   e = g - e;
   let k = 0;
@@ -188,19 +188,19 @@ function Ja(a, b, c, d, e) {
   b.b = g;
   return e;
 }
-function Ka(a) {
+function Ja(a) {
   let b = [];
   for (let c = 0; c < a.length; c++) {
     a[c] && b.push(a[c]);
   }
   return b;
 }
-function La(a, b) {
-  var c = new Ma;
-  a = Ka(a.split(""));
-  b = Ka(b.split(""));
+function Ka(a, b) {
+  var c = new La;
+  a = Ja(a.split(""));
+  b = Ja(b.split(""));
   let d = b.length, e = a.length, h = 1, f = d + e, g = [{b:-1, g:[]}];
-  var k = Ja(c, g[0], b, a, 0);
+  var k = Ia(c, g[0], b, a, 0);
   if (g[0].b + 1 >= d && k + 1 >= e) {
     return [{value:c.join(b), count:b.length}];
   }
@@ -214,10 +214,10 @@ function La(a, b) {
         let q = m && m.b + 1 < d;
         l = n && 0 <= l && l < e;
         if (q || l) {
-          !q || l && m.b < n.b ? (m = {b:n.b, g:n.g.slice(0)}, Ia(m.g, void 0, !0)) : (m.b++, Ia(m.g, !0, void 0));
-          l = Ja(c, m, b, a, k);
+          !q || l && m.b < n.b ? (m = {b:n.b, g:n.g.slice(0)}, Ha(m.g, void 0, !0)) : (m.b++, Ha(m.g, !0, void 0));
+          l = Ia(c, m, b, a, k);
           if (m.b + 1 >= d && l + 1 >= e) {
-            k = Na(c, m.g, b, a);
+            k = Ma(c, m.g, b, a);
             break a;
           }
           g[k] = m;
@@ -233,7 +233,7 @@ function La(a, b) {
     }
   }
 }
-class Ma {
+class La {
   equals(a, b) {
     return a === b;
   }
@@ -241,11 +241,11 @@ class Ma {
     return a.join("");
   }
 }
-function Na(a, b, c, d) {
+function Ma(a, b, c, d) {
   let e = 0, h = b.length, f = 0, g = 0;
   for (; e < h; e++) {
     var k = b[e];
-    if (k.l) {
+    if (k.j) {
       k.value = a.join(d.slice(g, g + k.count)), g += k.count, e && b[e - 1].f && (k = b[e - 1], b[e - 1] = b[e], b[e] = k);
     } else {
       if (k.f) {
@@ -263,26 +263,26 @@ function Na(a, b, c, d) {
     }
   }
   c = b[h - 1];
-  1 < h && "string" === typeof c.value && (c.f || c.l) && a.equals("", c.value) && (b[h - 2].value += c.value, b.pop());
+  1 < h && "string" === typeof c.value && (c.f || c.j) && a.equals("", c.value) && (b[h - 2].value += c.value, b.pop());
   return b;
 }
-;const Oa = {black:30, red:31, green:32, yellow:33, blue:34, magenta:35, cyan:36, white:37, grey:90}, Pa = {black:40, red:41, green:42, yellow:43, blue:44, magenta:45, cyan:46, white:47};
-function J(a, b) {
+;const Na = {black:30, red:31, green:32, yellow:33, blue:34, magenta:35, cyan:36, white:37, grey:90}, Oa = {black:40, red:41, green:42, yellow:43, blue:44, magenta:45, cyan:46, white:47};
+function K(a, b) {
+  return (b = Na[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
+}
+function L(a, b) {
   return (b = Oa[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
 }
-function K(a, b) {
-  return (b = Pa[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
-}
-function Qa(a, b) {
-  return La(a, b).map(({f:c, l:d, value:e}) => {
+function Pa(a, b) {
+  return Ka(a, b).map(({f:c, j:d, value:e}) => {
     const h = e.split(" ");
-    return c ? h.map(f => f.replace(/\n$/mg, "\u23ce\n")).map(f => J(f, "green")).join(K(" ", "green")) : d ? h.map(f => f.replace(/\n$/mg, "\u23ce\n")).map(f => J(f, "red")).join(K(" ", "red")) : J(e, "grey");
+    return c ? h.map(f => f.replace(/\n$/mg, "\u23ce\n")).map(f => K(f, "green")).join(L(" ", "green")) : d ? h.map(f => f.replace(/\n$/mg, "\u23ce\n")).map(f => K(f, "red")).join(L(" ", "red")) : K(e, "grey");
   }).join("");
 }
-;function L(a, b) {
+;function M(a, b) {
   return a.replace(/^(?!\s*$)/mg, b);
 }
-function Ra({error:a, name:b}) {
+function Qa({error:a, name:b}) {
   if (!a) {
     throw Error("cannot filter stack when a test does not have an error");
   }
@@ -292,8 +292,8 @@ function Ra({error:a, name:b}) {
   c = c.slice(0, b).join("\n");
   return (c ? c : w(a.stack)).replace(/\n/g, t);
 }
-const Sa = " " + J("\u2713", "green") + " ", Ta = " " + J("\u2717", "red") + " ";
-function Ua() {
+const Ra = " " + K("\u2713", "green") + " ", Sa = " " + K("\u2717", "red") + " ";
+function Ta() {
   const a = [];
   return new G({objectMode:!0, transform(b, c, d) {
     var e = Object.assign({}, b);
@@ -306,14 +306,14 @@ function Ua() {
     d();
   }});
 }
-function Va() {
+function Ua() {
   return new G({objectMode:!0, transform(a, b, c) {
     var {type:d, name:e, stack:h, result:f} = a;
-    "test-suite-start" == d && "default" != e ? (this.push(L(e, Array.from({length:2 * h.length}).join(" "))), this.push(t)) : "test-end" == d && (this.push(L(f, Array.from({length:2 * h.length}).join(" "))), this.push(t));
+    "test-suite-start" == d && "default" != e ? (this.push(M(e, Array.from({length:2 * h.length}).join(" "))), this.push(t)) : "test-end" == d && (this.push(M(f, Array.from({length:2 * h.length}).join(" "))), this.push(t));
     c();
   }});
 }
-function Wa() {
+function Va() {
   return new G({objectMode:!0, transform(a, b, c) {
     var {error:d, stack:e, name:h} = a;
     if (!d) {
@@ -324,19 +324,19 @@ function Wa() {
     this.push(` > ${h}`);
     this.push("\u001b[0m");
     this.push(t);
-    this.push(L(Ra({error:d, name:h}), "  "));
+    this.push(M(Qa({error:d, name:h}), "  "));
     this.push(t);
     this.push(t);
     c();
   }});
 }
-;function Xa(a, b) {
+;function Wa(a, b) {
   if (b > a - 2) {
     throw Error("Function does not accept that many arguments.");
   }
 }
-async function M(a, b, c) {
-  const d = I(!0);
+async function N(a, b, c) {
+  const d = J(!0);
   if ("function" !== typeof a) {
     throw Error("Function must be passed.");
   }
@@ -348,26 +348,26 @@ async function M(a, b, c) {
     const g = (m, l) => m ? (m = d(m), f(m)) : h(c || l);
     let k = [g];
     Array.isArray(b) ? (b.forEach((m, l) => {
-      Xa(e, l);
-    }), k = [...b, g]) : 1 < Array.from(arguments).length && (Xa(e, 0), k = [b, g]);
+      Wa(e, l);
+    }), k = [...b, g]) : 1 < Array.from(arguments).length && (Wa(e, 0), k = [b, g]);
     a(...k);
   });
 }
-;function Ya(a, b, c) {
+;function Xa(a, b, c) {
   return setTimeout(() => {
     const d = Error(`${a ? a : "Promise"} has timed out after ${b}ms`);
     d.stack = `Error: ${d.message}`;
     c(d);
   }, b);
 }
-function Za(a, b) {
+function Ya(a, b) {
   let c;
   const d = new Promise((e, h) => {
-    c = Ya(a, b, h);
+    c = Xa(a, b, h);
   });
-  return {timeout:c, i:d};
+  return {timeout:c, l:d};
 }
-async function N(a, b, c) {
+async function O(a, b, c) {
   if (!(a instanceof Promise)) {
     throw Error("Promise expected");
   }
@@ -377,18 +377,18 @@ async function N(a, b, c) {
   if (0 > b) {
     throw Error("Timeout cannot be negative");
   }
-  const {i:d, timeout:e} = Za(c, b);
+  const {l:d, timeout:e} = Ya(c, b);
   try {
     return await Promise.race([a, d]);
   } finally {
     clearTimeout(e);
   }
 }
-;async function $a(a = []) {
-  a = (Array.isArray(a) ? a : [a]).map(ab);
+;async function Za(a = []) {
+  a = (Array.isArray(a) ? a : [a]).map($a);
   return await Promise.all(a);
 }
-const ab = async a => {
+const $a = async a => {
   if ("function" != (typeof a).toLowerCase()) {
     return a;
   }
@@ -406,7 +406,7 @@ const ab = async a => {
       return "then" == d ? c : "function" == typeof c[d] ? c[d].bind(c) : c[d];
     }});
   }
-}, O = async a => {
+}, P = async a => {
   a = a.map(async b => {
     if ("function" == (typeof b._destroy).toLowerCase()) {
       return await b._destroy();
@@ -414,32 +414,32 @@ const ab = async a => {
   });
   return await Promise.all(a);
 };
-const cb = async a => {
+const bb = async a => {
   const {context:b, timeout:c = null, fn:d, h:e} = a;
   a = new Date;
   let h = null, f = null, g = null, k = [], m, l;
   try {
-    b && (m = b ? $a(b) : Promise.resolve([]), m.then(() => {
+    b && (m = b ? Za(b) : Promise.resolve([]), m.then(() => {
       l = !0;
-    }), k = await (c ? N(m, c, "Evaluate context") : m));
+    }), k = await (c ? O(m, c, "Evaluate context") : m));
     const n = e ? [...Array.isArray(e) ? e : [e], ...k] : k, q = d(...n);
-    q instanceof Promise ? f = await (c ? N(q, c, "Test") : q) : f = q;
+    q instanceof Promise ? f = await (c ? O(q, c, "Test") : q) : f = q;
   } catch (n) {
     h = n;
   }
   try {
-    const n = O(k);
-    g = await (c ? N(n, c, "Destroy") : n);
+    const n = P(k);
+    g = await (c ? O(n, c, "Destroy") : n);
   } catch (n) {
     h = n;
   }
-  !l && m && bb(m);
+  !l && m && ab(m);
   return {started:a, finished:new Date, error:h, result:f, destroyResult:g};
-}, bb = async a => {
+}, ab = async a => {
   a = await a;
-  await O(a);
+  await P(a);
 };
-const db = async(a, b) => {
+const cb = async(a, b) => {
   const {onlyFocused:c = !1, runTest:d, runTestSuite:e} = b, h = !c;
   return await a.reduce(async(f, g) => {
     const {name:k, isFocused:m, fn:l, hasFocused:n} = g;
@@ -455,46 +455,15 @@ const db = async(a, b) => {
     return f;
   }, {});
 };
-function eb(a, b, c) {
-  return setTimeout(() => {
-    const d = Error(`${a ? a : "Promise"} has timed out after ${b}ms`);
-    d.stack = `Error: ${d.message}`;
-    c(d);
-  }, b);
-}
-function fb(a, b) {
-  let c;
-  const d = new Promise((e, h) => {
-    c = eb(a, b, h);
-  });
-  return {timeout:c, i:d};
-}
-async function P(a, b, c) {
-  if (!(a instanceof Promise)) {
-    throw Error("Promise expected");
-  }
-  if (!b) {
-    throw Error("Timeout must be a number");
-  }
-  if (0 > b) {
-    throw Error("Timeout cannot be negative");
-  }
-  const {i:d, timeout:e} = fb(c, b);
-  try {
-    return await Promise.race([a, d]);
-  } finally {
-    clearTimeout(e);
-  }
-}
-;const {deepStrictEqual:gb, equal:hb} = assert;
-const {createInterface:ib} = readline;
-function jb(a, b) {
+const {deepStrictEqual:db, equal:eb} = assert;
+const {createInterface:fb} = readline;
+function gb(a, b) {
   var c = b = void 0 === b ? {} : b, d = Object.assign({}, c);
   b = c.timeout;
   var e = void 0 === c.password ? !1 : c.password, h = void 0 === c.output ? process.stdout : c.output;
   c = void 0 === c.input ? process.stdin : c.input;
   d = (delete d.timeout, delete d.password, delete d.output, delete d.input, d);
-  h = ib(Object.assign({}, {input:c, output:h}, d));
+  h = fb(Object.assign({}, {input:c, output:h}, d));
   if (e) {
     const f = h.output;
     h._writeToOutput = g => {
@@ -506,18 +475,18 @@ function jb(a, b) {
     };
   }
   e = new Promise(h.question.bind(h, a));
-  b = b ? P(e, b, `reloquent: ${a}`) : e;
-  h.promise = kb(b, h);
+  b = b ? O(e, b, `reloquent: ${a}`) : e;
+  h.promise = hb(b, h);
   return h;
 }
-const kb = async(a, b) => {
+const hb = async(a, b) => {
   try {
     return await a;
   } finally {
     b.close();
   }
 };
-async function lb(a, b) {
+async function ib(a, b) {
   if ("object" != typeof a) {
     throw Error("Please give an object with questions");
   }
@@ -543,7 +512,7 @@ async function lb(a, b) {
     let g = f || "";
     f && h && f != h ? g = `\x1b[90m${f}\x1b[0m` : f && f == h && (g = "");
     f = h || "";
-    ({promise:f} = jb(`${e.text}${g ? `[${g}] ` : ""}${f ? `[${f}] ` : ""}`, {timeout:b, password:e.password}));
+    ({promise:f} = gb(`${e.text}${g ? `[${g}] ` : ""}${f ? `[${f}] ` : ""}`, {timeout:b, password:e.password}));
     h = await f || h || e.defaultValue;
     "function" == typeof e.validation && e.validation(h);
     "function" == typeof e.postProcess && (h = await e.postProcess(h));
@@ -552,10 +521,10 @@ async function lb(a, b) {
 }
 ;async function Q(a) {
   const {defaultYes:b = !0, timeout:c} = {}, d = a.endsWith("?");
-  ({question:a} = await lb({question:{text:`${d ? a.replace(/\?$/, "") : a} (y/n)${d ? "?" : ""}`, defaultValue:b ? "y" : "n"}}, c));
+  ({question:a} = await ib({question:{text:`${d ? a.replace(/\?$/, "") : a} (y/n)${d ? "?" : ""}`, defaultValue:b ? "y" : "n"}}, c));
   return "y" == a;
 }
-;const {inspect:mb} = util;
+;const {inspect:jb} = util;
 const R = (...a) => {
   let b = -1;
   return "%s%s".replace(/%s/g, () => {
@@ -563,12 +532,12 @@ const R = (...a) => {
     return a[b];
   });
 };
-function nb(a, b) {
+function kb(a, b) {
   let c = 0;
   const d = (f, g = void 0) => {
     const k = " ".repeat(2 * c);
-    g = void 0 !== g ? J("+ " + S(g), "green") : null;
-    f = void 0 !== f ? J("- " + S(f), "red") : null;
+    g = void 0 !== g ? K("+ " + S(g), "green") : null;
+    f = void 0 !== f ? K("- " + S(f), "red") : null;
     const m = [];
     f && m.push(R(k, f));
     g && m.push(R(k, g));
@@ -629,10 +598,10 @@ function nb(a, b) {
       const r = q.map(p => {
         c++;
         const u = h(f[p], g[p]);
-        let E = "";
-        u && (E += e(Array.isArray(f[p]) && Array.isArray(g[p]) ? `${p}.Array` : p), E += "\n" + u);
+        let F = "";
+        u && (F += e(Array.isArray(f[p]) && Array.isArray(g[p]) ? `${p}.Array` : p), F += "\n" + u);
         c--;
-        return E;
+        return F;
       }).filter(Boolean);
       return [...k, ...m, ...r].join("\n");
     }
@@ -641,15 +610,15 @@ function nb(a, b) {
   return h(a, b);
 }
 const T = a => null === a ? !0 : "string number boolean symbol null undefined".split(" ").includes(typeof a), S = a => Array.isArray(a) ? `Array[${a.toString()}]` : a && a.toString ? a.toString() : `${a}`;
-async function ob(a) {
+async function lb(a) {
   a = sa(a);
-  return await Ha(a);
+  return await Ga(a);
 }
-;async function pb(a, b) {
+;async function mb(a, b) {
   if (!a) {
     throw Error("No path is given.");
   }
-  const c = I(!0), d = ta(a);
+  const c = J(!0), d = ta(a);
   await new Promise((e, h) => {
     d.on("error", f => {
       f = c(f);
@@ -657,7 +626,7 @@ async function ob(a) {
     }).on("close", e).end(b);
   });
 }
-;async function qb(a) {
+;async function nb(a) {
   const b = A(a);
   try {
     return await U(b), a;
@@ -670,7 +639,7 @@ async function ob(a) {
 }
 async function U(a) {
   try {
-    await M(ua, a);
+    await N(ua, a);
   } catch (b) {
     if ("ENOENT" == b.code) {
       const c = A(a);
@@ -683,30 +652,30 @@ async function U(a) {
     }
   }
 }
-;const rb = (a, b) => {
+;const ob = (a, b) => {
   a = " ".repeat(Math.max(a - b.length, 0));
   return `${b}${a}`;
-}, sb = a => {
+}, pb = a => {
   var {width:b} = {};
   a = a.split("\n");
   b = b || a.reduce((c, {length:d}) => d > c ? d : c, 0);
-  return a.map(rb.bind(null, b)).join("\n");
+  return a.map(ob.bind(null, b)).join("\n");
 };
-function tb(a) {
+function qb(a) {
   const {padding:b = 1} = {};
   var c = a.split("\n").reduce((h, {length:f}) => f > h ? f : h, 0) + 2 * b;
   const d = `\u250c${"\u2500".repeat(c)}\u2510`;
   c = `\u2514${"\u2500".repeat(c)}\u2518`;
   const e = " ".repeat(b);
-  a = sb(a).split("\n").map(h => `\u2502${e}${h}${e}\u2502`).join("\n");
+  a = pb(a).split("\n").map(h => `\u2502${e}${h}${e}\u2502`).join("\n");
   return `${d}\n${a}\n${c}`;
 }
 ;async function V(a, b, c) {
   a = C(a.a, b);
-  await qb(a);
-  /\.json$/.test(a) ? (c = JSON.stringify(c, null, 2), await pb(a, c)) : await pb(a, c);
+  await nb(a);
+  /\.json$/.test(a) ? (c = JSON.stringify(c, null, 2), await mb(a, c)) : await mb(a, c);
 }
-async function ub(a, b, c, d) {
+async function rb(a, b, c, d) {
   if (!c) {
     throw Error("Give snapshot to save");
   }
@@ -716,31 +685,31 @@ async function ub(a, b, c, d) {
     throw Error("Could not test missing snapshot");
   }
 }
-async function vb(a, b, c, d, e = !1) {
+async function sb(a, b, c, d, e = !1) {
   if (!c) {
     throw Error("Pass the actual value for snapshot.");
   }
-  const h = I(!0), f = /\.json$/.test(b);
+  const h = J(!0), f = /\.json$/.test(b);
   let g;
   try {
     if (g = await a.read(b), f) {
       var k = g;
       try {
-        gb(c, k, void 0);
+        db(c, k, void 0);
       } catch (l) {
-        const n = nb(k, c);
+        const n = kb(k, c);
         l.message = [l.message, n].filter(Boolean).join("\n");
         throw l;
       }
     } else {
-      hb(c, g);
+      eb(c, g);
     }
   } catch (l) {
     if ("ENOENT" == l.code) {
-      await ub(a, b, c, d);
+      await rb(a, b, c, d);
     } else {
       var m;
-      f || (m = Qa(g, c));
+      f || (m = Pa(g, c));
       if (e && (f ? console.log(l.message) : console.log(m), await Q(`Update snapshot${d ? ` for ${d}` : ""}?`))) {
         await V(a, b, c);
         return;
@@ -752,7 +721,7 @@ async function vb(a, b, c, d, e = !1) {
     }
   }
 }
-class wb {
+class tb {
   constructor() {
     this.a = "test/snapshot";
   }
@@ -763,58 +732,58 @@ class wb {
           return e.length;
         }
       }, 0);
-      process.stdout.isTTY && process.stdout.columns - 4 >= c ? console.log(tb(a)) : console.log(a);
+      process.stdout.isTTY && process.stdout.columns - 4 >= c ? console.log(qb(a)) : console.log(a);
     } else {
-      console.log(mb(a, {colors:!0}));
+      console.log(jb(a, {colors:!0}));
     }
     return await Q(`Save snapshot${b ? ` for ${b}` : ""}?`);
   }
   async read(a) {
     a = C(this.a, a);
-    return /\.json$/.test(a) ? (a = await ob(a), JSON.parse(a)) : await ob(a);
+    return /\.json$/.test(a) ? (a = await lb(a), JSON.parse(a)) : await lb(a);
   }
 }
 ;const W = async a => {
   try {
-    return await M(D, a);
+    return await N(D, a);
   } catch (b) {
     return null;
   }
 };
-async function xb(a, b) {
+async function ub(a, b) {
   b = b.map(async c => {
     const d = B(a, c);
-    return {lstat:await M(D, d), path:d, relativePath:c};
+    return {lstat:await N(D, d), path:d, relativePath:c};
   });
   return await Promise.all(b);
 }
-const yb = a => a.lstat.isDirectory(), zb = a => !a.lstat.isDirectory();
-async function Ab(a) {
+const vb = a => a.lstat.isDirectory(), wb = a => !a.lstat.isDirectory();
+async function xb(a) {
   if (!a) {
     throw Error("Please specify a path to the directory");
   }
-  if (!(await M(D, a)).isDirectory()) {
+  if (!(await N(D, a)).isDirectory()) {
     throw a = Error("Path is not a directory"), a.code = "ENOTDIR", a;
   }
-  var b = await M(F, a);
-  b = await xb(a, b);
-  a = b.filter(yb);
-  b = b.filter(zb).reduce((c, d) => {
+  var b = await N(E, a);
+  b = await ub(a, b);
+  a = b.filter(vb);
+  b = b.filter(wb).reduce((c, d) => {
     var e = d.lstat.isDirectory() ? "Directory" : d.lstat.isFile() ? "File" : d.lstat.isSymbolicLink() ? "SymbolicLink" : void 0;
     return Object.assign({}, c, {[d.relativePath]:{type:e}});
   }, {});
   a = await a.reduce(async(c, d) => {
     var {path:e, relativePath:h} = d;
     c = await c;
-    d = await Ab(e);
+    d = await xb(e);
     return Object.assign({}, c, {[h]:d});
   }, {});
   return {content:Object.assign({}, b, a), type:"Directory"};
 }
-;const Bb = async a => {
-  await M(xa, a);
-}, Cb = async a => {
-  const {content:b} = await Ab(a);
+;const yb = async a => {
+  await N(xa, a);
+}, zb = async a => {
+  const {content:b} = await xb(a);
   var c = Object.keys(b).filter(e => {
     ({type:e} = b[e]);
     if ("File" == e || "SymbolicLink" == e) {
@@ -827,17 +796,17 @@ async function Ab(a) {
     }
   });
   c = c.map(e => B(a, e));
-  await Promise.all(c.map(Bb));
+  await Promise.all(c.map(yb));
   d = d.map(e => B(a, e));
-  await Promise.all(d.map(Cb));
-  await M(va, a);
-}, Db = async a => {
-  (await M(D, a)).isDirectory() ? await Cb(a) : await Bb(a);
+  await Promise.all(d.map(zb));
+  await N(wa, a);
+}, Ab = async a => {
+  (await N(D, a)).isDirectory() ? await zb(a) : await yb(a);
 };
-const Eb = async(a, b, c, d = "", e = [], h = !1, f = "txt") => {
+const Bb = async(a, b, c, d = "", e = [], h = !1, f = "txt") => {
   var g = b.replace(/^!/, "");
   const k = g.replace(/ /g, "-");
-  a instanceof Aa && (a = await Ha(a));
+  a instanceof Aa && (a = await Ga(a));
   b = "string" == typeof a;
   const m = `${k}.${b ? f : "json"}`;
   let l = B(...c);
@@ -848,13 +817,13 @@ const Eb = async(a, b, c, d = "", e = [], h = !1, f = "txt") => {
   e = B(d, l);
   d = B(e, m);
   if (a) {
-    if (c = new wb, c.a = e, f = B(e, `${k}.${b ? "json" : f}`), await W(f)) {
-      g = `Snapshot of another type exists: ${J(f, "red")}`, h || X(g), console.log("%s.\nNew data:", g), console.log(b ? a : mb(a, {colors:!0})), await Q(`Update snapshot ${J(f, "yellow")} to a new type?`) || X(g), await V(c, m, a), await Db(f);
+    if (c = new tb, c.a = e, f = B(e, `${k}.${b ? "json" : f}`), await W(f)) {
+      g = `Snapshot of another type exists: ${K(f, "red")}`, h || X(g), console.log("%s.\nNew data:", g), console.log(b ? a : jb(a, {colors:!0})), await Q(`Update snapshot ${K(f, "yellow")} to a new type?`) || X(g), await V(c, m, a), await Ab(f);
     } else {
       try {
-        await vb(c, m, a, J(g, "yellow"), h);
+        await sb(c, m, a, K(g, "yellow"), h);
       } catch (n) {
-        "The string didn't match the snapshot." == n.message && (n.message = `The string didn't match the snapshot ${J(d, "yellow")}`), X(n);
+        "The string didn't match the snapshot." == n.message && (n.message = `The string didn't match the snapshot ${K(d, "yellow")}`), X(n);
       }
     }
   } else {
@@ -866,7 +835,7 @@ const Eb = async(a, b, c, d = "", e = [], h = !1, f = "txt") => {
   throw a;
 };
 const Y = require("../");
-async function Fb(a, b, {name:c, context:d, fn:e, timeout:h, h:f}, g = {}, k = null) {
+async function Cb(a, b, {name:c, context:d, fn:e, timeout:h, h:f}, g = {}, k = null) {
   a && a({name:c, type:"test-start"});
   let m, l;
   d = Array.isArray(d) ? d : [d];
@@ -893,15 +862,15 @@ async function Fb(a, b, {name:c, context:d, fn:e, timeout:h, h:f}, g = {}, k = n
     process.once("uncaughtException", q);
     process.once("unhandledRejection", q);
     try {
-      n = await cb({context:d, h:f, fn:e, timeout:h});
+      n = await bb({context:d, h:f, fn:e, timeout:h});
       let {result:r, error:p} = n;
       k || (k = p);
       try {
-        await Eb(r, l || c, b, g.m, g.o, g.j, m);
+        await Bb(r, l || c, b, g.m, g.o, g.i, m);
       } catch (u) {
         k = u;
       }
-      if (g.j && p && p.handleUpdate) {
+      if (g.i && p && p.handleUpdate) {
         try {
           await p.handleUpdate() && (k = null);
         } catch (u) {
@@ -912,59 +881,59 @@ async function Fb(a, b, {name:c, context:d, fn:e, timeout:h, h:f}, g = {}, k = n
       process.removeListener("uncaughtException", q), process.removeListener("unhandledRejection", q);
     }
   }
-  a && a({name:c, error:k, type:"test-end", result:Gb({error:k, name:c})});
+  a && a({name:c, error:k, type:"test-end", result:Db({error:k, name:c})});
   return n;
 }
-function Gb({error:a, name:b}) {
-  return null === a ? `${Sa} ${b}` : `${Ta} ${b}` + t + L(Ra({error:a, name:b}), " | ");
+function Db({error:a, name:b}) {
+  return null === a ? `${Ra} ${b}` : `${Sa} ${b}` + t + M(Qa({error:a, name:b}), " | ");
 }
-async function Hb(a, b, {name:c, tests:d, h:e}, h, f, g) {
+async function Eb(a, b, {name:c, tests:d, h:e}, h, f, g) {
   a && a({type:"test-suite-start", name:c});
   let k, m;
   if (e && !g) {
     try {
-      k = await Ib(e), Jb(d, k);
+      k = await Fb(e), Gb(d, k);
     } catch (l) {
       l.message = `Persistent context failed to evaluate: ${l.message}`, l.stack = l.stack.split("\n", 2).join("\n"), g = l;
     }
   }
   try {
     const l = [...b, c.replace(/\.jsx?$/, "")];
-    m = await Kb(a, l, d, h, f, g);
+    m = await Hb(a, l, d, h, f, g);
     a && a({type:"test-suite-end", name:c});
   } finally {
     if (k) {
       try {
-        await Lb(k);
+        await Ib(k);
       } catch (l) {
-        l.stack = l.stack.split("\n", 2).join("\n"), console.log(J(l.stack, "red"));
+        l.stack = l.stack.split("\n", 2).join("\n"), console.log(K(l.stack, "red"));
       }
     }
   }
   return m;
 }
-const Jb = (a, b) => {
+const Gb = (a, b) => {
   a.forEach(c => {
     c.h = b;
   });
-}, Mb = async a => {
-  const b = ab(a);
-  return await P(b, a.u || 5000, `Evaluate persistent context ${a.name ? a.name : ""}`);
-}, Ib = async a => {
+}, Jb = async a => {
+  const b = $a(a);
+  return await O(b, a.u || 5000, `Evaluate persistent context ${a.name ? a.name : ""}`);
+}, Fb = async a => {
   a = Array.isArray(a) ? a : [a];
-  return await Promise.all(a.map(b => Mb(b)));
-}, Nb = async a => {
-  const b = O([a]);
-  return await P(b, a.u || 5000, `Destroy persistent context ${a.name ? a.name : ""}`);
-}, Lb = async a => await Promise.all(a.map(b => Nb(b)));
-async function Kb(a, b, c, d, e, h) {
-  return await db(c, {onlyFocused:d, runTest(f) {
-    return Fb(a, b, f, e, h);
+  return await Promise.all(a.map(b => Jb(b)));
+}, Kb = async a => {
+  const b = P([a]);
+  return await O(b, a.u || 5000, `Destroy persistent context ${a.name ? a.name : ""}`);
+}, Ib = async a => await Promise.all(a.map(b => Kb(b)));
+async function Hb(a, b, c, d, e, h) {
+  return await cb(c, {onlyFocused:d, runTest(f) {
+    return Cb(a, b, f, e, h);
   }, runTestSuite(f, g) {
-    return Hb(a, b, f, d ? g : !1, e, h);
+    return Eb(a, b, f, d ? g : !1, e, h);
   }});
 }
-;class Ob {
+;class Lb {
   constructor(a, b, c = 2000, d = []) {
     this.timeout = c;
     this.name = a;
@@ -976,12 +945,12 @@ async function Kb(a, b, c, d, e, h) {
     return this.name.startsWith("!");
   }
 }
-;function Pb(a) {
+;function Mb(a) {
   ({v:a} = a);
   return a instanceof Z;
 }
-const Qb = a => a.some(b => b.startsWith("!")), Rb = a => a.reduce((b, c) => c instanceof Z ? [...b, c.name, ...c.H] : [...b, c.name], []);
-function Sb(a, b) {
+const Nb = a => a.some(b => b.startsWith("!")), Ob = a => a.reduce((b, c) => c instanceof Z ? [...b, c.name, ...c.H] : [...b, c.name], []);
+function Pb(a, b) {
   if (Array.isArray(b) || "function" == (typeof b).toLowerCase()) {
     return a.a = b, !0;
   }
@@ -996,9 +965,9 @@ class Z {
     }
     this.I = a;
     this.J = c;
-    this.u = e || (Pb(this) ? this.v.timeout : void 0);
+    this.u = e || (Mb(this) ? this.v.timeout : void 0);
     this.a = this.A = void 0;
-    !Sb(this, d) && Pb(this) && (this.a = c.context);
+    !Pb(this, d) && Mb(this) && (this.a = c.context);
     if ("object" != typeof b) {
       throw Error("You must provide tests in an object.");
     }
@@ -1009,11 +978,11 @@ class Z {
     a = b.context;
     b = b.persistentContext;
     c = (delete c.context, delete c.persistentContext, c);
-    void 0 !== a && Sb(this, a);
+    void 0 !== a && Pb(this, a);
     void 0 !== b && (Array.isArray(b) ? this.A = b : "function" == (typeof b).toLowerCase() && (this.A = b));
-    this.s = Tb(c, this);
-    this.w = Rb(this.s);
-    this.B = Qb(this.w);
+    this.s = Qb(c, this);
+    this.w = Ob(this.s);
+    this.B = Nb(this.w);
   }
   get name() {
     return this.I;
@@ -1041,26 +1010,26 @@ class Z {
   }
   dump() {
     const a = this.name + t + this.tests.map(b => b.dump()).join("\n");
-    return this.v ? L(a, "    ") : a;
+    return this.v ? M(a, "    ") : a;
   }
   get h() {
     return this.A;
   }
 }
-const Ub = (a, b) => {
+const Rb = (a, b) => {
   ({name:a} = a);
   ({name:b} = b);
   return "default" == a ? -1 : "default" == b ? 1 : 0;
 };
-function Vb(a) {
+function Sb(a) {
   const b = [], c = [];
   a.forEach(d => {
-    d instanceof Ob ? c.push(d) : b.push(d);
+    d instanceof Lb ? c.push(d) : b.push(d);
   });
-  a = b.sort(Ub);
+  a = b.sort(Rb);
   return [...c, ...a];
 }
-function Tb(a, b) {
+function Qb(a, b) {
   const c = Object.keys(a).map(d => {
     const e = a[d];
     if (e instanceof Z) {
@@ -1068,42 +1037,42 @@ function Tb(a, b) {
     }
     switch(typeof e) {
       case "function":
-        return new Ob(d, e, b.timeout, b.context);
+        return new Lb(d, e, b.timeout, b.context);
       case "object":
         return new Z(d, e, b);
     }
   }).filter(d => d);
-  return Vb(c);
+  return Sb(c);
 }
-;function Wb() {
+;function Tb() {
   Object.keys(require.cache).forEach(a => {
     ra("", a).startsWith("node_modules") || delete require.cache[a];
   });
 }
-const Yb = async(a, b) => {
+const Vb = async(a, b) => {
   a = await a.reduce(async(c, d) => {
     c = await c;
-    const e = await Xb(d);
+    const e = await Ub(d);
     return e ? Object.assign({}, c, {[d]:e}) : c;
   }, {});
   return new Z("Zoroaster Root Test Suite", a, null, void 0, b);
 };
-async function Zb(a) {
-  return (await M(F, a)).reduce(async(b, c) => {
+async function Wb(a) {
+  return (await N(E, a)).reduce(async(b, c) => {
     b = await b;
-    const d = B(a, c), e = await M(D, d);
+    const d = B(a, c), e = await N(D, d);
     let h;
     if (e.isFile()) {
       var f = C(d);
       f = require(f);
       h = c.replace(/\.jsx?$/, "");
     } else {
-      e.isDirectory() && (f = await Zb(d), h = c);
+      e.isDirectory() && (f = await Wb(d), h = c);
     }
-    return b[h] ? (console.warn("Merging %s with %s in %s", h, c, a), b[h] = $b(b[h], f), b) : Object.assign({}, b, {[h]:f});
+    return b[h] ? (console.warn("Merging %s with %s in %s", h, c, a), b[h] = Xb(b[h], f), b) : Object.assign({}, b, {[h]:f});
   }, {});
 }
-const $b = (a, b) => {
+const Xb = (a, b) => {
   Object.keys(b).forEach(c => {
     if (a[c]) {
       throw Error(`Duplicate key ${c}`);
@@ -1111,46 +1080,46 @@ const $b = (a, b) => {
   });
   return Object.assign({}, a, b);
 };
-async function Xb(a) {
+async function Ub(a) {
   try {
-    const b = await M(D, a);
+    const b = await N(D, a);
     if (b.isFile()) {
       const c = C(a);
       return require(c);
     }
     if (b.isDirectory()) {
-      return await Zb(a);
+      return await Wb(a);
     }
   } catch (b) {
-    throw b.message += `\n${J("Could not require ", "red") + K(J(a, "white"), "red")}`, b;
+    throw b.message += `\n${K("Could not require ", "red") + L(K(a, "white"), "red")}`, b;
   }
 }
-;function ac(a, b) {
+;function Yb(a, b) {
   a.forEach(c => {
     za(c, (...d) => {
       b(c, ...d);
     });
   });
 }
-function bc(a) {
+function Zb(a) {
   a.forEach(b => {
     ya(b);
   });
 }
-async function cc({paths:a, watch:b, timeout:c, m:d, o:e, j:h}, {C:f = [], G:g} = {}) {
-  bc(f);
+async function $b({paths:a, watch:b, timeout:c, m:d, o:e, i:h}, {C:f = [], G:g} = {}) {
+  Zb(f);
   g && process.removeListener("beforeExit", g);
-  f = await Yb(a, c);
-  const k = Ua();
-  g = Wa();
-  const m = Va();
+  f = await Vb(a, c);
+  const k = Ta();
+  g = Va();
+  const m = Ua();
   k.pipe(m).pipe(process.stdout);
   k.pipe(g);
-  ({i:g} = new Ga({rs:g}));
+  ({l:g} = new Fa({rs:g}));
   var l = 0, n = 0;
-  await Kb(r => {
+  await Hb(r => {
     "object" == typeof r && (k.write(r), "test-end" == r.type && (l++, r.error && n++));
-  }, [], f.tests, f.hasFocused, {m:d, o:e, j:h});
+  }, [], f.tests, f.hasFocused, {m:d, o:e, i:h});
   k.end();
   f = await g;
   process.stdout.write(t);
@@ -1164,15 +1133,15 @@ async function cc({paths:a, watch:b, timeout:c, m:d, o:e, j:h}, {C:f = [], G:g} 
   process.once("beforeExit", q);
   if (b) {
     const r = Object.keys(require.cache).filter(p => !p.startsWith(`${process.cwd()}/node_modules/`));
-    ac(r, async(p, u) => {
-      const E = a.filter(wa => C(wa) != p || u.mtime.getTime() ? !0 : (console.warn("Test suite file %s was deleted.", J(wa, "yellow")), !1));
-      Wb();
-      await cc({paths:E, watch:b, timeout:c, m:d, o:e, j:h}, {C:r, G:q});
+    Yb(r, async(p, u) => {
+      const F = a.filter(va => C(va) != p || u.mtime.getTime() ? !0 : (console.warn("Test suite file %s was deleted.", K(va, "yellow")), !1));
+      Tb();
+      await $b({paths:F, watch:b, timeout:c, m:d, o:e, i:h}, {C:r, G:q});
     });
   }
 }
-;function dc() {
-  const {usage:a = {}, description:b, line:c, example:d} = {usage:ec, description:"A testing framework with support for test contexts and masks.\nAutomatically transpiles import/export and JSX with \u00c0LaMode.\nhttps://artdecocode.com/zoroaster/", line:"zoroaster path [pathN] [-w] [-ab] [-sr] [-vh]", example:"zoroaster test/spec test/mask -a"};
+;function ac() {
+  const {usage:a = {}, description:b, line:c, example:d} = {usage:bc, description:"A testing framework with support for test contexts and masks.\nAutomatically transpiles import/export and JSX with \u00c0LaMode.\nhttps://artdecocode.com/zoroaster/", line:"zoroaster path [pathN] [-w] [-ab] [-sr] [-vh]", example:"zoroaster test/spec test/mask -a"};
   var e = Object.keys(a);
   const h = Object.values(a), [f] = e.reduce(([m = 0, l = 0], n) => {
     const q = a[n].split("\n").reduce((r, p) => p.length > r ? p.length : r, 0);
@@ -1206,9 +1175,9 @@ ${e.join("\n")}
   console.log(require("../../package.json").version), process.exit();
 } else {
   if (pa) {
-    var fc, ec = ea();
-    fc = dc();
-    console.log(fc);
+    var cc, bc = ea();
+    cc = ac();
+    console.log(cc);
     process.exit();
   }
 }
@@ -1223,7 +1192,7 @@ if (ia) {
 ha && require("alamode")();
 (async() => {
   try {
-    await cc({paths:[...fa || [], ...qa], watch:ja, timeout:ka, m:la, o:ma.split(","), j:na});
+    await $b({paths:[...fa || [], ...qa], watch:ja, timeout:ka, m:la, o:ma.split(","), i:na});
   } catch (a) {
     console.log(w(a.stack)), process.exit(1);
   }

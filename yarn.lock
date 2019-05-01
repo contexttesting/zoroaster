@@ -113,12 +113,12 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.0.4.tgz#b3f9dc73bd16aa1ed01f94f4ca0d22acc9b68a01"
   integrity sha512-/+vTebr3pf7+2iSYZg2PClxgyHRxBGI9NH/8vnML0gEJcMWkRMR/K7mXIqVd6NT+Ew+PXxuOt4V8iJSSU1JQEg==
 
-"@zoroaster/reducer@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.1.0.tgz#745eca1403eb6240f83c6d949c46a3f529f9bd1d"
-  integrity sha512-fm6FTlO6dP+yXyWFmJV8Hr1IpF7ofJhoQZ5EKeR0H3EdXFTXfGH4kVxvMLfbnT0BtLVLhojZVo7CSeGHdiZblw==
+"@zoroaster/reducer@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@zoroaster/reducer/-/reducer-1.2.1.tgz#feed8bd90e059c4ea8109f7cccfe75dde0368a00"
+  integrity sha512-cu5FqmZfCyKYJlLJKQGXEn457xQXwTvX64Q0WPngeJbrOaU0FmJBSeEnKf6KbNtBEOijkUn5r9DVAyUgH7wAQg==
   dependencies:
-    promto "1.0.1"
+    promto "^1.1.2"
 
 "@zoroaster/types@^1.0.0":
   version "1.0.0"
@@ -267,11 +267,6 @@ preact@8.4.2:
   version "8.4.2"
   resolved "https://registry.yarnpkg.com/preact/-/preact-8.4.2.tgz#1263b974a17d1ea80b66590e41ef786ced5d6a23"
   integrity sha512-TsINETWiisfB6RTk0wh3/mvxbGRvx+ljeBccZ4Z6MPFKgu/KFGyf2Bmw3Z/jlXhL5JlNKY6QAbA9PVyzIy9//A==
-
-promto@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/promto/-/promto-1.0.1.tgz#0a169fc7bd8f48cef1ee9faeace61a100305a536"
-  integrity sha1-Chafx72PSM7x7p+urOYaEAMFpTY=
 
 promto@^1.1.2:
   version "1.1.2"
