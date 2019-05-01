@@ -61,7 +61,8 @@ const C = {
     t.forEach((test) => {
       if (test instanceof Test) {
         const { started, finished, name: testName } = test
-        if (process.env.DEBUG) console.log('assert %s > %s run', name, testName) // eslint-disable-line
+        if (process.env.DEBUG)
+          console.log('assert %s > %s run', name, testName) // eslint-disable-line
         try {
           ok(started)
           ok(finished)
@@ -103,7 +104,8 @@ const C = {
   assertNoNotifyErrors(notifications) {
     notifications.forEach(({ error }) => {
       try { ok(!error) } catch (err) {
-        error.message = `A test container error in notification: ${error.message}\n${error.stack.replace(/^[\s\S]+?\n/, '')}`
+        error.message = `A test contained an error in notification: ${error.message}\n${error.stack.replace(/^[\s\S]+?\n/, '')}`
+        error.code = 'TEST_HAS_ERROR'
         throw error
       }
     })
@@ -119,17 +121,28 @@ const C = {
     }
   },
 
+  /** Prepares notifications for snapshot-testing. */
+  clearNots(notifications) {
+    return notifications.map((v) => {
+      if (v.error) v.error = v.error.message
+      delete v.result
+      return v
+    })
+  },
+
   /**
    * Runs the test suite using the lib's `runTestSuiteAndNotify`.
+   * @param {TestSuite} ts
    */
   async runTestSuite(ts, assertNoErrors = true, onlyFocused) {
     const e = erotic(true)
     try {
       const { notifications, notify } = this.makeNotify()
-      await runTestSuiteAndNotify(notify, [], '', [], ts, onlyFocused)
+      await runTestSuiteAndNotify(notify, [], ts, onlyFocused)
       if (assertNoErrors) this.assertNoNotifyErrors(notifications)
       return notifications
     } catch (err) {
+      if (err.code != 'TEST_HAS_ERROR') throw err
       const er = e(err)
       throw er
     }

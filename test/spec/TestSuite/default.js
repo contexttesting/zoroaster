@@ -26,25 +26,21 @@ const T = {
     const ts = new TestSuite(TEST_SUITE_NAME, {})
     equal(ts.name, TEST_SUITE_NAME)
   },
-  'creates a test suite from an object'({ TEST_SUITE_NAME, testSuite: { context, ...testSuite } }) { // eslint-disable-line
+  'creates a test suite from an object'({ TEST_SUITE_NAME, tests }) {
+    const ts = new TestSuite(TEST_SUITE_NAME, tests)
+    deepEqual(ts.rawTests, tests)
+  },
+  async 'runs a test suite'({ TEST_SUITE_NAME, testSuite, runTestSuite, clearNots }) {
     const ts = new TestSuite(TEST_SUITE_NAME, testSuite)
-    deepEqual(ts.rawTests, testSuite)
+    const nots = await runTestSuite(ts, false)
+    return clearNots(nots)
   },
-  async 'runs a test suite'({ TEST_SUITE_NAME, tests, assertTestsRun }) {
+  async 'runs a test suite recursively'({ TEST_SUITE_NAME, testSuite, runTestSuite, clearNots }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
-      ...tests,
+      test_suite: testSuite,
     })
-    await ts.run()
-    assertTestsRun(ts)
-  },
-  async 'runs a test suite recursively'({ TEST_SUITE_NAME, tests, assertTestsRun }) {
-    const ts = new TestSuite(TEST_SUITE_NAME, {
-      test_suite: {
-        ...tests,
-      },
-    })
-    await ts.run()
-    assertTestsRun(ts)
+    const nots = await runTestSuite(ts, false)
+    return clearNots(nots)
   },
   'creates test suites recursively'({ TEST_SUITE_NAME }) {
     const { tests } = new TestSuite(TEST_SUITE_NAME, {
@@ -78,15 +74,19 @@ const T = {
     equal(tests1.tests[1].name, 'test_suite_level_A2B2')
     equal(tests1.tests[1].tests[0].name, 'testA2B2')
   },
-  async 'has an error when a test fails'({ TEST_SUITE_NAME, tests: { test, failingTest } }) {
+  async 'has an error when a test fails'({ TEST_SUITE_NAME, tests: { test, failingTest }, runTestSuite }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
       test,
       failingTest,
     })
-    await ts.run()
-    ok(ts.hasErrors)
+    await throws({
+      fn: runTestSuite,
+      args: ts,
+      code: 'TEST_HAS_ERROR',
+      message: /When you are in doubt/,
+    })
   },
-  async 'has an error when a test suite fails'({ TEST_SUITE_NAME, tests: { test, failingTest } }) {
+  async 'has an error when a test suite fails'({ TEST_SUITE_NAME, tests: { test, failingTest }, runTestSuite }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
       test_suite_does_not_have_error: {
         test,
@@ -95,8 +95,12 @@ const T = {
         failingTest,
       },
     })
-    await ts.run()
-    ok(ts.hasErrors)
+    await throws({
+      fn: runTestSuite,
+      args: ts,
+      code: 'TEST_HAS_ERROR',
+      message: /When you are in doubt/,
+    })
   },
   'creates a test with a default timeout'({ TEST_SUITE_NAME, tests: { test } }) {
     const ts = new TestSuite(TEST_SUITE_NAME, {
