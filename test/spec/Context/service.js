@@ -6,7 +6,7 @@ export default {
     let hasInitA = false
     let hasInitB = false
     let res
-    await runTestAndNotify(null, [], '', [], {
+    await runTestAndNotify(null, [], {
       name: 'test',
       context: [class {
         _init() {

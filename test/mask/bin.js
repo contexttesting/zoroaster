@@ -35,6 +35,8 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
      * @param {TempContext} t
      */
     async getArgs(args, { TEMP }) {
+      const hasS = args.some(a => a == '-s')
+      if (hasS) return args
       return [...args, '-s', join(TEMP, 'snapshot')]
     },
     inputs: [

@@ -1,0 +1,82 @@
+[
+  {
+    "type": "test-suite-start",
+    "name": "Zoroaster Test Suite Name"
+  },
+  {
+    "name": "failingTest",
+    "type": "test-start"
+  },
+  {
+    "name": "failingTest",
+    "error": "When you are in doubt abstain.",
+    "type": "test-end"
+  },
+  {
+    "name": "asyncFailingTest",
+    "type": "test-start"
+  },
+  {
+    "name": "asyncFailingTest",
+    "error": "When you are in doubt abstain.",
+    "type": "test-end"
+  },
+  {
+    "name": "asyncTest",
+    "type": "test-start"
+  },
+  {
+    "name": "asyncTest",
+    "error": null,
+    "type": "test-end"
+  },
+  {
+    "name": "contextFailingTest",
+    "type": "test-start"
+  },
+  {
+    "name": "contextFailingTest",
+    "error": "When you are in doubt abstain.",
+    "type": "test-end"
+  },
+  {
+    "name": "asyncContextFailingTest",
+    "type": "test-start"
+  },
+  {
+    "name": "asyncContextFailingTest",
+    "error": "When you are in doubt abstain.",
+    "type": "test-end"
+  },
+  {
+    "name": "contextPassingTest",
+    "type": "test-start"
+  },
+  {
+    "name": "contextPassingTest",
+    "error": null,
+    "type": "test-end"
+  },
+  {
+    "name": "timeoutFailingTest",
+    "type": "test-start"
+  },
+  {
+    "name": "timeoutFailingTest",
+    "error": null,
+    "type": "test-end"
+  },
+  {
+    "name": "test",
+    "type": "test-start"
+  },
+  {
+    "name": "test",
+    "error": null,
+    "type": "test-end"
+  },
+  {
+    "type": "test-suite-end",
+    "name": "Zoroaster Test Suite Name"
+  }
+]

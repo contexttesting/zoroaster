@@ -1,4 +1,4 @@
-import { ok, equal, deepEqual } from 'assert'
+import { equal, deepEqual } from 'assert'
 import throws from 'assert-throws'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'

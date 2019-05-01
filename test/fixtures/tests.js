@@ -4,10 +4,18 @@ import { equal } from 'assert'
 export const TEST_ERROR_MESSAGE = 'When you are in doubt abstain.'
 export const TEST_RETURN_MESSAGE = 'test result'
 
+/**
+ * The test that fails with the following error message:
+ * "When you are in doubt abstain."
+ */
 export const failingTest = () => {
   throw new Error(TEST_ERROR_MESSAGE)
 }
 
+/**
+ * The async test that fails with the following error message:
+ * "When you are in doubt abstain."
+ */
 export const asyncFailingTest = async () => {
   throw new Error(TEST_ERROR_MESSAGE)
 }
