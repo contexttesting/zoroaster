@@ -6,7 +6,8 @@ import { TICK, CROSS, indent, filterStack, replaceFilename } from './'
 import handleSnapshot from './snapshot'
 import Test from './Test' // eslint-disable-line
 import TestSuite from './TestSuite' // eslint-disable-line
-import Zoroaster from '../Zoroaster'
+
+const Zoroaster = require(/* ok static analysis */ '../')
 
 /**
  * Run the test.
@@ -35,8 +36,8 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
     try {
       if (c === Zoroaster || c.prototype instanceof Zoroaster)
         return {
-          snapshotExtension(e) { ext = e },
-          snapshotSource(t, e) { snapshotSource = t; if (e) ext = e },
+          'snapshotExtension'(e) { ext = e },
+          'snapshotSource'(t, e) { snapshotSource = t; if (e) ext = e },
         }
       return c
     } catch (err) {
@@ -125,13 +126,14 @@ export async function runTestSuiteAndNotify(
       // maybe make test-suite-error notify event rather than failing each test
       err.message = `Persistent context failed to evaluate: ${err.message}`
       /** @type {!Array<string>} */
-      const s = err.stack.split('\n')
-      const i = s.findIndex(st => {
-        return / at evaluateContext.+?reducer/.test(st)
-      })
-      if (i != -1) { // wat
-        err.stack = s.slice(0, i).join('\n')
-      }
+      const s = err.stack.split('\n', 2)
+      err.stack = s.join('\n')
+      // const i = s.findIndex(st => {
+      //   return / at evaluateContext.+?reducer/.test(st)
+      // })
+      // if (i != -1) { // wat
+      //   err.stack = s.slice(0, i).join('\n')
+      // }
       error = err
     }
   }
@@ -146,13 +148,14 @@ export async function runTestSuiteAndNotify(
         await destroyPersistentContext(pc)
       } catch (err) {
         /** @type {!Array<string>} */
-        const s = err.stack.split('\n')
-        const i = s.findIndex(st => {
-          return / at contexts\.map.+?reducer/.test(st)
-        })
-        if (i != -1) { // wat
-          err.stack = s.slice(0, i).join('\n')
-        }
+        const s = err.stack.split('\n', 2)
+        err.stack = s.join('\n')
+        // const i = s.findIndex(st => {
+        //   return / at contexts\.map.+?reducer/.test(st)
+        // })
+        // if (i != -1) { // wat
+        //   err.stack = s.slice(0, i).join('\n')
+        // }
         console.log(color(err.stack, 'red'))
       }
     }

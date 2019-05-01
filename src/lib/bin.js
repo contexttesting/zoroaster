@@ -106,7 +106,7 @@ async function requireTests(path) {
     }
   } catch (err) {
     // file or directory does not exist
-    const m = c('Could not require', 'red') + b(c(path, 'white'), 'red')
+    const m = c('Could not require ', 'red') + b(c(path, 'white'), 'red')
     err.message += `\n${m}`
     throw err
   }

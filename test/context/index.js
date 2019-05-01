@@ -34,24 +34,10 @@ const to = async (n = 50) => {
   await new Promise(r => setTimeout(r, n))
 }
 
-const ZOROASTER = process.env.ALAMODE_ENV == 'test-build' ? 'build/bin/zoroaster' : 'src/bin'
-
-const re = new RegExp(process.cwd().replace(/\\/g, '\\\\'), 'g')
-const winRe = new RegExp(process.cwd().replace(/\\/g, '/'), 'g')
-
-function getSnapshot(s) {
-  return s
-    .replace(re, '')
-    .replace(winRe, '')
-    .replace(/\\/g, '/')
-    .replace(/\r?\n/g, '\n')
-}
-
 const C = {
   /**
    * Return a normalised snapshot that can be tested both on Win and Linux.
    */
-  getSnapshot,
   /**
    * Assert that all tests have completed by recursively traversing the test suite.
    * @param {TestSuite} ts A test suite.
@@ -227,15 +213,6 @@ const C = {
 
   /** Run a test from a test suite. */
   runTest,
-  BIN: ZOROASTER,
-  preprocessStderr(stderr) {
-    if (stderr.startsWith('Reverting JS')) {
-      const [,,,...rest] = stderr.split('\n')
-      const se = rest.join('\n')
-      return se
-    }
-    return stderr
-  },
 }
 
 /**

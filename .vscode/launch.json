@@ -32,6 +32,29 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Depack",
+      "program": "${workspaceFolder}/depack/bin/zoroaster.js",
+      "env": {
+        "ALAMODE_ENV": "test-build"
+      },
+      "args": [
+        // "test/temp/test.js",
+        // "test/fixture/snapshot/extension.js",
+        "test/fixture/snapshot-ts-update.js", "-r", "test/fixture", "-i",
+        // "test/spec",
+        // "test/mask",
+        "-s", "test/temp/snapshot",
+        // "test/fixture/snapshot/service.js",
+        "-a", "-w", "-t", "999999999"
+      ],
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Example",
       "program": "${workspaceFolder}/src/bin/alamode.js",
       "env": {

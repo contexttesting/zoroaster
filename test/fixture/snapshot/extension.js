@@ -1,4 +1,4 @@
-const Zoroaster = require(`../../../${process.env.ALAMODE_ENV == 'test-build' ? 'build' : 'src'}`)
+const Zoroaster = require(`../../../${process.env.ALAMODE_ENV == 'test-build' ? 'depack' : 'src'}`)
 
 export default {
   context: Zoroaster,

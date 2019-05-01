@@ -1,31 +1,20 @@
-import { join } from 'path'
-import { fork } from 'spawncommand'
-
-const BIN = join(__dirname, 'bin', process.env.ALAMODE_ENV == 'test-build' ? 'zoroaster' : '')
-
 /**
- * Start zoroaster process, and return a child process with a `promise` property.
- * @param {!Array<string>} args An array of strings as arguments
- * @param {import('child_process').ForkOptions} options Options to pass when creating child process
- * @returns {ChildProcess} An instance of a ChildProcess, with `.promise` property,
- * which will be resolved when tests are finished.
+ * Service context.
  */
-function run(args, options = {}) {
-  const proc = fork(BIN, args, {
-    stdio: 'pipe',
-    ...options,
-  })
-  return proc
+export default class Zoroaster {
+  /**
+   * Changes the extension with which the snapshot is saved. Only applies to the string results, objects will be saved in `.json`.
+   * @param {string} extension The extension with which to save the snapshot.
+   */
+  snapshotExtension(extension) {
+    // this.extension = extension
+  }
+  /**
+   * Indicates that the snapshot should be read from another test in the same test suite.
+   * @param {string} testCase The name of another test case that produced the snapshot.
+   * @param {string} [extension] The extension with which to save the snapshot.
+   */
+  snapshotSource(testCase, extension) {
+
+  }
 }
-
-export { run }
-
-export { default as throws } from 'assert-throws'
-export { default as assert, equal, ok } from 'assert'
-export { default as deepEqual } from '@zoroaster/deep-equal'
-
-export const makeTestSuite = () => {
-  throw new Error('Please use @zoroaster/mask for mask testing.')
-}
-
-export { default } from './Zoroaster'

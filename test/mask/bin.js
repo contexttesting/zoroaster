@@ -1,16 +1,14 @@
 import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 import { join } from 'path'
-import Context from '../context'
-
-const { BIN, getSnapshot } = Context
+import { ZOROASTER, getSnapshot, preprocessStderr } from '../context/bin'
 
 export default makeTestSuite('test/result/bin', {
   fork: {
-    module: BIN,
+    module: ZOROASTER,
     preprocess: {
       stdout: getSnapshot,
-      stderr: Context.preprocessStderr,
+      stderr: preprocessStderr,
     },
   },
 })
@@ -29,7 +27,7 @@ const getResults = async ({ snapshot: s }) => {
 export const snapshot = makeTestSuite('test/result/snapshot', {
   context: TempContext,
   fork: {
-    module: BIN,
+    module: ZOROASTER,
     /**
      * @param {string[]} args
      * @param {TempContext} t
@@ -58,7 +56,7 @@ export const snapshot = makeTestSuite('test/result/snapshot', {
 export const updateSnapshot = makeTestSuite('test/result/update-snapshot', {
   context: TempContext,
   fork: {
-    module: BIN,
+    module: ZOROASTER,
     /**
      * @param {string[]}
      * @param {TempContext} t
