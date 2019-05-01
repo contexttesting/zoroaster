@@ -4,7 +4,7 @@ import TestSuite from '../../src/lib/TestSuite'
 import Test from '../../src/lib/Test'
 import * as _tests from '../fixtures/tests'
 import testSuite from '../fixtures/test-suite'
-import { runTestSuiteAndNotify } from '../../src/lib/run-test'
+import runTestAndNotify, { runTestSuiteAndNotify } from '../../src/lib/run-test'
 
 const { TEST_ERROR_MESSAGE, TEST_RETURN_MESSAGE, ...tests } = _tests
 
@@ -147,6 +147,13 @@ const C = {
       throw er
     }
   },
+  /** @param {Test} test */
+  async runATest(test, returnRes = false) {
+    const { notifications, notify } = this.makeNotify()
+    const res = await runTestAndNotify(notify, [], test)
+    if (returnRes) return res
+    return notifications
+  },
 
   /**
    * Create a simple context object with some properties.
@@ -253,5 +260,6 @@ async function runTest(ts, name) {
 }
 
 C.runTestSuite = C.runTestSuite.bind(C)
+C.runATest = C.runATest.bind(C)
 
 export default C

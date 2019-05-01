@@ -1,5 +1,6 @@
 import { equal, ok, notEqual } from 'assert'
 import Test from '../../src/lib/Test'
+import Context from '../context'
 
 class C {
   get name() {
@@ -40,72 +41,62 @@ const T = {
       equal(test.timeout, timeout)
     },
   },
-  'has the run method'({ name, fn }) {
-    const test = new Test(name, fn)
-    equal(typeof test.run, 'function')
-  },
 }
 
 export default T //{ '!T': T }
 
-/** @type {Object.<string, (c: C)>} */
+/** @type {Object.<string, (c: C, co: Context)>} */
 export const runTest = {
-  context: C,
-  async 'fails test after specified timeout'({ name }) {
+  context: [C, Context],
+  async 'fails test after specified timeout'({ name }, { runATest }) {
     const timeout = 100
     const t = async () => {
       await new Promise(r => setTimeout(r, timeout + 100))
     }
     const test = new Test(name, t, timeout)
-    await test.run()
-    ok(test.hasErrors())
+    const nots = await runATest(test)
+    const [, { error }] = nots
     const expectedMsg = `Test has timed out after ${timeout}ms`
-    equal(test.error.message, expectedMsg)
+    equal(error.message, expectedMsg)
   },
-  async 'runs a test'({ name, fn }) {
+  async 'runs a test'({ name, fn }, { runATest }) {
     const test = new Test(name, fn)
-    const res = test.run()
-
-    ok(res instanceof Promise)
-
-    await res
-    ok(test.error === null)
-    ok(test.result === undefined)
-    notEqual(test.started, null)
-    notEqual(test.finished, null)
+    const res = await runATest(test, true)
+    ok(res.error === null)
+    ok(res.result === undefined)
+    notEqual(res.started, null)
+    notEqual(res.finished, null)
   },
-  // async 'saves result of a test'({ name }) {
+  // async '!saves result of a test'({ name }, { runATest }) {
   //   const result = 'test_string_result'
   //   const test = new Test(name, () => result)
-  //   const res = test.run()
-
-  //   await res
-  //   equal(test.result, result)
+  //   const res = await runATest(test, true)
+  //   equal(res.result, result)
   // },
-  async 'runs a test with an error'({ name, errorMessage }) {
+  async 'runs a test with an error'({ name, errorMessage }, { runATest }) {
     const test = new Test(name, () => {
       throw new Error(errorMessage)
     })
-    await test.run()
+    const res = await runATest(test, true)
 
-    ok(test.result === null)
-    notEqual(test.error, null)
-    equal(test.error.message, errorMessage)
+    ok(res.result === null)
+    notEqual(res.error, null)
+    equal(res.error.message, errorMessage)
   },
 }
 
 export const hasErrors = {
-  context: C,
-  async 'reports as having an error'({ name, errorMessage }) {
+  context: [C, Context],
+  async 'reports as having an error'({ name, errorMessage }, { runATest }) {
     const test = new Test(name, () => {
       throw new Error(errorMessage)
     })
-    await test.run()
-    ok(test.hasErrors())
+    const nots = await runATest(test)
+    ok(nots.some(({ error }) => error))
   },
-  async 'reports as not having an error'({ name, fn }) {
+  async 'reports as not having an error'({ name, fn }, { runATest }) {
     const test = new Test(name, fn)
-    await test.run()
-    ok(!test.hasErrors())
+    const nots = await runATest(test)
+    ok(!nots.some(({ error }) => error))
   },
 }
