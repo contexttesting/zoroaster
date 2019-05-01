@@ -1,4 +1,4 @@
-import { equal } from '../../../../assert'
+import { equal } from '@zoroaster/assert'
 import Zoroaster from '../../src'
 import PersistentContext from '../context/persistent'
 

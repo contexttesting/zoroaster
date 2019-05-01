@@ -1,5 +1,4 @@
-import { equal, deepEqual } from 'assert'
-import throws from 'assert-throws'
+import { throws, equal, deepEqual } from '@zoroaster/assert'
 import TestSuite from '../../../src/lib/TestSuite'
 import Context from '../../context'
 

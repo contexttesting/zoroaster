@@ -1,5 +1,4 @@
-import throws from 'assert-throws'
-import deepEqual from '@zoroaster/deep-equal'
+import { throws, deepEqual } from '@zoroaster/assert'
 import { buildDirectory } from '../../../src/lib/bin'
 
 const T = {

@@ -101,6 +101,11 @@
   dependencies:
     erotic "^2.1.0"
 
+"@zoroaster/assert@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@zoroaster/assert/-/assert-1.0.1.tgz#e34ec5d7814ea4adc338f9b495875cc49e197719"
+  integrity sha512-keIL3KYKBx9G4IJkY1opOAuz0y/gwGZX29FR0ZLOY4aIcwRn37F28lSjcTGlbZEXdf5wzXbVHF4T/2BZZ9yWkQ==
+
 "@zoroaster/deep-equal@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@zoroaster/deep-equal/-/deep-equal-1.0.1.tgz#7f7b72f59e54807ee23ea88e60f99165f10ca876"
@@ -134,14 +139,6 @@ argufy@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.7.0.tgz#189109155b6200c283350b1c23dbeee2a7519f7b"
   integrity sha512-iK7Nx5wv4XXbid/udPVu54EN6pA8w1RqkPp6NOZqBB/8cmpaxdjuWszw8VpPYQN6WWqAXJuLMNXZHEgFTvm0eA==
-
-assert-throws@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/assert-throws/-/assert-throws-3.3.0.tgz#aadf7caaf9e69a2a55835f3c38b741139e3d1ddd"
-  integrity sha512-pbSbwdGO8OrEqTPSJnf3GZ2wpcimv826z69K/I4WOjsRuF6le4yYnOv5wdJgy6zc4MRikbmfK7Oj2LHSh6QGuQ==
-  dependencies:
-    erotic "^2.1.1"
-    erte "^1.2.0"
 
 catchment@^1.0.0:
   version "1.0.0"

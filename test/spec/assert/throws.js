@@ -1,5 +1,5 @@
 import { equal, strictEqual, ok } from 'assert'
-import { throws } from '../../../src/assert'
+import { throws } from '@zoroaster/assert'
 
 const T = {
   async 'asserts on async error'() {

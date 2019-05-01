@@ -1,7 +1,7 @@
 {
   "name": "zoroaster",
   "version": "3.13.0",
-  "description": "A Modern Testing Framework For Node.js With Support For Test Contexts Which Can Be Reused Across Test Suites And Packages. Zoroaster Improves Developer Productivity And Experience With IDE Hints, And Test Reliability.",
+  "description": "The 2019 Most Modern Testing Framework For Node.JS With Test Contexts (Reusable BeforeEach / AfterEach Via Separate Files); Masks (Inputs/Outputs In Non-Js Files) And Fork Testing; Interactive Snapshots.",
   "main": "depack/index.js",
   "scripts": {
     "t": "node src/bin",
@@ -24,12 +24,9 @@
     "example/Zoroaster/": "node src/bin example/Zoroaster/test/spec -b"
   },
   "files": [
-    "build",
-    "assert.js"
+    "depack"
   ],
-  "bin": {
-    "zoroaster": "build/bin/zoroaster.js"
-  },
+  "bin": "depack/bin/zoroaster.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/contexttesting/zoroaster.git"
@@ -40,17 +37,15 @@
     "testing",
     "context",
     "tdd",
-    "mocha",
-    "jest",
-    "jasmine",
-    "tape",
     "chai",
     "assert",
     "documentation",
     "IDE",
     "suggestions",
     "intellisense",
-    "jsdoc"
+    "jsdoc",
+    "import",
+    "export"
   ],
   "author": "Anton <anton@adc.sh>",
   "license": "MIT",
@@ -59,6 +54,7 @@
   },
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
+    "@zoroaster/assert": "^1.0.1",
     "@zoroaster/mask": "^2.0.4",
     "alamode": "^2.1.0"
   },
@@ -69,11 +65,9 @@
     "@depack/render": "1.1.4",
     "@wrote/exists": "^1.0.5",
     "@wrote/rm": "^1.1.5",
-    "@zoroaster/deep-equal": "^1.0.1",
     "@zoroaster/reducer": "^1.2.1",
     "@zoroaster/types": "^1.0.0",
     "argufy": "^1.7.0",
-    "assert-throws": "^3.3.0",
     "catchment": "^3.3.0",
     "documentary": "^1.26.5",
     "erotic": "^2.1.1",

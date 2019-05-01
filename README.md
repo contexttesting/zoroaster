@@ -975,7 +975,7 @@ export default class PersistentContext {
 
 _The tests can use the context testing API:_
 ```js
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
 import Zoroaster from '../../src'
 import PersistentContext from '../context/persistent'
 
@@ -1009,20 +1009,20 @@ For an example, see how `exif2css` uses persistent contexts to [setup a web-serv
 
 ## Assertion Library
 
-`zoroaster/assert` exports a the following methods to be used for assertions in tests:
+_Zoroaster_ comes with an assertion library `@zoroaster/assert` that exports the following methods to be used for assertions in tests:
 
-- `equal` which is `require('assert').equal` for equality assertions on primitives such as strings.
-- `ok` which is `require('assert').ok` for truthy assertions.
-- `deepEqual` which is `require('assert-diff').deepEqual` for assertions of complex objects, with red/green difference highlighting.
-- `throws` which is `require('assert-throws')` for assertions on synchronous/asynchronous function calls.
-- `assert` and `assertDiff` which are aliases to the above packages.
+- <kbd>equal</kbd> which is `require('assert').equal` for equality assertions on primitives such as strings.
+- <kbd>ok</kbd> which is `require('assert').ok` for truthy assertions.
+- <kbd>deepEqual</kbd> which is an alias for `@zoroaster/deep-equal` for assertions of complex objects, with red/green difference highlighting. It runs `assert.strictEqual` first and then uses an algorithm to show the differences in color.
+- <kbd>throws</kbd> which is an alias for `assert-throws` for assertions on the presence of errors in synchronous and asynchronous function calls.
+- <kbd>assert</kbd> which is just `require('assert').equal`.
 
 ### throws
 
-Use awesome [`assert-throws`][5] to test whether (asynchronous) functions throw required errors.
+The [`assert-throws`][5] is the best way to test whether possibly asynchronous functions throw required errors.
 
 ```js
-import { throws } from 'zoroaster/assert'
+import { throws } from '@zoroaster/assert'
 
 {
   async 'throws an error when choosing an unknown side'() {

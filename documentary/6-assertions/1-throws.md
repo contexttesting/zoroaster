@@ -1,9 +1,9 @@
 ### throws
 
-Use awesome [`assert-throws`][5] to test whether (asynchronous) functions throw required errors.
+The [`assert-throws`][5] is the best way to test whether possibly asynchronous functions throw required errors.
 
 ```js
-import { throws } from 'zoroaster/assert'
+import { throws } from '@zoroaster/assert'
 
 {
   async 'throws an error when choosing an unknown side'() {
