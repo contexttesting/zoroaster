@@ -14,12 +14,14 @@ export function getPadding(level) {
 
 /**
  * Get clean stack for a test, without Node internals
- * @param {Test} test - test
+ * @param {Object} test
+ * @param {Error} test.error
+ * @param {string} test.name
  */
 export function filterStack({ error, name }) {
-  if (!error) {
+  if (!error)
     throw new Error('cannot filter stack when a test does not have an error')
-  }
+
   const splitStack = error.stack.split('\n') // break stack by \n and not EOL intentionally because Node uses \n
   // node 4 will print: at test_suite.test2
   // node 6 will print: at test2

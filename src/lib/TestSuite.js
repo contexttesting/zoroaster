@@ -1,23 +1,22 @@
 import { EOL } from 'os'
-import { c } from 'erte'
-import { isFunction, indent } from '.'
+import { isFunction, indent } from './'
 import Test from './Test'
-import { runTestSuiteAndNotify } from './run-test'
-import promto from 'promto'
-import { evaluateContext, destroyContexts } from '@zoroaster/reducer/build/lib'
 
+/**
+ * @param {!TestSuite} ts
+ */
 function hasParent({ parent }) {
   return parent instanceof TestSuite
 }
 
 /**
- * @param {string[]} names
+ * @param {!Array<string>} names
  */
 const hasFocused = names => names.some(n => n.startsWith('!'))
 
 /**
- *
- * @param {(TestSuite|Test)[]} tests
+ * Returns the full array of names within a test suite.
+ * @param {!Array<!(TestSuite|Test)>} tests
  */
 const getChildrenNames = (tests) => {
   return tests.reduce((acc, test) => {
@@ -30,15 +29,15 @@ const getChildrenNames = (tests) => {
 
 /**
  * A test suite is a collection of tests with any number of contexts.
+ * @implements {_contextTesting.TestSuite}
  */
 export default class TestSuite {
   /**
-   * @constructor
    * @param {string} name
-   * @param {object} tests
-   * @param {TestSuite} parent
-   * @param {object|function} context
-   * @param {number} timeout
+   * @param {!Object} tests
+   * @param {TestSuite} [parent] The parent test suite, or null.
+   * @param {*} [context]
+   * @param {number} [timeout]
    */
   constructor (name, tests, parent, context, timeout) {
     if (!name) throw new Error('Test suite name must be given.')
@@ -47,17 +46,24 @@ export default class TestSuite {
     this._parent = parent
     this._timeout = timeout || (hasParent(this) ? this.parent.timeout : undefined)
 
+    this._persistentContext = undefined
+    this._context = undefined
+
     if (!this._assignContext(context) && hasParent(this)) {
       this._context = parent.context
     }
 
-    if (typeof tests != 'object') {
+    if (typeof tests != 'object')
       throw new Error('You must provide tests in an object.')
-    }
+
+    this._hasFocused = false
+    /** @type {Array<!(TestSuite|Test)>} */
+    this._tests = []
+    /** @type {!Array<string>} */
+    this._names = []
+    this._rawTests = {}
+
     this._assignTests(tests)
-  }
-  get path() {
-    return this._path
   }
   get name() {
     return this._name
@@ -69,7 +75,7 @@ export default class TestSuite {
     return this._rawTests
   }
   /**
-   * @type {Test[]|TestSuite[]}
+   * @type {Array<!(Test|TestSuite)>}
    */
   get tests() {
     return this._tests
@@ -119,8 +125,9 @@ export default class TestSuite {
     return this._hasFocused
   }
 
+  /** */
   _assignTests(t) {
-    const { context, persistentContext, ...tests } = t
+    const { 'context': context, 'persistentContext': persistentContext, ...tests } = t
     if (context !== undefined) {
       this._assignContext(context)
     }
@@ -135,7 +142,7 @@ export default class TestSuite {
   }
 
   /**
-   * @returns {string[]} An array with all recursively gathered test and test suite names inside of the test suite.
+   * @returns {!Array<string>} An array with all recursively gathered test and test suite names inside of the test suite.
    */
   get names() {
     return this._names
@@ -144,39 +151,33 @@ export default class TestSuite {
     return this.name.startsWith('!')
   }
 
-  /**
-   * Run without notifying of itself.
-   * @param {function} [notify] A notify function to be passed to run method.
-   * @param {boolean} [onlyFocused = false] Run only focused tests.
-   */
-  async run(notify = () => {}, onlyFocused) {
-    // This should be deprecated, tests and test suites are run with `lib/run-test.js`.
-    console.log(c('Deprecated method TestSuite.run', 'red'))
-    let pc
-    if (this._persistentContext) {
-      pc = await evaluatePersistentContext(this._persistentContext)
-      bindContexts(this.tests, [pc])
-    }
-    const res = await runTestSuiteAndNotify(notify, [], '', [], {
-      name: this.name,
-      tests: this.tests,
-    }, onlyFocused)
-    if (pc) {
-      await destroyPersistentContext(pc)
-    }
-    return res
-  }
+  // /**
+  //  * Run without notifying of itself.
+  //  * @param {!Function} [notify] A notify function to be passed to run method.
+  //  * @param {boolean} [onlyFocused = false] Run only focused tests.
+  //  */
+  // async run(notify = () => {}, onlyFocused) {
+  //   // This should be deprecated, tests and test suites are run with `lib/run-test.js`.
+  //   console.log(c('Deprecated method TestSuite.run', 'red'))
+  //   let pc
+  //   if (this._persistentContext) {
+  //     pc = await evaluatePersistentContext(this._persistentContext)
+  //     bindContexts(this.tests, [pc])
+  //   }
+  //   const res = await runTestSuiteAndNotify(notify, [], '', [], {
+  //     name: this.name,
+  //     tests: this.tests,
+  //   }, onlyFocused)
+  //   if (pc) {
+  //     await destroyPersistentContext(pc)
+  //   }
+  //   return res
+  // }
   dump() {
     const str = this.name + EOL + this.tests
       .map(test => test.dump())
       .join('\n')
     return this.parent ? indent(str, '    ') : str
-  }
-  hasErrors() {
-    return this.tests
-      .find(test =>
-        test.hasErrors()
-      )
   }
   /**
    * The persistent context.
@@ -186,27 +187,6 @@ export default class TestSuite {
   }
 }
 
-const bindContexts = (tests, pc) => {
-  tests.forEach((t) => {
-    t.persistentContext = pc
-  })
-}
-
-const evaluatePersistentContext = async (context, timeout = 5000) => {
-  const p = evaluateContext(context)
-  const res = await promto(p, timeout, `Evaluate persistent context ${
-    context.name ? context.name : ''}`)
-  return res
-  // await p <- time-leak
-}
-const destroyPersistentContext = async (context, timeout = 5000) => {
-  const p = destroyContexts([context])
-  const res = await promto(p, timeout, `Destroy persistent context ${
-    context.name ? context.name : ''}`)
-  return res
-  // await p <- time-leak
-}
-
 const sortTestSuites = ({ name: a }, { name: b }) => {
   if (a == 'default') return -1
   if (b == 'default') return 1
@@ -214,11 +194,9 @@ const sortTestSuites = ({ name: a }, { name: b }) => {
 }
 
 /**
- * Sort tests and test suites so that tests run before
- * test suites. We delibarately don't use V8's unstable
- * Array.sort().
- * @param {Array} tests - test cases and test suites to sort
- * @returns {Array} Sorted array with tests before test suites.
+ * Sort tests and test suites so that tests run before test suites. Deliberately don't use V8's unstable Array.sort().
+ * @param {!Array<!Test|!TestSuite>} tests - test cases and test suites to sort
+ * @returns {!Array<!Test|!TestSuite>} Sorted array with tests before test suites.
  */
 function sort(tests) {
   const testSuites = []
@@ -237,9 +215,9 @@ function sort(tests) {
 /**
  * Map object with test names as keys and test functions as values
  * to an array of tests.
- * @param {object} object - a raw tests map as found in test files
+ * @param {!Object} object - a raw tests map as found in test files
  * @param {TestSuite} parent - parent test suite
- * @return {Array<Test>} An array with tests.
+ * @return {!Array<!(Test|TestSuite)>} An array with tests and test suites.
  */
 function createTests(object, parent) {
   const tests = Object.keys(object)

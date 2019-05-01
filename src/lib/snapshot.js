@@ -8,11 +8,11 @@ import { inspect } from 'util'
 import Stream from 'stream'
 import { collect } from 'catchment'
 
-const handleSnapshot = async (result, name, path, snapshotDir, snapshotRoot, interactive, extension = 'txt') => {
+const handleSnapshot = async (result, name, path, snapshotDir = '', snapshotRoot = [], interactive = false, extension = 'txt') => {
   const nn = name.replace(/^!/, '')
   const n = nn.replace(/ /g, '-')
   if (result instanceof Stream) {
-    result = await collect(result)
+    result = await collect(/** @type {stream.Readable} */ (result))
   }
   const isString = typeof result == 'string'
   const ext = isString ? extension : 'json'

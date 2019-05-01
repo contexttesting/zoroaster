@@ -5,10 +5,9 @@ import { reduceUsage } from 'argufy'
 import { resolve } from 'path'
 import run from '../lib/run'
 import getUsage from './usage'
-import { version } from '../../package.json'
 
 if (_version) {
-  console.log(version)
+  console.log(require('../../package.json').version)
   process.exit()
 } else if (_help) {
   const usage = getUsage(reduceUsage(argsConfig))
@@ -18,7 +17,7 @@ if (_version) {
 
 if (_babel) {
   try {
-    require('@babel/register')
+    require(/* ok static-analysis */ '@babel/register')
   } catch (err) {
     const p = resolve(process.cwd(), 'node_modules/@babel/register')
     require(p)
@@ -26,7 +25,7 @@ if (_babel) {
 }
 
 if (_alamode) {
-  require('alamode')()
+  require(/* ok static-analysis */ 'alamode')()
 }
 
 (async () => {

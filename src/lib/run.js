@@ -27,10 +27,13 @@ function unwatchFiles(files) {
 }
 
 /**
- *
- * @param {string[]} paths Paths to test suites.
- * @param {boolean} [watch] Whether to watch files for changes.
- * @param {string[]} [_currentlyWatching]
+ * The main method to run tests and test suites.
+ * @param {Object} params
+ * @param {!Array<string>} params.paths Paths to test suites.
+ * @param {boolean} [params.watch] Whether to watch files for changes.
+ * @param {Object} serviceParams The params used privately by this method for recursion.
+ * @param {!Array<string>} [serviceParams._currentlyWatching]
+ * @param {Function} [serviceParams.exitListener]
  */
 export default async function run({
   paths,
@@ -72,7 +75,10 @@ export default async function run({
       }
     }
   }
-  await runInSequence(notify, [], rootTestSuite.tests, rootTestSuite.hasFocused, snapshot, snapshotRoot, interactive)
+  const options = {
+    snapshot, snapshotRoot, interactive,
+  }
+  await runInSequence(notify, [], rootTestSuite.tests, rootTestSuite.hasFocused, options)
 
   stack.end()
   const errorsCatchment = await errorsPromise

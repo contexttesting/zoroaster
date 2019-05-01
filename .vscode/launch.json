@@ -17,6 +17,7 @@
         // "test/temp/test.js",
         "test/spec",
         "test/mask",
+        "-s", "test/snapshot",
         // "test/fixture/snapshot/service.js",
         "-a",
         "-w",

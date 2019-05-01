@@ -1,19 +1,17 @@
 import { lstat, readdir } from 'fs'
 import { resolve, join, relative } from 'path'
 import makePromise from 'makepromise'
-import cleanStack from '@artdeco/clean-stack'
 import { c, b } from 'erte'
 import TestSuite from './TestSuite'
-import { replaceFilename } from '.'
+import { replaceFilename } from './'
 
 /**
  * Remove modules cached by require.
  */
 export function clearRequireCache() {
-  Object.keys(require.cache).forEach((key) => {
+  Object.keys(/** @type {!Object} */ (require.cache)).forEach((key) => {
     const p = relative('', key)
-    if (!p.startsWith('node_modules') &&
-        !p.endsWith('_ZoroasterServiceContext.js')) {
+    if (!p.startsWith('node_modules')) {
       delete require.cache[key]
     }
   })
@@ -21,7 +19,8 @@ export function clearRequireCache() {
 
 /**
  * Create a root test suite.
- * @param {string[]} paths
+ * @param {!Array<string>} paths
+ * @param {number} timeout
  */
 export const buildRootTestSuite = async (paths, timeout) => {
   const tree = await paths.reduce(async (acc, path) => {
@@ -42,13 +41,15 @@ export const buildRootTestSuite = async (paths, timeout) => {
 /**
  * Recursively construct Test Suites tree from a directory path.
  * @param {string} dir Path to the directory.
+ * @todo filter out non-js files
  */
 export async function buildDirectory(dir) {
-  const content = await makePromise(readdir, dir)
+  const content = /** @type {!Array<string>} */
+    (await makePromise(readdir, dir))
   const res = content.reduce(async (acc, node) => {
     const accRes = await acc
     const path = join(dir, node)
-    const stat = await makePromise(lstat, path)
+    const stat = /** @type {fs.Stats} */ (await makePromise(lstat, path))
     let r
     let name
     if (stat.isFile()) {
@@ -94,7 +95,7 @@ const safeMerge = (one, two) => {
  */
 async function requireTests(path) {
   try {
-    const res = await makePromise(lstat, path)
+    const res = /** @type {fs.Stats} */ (await makePromise(lstat, path))
     if (res.isFile()) {
       const p = resolve(path)
       const tests = require(p)
@@ -105,9 +106,13 @@ async function requireTests(path) {
     }
   } catch (err) {
     // file or directory does not exist
-    // eslint-disable-next-line
-    console.error(c(`Could not require`, 'red'), b(c(path, 'white'), 'red'))
-    // eslint-disable-next-line
-    console.error(cleanStack(err.stack))
+    const m = c('Could not require', 'red') + b(c(path, 'white'), 'red')
+    err.message += `\n${m}`
+    throw err
   }
 }
+
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('fs').Stats} fs.Stats
+ */

@@ -1,6 +1,6 @@
 import { Transform } from 'stream'
 import { EOL } from 'os'
-import { getPadding, indent, filterStack } from '.'
+import { getPadding, indent, filterStack } from './'
 
 /**
  * The whole file needs testing when you are especially (depressed)
@@ -15,15 +15,13 @@ import { getPadding, indent, filterStack } from '.'
  * comes, the top item is popped from the stack.
  * data[type]
  * data[name]
- * @returns {Transfrom} A transform stream maintaining a test suite
- * stack.
  * @todo: call back with an error if test-suite-end came with
  * a different test-suite than the one currently on top of the stack.
  * @todo: check for data to be an object to control this error
  */
 export function createTestSuiteStackStream() {
   const testSuiteStack = []
-  const ts = new Transform({
+  const ts = new Transform(/** @type {!stream.TransformOptions} */ ({
     objectMode: true,
     transform({ type, name, ...props }, encoding, callback) {
       if (type == 'test-suite-start' && name != 'default') {
@@ -35,7 +33,7 @@ export function createTestSuiteStackStream() {
       this.push({ type, name, stack, ...props })
       callback()
     },
-  })
+  }))
   return ts
 }
 
@@ -48,10 +46,9 @@ export function createTestSuiteStackStream() {
  * data[type]
  * data[result]
  * data[stack]
- * @returns {Transform}
  */
 export function createProgressTransformStream() {
-  const ts = new Transform({
+  const ts = new Transform(/** @type {!stream.TransformOptions} */ ({
     objectMode: true,
     transform({ type, name, stack, result }, encoding, callback) {
       if (type == 'test-suite-start' && name != 'default') {
@@ -63,7 +60,7 @@ export function createProgressTransformStream() {
       }
       callback()
     },
-  })
+  }))
   return ts
 }
 
@@ -75,7 +72,7 @@ export function createProgressTransformStream() {
  * data[name]
  */
 export function createErrorTransformStream() {
-  const ts = new Transform({
+  const ts = new Transform(/** @type {!stream.TransformOptions} */ ({
     objectMode: true,
     transform({ error, stack, name }, encoding, callback) {
       if (!error) {
@@ -91,7 +88,7 @@ export function createErrorTransformStream() {
       this.push(EOL)
       callback()
     },
-  })
+  }))
   return ts
 }
 
