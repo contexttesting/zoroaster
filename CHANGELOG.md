@@ -1,6 +1,6 @@
 ## 2 May 2019
 
-### [4.0.0](https://github.com/contexttesting/zoroaster/compare/v3.13.0...v4.0.0)
+### [4.0.0-alpha](https://github.com/contexttesting/zoroaster/compare/v3.13.0...v4.0.0-alpha)
 
 - [build] Build the package with _Depack_, reduce dependencies to 3.
 - [api] Change `@zoroaster/mask` API to access the inputs only via the `this` keyword.

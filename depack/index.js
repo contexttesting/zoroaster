@@ -17,6 +17,20 @@
   snapshotSource(testCase, extension) {
 
   }
+  /**
+   * When extending this context, the override will set the extension of the snapshot file for all tests in the test suite. Default `txt`.
+   */
+  static get snapshotExtension() {
+    return 'txt'
+  }
+  /**
+   * When extending this context, the override will dictate how an object returned by tests is serialised for comparison and saving as a JSON.
+   * @param {*} object The return value of the test.
+   * @returns {*} A serialised object.
+   */
+  static serialise(object) {
+    return object
+  }
 }
 
 module.exports = Zoroaster

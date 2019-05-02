@@ -22,12 +22,12 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
     name,
     type: 'test-start',
   })
-  let ext
-  let snapshotSource
+  let ext, snapshotSource, serialise
   const tc = Array.isArray(context) ? context : [context]
   tc.forEach((c) => {
     if (c.prototype instanceof Zoroaster) {
       ext = c['snapshotExtension']
+      serialise = c['serialise']
     }
   })
   // only tests in masks won't have a name
@@ -38,6 +38,7 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
         return {
           'snapshotExtension'(e) { ext = e },
           'snapshotSource'(t, e) { snapshotSource = t; if (e) ext = e },
+          // 'disableSpread'(d) { disableSpread = d },
         }
       return c
     } catch (err) {
@@ -61,6 +62,7 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
       // if wasn't an unhandled one
       if (!error) error = testError
       try {
+        if (result !== undefined && serialise) result = serialise(result)
         await handleSnapshot(result,
           snapshotSource || name,
           path, options.snapshot, options.snapshotRoot, options.interactive, ext)
