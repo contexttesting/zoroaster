@@ -45,13 +45,13 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
     }
   })
   let catchment
-  let res; const h = (type, err) => {
+  let res; const h = (err) => {
     if (catchment) return catchment.emit('error', err)
     error = err
   }
   if (!error) {
-    process.once('uncaughtException', h.bind(null, 'uncaught'))
-    process.once('unhandledRejection', h.bind(null, 'unhandled'))
+    process.once('uncaughtException', h)
+    process.once('unhandledRejection', h)
     try {
       res = await runTest({
         context: testContext,
