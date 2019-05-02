@@ -61,13 +61,15 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
       let { result, error: testError } = res
       // if wasn't an unhandled one
       if (!error) error = testError
-      try {
-        if (result !== undefined && serialise) result = serialise(result)
-        await handleSnapshot(result,
-          snapshotSource || name,
-          path, options.snapshot, options.snapshotRoot, options.interactive, ext)
-      } catch (err) {
-        error = err
+      if (!testError) {
+        try {
+          if (result !== undefined && serialise) result = serialise(result)
+          await handleSnapshot(result,
+            snapshotSource || name,
+            path, options.snapshot, options.snapshotRoot, options.interactive, ext)
+        } catch (err) {
+          error = err
+        }
       }
       // used in masks to update the result file
       if (options.interactive && testError && testError['handleUpdate']) {

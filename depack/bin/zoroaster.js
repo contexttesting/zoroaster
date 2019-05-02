@@ -865,10 +865,12 @@ async function Cb(a, b, {name:c, context:d, fn:e, timeout:h, h:f}, g = {}, k = n
       q = await bb({context:d, h:f, fn:e, timeout:h});
       let {result:p, error:t} = q;
       k || (k = t);
-      try {
-        void 0 !== p && n && (p = n(p)), await Bb(p, l || c, b, g.m, g.o, g.i, m);
-      } catch (v) {
-        k = v;
+      if (!t) {
+        try {
+          void 0 !== p && n && (p = n(p)), await Bb(p, l || c, b, g.m, g.o, g.i, m);
+        } catch (v) {
+          k = v;
+        }
       }
       if (g.i && t && t.handleUpdate) {
         try {
