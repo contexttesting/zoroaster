@@ -48,10 +48,10 @@ npm i --save-dev zoroaster
   * [`--snapshotRoot`, `-r`](#--snapshotroot--r)
   * [package.json](#packagejson)
 - [Snapshots](#snapshots)
-  * [Serialisation](#serialisation)
   * [Service Context](#service-context)
     * [Snapshot Extension](#snapshot-extension)
     * [Snapshot Source](#snapshot-source)
+    * [Serialise](#serialise)
 - [Context](#context)
   * [Object Context](#object-context)
   * [Class Context](#class-context)
@@ -668,42 +668,7 @@ export default TestSuite
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
 
-### Serialisation
 
-Whenever the snapshot does not match the output of the test, or its type (strings are saved as `txt` files and objects as `json` files), an error will be thrown. To enable updating snapshots during the test run, the `-i` or `--interactive` option can be passed to _Zoroaster_ test runner. Currently, only JSON serialisation is supported, therefore there might be errors due to the `JSON.stringify` method omitting undefined properties and dates. Sometimes, it could be fixed by doing the JSON conversion first, however that could lead to some properties not tested:
-
-```js
-export default {
-  async '!handles a JPG file'({ photo }) {
-    const res = handleBinaryFile(photo)
-    return JSON.parse(JSON.stringify(res))
-  },
-  // ...
-}
-```
-
-You can therefore implement your own serialisation (but a better serialisation is in plan for _Zoroaster_):
-
-```js
-  // ...
-  async '!parses dates'({ photo }) {
-    const { data: {
-      DateTime,
-      DateTimeOriginal,
-      DateTimeDigitized,
-    } } = handleBinaryFile(photo, {
-      parseDates: true,
-    })
-    return {
-      DateTime: DateTime.toISOString(),
-      DateTimeOriginal: DateTimeOriginal.toISOString(),
-      DateTimeDigitized: DateTimeDigitized.toISOString(),
-    }
-  },
-  // ...
-```
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true" width="15"></a></p>
 
 ### Service Context
 
@@ -772,7 +737,34 @@ const T = {
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+#### Serialise
+
+Whenever the snapshot does not match the output of the test, or its type (strings are saved as `txt` files and objects as `json` files), an error will be thrown. To enable updating snapshots during the test run, the `-i` or `--interactive` option can be passed to _Zoroaster_ test runner. Currently, only JSON serialisation is supported, therefore there might be errors due to the `JSON.stringify` method omitting undefined properties and dates.
+
+The `static serialise` method can be overridden to provide the serialisation strategy for tests. The _deepEqual_ method from the `@zoroaster/assert` package will compare objects for deep strict equality, so that when an instance of a class returned by the test, the test will fail because the instance will be of its type, whereas the expected value will be of type _Object_. To solve that, the `serialise` method can be implemented.
+
+```js
+import Example from '../src/Example'
+
+export default {
+  context: class extends Zoroaster {
+    /** @param {Example} example **/
+    static serialise(example) {
+      // prevent comparison of a date object and JSON string
+      example.date = example.date.toGMTString()
+      // prevent omitting of undefined in the JSON snapshot
+      example.name = example.name || 'undefined'
+      return { ...date }
+    }
+  },
+  async 'creates a correct instance'() {
+    const instance = new Example('test', true)
+    return instance
+  },
+}
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Context
 
@@ -827,7 +819,7 @@ example/Zoroaster/test/spec/object-context.js
 🦅  Executed 3 tests.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
 
 ### Class Context
 
@@ -892,7 +884,7 @@ example/Zoroaster/test/spec/async-context.js
 🦅  Executed 1 test.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="15"></a></p>
 
 ### Multiple Contexts
 
@@ -928,7 +920,7 @@ export default T
 
 > **Only contexts** specified in the test functions' arguments will be evaluated. For example, if the test suite contains 2 contexts, `A` and `B`, the test `test caseA(A, B)` will have both contexts evaluated and available to it, `testCaseB(A)` will only have context `A` evaluated, and `testCase()` will not lead to evaluation of any contexts. This means that functions with variable lengths like `test(...contexts)` will not have any contexts evaluated for them. This is done to avoid unnecessary work when some tests in a test suite might need access to all contexts, whereas others don't.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="15"></a></p>
 
 ### Persistent Context
 
@@ -1005,7 +997,7 @@ A persistent context can implement the static getter `_timeout` to specify how m
 
 For an example, see how `exif2css` uses persistent contexts to [setup a web-server](https://github.com/demimonde/exif2css/blob/master/test/context/index.jsx) to serve images with different EXIF orientations under different routes, and [communicates](https://github.com/dpck/chrome/blob/master/src/index.js#L72) with a headless Chrome via [Chrome Context](https://github.com/dpck/chrome) to take screenshots: https://github.com/demimonde/exif2css/blob/master/test/mask/default.js#L49.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/16.svg?sanitize=true"></a></p>
 
 ## Assertion Library
 
@@ -1039,7 +1031,7 @@ import { throws } from '@zoroaster/assert'
 
 See [`assert-throws` API documentation][5] to learn more about assertions.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/17.svg?sanitize=true"></a></p>
 
 ## launch.json
 
@@ -1065,7 +1057,7 @@ The following snippet can be used in _VS Code_ when debugging tests.
 }
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/19.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/18.svg?sanitize=true"></a></p>
 
 ## Copyright
 

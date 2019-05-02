@@ -38,7 +38,6 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
         return {
           'snapshotExtension'(e) { ext = e },
           'snapshotSource'(t, e) { snapshotSource = t; if (e) ext = e },
-          // 'disableSpread'(d) { disableSpread = d },
         }
       return c
     } catch (err) {

@@ -64,3 +64,30 @@ const T = {
   },
 }
 ```
+
+#### Serialise
+
+Whenever the snapshot does not match the output of the test, or its type (strings are saved as `txt` files and objects as `json` files), an error will be thrown. To enable updating snapshots during the test run, the `-i` or `--interactive` option can be passed to _Zoroaster_ test runner. Currently, only JSON serialisation is supported, therefore there might be errors due to the `JSON.stringify` method omitting undefined properties and dates.
+
+The `static serialise` method can be overridden to provide the serialisation strategy for tests. The _deepEqual_ method from the `@zoroaster/assert` package will compare objects for deep strict equality, so that when an instance of a class returned by the test, the test will fail because the instance will be of its type, whereas the expected value will be of type _Object_. To solve that, the `serialise` method can be implemented.
+
+```js
+import Example from '../src/Example'
+
+export default {
+  context: class extends Zoroaster {
+    /** @param {Example} example **/
+    static serialise(example) {
+      // prevent comparison of a date object and JSON string
+      example.date = example.date.toGMTString()
+      // prevent omitting of undefined in the JSON snapshot
+      example.name = example.name || 'undefined'
+      return { ...date }
+    }
+  },
+  async 'creates a correct instance'() {
+    const instance = new Example('test', true)
+    return instance
+  },
+}
+```
