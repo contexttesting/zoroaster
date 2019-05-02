@@ -27,6 +27,16 @@ export const errors = makeTestSuite('test/result/errors', {
   },
 })
 
+export const errorsFixtures = makeTestSuite('test/result/errors-fixtures', {
+  context: TempContext,
+  fork: {
+    module: ZOROASTER,
+    preprocess: {
+      stdout: getSnapshot,
+    },
+  },
+})
+
 export const watch = makeTestSuite('test/result/watch', {
   context: TempContext,
   fork: {

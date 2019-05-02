@@ -5,17 +5,12 @@ import rm from '@wrote/rm'
 import { c } from 'erte'
 import { confirm } from 'reloquent'
 import { inspect } from 'util'
-import Stream from 'stream'
-import { collect } from 'catchment'
 
 const removeFocus = n => n.replace(/^!/, '')
 
 const handleSnapshot = async (result, name, path, snapshotDir = '', snapshotRoot = [], interactive = false, extension = 'txt') => {
   const nn = removeFocus(name)
   const n = nn.replace(/ /g, '-')
-  if (result instanceof Stream) {
-    result = await collect(/** @type {stream.Readable} */ (result))
-  }
   const isString = typeof result == 'string'
   const ext = isString ? extension : 'json'
   const snapshotFilename = `${n}.${ext}`

@@ -10,19 +10,17 @@
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/src/bin/index.js",
       "env": {
-        "DEBUG": "1",
         // "ALAMODE_ENV": "test-build"
       },
       "args": [
+        // "../../adc/typal/test/spec/Typal.js",
+        "test/fixture/stream-errors.js",
         // "test/temp/test.js",
-        "test/spec",
-        "test/mask",
-        "-s", "test/snapshot",
+        // "test/spec",
+        // "test/mask",
+        // "-s", "test/snapshot",
         // "test/fixture/snapshot/service.js",
-        "-a",
-        "-w",
-        "-t",
-        "999999999"
+        "-a", "-w", "-t", "999999999"
       ],
       "console": "integratedTerminal",
       "skipFiles": [

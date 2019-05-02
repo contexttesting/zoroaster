@@ -44,23 +44,28 @@ async function runTestAndNotify(notify, path, { name, context, fn, timeout, pers
       return c
     }
   })
-  let res; const h = (err) => {
+  let catchment
+  let res; const h = (type, err) => {
+    if (catchment) return catchment.emit('error', err)
     error = err
   }
   if (!error) {
-    process.once('uncaughtException', h)
-    process.once('unhandledRejection', h)
+    process.once('uncaughtException', h.bind(null, 'uncaught'))
+    process.once('unhandledRejection', h.bind(null, 'unhandled'))
     try {
       res = await runTest({
         context: testContext,
         persistentContext,
         fn,
         timeout,
+        onCatchment(c) {
+          catchment = c
+        },
       })
       let { result, error: testError } = res
       // if wasn't an unhandled one
       if (!error) error = testError
-      if (!testError) {
+      if (!error) {
         try {
           if (result !== undefined && serialise) result = serialise(result)
           await handleSnapshot(result,

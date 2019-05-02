@@ -3,6 +3,8 @@
 ### [4.1.0-alpha](https://github.com/contexttesting/zoroaster/compare/v4.0.0-alpha...v4.1.0-alpha)
 
 - [fix] Fix the watch mode with service context.
+- [fix] Allow snapshots to focus on test suites.
+- [fix] Catch unhandled async errors when streams are returned (close [#63](https://github.com/contexttesting/zoroaster/issues/63)).
 - [feature] Allow to serialise snapshots.
 
 ### [4.0.0-alpha](https://github.com/contexttesting/zoroaster/compare/v3.13.0...v4.0.0-alpha)
