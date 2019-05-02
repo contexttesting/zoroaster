@@ -131,9 +131,9 @@
   integrity sha512-WATg0lOQyLooRajTrnNUnteBQwXuJ+K7vMRMoUSfUcNkNtDQz7HArPnnMIxrVpvqIgNl15KB2u4vx/5QaE6zmg==
 
 alamode@^2.0.0, alamode@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.0.tgz#49c2bee5051a4e69cb67809dbc17421a251044b7"
-  integrity sha512-GIq4i6IMUs8qfT9vDS4JG09oFYFi6g9CuIqFN6YKvCMiL+aoFsmmP8P+2ccQZY7v2xRr76vP8p91INTZz2iViw==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.1.tgz#d8c8b2745cd9cedd1aa292b7dfb860779024a66d"
+  integrity sha512-4LrtXymoO0jIYIWgiVoWA8yndE1cSD7q1nW68/C+DhnnEE/jx9yOaE1eCRdBdv4aFVAajYgCQ7Gw6xnEvYJ0Aw==
 
 argufy@^1.7.0:
   version "1.7.0"

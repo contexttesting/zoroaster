@@ -10,4 +10,4 @@ _The tests can use the context testing API:_
 
 %FORK src/bin/zoroaster example/Zoroaster/test/spec/async-context.js%
 
-%~ width="15"%
+%~ width="25"%

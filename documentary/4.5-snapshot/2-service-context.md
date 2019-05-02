@@ -71,23 +71,10 @@ Whenever the snapshot does not match the output of the test, or its type (string
 
 The `static serialise` method can be overridden to provide the serialisation strategy for tests. The _deepEqual_ method from the `@zoroaster/assert` package will compare objects for deep strict equality, so that when an instance of a class returned by the test, the test will fail because the instance will be of its type, whereas the expected value will be of type _Object_. To solve that, the `serialise` method can be implemented.
 
-```js
-import Example from '../src/Example'
+%EXAMPLE: example/serialise/spec, ../../src => zoroaster%
 
-export default {
-  context: class extends Zoroaster {
-    /** @param {Example} example **/
-    static serialise(example) {
-      // prevent comparison of a date object and JSON string
-      example.date = example.date.toGMTString()
-      // prevent omitting of undefined in the JSON snapshot
-      example.name = example.name || 'undefined'
-      return { ...date }
-    }
-  },
-  async 'creates a correct instance'() {
-    const instance = new Example('test', true)
-    return instance
-  },
-}
-```
+<details>
+<summary>Show Output</summary>
+
+%FORK src/bin/zoroaster example/serialise/spec.js -s example/serialise/ -a -r example/serialise/spec%
+</details>

@@ -1,5 +1,10 @@
 ## 2 May 2019
 
+### [4.1.0-alpha](https://github.com/contexttesting/zoroaster/compare/v4.0.0-alpha...v4.1.0-alpha)
+
+- [fix] Fix the watch mode with service context.
+- [feature] Allow to serialise snapshots.
+
 ### [4.0.0-alpha](https://github.com/contexttesting/zoroaster/compare/v3.13.0...v4.0.0-alpha)
 
 - [build] Build the package with _Depack_, reduce dependencies to 3.

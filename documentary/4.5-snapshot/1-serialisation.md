@@ -33,4 +33,4 @@ You can therefore implement your own serialisation (but a better serialisation i
   // ...
 ```
 
-%~ width="15"% -->
+%~ width="25"% -->

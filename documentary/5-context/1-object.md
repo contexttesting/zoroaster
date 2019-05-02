@@ -5,4 +5,4 @@ When specified as an object, the context it will be frozen and passed to test ca
 %EXAMPLE: example/Zoroaster/test/spec/object-context%
 %FORK src/bin/zoroaster -a example/Zoroaster/test/spec/object-context.js%
 
-%~ width="15"%
+%~ width="25"%

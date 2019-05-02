@@ -515,7 +515,7 @@ example/reporting
 🦅  Executed 12 tests.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="25"></a></p>
 
 ### `--watch`, `-w`: Watch Files for Changes
 
@@ -528,13 +528,13 @@ zoroaster test/spec -w
 
 After a change to a file happens, _Zoroaster_ will clear all dependencies and run tests again. It will not, however, clear the `node_modules` dependencies, so that if another package that was used in the project previously was updated to a newer version, the test runner will have to be restarted.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="25"></a></p>
 
 ### `--timeout`, `-t`: Timeout
 
 Sets the global timeout for each test in ms. The default timeout is `2000ms`.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="25"></a></p>
 
 ### `--alamode`, `-a`: `require('alamode)()`
 
@@ -597,7 +597,7 @@ yarn add -E -D \
 
 However, the above set-up can be easily achieved with _ÀLaMode_ which has much less dependencies than `Babel` and is faster. This option therefore should be used for cases when more advanced transforms need to be added.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="25"></a></p>
 
 ### `--snapshot`, `-s`
 
@@ -607,7 +607,7 @@ Sets the root snapshot directory, with `test/snapshot` as the default. For examp
 
 When generating snapshots, ignores the initial part of the path that matched the root. The default value is `test/spec,test/mask`, so that the snapshot from the example above would actually be saved at `test/snapshot/test-suite/the-name-of-the-test.txt`.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="25"></a></p>
 
 ### package.json
 
@@ -666,7 +666,7 @@ export default TestSuite
 
 ![Zoroaster Snapshot Example](doc/snapshot.gif)
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true" width="25"></a></p>
 
 
 
@@ -744,25 +744,93 @@ Whenever the snapshot does not match the output of the test, or its type (string
 The `static serialise` method can be overridden to provide the serialisation strategy for tests. The _deepEqual_ method from the `@zoroaster/assert` package will compare objects for deep strict equality, so that when an instance of a class returned by the test, the test will fail because the instance will be of its type, whereas the expected value will be of type _Object_. To solve that, the `serialise` method can be implemented.
 
 ```js
-import Example from '../src/Example'
+import Zoroaster from 'zoroaster'
+import Example from './Example'
 
-export default {
+export const withSerialisation = {
   context: class extends Zoroaster {
     /** @param {Example} example **/
     static serialise(example) {
       // prevent comparison of a date object and JSON string
-      example.date = example.date.toGMTString()
+      example.created = example.created.toGMTString()
       // prevent omitting of undefined in the JSON snapshot
-      example.name = example.name || 'undefined'
-      return { ...date }
+      Object.keys(example).forEach((key) => {
+        const val = example[key]
+        example[key] = val === undefined ? 'undefined' : val
+      })
+      return { ...example }
     }
   },
-  async 'creates a correct instance'() {
+  async 'serialises dates'() {
     const instance = new Example('test', true)
+    return instance
+  },
+  async 'records missing properties'() {
+    const instance = new Example()
+    return instance
+  },
+}
+
+export const withoutSerialisation = {
+  async 'serialises dates'() {
+    const instance = new Example('test', true)
+    return instance
+  },
+  async 'records missing properties'() {
+    const instance = new Example()
     return instance
   },
 }
 ```
+
+<details>
+<summary>Show Output</summary>
+
+```
+example/serialise/spec.js
+   withSerialisation
+    ✓  serialises dates
+    ✓  records missing properties
+   withoutSerialisation
+    ✗  serialises dates
+    | AssertionError [ERR_ASSERTION]: Example {
+    |   name: 'test',
+    |   isExample: true,
+    |   created: 2019-05-31T21:00:00.000Z } deepStrictEqual { name: 'test',
+    |   isExample: true,
+    |   created: '2019-05-31T21:00:00.000Z' }
+    | - Object
+    | + Example
+    ✗  records missing properties
+    | AssertionError [ERR_ASSERTION]: Example {
+    |   name: undefined,
+    |   isExample: undefined,
+    |   created: 2019-05-31T21:00:00.000Z } deepStrictEqual { created: '2019-05-31T21:00:00.000Z' }
+    | - Object
+    | + Example
+
+example/serialise/spec.js > withoutSerialisation > serialises dates
+  AssertionError [ERR_ASSERTION]: Example {
+    name: 'test',
+    isExample: true,
+    created: 2019-05-31T21:00:00.000Z } deepStrictEqual { name: 'test',
+    isExample: true,
+    created: '2019-05-31T21:00:00.000Z' }
+  - Object
+  + Example
+
+example/serialise/spec.js > withoutSerialisation > records missing properties
+  AssertionError [ERR_ASSERTION]: Example {
+    name: undefined,
+    isExample: undefined,
+    created: 2019-05-31T21:00:00.000Z } deepStrictEqual { created: '2019-05-31T21:00:00.000Z' }
+  - Object
+  + Example
+
+🦅  Executed 4 tests: 2 errors.
+```
+</details>
+
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
@@ -819,7 +887,7 @@ example/Zoroaster/test/spec/object-context.js
 🦅  Executed 3 tests.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true" width="25"></a></p>
 
 ### Class Context
 
@@ -884,7 +952,7 @@ example/Zoroaster/test/spec/async-context.js
 🦅  Executed 1 test.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/14.svg?sanitize=true" width="25"></a></p>
 
 ### Multiple Contexts
 
@@ -920,7 +988,7 @@ export default T
 
 > **Only contexts** specified in the test functions' arguments will be evaluated. For example, if the test suite contains 2 contexts, `A` and `B`, the test `test caseA(A, B)` will have both contexts evaluated and available to it, `testCaseB(A)` will only have context `A` evaluated, and `testCase()` will not lead to evaluation of any contexts. This means that functions with variable lengths like `test(...contexts)` will not have any contexts evaluated for them. This is done to avoid unnecessary work when some tests in a test suite might need access to all contexts, whereas others don't.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/15.svg?sanitize=true" width="25"></a></p>
 
 ### Persistent Context
 

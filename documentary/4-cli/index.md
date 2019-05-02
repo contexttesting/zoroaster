@@ -36,4 +36,4 @@ _The reporter will produce the following output:_
 
 %FORK-fs src/bin/zoroaster example/reporting -a%
 
-%~ width="15"%
+%~ width="25"%

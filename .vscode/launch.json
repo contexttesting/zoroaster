@@ -56,17 +56,14 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Example",
-      "program": "${workspaceFolder}/src/bin/alamode.js",
+      "program": "${workspaceFolder}/src/bin/index.js",
       "env": {
         "DEBUG": "1",
       },
       "args": [
-        "example/Zoroaster/test/spec",
-        "example/Zoroaster/test/mask",
-        "-a",
-        "-w",
-        "-t",
-        "999999999"
+        "example/serialise/spec.js",
+        "-a", "-w", "-t", "999999999",
+        "-s", "example/serialise/", "-r", "example/serialise/spec"
       ],
       "console": "integratedTerminal",
       "skipFiles": [

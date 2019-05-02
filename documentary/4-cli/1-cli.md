@@ -9,13 +9,13 @@ zoroaster test/spec -w
 
 After a change to a file happens, _Zoroaster_ will clear all dependencies and run tests again. It will not, however, clear the `node_modules` dependencies, so that if another package that was used in the project previously was updated to a newer version, the test runner will have to be restarted.
 
-%~ width="15"%
+%~ width="25"%
 
 ### `--timeout`, `-t`: Timeout
 
 Sets the global timeout for each test in ms. The default timeout is `2000ms`.
 
-%~ width="15"%
+%~ width="25"%
 
 ### `--alamode`, `-a`: `require('alamode)()`
 
@@ -78,7 +78,7 @@ yarn add -E -D \
 
 However, the above set-up can be easily achieved with _ÀLaMode_ which has much less dependencies than `Babel` and is faster. This option therefore should be used for cases when more advanced transforms need to be added.
 
-%~ width="15"%
+%~ width="25"%
 
 ### `--snapshot`, `-s`
 
@@ -88,7 +88,7 @@ Sets the root snapshot directory, with `test/snapshot` as the default. For examp
 
 When generating snapshots, ignores the initial part of the path that matched the root. The default value is `test/spec,test/mask`, so that the snapshot from the example above would actually be saved at `test/snapshot/test-suite/the-name-of-the-test.txt`.
 
-%~ width="15"%
+%~ width="25"%
 
 ### package.json
 

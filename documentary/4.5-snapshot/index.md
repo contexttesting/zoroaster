@@ -6,4 +6,4 @@ If a test returned some data, it will be saved in snapshots' directory in a file
 
 ![Zoroaster Snapshot Example](doc/snapshot.gif)
 
-%~ width="15"%
+%~ width="25"%
