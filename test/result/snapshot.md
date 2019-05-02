@@ -99,3 +99,12 @@ console.log(`hello world`)
 
 console.log(`hello world2`)
 /**/
+
+## can focus on the test suite
+-a test/fixture/snapshot/focus.js
+
+/* expected */
+# test/fixture/snapshot/focus/focused test suite/test.json
+
+100
+/**/
