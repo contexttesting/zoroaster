@@ -13,7 +13,7 @@
     "test-all": "yarn-s test test-build",
     "b": "alamode src/index.js -o depack -s",
     "doc": "NODE_DEBUG=doc doc -o README.md",
-    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack src/bin/zoroaster.js -c -a -p -o depack/bin -s --externs node_modules/@zoroaster/types/externs.js",
+    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack src/bin/zoroaster.js -c -a -p -o depack/bin -s --externs node_modules/@zoroaster/types/externs.js --source_map_include_content",
     "build": "yarn-s d b doc",
     "d1": "NODE_DEBUG=doc doc src/lib/make-test-suite.js -g",
     "d": "yarn-s d1",
