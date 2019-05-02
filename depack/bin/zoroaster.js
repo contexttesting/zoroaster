@@ -1048,7 +1048,7 @@ function Qb(a, b) {
 }
 ;function Tb() {
   Object.keys(require.cache).forEach(a => {
-    ra("", a).startsWith("node_modules") || delete require.cache[a];
+    ra("", a).startsWith("node_modules") || a == require.resolve("../") || delete require.cache[a];
   });
 }
 const Vb = async(a, b) => {

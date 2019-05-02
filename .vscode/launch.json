@@ -92,17 +92,13 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Zoroaster Build",
-      "program": "${workspaceFolder}/build/bin/index.js",
+      "name": "Launch For Package",
+      "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
-        "test/spec/index.js",
-        "-w",
-        "-a"
+        "test/spec/Property.js",
+        "-w", "-a", "-t", "9999999"
       ],
-      "env": {
-        "ALAMODE_ENV": "test-debug",
-        "ZOROASTER_TIMEOUT": "9999999"
-      },
+      "cwd": "${workspaceFolder}/../../adc/typal",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"

@@ -11,7 +11,7 @@ import { replaceFilename } from './'
 export function clearRequireCache() {
   Object.keys(/** @type {!Object} */ (require.cache)).forEach((key) => {
     const p = relative('', key)
-    if (!p.startsWith('node_modules')) {
+    if (!p.startsWith('node_modules') && key != require.resolve('../')) {
       delete require.cache[key]
     }
   })
