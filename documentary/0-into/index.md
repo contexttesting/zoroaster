@@ -8,14 +8,14 @@ _Zoroaster_ does not have many dependencies and does not install Babel, yet it i
 
 ```table
 [
-  ["Framework", "Fetching Packages", "Linking Dependencies", "Disk Size", "Node Modules Dirs", "yarn.lock Lines", "Downloads],
+  ["Framework", "Fetching", "Linking", "Disk", "Node_Module Dirs", "yarn.lock Lines", "Downloads"],
   ["Jest", "485", "7407", "59.75MB", "420", "3614", "3,713,921"],
   ["Mocha", "115", "2016", "12.17MB", "103", "785", "2,523,262"],
   ["Jasmine", "13", "106", "896KB", "13", "88", "1,040,918"],
   ["Tape", "33", "506", "2.85MB", "33", "228", "411,483"],
   ["Ava", "462", "6605", "34.34MB", "378", "3281", "122,355"],
   ["Tap", "469", "7905", "94.12MB", "407", "3375", "101,879"],
-  ["Zoroaster", "4", "31", "448KB", "3", "27", "1096"],
+  ["Zoroaster", "4", "31", "448KB", "3", "27", "1096"]
 ]
 ```
 

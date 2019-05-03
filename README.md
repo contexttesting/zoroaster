@@ -31,7 +31,7 @@ npm i --save-dev zoroaster
   * [Allows To Write Set-Ups And Tear-Downs In Separate Files](#allows-to-write-set-ups-and-tear-downs-in-separate-files)
   * [Supports Masks To Only Write Inputs/Outputs](#supports-masks-to-only-write-inputsoutputs)
   * [Was Made To Test Forks](#was-made-to-test-forks)
-  * [Supports Snapshots](#supports-snapshots)
+  * [Supports Snapshots And Streams](#supports-snapshots-and-streams)
 - [Quick Example](#quick-example)
 - [Why Use Zoroaster](#why-use-zoroaster)
   * [Each Directory is a Test Suite](#each-directory-is-a-test-suite)
@@ -74,18 +74,15 @@ _Zoroaster_ is the most modern _Node.JS_ testing framework that addresses the fu
 
 _Zoroaster_ does not have many dependencies and does not install Babel, yet it is able to run tests with `import/export` statements. Having less dependencies in `node_modules` means that any new dependencies needed for the project will be installed immediately without having to wait for the linking to complete, and new projects can be started in seconds, without having to resolve all dependencies for a testing framework. Furthermore, _Zoroaster_ only loads 3 JavaScript files, that is itself (1000 lines of code optimised with _Google Closure Compiler_), the interface for a service context (34 lines) and the _RegExp-based_ algorithm to transpile `import/export` statements (when the `-a` option is passed) which is also optimised. The tests will start and run in milliseconds.
 
-```table
-[
-  ["Framework", "Fetching Packages", "Linking Dependencies", "Disk Size", "Node Modules Dirs", "yarn.lock Lines", "Downloads],
-  ["Jest", "485", "7407", "59.75MB", "420", "3614", "3,713,921"],
-  ["Mocha", "115", "2016", "12.17MB", "103", "785", "2,523,262"],
-  ["Jasmine", "13", "106", "896KB", "13", "88", "1,040,918"],
-  ["Tape", "33", "506", "2.85MB", "33", "228", "411,483"],
-  ["Ava", "462", "6605", "34.34MB", "378", "3281", "122,355"],
-  ["Tap", "469", "7905", "94.12MB", "407", "3375", "101,879"],
-  ["Zoroaster", "4", "31", "448KB", "3", "27", "1096"],
-]
-```
+| Framework | Fetching | Linking |  Disk   | Node_Module Dirs | yarn.lock Lines | Downloads |
+| --------- | -------- | ------- | ------- | ---------------- | --------------- | --------- |
+| Jest      | 485      | 7407    | 59.75MB | 420              | 3614            | 3,713,921 |
+| Mocha     | 115      | 2016    | 12.17MB | 103              | 785             | 2,523,262 |
+| Jasmine   | 13       | 106     | 896KB   | 13               | 88              | 1,040,918 |
+| Tape      | 33       | 506     | 2.85MB  | 33               | 228             | 411,483   |
+| Ava       | 462      | 6605    | 34.34MB | 378              | 3281            | 122,355   |
+| Tap       | 469      | 7905    | 94.12MB | 407              | 3375            | 101,879   |
+| Zoroaster | 4        | 31      | 448KB   | 3                | 27              | 1096      |
 
 Compared to the other frameworks, _Jasmine_ test runner is the next most-lightweight one, followed by modest _Tape_ and _Mocha_, however they don't support snapshots and don't work with ES6 modules out of the box. However, there is no browser version of `zoroaster` at the moment.
 
@@ -105,7 +102,7 @@ A test is a function which passes inputs to a method and compares the output to 
 
 Creating CLI Node.JS applications is fun. Testing them is not so much, because there is always the need to create new child processes, manage their state, interact with them somehow and then assert on inputs and outputs. In addition to simple mask testing, _Zoroaster_ has a special configuration object that can be passed to the mask called `fork`, where it is possible to specify what module to fork, what options to pass to it and even what inputs should be entered into its `stdin` when a value matching a `RegExp` comes up. The arguments are taken from the mask result ("the plain file") input, and compared to `stdout` and `stderr` properties of the result. Now all the developers have to do is write their arguments, configure options, possibly use test context (such as `temp-context` to create and delete temp directories and get their snapshots by the end of the test) and supply the expected output of the CLI program.
 
-### Supports Snapshots
+### Supports Snapshots And Streams
 
 Although some people don't approve of snapshot testing, it is an extremely useful tool for regression testing. There is no difference between writing asserts within specs, specifying them in masks, or returning them in snapshots, except that in the first case it takes a lot of manual labour, in the second case they are more visible, and in the third case they only require a second to write, but provide the robust mechanism against unexpected changes in the future, and thus are a good regression testing strategy. There is no additional methods to be called to create a snapshot, tests only need to return a value. Moreover, snapshots' file extension can be specified so that they can be naturally inspected with syntax highlighting in the IDE (e.g., for markdown files), and custom serialisation algorithms can be implemented. If a test returns a stream, its data will also be collected prior to being tested against a snapshot.
 
