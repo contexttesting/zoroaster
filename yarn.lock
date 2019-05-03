@@ -113,10 +113,10 @@
   dependencies:
     differently "^1.0.0"
 
-"@zoroaster/mask@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.0.4.tgz#b3f9dc73bd16aa1ed01f94f4ca0d22acc9b68a01"
-  integrity sha512-/+vTebr3pf7+2iSYZg2PClxgyHRxBGI9NH/8vnML0gEJcMWkRMR/K7mXIqVd6NT+Ew+PXxuOt4V8iJSSU1JQEg==
+"@zoroaster/mask@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.1.0.tgz#7d6fcefba45e0ed98d43f711aef5045be477b84f"
+  integrity sha512-9cPbtS54n6mgGl8OYb7x0gStrpPDLQ8JYWgOTY3nnhRcN+xBTXTB40f/DSc8jWTMAqfVpdE9lClAMy5niTkoXw==
 
 "@zoroaster/reducer@^1.3.0":
   version "1.3.0"
@@ -131,7 +131,7 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/types/-/types-1.0.0.tgz#af2d7f00c13ca8423c59db043a49a533ce574207"
   integrity sha512-WATg0lOQyLooRajTrnNUnteBQwXuJ+K7vMRMoUSfUcNkNtDQz7HArPnnMIxrVpvqIgNl15KB2u4vx/5QaE6zmg==
 
-alamode@^2.0.0, alamode@^2.1.0:
+alamode@^2.0.0, alamode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.1.tgz#d8c8b2745cd9cedd1aa292b7dfb860779024a66d"
   integrity sha512-4LrtXymoO0jIYIWgiVoWA8yndE1cSD7q1nW68/C+DhnnEE/jx9yOaE1eCRdBdv4aFVAajYgCQ7Gw6xnEvYJ0Aw==
