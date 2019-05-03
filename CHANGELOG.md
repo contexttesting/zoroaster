@@ -1,3 +1,9 @@
+## 3 May 2019
+
+### [4.1.1-alpha](https://github.com/contexttesting/zoroaster/compare/v4.1.0-alpha...v4.1.1-alpha)
+
+- [package] Remove source maps until VSCode supports proper debugging [#73197](https://github.com/Microsoft/vscode/issues/73197).
+
 ## 2 May 2019
 
 ### [4.1.0-alpha](https://github.com/contexttesting/zoroaster/compare/v4.0.0-alpha...v4.1.0-alpha)
