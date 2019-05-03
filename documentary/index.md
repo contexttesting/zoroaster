@@ -14,16 +14,12 @@ For example, you can make use of `https-context` to set-up a mock HTTP server wi
 ---
 
 ```fs
-yarn add -DE zoroaster
+yarn add -D zoroaster
 ```
 
 ```fs
 npm i --save-dev zoroaster
 ```
-
-<p align="center">
-  <img src="doc/z.gif" alt="Zoroaster Test Example With JSDoc Context API">
-</p>
 
 %~%
 
