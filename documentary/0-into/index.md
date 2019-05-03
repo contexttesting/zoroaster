@@ -35,8 +35,8 @@ A test is a function which passes inputs to a method and compares the output to 
 
 <table>
 <tr><th>Mask</th><th>Mask Result</th></tr>
-<tr><td><img src="doc/why/mask.gif" alt="The JS Mask Setup Function"/>
-</td><td><img src="doc/why/mask-result.gif" alt="The Markdown Mask Result"/>
+<tr><td><img src="doc/why/mask1.gif" alt="The JS Mask Setup Function"/>
+</td><td><img src="doc/why/mask-result1.gif" alt="The Markdown Mask Result"/>
 </td></tr>
 <tr><td><md2html>
 
