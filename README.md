@@ -101,7 +101,7 @@ A test is a function which passes inputs to a method and compares the output to 
 <table>
 <tr><th>Mask</th><th>Mask Result</th></tr>
 <tr><td><img src="doc/why/mask1.gif" alt="The JS Mask Setup Function"/>
-</td><td><img src="doc/why/mask-result2.gif" alt="The Markdown Mask Result"/>
+</td><td><img src="doc/why/mask-result3.gif" alt="The Markdown Mask Result"/>
 </td></tr>
 <tr><td>The mask uses the <code>makeTestSuite</code> method to create a test suite with multiple tests which perform the same logic, but for different inputs. Here, we use the <code>getTransform</code> property to create a stream which will find a certain marker in the code which points to the location of types.xml file, and read that file to embed JSDoc documentation. We also make use of the TempContext which writes the <code>types</code> property of the mask into a temp file.</td>
 <td>After the mask is setup once, we can add as many tests as we want in the mask result file easily. Because the <code>getTransform</code> property was specified, the transform stream returned by it will be ended with the result's input, and the output collected and compared against the <code>expected</code> property of the mask. We use a custom <code>propStart</code> and <code>propEnd</code> regular expressions that split properties by <code>/*@</code> (start) and <code>/*@*/</code> (end), because the default is <code>/*</code> (start) and <code>/**/</code> (end) which would interfere with generated JSDoc.</td>
