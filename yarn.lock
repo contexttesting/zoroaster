@@ -101,10 +101,10 @@
   dependencies:
     erotic "^2.1.0"
 
-"@zoroaster/assert@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@zoroaster/assert/-/assert-1.0.1.tgz#e34ec5d7814ea4adc338f9b495875cc49e197719"
-  integrity sha512-keIL3KYKBx9G4IJkY1opOAuz0y/gwGZX29FR0ZLOY4aIcwRn37F28lSjcTGlbZEXdf5wzXbVHF4T/2BZZ9yWkQ==
+"@zoroaster/assert@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@zoroaster/assert/-/assert-1.0.2.tgz#8ffe2ebb10c81d570d4965080f942af688321a1f"
+  integrity sha512-5C0LDzW8DkiSSCLyYO9ux3R5ru65yEn/GtxH1wh7ukRhLAZ/Svx4+A81YvciXcn35B2VmvCqyiTrhNdxdgusSw==
 
 "@zoroaster/deep-equal@^1.0.1":
   version "1.0.1"
@@ -113,10 +113,10 @@
   dependencies:
     differently "^1.0.0"
 
-"@zoroaster/mask@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.1.0.tgz#7d6fcefba45e0ed98d43f711aef5045be477b84f"
-  integrity sha512-9cPbtS54n6mgGl8OYb7x0gStrpPDLQ8JYWgOTY3nnhRcN+xBTXTB40f/DSc8jWTMAqfVpdE9lClAMy5niTkoXw==
+"@zoroaster/mask@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.1.1.tgz#b3dc6fc01126802956780d6e98102d80a51f9652"
+  integrity sha512-V2n0h1RuVdaoz9JQpXeRktO6cEkjpHjbqHwp4HDHD1yix35QxBg+IQm/V5osjkG7Lvt80RDSFzMR4CI2QTW53Q==
 
 "@zoroaster/reducer@^1.3.0":
   version "1.3.0"
@@ -131,10 +131,10 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/types/-/types-1.0.0.tgz#af2d7f00c13ca8423c59db043a49a533ce574207"
   integrity sha512-WATg0lOQyLooRajTrnNUnteBQwXuJ+K7vMRMoUSfUcNkNtDQz7HArPnnMIxrVpvqIgNl15KB2u4vx/5QaE6zmg==
 
-alamode@^2.0.0, alamode@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.1.tgz#d8c8b2745cd9cedd1aa292b7dfb860779024a66d"
-  integrity sha512-4LrtXymoO0jIYIWgiVoWA8yndE1cSD7q1nW68/C+DhnnEE/jx9yOaE1eCRdBdv4aFVAajYgCQ7Gw6xnEvYJ0Aw==
+alamode@^2.0.0, alamode@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.1.2.tgz#9a9e57f3d9e8d0c54fbab69b85c496d7beb28f4a"
+  integrity sha512-gARgN8GfKzgLHfJ+32ax/BESHHYgJ+svT3wJJ0Zl8kMhriq3/gSTojEZlpDtIBya5Q4mVGALBteQ7axbuFNmnw==
 
 argufy@^1.7.0:
   version "1.7.0"

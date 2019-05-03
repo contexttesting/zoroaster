@@ -54,9 +54,9 @@
   },
   "homepage": "https://github.com/artdecocode/zoroaster#readme",
   "dependencies": {
-    "@zoroaster/assert": "^1.0.1",
-    "@zoroaster/mask": "^2.1.0",
-    "alamode": "^2.1.1"
+    "@zoroaster/assert": "^1.0.2",
+    "@zoroaster/mask": "^2.1.1",
+    "alamode": "^2.1.2"
   },
   "devDependencies": {
     "@a-la/fixture-alamode": "1.0.0",
