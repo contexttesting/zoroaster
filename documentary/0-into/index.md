@@ -33,6 +33,20 @@ One of the disadvantages of conventional testing frameworks is that they force d
 
 A test is a function which passes inputs to a method and compares the output to the expected one. A single method can receive 1000s different inputs, including edge cases. Normally, each input would be added as a new test, where the same logic is repeated to run the method. _Zoroaster_ eliminates the need to repeat the same code over and over again, and allows to focus on only adding new inputs to the existing test base to cover larger search field of the method under test. The routine to create tests, or test constructor is called a mask and is written in JavaScript, whereas the test input/outputs and any additional parameters can be written in plain text, such as `markdown`. Mask testing in _Zoroaster_ is highly configurable, and combined with contexts provides the quickest, easiest and most flexible way to complete test coverage. Testing streams is also possible with masks &mdash; it is only required to write the `getTransform` or `getReadable` methods, and the output will be automatically collected and compared against the expected mask result.
 
+<table>
+<tr><th>Mask</th><th>Mask Result</th></tr>
+<tr><td><img src="doc/mask.png" alt="The JS Mask Setup"/>
+</td><td><img src="doc/mask-result.png" alt="The Markdown Mask Result"/>
+</td></tr>
+<tr><td><md2html>
+
+The mask uses the `makeTestSuite` method to create a test suite with multiple tests which perform the same logic, but for different inputs. Here, we use the `getTransform` property to create a stream which will find a certain marker in the code which points to the location of types.xml file, and read that file to embed JSDoc documentation. We also make use of the TempContext which writes the `types` property of the mask into a temp file.</md2html></td>
+<td><md2html>
+
+After the mask is setup once, we can add as many tests as we want in the mask result file easily. Because the `getTransform` property was specified, the transform stream returned by it will be ended with the result's input, and the output collected and compared against the `expected` property of the mask. We use a custom `propStart` and `propEnd` regular expressions that split properties by `/*@` (start) and `/*@*/` (end), because the default is `/*` (start) and `/**/` (end) which would interfere with generated JSDoc.</md2html></td>
+</tr>
+</table>
+
 ### Was Made To Test Forks
 
 Creating CLI Node.JS applications is fun. Testing them is not so much, because there is always the need to create new child processes, manage their state, interact with them somehow and then assert on inputs and outputs. In addition to simple mask testing, _Zoroaster_ has a special configuration object that can be passed to the mask called `fork`, where it is possible to specify what module to fork, what options to pass to it and even what inputs should be entered into its `stdin` when a value matching a `RegExp` comes up. The arguments are taken from the mask result ("the plain file") input, and compared to `stdout` and `stderr` properties of the result. Now all the developers have to do is write their arguments, configure options, possibly use test context (such as `temp-context` to create and delete temp directories and get their snapshots by the end of the test) and supply the expected output of the CLI program.

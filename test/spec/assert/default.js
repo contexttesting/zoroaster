@@ -26,9 +26,8 @@ const T = {
     try {
       testAssert(false)
       throw new Error('should have thrown')
-    } catch (error) {
-      const message = error.message
-      equal(message, 'false == true')
+    } catch ({ code }) {
+      equal(code, 'ERR_ASSERTION')
     }
   },
 }
