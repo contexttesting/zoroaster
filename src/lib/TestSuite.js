@@ -12,7 +12,9 @@ function hasParent({ parent }) {
 /**
  * @param {!Array<string>} names
  */
-const hasFocused = names => names.some(n => n.startsWith('!'))
+const hasFocused = names => names.some(n => {
+  return n.startsWith('!') || n.startsWith('$')
+})
 
 /**
  * Returns the full array of names within a test suite.
@@ -148,7 +150,7 @@ export default class TestSuite {
     return this._names
   }
   get isFocused() {
-    return this.name.startsWith('!')
+    return this.name.startsWith('!') || this.name.startsWith('$')
   }
 
   // /**
