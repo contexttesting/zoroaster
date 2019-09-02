@@ -1,3 +1,11 @@
+## 2 September 2019
+
+### [4.1.2](https://github.com/contexttesting/zoroaster/compare/v4.1.1-alpha...v4.1.2)
+
+- [deps] Upgrade deps w/ _ÀLaMode 3_.
+- [feature] Allow to focus with `$`.
+- [docs] Create Wiki.
+
 ## 3 May 2019
 
 ### [4.1.1-alpha](https://github.com/contexttesting/zoroaster/compare/v4.1.0-alpha...v4.1.1-alpha)
