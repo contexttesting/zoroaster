@@ -1,3 +1,13 @@
+## Wiki
+
+- [CLI Usage](../../wiki/CLI)
+- [Assertions](../../wiki/Assert)
+- [Contexts](../../wiki/Contexts)
+- [Snapshots](../../wiki/Snapshots)
+
+
+%~%
+
 <!-- ## TODO
 
 1. JS API
@@ -41,7 +51,6 @@
 [2]: #assertion-library
 [3]: https://zoroaster.co.uk
 [4]: https://zoroaster.co.uk/playground
-[5]: https://npmjs.org/package/assert-throws
 
 <p align="right"><img width="100" src="doc/end.jpg" alt="The End"></p>
 

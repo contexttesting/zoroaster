@@ -31,7 +31,7 @@ One of the disadvantages of conventional testing frameworks is that they force d
   <img src="doc/z.gif" alt="Zoroaster Test Example With JSDoc Context API">
 </p>
 
-<a href="documentation/contexts.md"><kbd>Read Context Testing Documentation ></kbd></a>
+<a href="../../wiki/contexts"><kbd>🏭 Read Context Testing Wiki ></kbd></a>
 
 %~ width="25"%
 
@@ -54,7 +54,7 @@ After the mask is setup once, we can add as many tests as we want in the mask re
 </tr>
 </table>
 
-<a href="documentation/masks.md"><kbd>Read Mask Testing Documentation ></kbd></a>
+<a href="../../wiki/masks"><kbd>🎭 Read Mask Testing Wiki ></kbd></a>
 
 %~ width="25"%
 
@@ -62,7 +62,7 @@ After the mask is setup once, we can add as many tests as we want in the mask re
 
 Creating CLI Node.JS applications is fun. Testing them is not so much, because there is always the need to create new child processes, manage their state, interact with them somehow and then assert on inputs and outputs. In addition to simple mask testing, _Zoroaster_ has a special configuration object that can be passed to the mask called `fork`, where it is possible to specify what module to fork, what options to pass to it and even what inputs should be entered into its `stdin` when a value matching a `RegExp` comes up. The arguments are taken from the mask result ("the plain file") input, and compared to `stdout` and `stderr` properties of the result. Now all the developers have to do is write their arguments, configure options, possibly use test context (such as `temp-context` to create and delete temp directories and get their snapshots by the end of the test) and supply the expected output of the CLI program.
 
-<a href="documentation/snapshots.md"><kbd>Read Fork Documentation ></kbd></a>
+<a href="../../wiki/forks"><kbd>🍴 Read Forks Wiki ></kbd></a>
 
 %~ width="25"%
 
@@ -70,7 +70,7 @@ Creating CLI Node.JS applications is fun. Testing them is not so much, because t
 
 Although some people don't approve of snapshot testing, it is an extremely useful tool for regression testing. There is no difference between writing asserts within specs, specifying them in masks, or returning them in snapshots, except that in the first case it takes a lot of manual labour, in the second case they are more visible, and in the third case they only require a second to write, but provide the robust mechanism against unexpected changes in the future, and thus are a good regression testing strategy. There is no additional methods to be called to create a snapshot, tests only need to return a value. Moreover, snapshots' file extension can be specified so that they can be naturally inspected with syntax highlighting in the IDE (e.g., for markdown files), and custom serialisation algorithms can be implemented. If a test returns a stream, its data will also be collected prior to being tested against a snapshot.
 
-<a href="documentation/snapshots.md"><kbd>Read Snapshot Documentation ></kbd></a>
+<a href="../../wiki/snapshots"><kbd>📸 Read Snapshots Wiki ></kbd></a>
 
 ---
 
