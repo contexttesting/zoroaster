@@ -56,7 +56,7 @@
   "bugs": {
     "url": "https://github.com/artdecocode/zoroaster/issues"
   },
-  "homepage": "https://github.com/artdecocode/zoroaster#readme",
+  "homepage": "https://www.contexttesting.com",
   "dependencies": {
     "@zoroaster/assert": "^1.0.2",
     "@zoroaster/mask": "^2.4.0",
