@@ -52,7 +52,7 @@
     "export"
   ],
   "author": "Anton <anton@adc.sh>",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/artdecocode/zoroaster/issues"
   },

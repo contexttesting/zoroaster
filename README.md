@@ -1,6 +1,6 @@
 # Zoroaster
 
-[![npm version](https://badge.fury.io/js/zoroaster.svg)](https://npmjs.org/package/zoroaster)
+[![npm version](https://badge.fury.io/js/zoroaster.svg)](https://www.npmjs.com/package/zoroaster)
 
 [![Build Status](https://travis-ci.org/contexttesting/zoroaster.svg?branch=master)](https://travis-ci.org/contexttesting/zoroaster)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gc2cqf97ty69mfw/branch/master?svg=true)](https://ci.appveyor.com/project/zavr-1/zoroaster/branch/master)
@@ -39,13 +39,11 @@ npm i --save-dev zoroaster
   * [async functions](#async-functions)
   * [Running Example](#running-example)
 - [Wiki](#wiki)
-- [Copyright](#copyright)
+- [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
-
-
 
 ## Do You Want Testing Framework That...
 
@@ -334,9 +332,13 @@ $ node src/bin example/Zoroaster/test/spec --alamode
   <img src="/.documentary/section-breaks/9.svg?sanitize=true">
 </a></p>
 
-## Copyright
+## Copyright & License
 
-(c) [Art Deco][1] 2019
+GNU Affero General Public License v3.0
+
+
+  (c) [Context Testing](https://contexttesting.com) 2020
+
 
 [1]: https://artd.eco
 [2]: #assertion-library
