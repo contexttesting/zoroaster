@@ -1,3 +1,9 @@
+## 3 February 2020
+
+### [4.1.3](https://github.com/contexttesting/zoroaster/compare/v4.1.2...v4.1.3)
+
+- [deps] Upgrade deps to fix `makePromise`.
+
 ## 2 September 2019
 
 ### [4.1.2](https://github.com/contexttesting/zoroaster/compare/v4.1.1-alpha...v4.1.2)

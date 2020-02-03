@@ -60,7 +60,7 @@
   "dependencies": {
     "@zoroaster/assert": "^1.0.2",
     "@zoroaster/mask": "^2.4.0",
-    "alamode": "^3.3.1"
+    "alamode": "^3.3.2"
   },
   "devDependencies": {
     "@a-la/fixture-alamode": "1.1.3",

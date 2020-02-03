@@ -102,10 +102,10 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/types/-/types-1.0.0.tgz#af2d7f00c13ca8423c59db043a49a533ce574207"
   integrity sha512-WATg0lOQyLooRajTrnNUnteBQwXuJ+K7vMRMoUSfUcNkNtDQz7HArPnnMIxrVpvqIgNl15KB2u4vx/5QaE6zmg==
 
-alamode@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.3.1.tgz#b244ac06560bcc4c3b48bb6ea79adb399dbfa9b7"
-  integrity sha512-689o0l4C4aaf+7pboTTpLAXQecztn0eqvqISRPWOJEKC+Xe8XGGZxsMTtkc+ZPYYEe+WY7VjdKoK0GZUDNqwOg==
+alamode@^3.3.1, alamode@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.3.2.tgz#275d8797bc896fd90500de6519c2f1a7541a631e"
+  integrity sha512-s0KffCdW88HbTYCB4JTpYfgGmM1lOr7hIFVREnAVaHq9KexU4xeVm9y/xtGVYPjOx5RXdmCB3t7oUgC7O3b1qQ==
 
 argufy@^1.7.5:
   version "1.7.5"
