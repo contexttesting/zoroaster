@@ -1,8 +1,9 @@
 ## 3 February 2020
 
-### [4.1.3](https://github.com/contexttesting/zoroaster/compare/v4.1.2...v4.1.3)
+### [4.2.0](https://github.com/contexttesting/zoroaster/compare/v4.1.2...v4.2.0)
 
 - [deps] Upgrade deps to fix `makePromise`.
+- [license] Change to Affero.
 
 ## 2 September 2019
 
