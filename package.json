@@ -13,7 +13,7 @@
     "test-all": "yarn-s test test-build",
     "b": "alamode src/index.js -o depack -s",
     "doc": "NODE_DEBUG=doc doc -o README.md",
-    "compile": "depack-dev src/bin/zoroaster.js -c -a -p -o depack/bin -s --externs node_modules/@zoroaster/types/externs.js -S -O 2018",
+    "compile": "depack src/bin/zoroaster.js -c -a -p -o depack/bin -s --externs node_modules/@zoroaster/types/externs.js -S",
     "build": "yarn-s d b doc",
     "d": "yarn-s d1",
     "dev": "node src/bin",
