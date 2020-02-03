@@ -1,7 +1,7 @@
 {
   "name": "zoroaster",
   "version": "4.2.0",
-  "description": "The 2019 Most Modern Testing Framework For Node.JS With Test Contexts (Reusable BeforeEach / AfterEach Via Separate Files); Masks (Inputs/Outputs In Non-Js Files) And Fork Testing; Interactive Snapshots.",
+  "description": "The 2020 Most Modern Testing Framework For Node.JS With Test Contexts (Reusable BeforeEach / AfterEach Via Separate Files); Masks (Inputs/Outputs In Non-Js Files) And Fork Testing; Interactive Snapshots.",
   "main": "depack/index.js",
   "scripts": {
     "t": "node src/bin",
@@ -54,7 +54,7 @@
   "author": "Anton <anton@adc.sh>",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/artdecocode/zoroaster/issues"
+    "url": "https://github.com/contexttesting/zoroaster/issues"
   },
   "homepage": "https://www.contexttesting.com",
   "dependencies": {
