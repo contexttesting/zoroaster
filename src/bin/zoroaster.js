@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import cleanStack from '@artdeco/clean-stack'
-import { _version, _help, _alamode, _babel, _tests, _argv, _watch, _timeout, _snapshot, _snapshotRoot, _interactive, argsConfig } from './get-args'
-import { reduceUsage } from 'argufy'
+import { _version, _help, _alamode, _babel, _tests, _argv, _watch, _timeout, _snapshot, _snapshotRoot, _interactive, _environment } from './get-args'
 import { resolve } from 'path'
 import run from '../lib/run'
 import getUsage from './usage'
@@ -10,7 +9,7 @@ if (_version) {
   console.log(require('../../package.json').version)
   process.exit()
 } else if (_help) {
-  const usage = getUsage(reduceUsage(argsConfig))
+  const usage = getUsage()
   console.log(usage)
   process.exit()
 }
@@ -25,6 +24,7 @@ if (_babel) {
 }
 
 if (_alamode) {
+  if (_environment) process.env['ALAMODE_ENV'] = _environment
   require(/* ok static-analysis */ 'alamode')()
 }
 

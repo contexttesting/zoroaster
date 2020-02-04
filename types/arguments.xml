@@ -5,9 +5,6 @@
   <arg boolean name="alamode" short="a">
     Enable import/export transpilation with ÀLaMode.
   </arg>
-  <arg boolean name="babel" short="b">
-    Require `@babel/register` (needs to be installed).
-  </arg>
   <arg boolean name="watch" short="w">
     Start the runner in _watch_ mode (rerun on changes).
   </arg>
@@ -24,6 +21,13 @@
   <arg boolean name="interactive" short="i" >
     Run in interactive mode, allowing to update snapshots
     and mask results when they don't match currently expected.
+  </arg>
+  <arg name="environment" short="e" >
+    ÀLaMode environment for applying settings via `.alamoderc.json`.
+    Equivalent to setting `ALAMODE_ENV` env variable.
+  </arg>
+  <arg boolean name="babel" short="b">
+    Require `@babel/register` (needs to be installed).
   </arg>
   <arg boolean name="version" short="v">
     Show the current version.

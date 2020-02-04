@@ -11,11 +11,6 @@ export const argsConfig = {
     boolean: true,
     short: 'a',
   },
-  'babel': {
-    description: 'Require `@babel/register` (needs to be installed).',
-    boolean: true,
-    short: 'b',
-  },
   'watch': {
     description: 'Start the runner in _watch_ mode (rerun on changes).',
     boolean: true,
@@ -42,6 +37,15 @@ export const argsConfig = {
     boolean: true,
     short: 'i',
   },
+  'environment': {
+    description: 'ÀLaMode environment for applying settings via `.alamoderc.json`.\nEquivalent to setting `ALAMODE_ENV` env variable.',
+    short: 'e',
+  },
+  'babel': {
+    description: 'Require `@babel/register` (needs to be installed).',
+    boolean: true,
+    short: 'b',
+  },
   'version': {
     description: 'Show the current version.',
     boolean: true,
@@ -53,22 +57,18 @@ export const argsConfig = {
     short: 'h',
   },
 }
+
 const args = argufy(argsConfig)
 
 /**
  * The location of the test suite directory or file.
  */
-export const _tests = /** @type {string} */ (args['tests'])
+export const _tests = /** @type {!Array<string>} */ (args['tests'])
 
 /**
  * Enable import/export transpilation with ÀLaMode.
  */
 export const _alamode = /** @type {boolean} */ (args['alamode'])
-
-/**
- * Require `@babel/register` (needs to be installed).
- */
-export const _babel = /** @type {boolean} */ (args['babel'])
 
 /**
  * Start the runner in _watch_ mode (rerun on changes).
@@ -78,23 +78,34 @@ export const _watch = /** @type {boolean} */ (args['watch'])
 /**
  * Timeout for tests in ms. Default `2000`.
  */
-export const _timeout = /** @type {number} */ (args['timeout']) || 2000
+export const _timeout = /** @type {number} */ (args['timeout'] || 2000)
 
 /**
  * The location of the snapshot dir. Default `test/snapshot`.
  */
-export const _snapshot = /** @type {string} */ (args['snapshot']) || 'test/snapshot'
+export const _snapshot = /** @type {string} */ (args['snapshot'] || 'test/snapshot')
 
 /**
  * The list of folders that will be roots in the snapshot dir. Default `test/spec,test/mask`.
  */
-export const _snapshotRoot = /** @type {string} */ (args['snapshotRoot']) || 'test/spec,test/mask'
+export const _snapshotRoot = /** @type {string} */ (args['snapshotRoot'] || 'test/spec,test/mask')
 
 /**
  * Run in interactive mode, allowing to update snapshots
     and mask results when they don't match currently expected.
  */
 export const _interactive = /** @type {boolean} */ (args['interactive'])
+
+/**
+ * ÀLaMode environment for applying settings via `.alamoderc.json`.
+    Equivalent to setting `ALAMODE_ENV` env variable.
+ */
+export const _environment = /** @type {string} */ (args['environment'])
+
+/**
+ * Require `@babel/register` (needs to be installed).
+ */
+export const _babel = /** @type {boolean} */ (args['babel'])
 
 /**
  * Show the current version.
