@@ -1,3 +1,9 @@
+## 4 February 2020
+
+### [4.3.0](https://github.com/contexttesting/zoroaster/compare/v4.2.0...v4.3.0)
+
+- [feature] Pass `-e` option for *ALAMODE_ENV*.
+
 ## 3 February 2020
 
 ### [4.2.0](https://github.com/contexttesting/zoroaster/compare/v4.1.2...v4.2.0)
