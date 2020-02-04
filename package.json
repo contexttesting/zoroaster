@@ -1,6 +1,6 @@
 {
   "name": "zoroaster",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "The 2020 Most Modern Testing Framework For Node.JS With Test Contexts (Reusable BeforeEach / AfterEach Via Separate Files); Masks (Inputs/Outputs In Non-Js Files) And Fork Testing; Interactive Snapshots.",
   "main": "depack/index.js",
   "scripts": {
