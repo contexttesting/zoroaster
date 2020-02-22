@@ -46,6 +46,8 @@ One of the advantages of using _ÀLaMode_ is that it can substitute paths to imp
 
 This will make _Zoroaster_ import source code from the `build` directory when the `ALAMODE_ENV` is set to `test-build` (also see [`package.json`](#packagejson) for a quick script which allows to do that). This is extremely useful to check that the code transpiled for publishing passes same tests as the source code.
 
+`ALAMODE_ENV` can be set by passing `-e env` CLI argument.
+
 %~%
 
 ## `--babel`, `-b`: `require(@babel/register)`

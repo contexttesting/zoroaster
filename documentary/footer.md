@@ -43,9 +43,11 @@
 
 %~% -->
 
-## Copyright
+## Copyright & License
 
-(c) [Art Deco][1] 2019
+GNU Affero General Public License v3.0
+
+<context-testing-footer />
 
 [1]: https://artd.eco
 [2]: #assertion-library
